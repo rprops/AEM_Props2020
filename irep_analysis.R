@@ -32,14 +32,14 @@ data_total_unfiltered <- droplevels(data_total_unfiltered)
 data_total_filtered_limno <- data_total_filtered[data_total_filtered$Classification == "Comamonadaceae", ]
 
 # Lets plot some stuff
-p_limno_filtered <- ggplot(data = data_total_filtered_limno, aes(x = Site, y = iRep, fill = Season))+
+p_limno_filtered <- ggplot(data = data_total_filtered_limno, aes(x = Season, y = iRep, fill = Season))+
   geom_point(size = 4, shape = 21)+
   scale_fill_brewer(palette = "Paired")+
-  facet_grid(.~Bin)+
+  facet_grid(Site~Bin)+
   theme_bw()+
   geom_boxplot(alpha = 0.4)
 
-png("irep_limno_filtered.png", width = 20, height = 5, res = 500, units = "in")
+png("irep_limno_filtered_season.png", width = 12, height = 5, res = 500, units = "in")
 p_limno_filtered
 dev.off()
 
@@ -48,14 +48,24 @@ dev.off()
 data_total_unfiltered_limno <- data_total_unfiltered[data_total_unfiltered$Classification == "Comamonadaceae", ]
 
 # Lets plot some stuff
-p_limno_unfiltered <- ggplot(data = data_total_unfiltered_limno, aes(x = Site, y = iRep, fill = Season))+
+p_limno_unfiltered <- ggplot(data = data_total_unfiltered_limno, aes(x = Season, y = iRep, fill = Season))+
   geom_point(size = 4, shape = 21)+
   scale_fill_brewer(palette = "Paired")+
-  facet_grid(.~Bin)+
+  facet_grid(Site~Bin)+
   theme_bw()+
   geom_boxplot(alpha = 0.4)
 
-png("irep_limno_unfiltered.png", width = 20, height = 5, res = 500, units = "in")
+png("irep_limno_unfiltered_season.png", width = 15, height = 10, res = 500, units = "in")
 p_limno_unfiltered
 dev.off()
 
+
+# Lets see for Nitrosomonas
+data_total_nitro <- data_total_filtered[data_total_filtered$Classification == "Nitrosomonas", ]
+
+p_nitro <- ggplot(data = data_total_nitro, aes(x = Site, y = iRep, fill = Season))+
+  geom_point(size = 4, shape = 21)+
+  scale_fill_brewer(palette = "Paired")+
+  facet_grid(Site~Bin)+
+  theme_bw()+
+  geom_boxplot(alpha = 0.4)
