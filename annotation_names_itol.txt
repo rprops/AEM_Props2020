@@ -1,0 +1,55 @@
+LABELS
+#use this template to change the leaf labels, or define/change the internal node names (displayed in mouseover popups)
+
+#lines starting with a hash are comments and ignored during parsing
+
+#=================================================================#
+#                    MANDATORY SETTINGS                           #
+#=================================================================#
+#select the separator which is used to delimit the data below (TAB,SPACE or COMMA).This separator must be used throughout this file (except in the SEPARATOR line, which uses space).
+
+#SEPARATOR TAB
+#SEPARATOR SPACE
+SEPARATOR COMMA
+
+#Internal tree nodes can be specified using IDs directly, or using the 'last common ancestor' method described in iTOL help pages
+#=================================================================#
+#       Actual data follows after the "DATA" keyword              #
+#=================================================================#
+DATA
+#NODE_ID,LABEL
+
+#Examples
+#define a name for an internal node
+#9031|9606,Metazoa
+
+#change the label for leaf node 9606
+#9606,Homo sapiens
+bin13_Fa13.BD.MLB.SN.fa-contigs_2737471682.fa,FA-MLB-SN MAG13 (2737471682)
+bin15_Fa13.BD.MLB.SN.fa-contigs_2737471681.fa,FA-MLB-SN MAG15 (2737471681)
+bin19_Fa13.BD.MLB.SN.fa-contigs_2737471797.fa,FA-MLB-SN MAG19 (2737471797)
+bin31_Fa13.BD.MM110.DN.fa-contigs_2737471683.fa,FA-M110-DN MAG31 (2737471683)
+bin37_Sp13.BD.MM15.SD.fa-contigs_2737471794.fa,SP-M15-SD MAG37 (2737471794)
+bin63_Sp13.BD.MM110.SD.fa-contigs_2737471799.fa,SP-M110-SD MAG63 (2737471799)
+Chitinophaga_niabensis_2636416022.fa,Chitinophaga niabensis (2636416022)
+Fa13.BD.MLB.DN.fa_MC-contigs_2737471806.fa,FA-MLB-DN MAG (2737471806)
+Limnohabitans_Bin_CoolingWater_2724679690.fa,Limnohabitans sp. MAG (2724679690)
+Limnohabitans_planktonicus_II-D5_NZ_LFYT00000000_1.fa,Limnohabitans planktonicus II-D5 (NZ.LFYT00000000.1)
+Limnohabitans_sp_103DPR2_NZ_CP011834_1.fa,Limnohabitans sp. 103DPR2 (NZ.CP011834.1)
+Limnohabitans_sp_2KL-27_NZ_CXOP00000000_1.fa,Limnohabitans sp. 2KL-27 (NZ.CXOP00000000.1)
+Limnohabitans_sp_2KL-3_NZ_CXON00000000_1.fa,Limnohabitans sp. 2KL-3 (NZ.CXON00000000.1)
+Limnohabitans_sp_63ED37-2_NZ_CP011774_1.fa,Limnohabitans sp. 63ED37-2 (NZ.CP011774.1)
+Limnohabitans_sp_DM1_NZ_CXOO00000000_1.fa,Limnohabitans sp. DM1 (NZ.CXOO00000000.1)
+Limnohabitans_sp_Rim11_NZ_CXOP00000000_1.fa,Limnohabitans sp. Rim11 (CXOM00000000.1)
+Limnohabitans_sp_Rim28_NZ_ALKN00000000_1.fa,Limnohabitans sp. Rim28 (NZ.ALKN00000000.1)
+Limnohabitans_sp_Rim47_2684622883.fa,Limnohabitans sp. Rim47 (2684622883)
+Polynucleobacter_necessarius_STIR1_2503982034.fa,Polynucleobacter necessarius STIR1 (2503982034)
+Polynucleobacter_sp_AP-Melu-1000-B4_2710724120.fa,Polynucleobacter sp. AP-Melu-1000-B4 (2710724120)
+Polynucleobacter_sp_QWL-P1DMWA-1_640427129.fa,Polynucleobacter sp. QWL-P1DMWA-1 (640427129)
+Polynucleobacter_sp_UB-Domo-W1_2710724123.fa,Polynucleobacter sp. UB-Domo-W1 (2710724123)
+Polynucleobacter_sp_VK13_2708742530.fa,Polynucleobacter sp. VK13 (2708742530)
+Sp13.BD.MM110.DD.fa_MC-contigs_2737471802.fa,SP-M110-DD MAG (2737471802)
+Su13.BD.MLB.SD.C_bin2.fa-contigs_2737471804.fa,SU-MLB-SD MAG2 (2737471804)
+Su13.BD.MM110.DCMD_bin2.fa-contigs_2737471805.fa,SU-M110-DCMD MAG2 (2737471805)
+Su13.BD.MM15.SN.C_bin1_bin2_bin6_bin10_MC1-contigs_2737471795.fa,SU-M15-SN MAG-MC1 (2737471795)
+Su13.BD.MM15.SN.C_bin1_bin2_bin6_bin10_MC2-contigs_2737471793.fa,SU-M15-SN MAG-MC2 (2737471793)
