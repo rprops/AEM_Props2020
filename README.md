@@ -3,10 +3,10 @@ Repository for the analysis of reconstructed Limnohabitans genomes from lake Mic
 
 # Analysis steps
 
-## QC and assembly
+## 1. QC and assembly
 
-## Binning strategy
+## 2. Binning strategy
 
-## Binning QC and refinement
+## 3. Binning QC and refinement
 
-## Calculation of relative abundances
+## 4. Calculation of relative abundances
