@@ -95,7 +95,7 @@ p_season <- ggplot(data = data_total, aes(x = bins, y = mean_rel_abundance, fill
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
         axis.text.x = element_text(angle = 45, hjust = 1),
-        strip.text.y=element_text(size=20))+
+        strip.text.y=element_text(size=18))+
   ylab("Mean relative abundance (%)")
 
 p_station <- ggplot(data = data_total, aes(x = bins, y = mean_rel_abundance, fill = bins))+
@@ -113,7 +113,7 @@ p_station <- ggplot(data = data_total, aes(x = bins, y = mean_rel_abundance, fil
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
         axis.text.x = element_text(angle = 45, hjust = 1),
-        strip.text.y=element_text(size=20))+
+        strip.text.y=element_text(size=18))+
   ylab("Mean relative abundance (%)")
 
 grid.arrange(p_season, p_station, nrow = 2)
