@@ -1,0 +1,806 @@
+##gff-version 3
+Ga0194083_1001	img_core_v400	CDS	3	188	.	-	0	ID=2737832233;locus_tag=Ga0194083_10011;product=Ribonuclease P
+Ga0194083_1001	img_core_v400	CDS	301	435	.	-	0	ID=2737832234;locus_tag=Ga0194083_10012;product= LSU ribosomal protein L34P
+Ga0194083_1001	img_core_v400	CDS	662	2068	.	+	0	ID=2737832235;locus_tag=Ga0194083_10013;product=chromosomal replication initiator protein
+Ga0194083_1001	img_core_v400	CDS	2111	3217	.	+	0	ID=2737832236;locus_tag=Ga0194083_10014;product= DNA polymerase III, beta subunit
+Ga0194083_1001	img_core_v400	CDS	3296	4042	.	+	0	ID=2737832237;locus_tag=Ga0194083_10015;product=Histidine kinase-, DNA gyrase B-, and HSP90-like ATPase
+Ga0194083_1002	img_core_v400	CDS	3	149	.	-	0	ID=2737832238;locus_tag=Ga0194083_10021;product=hypothetical protein
+Ga0194083_1002	img_core_v400	CDS	175	1287	.	+	0	ID=2737832239;locus_tag=Ga0194083_10022;product=lipopolysaccharide export system permease protein
+Ga0194083_1002	img_core_v400	CDS	1284	2405	.	+	0	ID=2737832240;locus_tag=Ga0194083_10023;product=lipopolysaccharide export system permease protein
+Ga0194083_1002	img_core_v400	CDS	2425	3369	.	+	0	ID=2737832241;locus_tag=Ga0194083_10024;product=LysR family transcriptional regulator, cys regulon transcriptional activator
+Ga0194083_1002	img_core_v400	CDS	3376	4464	.	+	0	ID=2737832242;locus_tag=Ga0194083_10025;product=methionine aminotransferase
+Ga0194083_1003	img_core_v400	CDS	3	224	.	-	0	ID=2737832243;locus_tag=Ga0194083_10031;product=hypothetical protein
+Ga0194083_1003	img_core_v400	CDS	507	1838	.	+	0	ID=2737832244;locus_tag=Ga0194083_10032;product= isocitrate lyase
+Ga0194083_1003	img_core_v400	CDS	1945	4176	.	-	0	ID=2737832245;locus_tag=Ga0194083_10033;product=isocitrate dehydrogenase
+Ga0194083_1003	img_core_v400	CDS	4371	6278	.	+	0	ID=2737832246;locus_tag=Ga0194083_10034;product= threonyl-tRNA synthetase
+Ga0194083_1003	img_core_v400	CDS	6443	6982	.	+	0	ID=2737832247;locus_tag=Ga0194083_10035;product= bacterial translation initiation factor 3 (bIF-3)
+Ga0194083_1003	img_core_v400	RNA	6689	6981	.	+	0	ID=2737832248;locus_tag=Ga0194083_10036
+Ga0194083_1004	img_core_v400	CDS	2	379	.	+	0	ID=2737832249;locus_tag=Ga0194083_10041;product=Peptidase family S49
+Ga0194083_1004	img_core_v400	CDS	412	1296	.	+	0	ID=2737832250;locus_tag=Ga0194083_10042;product=UTP--glucose-1-phosphate uridylyltransferase
+Ga0194083_1004	img_core_v400	CDS	1306	2097	.	-	0	ID=2737832251;locus_tag=Ga0194083_10043;product=16S rRNA (cytidine1402-2'-O)-methyltransferase
+Ga0194083_1004	img_core_v400	CDS	2094	2690	.	-	0	ID=2737832252;locus_tag=Ga0194083_10044;product=septum formation protein
+Ga0194083_1004	img_core_v400	CDS	2737	3297	.	+	0	ID=2737832253;locus_tag=Ga0194083_10045;product=uncharacterized protein
+Ga0194083_1004	img_core_v400	CDS	3458	3640	.	+	0	ID=2737832254;locus_tag=Ga0194083_10046;product= LSU ribosomal protein L32P
+Ga0194083_1005	img_core_v400	CDS	2	208	.	-	0	ID=2737832255;locus_tag=Ga0194083_10051;product=hypothetical protein
+Ga0194083_1005	img_core_v400	CDS	211	1176	.	-	0	ID=2737832256;locus_tag=Ga0194083_10052;product=lipoic acid synthetase
+Ga0194083_1005	img_core_v400	CDS	1208	1849	.	-	0	ID=2737832257;locus_tag=Ga0194083_10053;product=lipoyl(octanoyl) transferase
+Ga0194083_1005	img_core_v400	CDS	1906	2193	.	-	0	ID=2737832258;locus_tag=Ga0194083_10054;product=hypothetical protein
+Ga0194083_1005	img_core_v400	CDS	2308	2838	.	+	0	ID=2737832259;locus_tag=Ga0194083_10055;product=ATP synthase protein I
+Ga0194083_1005	img_core_v400	CDS	2861	3730	.	+	0	ID=2737832260;locus_tag=Ga0194083_10056;product=F-type H+-transporting ATPase subunit a
+Ga0194083_1005	img_core_v400	CDS	3807	4052	.	+	0	ID=2737832261;locus_tag=Ga0194083_10057;product= ATP synthase F0 subcomplex C subunit
+Ga0194083_1005	img_core_v400	CDS	4178	4648	.	+	0	ID=2737832262;locus_tag=Ga0194083_10058;product=F-type H+-transporting ATPase subunit b
+Ga0194083_1005	img_core_v400	CDS	4673	5203	.	+	0	ID=2737832263;locus_tag=Ga0194083_10059;product= ATP synthase F1 subcomplex delta subunit
+Ga0194083_1005	img_core_v400	CDS	5263	6819	.	+	0	ID=2737832264;locus_tag=Ga0194083_100510;product= ATP synthase F1 subcomplex alpha subunit
+Ga0194083_1005	img_core_v400	CDS	6851	7387	.	+	0	ID=2737832265;locus_tag=Ga0194083_100511;product=ATP synthase, F1 gamma subunit
+Ga0194083_1006	img_core_v400	CDS	2	511	.	-	0	ID=2737832266;locus_tag=Ga0194083_10061;product=hypothetical protein
+Ga0194083_1006	img_core_v400	CDS	702	3107	.	+	0	ID=2737832267;locus_tag=Ga0194083_10062;product=penicillin-binding protein 1A
+Ga0194083_1006	img_core_v400	CDS	3104	3283	.	-	0	ID=2737832268;locus_tag=Ga0194083_10063;product=iron donor protein CyaY
+Ga0194083_1007	img_core_v400	CDS	3	2624	.	-	0	ID=2737832269;locus_tag=Ga0194083_10071;product=ATP-dependent helicase/nuclease subunit A
+Ga0194083_1007	img_core_v400	CDS	2621	3238	.	-	0	ID=2737832270;locus_tag=Ga0194083_10072;product=PD-(D/E)XK nuclease superfamily protein
+Ga0194083_1008	img_core_v400	CDS	1	216	.	-	0	ID=2737832271;locus_tag=Ga0194083_10081;product=Molybdopterin oxidoreductase Fe4S4 domain-containing protein
+Ga0194083_1008	img_core_v400	CDS	225	911	.	-	0	ID=2737832272;locus_tag=Ga0194083_10082;product= transcriptional regulator, TetR family
+Ga0194083_1008	img_core_v400	CDS	912	1445	.	-	0	ID=2737832273;locus_tag=Ga0194083_10083;product=poly(hydroxyalkanoate) granule-associated protein
+Ga0194083_1008	img_core_v400	CDS	1540	2439	.	+	0	ID=2737832274;locus_tag=Ga0194083_10084;product= N-acetylglutamate kinase
+Ga0194083_1008	img_core_v400	CDS	2450	3091	.	+	0	ID=2737832275;locus_tag=Ga0194083_10085;product= transcriptional regulator, TetR family
+Ga0194083_1008	img_core_v400	CDS	3205	3432	.	+	0	ID=2737832276;locus_tag=Ga0194083_10086;product= transcriptional regulator, TetR family
+Ga0194083_1009	img_core_v400	CDS	3	977	.	+	0	ID=2737832277;locus_tag=Ga0194083_10091;product=protein of unknown function (DUF3458)
+Ga0194083_1009	img_core_v400	CDS	992	1999	.	+	0	ID=2737832278;locus_tag=Ga0194083_10092;product= D-fructose 1,6-bisphosphatase
+Ga0194083_1009	img_core_v400	tRNA	2011	2083	.	+	0	ID=2737832279;locus_tag=Ga0194083_10093
+Ga0194083_1009	img_core_v400	CDS	2206	2535	.	+	0	ID=2737832280;locus_tag=Ga0194083_10094;product=protein CcmA, bactofilin family
+Ga0194083_1009	img_core_v400	CDS	2565	3038	.	+	0	ID=2737832281;locus_tag=Ga0194083_10095;product=Calcineurin-like phosphoesterase
+Ga0194083_1010	img_core_v400	CDS	32	1447	.	-	0	ID=2737832282;locus_tag=Ga0194083_10101;product= UDP-N-acetylmuramate--L-alanine ligase
+Ga0194083_1010	img_core_v400	CDS	1444	2520	.	-	0	ID=2737832283;locus_tag=Ga0194083_10102;product= UDP-N-acetylglucosamine-N-acetylmuramylpentapeptide N-acetylglucosamine transferase
+Ga0194083_1010	img_core_v400	CDS	2517	3770	.	-	0	ID=2737832284;locus_tag=Ga0194083_10103;product= cell division-specific peptidoglycan biosynthesis regulator FtsW
+Ga0194083_1010	img_core_v400	CDS	3779	5527	.	-	0	ID=2737832285;locus_tag=Ga0194083_10104;product= UDP-N-acetylmuramoylalanine--D-glutamate ligase
+Ga0194083_1010	img_core_v400	CDS	5524	6144	.	-	0	ID=2737832286;locus_tag=Ga0194083_10105;product= Phospho-N-acetylmuramoyl-pentapeptide-transferase
+Ga0194083_1011	img_core_v400	CDS	1	798	.	-	0	ID=2737832287;locus_tag=Ga0194083_10111;product=3-isopropylmalate dehydratase, large subunit
+Ga0194083_1011	img_core_v400	CDS	885	2183	.	-	0	ID=2737832288;locus_tag=Ga0194083_10112;product= citrate synthase
+Ga0194083_1011	img_core_v400	CDS	2209	2499	.	-	0	ID=2737832289;locus_tag=Ga0194083_10113;product=antitoxin CptB
+Ga0194083_1011	img_core_v400	CDS	2519	3223	.	-	0	ID=2737832290;locus_tag=Ga0194083_10114;product= succinate dehydrogenase subunit B
+Ga0194083_1011	img_core_v400	CDS	3254	4039	.	-	0	ID=2737832291;locus_tag=Ga0194083_10115;product=FAD binding domain-containing protein
+Ga0194083_1012	img_core_v400	CDS	1	117	.	+	0	ID=2737832292;locus_tag=Ga0194083_10121;product=hypothetical protein
+Ga0194083_1012	img_core_v400	CDS	118	765	.	-	0	ID=2737832293;locus_tag=Ga0194083_10122;product=Nicotinamide riboside kinase
+Ga0194083_1012	img_core_v400	CDS	767	1051	.	-	0	ID=2737832294;locus_tag=Ga0194083_10123;product= cell division protein FtsB
+Ga0194083_1012	img_core_v400	CDS	1057	2340	.	-	0	ID=2737832295;locus_tag=Ga0194083_10124;product= enolase
+Ga0194083_1012	img_core_v400	CDS	2375	2662	.	-	0	ID=2737832296;locus_tag=Ga0194083_10125;product=Uncharacterized conserved protein, DUF1330 family
+Ga0194083_1012	img_core_v400	CDS	2659	3393	.	-	0	ID=2737832297;locus_tag=Ga0194083_10126;product=2-dehydro-3-deoxyphosphooctonate aldolase (KDO 8-P synthase)
+Ga0194083_1013	img_core_v400	CDS	63	1220	.	+	0	ID=2737832298;locus_tag=Ga0194083_10131;product=diaminohydroxyphosphoribosylaminopyrimidine deaminase / 5-amino-6-(5-phosphoribosylamino)uracil reductase
+Ga0194083_1013	img_core_v400	CDS	1264	1902	.	+	0	ID=2737832299;locus_tag=Ga0194083_10132;product= riboflavin synthase alpha chain
+Ga0194083_1013	img_core_v400	CDS	1899	3023	.	+	0	ID=2737832300;locus_tag=Ga0194083_10133;product=3,4-dihydroxy 2-butanone 4-phosphate synthase / GTP cyclohydrolase II
+Ga0194083_1013	img_core_v400	CDS	3051	3515	.	+	0	ID=2737832301;locus_tag=Ga0194083_10134;product= 6,7-dimethyl-8-ribityllumazine synthase
+Ga0194083_1013	img_core_v400	CDS	3519	3806	.	+	0	ID=2737832302;locus_tag=Ga0194083_10135;product=NusB family protein
+Ga0194083_1014	img_core_v400	CDS	3	536	.	+	0	ID=2737832303;locus_tag=Ga0194083_10141;product=Aldehyde dehydrogenase family protein
+Ga0194083_1014	img_core_v400	CDS	560	2227	.	+	0	ID=2737832304;locus_tag=Ga0194083_10142;product= choline dehydrogenase
+Ga0194083_1014	img_core_v400	CDS	2365	3138	.	+	0	ID=2737832305;locus_tag=Ga0194083_10143;product=Taurine catabolism dioxygenase TauD, TfdA family
+Ga0194083_1015	img_core_v400	CDS	3	110	.	+	0	ID=2737832306;locus_tag=Ga0194083_10151;product=hypothetical protein
+Ga0194083_1015	img_core_v400	CDS	107	532	.	+	0	ID=2737832307;locus_tag=Ga0194083_10152;product=hypothetical protein
+Ga0194083_1015	img_core_v400	CDS	603	1157	.	+	0	ID=2737832308;locus_tag=Ga0194083_10153;product= translation elongation factor P (EF-P)
+Ga0194083_1015	img_core_v400	CDS	1227	2096	.	+	0	ID=2737832309;locus_tag=Ga0194083_10154;product=hypothetical protein
+Ga0194083_1015	img_core_v400	CDS	2155	3414	.	-	0	ID=2737832310;locus_tag=Ga0194083_10155;product=Putative Na+/H+ antiporter
+Ga0194083_1015	img_core_v400	CDS	3534	4040	.	-	0	ID=2737832311;locus_tag=Ga0194083_10156;product=Major Facilitator Superfamily protein
+Ga0194083_1016	img_core_v400	CDS	3	842	.	+	0	ID=2737832312;locus_tag=Ga0194083_10161;product= 5,10-methylenetetrahydrofolate reductase (NAD(P))
+Ga0194083_1016	img_core_v400	CDS	852	1739	.	-	0	ID=2737832313;locus_tag=Ga0194083_10162;product=23S rRNA (adenine2030-N6)-methyltransferase
+Ga0194083_1016	img_core_v400	CDS	1933	2364	.	+	0	ID=2737832314;locus_tag=Ga0194083_10163;product= LSU ribosomal protein L13P
+Ga0194083_1016	img_core_v400	CDS	2376	2768	.	+	0	ID=2737832315;locus_tag=Ga0194083_10164;product= SSU ribosomal protein S9P
+Ga0194083_1016	img_core_v400	CDS	2918	3577	.	+	0	ID=2737832316;locus_tag=Ga0194083_10165;product=hypothetical protein
+Ga0194083_1016	img_core_v400	CDS	3603	4001	.	+	0	ID=2737832317;locus_tag=Ga0194083_10166;product=protein CcmA, bactofilin family
+Ga0194083_1016	img_core_v400	CDS	4065	4430	.	+	0	ID=2737832318;locus_tag=Ga0194083_10167;product=iron-sulfur cluster insertion protein
+Ga0194083_1016	img_core_v400	CDS	4435	5700	.	-	0	ID=2737832319;locus_tag=Ga0194083_10168;product=Peptidase family M23
+Ga0194083_1016	img_core_v400	CDS	5841	7106	.	+	0	ID=2737832320;locus_tag=Ga0194083_10169;product= tyrosyl-tRNA synthetase
+Ga0194083_1016	img_core_v400	CDS	7103	7492	.	+	0	ID=2737832321;locus_tag=Ga0194083_101610;product=cation diffusion facilitator family transporter
+Ga0194083_1017	img_core_v400	CDS	2	1930	.	+	0	ID=2737832322;locus_tag=Ga0194083_10171;product= methylmalonyl-CoA mutase
+Ga0194083_1017	img_core_v400	CDS	1984	2316	.	+	0	ID=2737832323;locus_tag=Ga0194083_10172;product=hypothetical protein
+Ga0194083_1017	img_core_v400	CDS	2313	2720	.	+	0	ID=2737832324;locus_tag=Ga0194083_10173;product=hypothetical protein
+Ga0194083_1017	img_core_v400	CDS	2717	3136	.	+	0	ID=2737832325;locus_tag=Ga0194083_10174;product=ArgK protein
+Ga0194083_1018	img_core_v400	CDS	3	1673	.	-	0	ID=2737832326;locus_tag=Ga0194083_10181;product=DNA-directed RNA polymerase, beta subunit
+Ga0194083_1018	img_core_v400	CDS	2016	2393	.	-	0	ID=2737832327;locus_tag=Ga0194083_10182;product= LSU ribosomal protein L12P
+Ga0194083_1018	img_core_v400	CDS	2437	2937	.	-	0	ID=2737832328;locus_tag=Ga0194083_10183;product= LSU ribosomal protein L10P
+Ga0194083_1018	img_core_v400	CDS	3189	3884	.	-	0	ID=2737832329;locus_tag=Ga0194083_10184;product= LSU ribosomal protein L1P
+Ga0194083_1018	img_core_v400	CDS	3886	4317	.	-	0	ID=2737832330;locus_tag=Ga0194083_10185;product= LSU ribosomal protein L11P
+Ga0194083_1018	img_core_v400	CDS	4437	5012	.	-	0	ID=2737832331;locus_tag=Ga0194083_10186;product= transcription antitermination protein nusG
+Ga0194083_1018	img_core_v400	CDS	5015	5395	.	-	0	ID=2737832332;locus_tag=Ga0194083_10187;product= protein translocase subunit secE/sec61 gamma
+Ga0194083_1018	img_core_v400	tRNA	5546	5618	.	-	0	ID=2737832333;locus_tag=Ga0194083_10188
+Ga0194083_1018	img_core_v400	CDS	5647	5745	.	-	0	ID=2737832334;locus_tag=Ga0194083_10189;product=Elongation factor Tu C-terminal domain-containing protein
+Ga0194083_1019	img_core_v400	CDS	1	342	.	-	0	ID=2737832335;locus_tag=Ga0194083_10191;product=hypothetical protein
+Ga0194083_1019	img_core_v400	CDS	466	2460	.	+	0	ID=2737832336;locus_tag=Ga0194083_10192;product= DNA topoisomerase IV subunit B
+Ga0194083_1019	img_core_v400	CDS	2457	3530	.	+	0	ID=2737832337;locus_tag=Ga0194083_10193;product=DNA gyrase/topoisomerase IV, subunit A
+Ga0194083_1020	img_core_v400	CDS	1	789	.	+	0	ID=2737832338;locus_tag=Ga0194083_10201;product= 4-diphosphocytidyl-2-C-methyl-D-erythritol kinase
+Ga0194083_1020	img_core_v400	tRNA	866	939	.	+	0	ID=2737832339;locus_tag=Ga0194083_10202
+Ga0194083_1020	img_core_v400	CDS	964	1938	.	+	0	ID=2737832340;locus_tag=Ga0194083_10203;product=ribose-phosphate pyrophosphokinase
+Ga0194083_1020	img_core_v400	CDS	2041	2670	.	+	0	ID=2737832341;locus_tag=Ga0194083_10204;product= LSU ribosomal protein L25P
+Ga0194083_1020	img_core_v400	CDS	2737	3366	.	+	0	ID=2737832342;locus_tag=Ga0194083_10205;product= peptidyl-tRNA hydrolase
+Ga0194083_1020	img_core_v400	CDS	3367	3618	.	-	0	ID=2737832343;locus_tag=Ga0194083_10206;product=4Fe-4S binding domain-containing protein
+Ga0194083_1020	img_core_v400	CDS	3629	4129	.	-	0	ID=2737832344;locus_tag=Ga0194083_10207;product= Phosphopantetheine adenylyltransferase
+Ga0194083_1020	img_core_v400	CDS	4137	4733	.	-	0	ID=2737832345;locus_tag=Ga0194083_10208;product=16S rRNA (guanine(966)-N(2))-methyltransferase RsmD
+Ga0194083_1020	img_core_v400	CDS	4755	5606	.	-	0	ID=2737832346;locus_tag=Ga0194083_10209;product=Peptidase M16 inactive domain-containing protein
+Ga0194083_1021	img_core_v400	CDS	1	279	.	-	0	ID=2737832347;locus_tag=Ga0194083_10211;product=Transglutaminase-like superfamily protein
+Ga0194083_1021	img_core_v400	CDS	283	1848	.	-	0	ID=2737832348;locus_tag=Ga0194083_10212;product=putative peptidoglycan lipid II flippase
+Ga0194083_1021	img_core_v400	CDS	1944	2237	.	+	0	ID=2737832349;locus_tag=Ga0194083_10213;product= SSU ribosomal protein S20P
+Ga0194083_1021	img_core_v400	CDS	2493	2777	.	-	0	ID=2737832350;locus_tag=Ga0194083_10214;product=Protein of unknown function (DUF3579)
+Ga0194083_1021	img_core_v400	CDS	2997	3977	.	+	0	ID=2737832351;locus_tag=Ga0194083_10215;product= acetylornithine aminotransferase apoenzyme
+Ga0194083_1022	img_core_v400	CDS	3	1649	.	+	0	ID=2737832352;locus_tag=Ga0194083_10221;product= transketolase
+Ga0194083_1022	img_core_v400	CDS	1760	2767	.	+	0	ID=2737832353;locus_tag=Ga0194083_10222;product=glyceraldehyde 3-phosphate dehydrogenase
+Ga0194083_1022	img_core_v400	CDS	2932	3027	.	+	0	ID=2737832354;locus_tag=Ga0194083_10223;product=hypothetical protein
+Ga0194083_1023	img_core_v400	CDS	1	84	.	+	0	ID=2737832355;locus_tag=Ga0194083_10231;product=hypothetical protein
+Ga0194083_1023	img_core_v400	CDS	65	319	.	-	0	ID=2737832356;locus_tag=Ga0194083_10232;product=Acyl-CoA-binding protein
+Ga0194083_1023	img_core_v400	CDS	339	1118	.	-	0	ID=2737832357;locus_tag=Ga0194083_10233;product=type III pantothenate kinase
+Ga0194083_1023	img_core_v400	CDS	1170	2300	.	-	0	ID=2737832358;locus_tag=Ga0194083_10234;product=Glyoxylase, beta-lactamase superfamily II
+Ga0194083_1023	img_core_v400	CDS	2317	2562	.	-	0	ID=2737832359;locus_tag=Ga0194083_10235;product=Metal-sensitive transcriptional repressor
+Ga0194083_1023	img_core_v400	CDS	2680	3258	.	+	0	ID=2737832360;locus_tag=Ga0194083_10236;product=hypothetical protein
+Ga0194083_1023	img_core_v400	CDS	3255	3599	.	+	0	ID=2737832361;locus_tag=Ga0194083_10237;product=hypothetical protein
+Ga0194083_1023	img_core_v400	CDS	3605	5047	.	-	0	ID=2737832362;locus_tag=Ga0194083_10238;product= ATP-dependent RNA helicase DbpA
+Ga0194083_1024	img_core_v400	CDS	23	496	.	+	0	ID=2737832363;locus_tag=Ga0194083_10241;product=putative RNA-binding protein, YhbY family
+Ga0194083_1024	img_core_v400	CDS	565	1041	.	-	0	ID=2737832364;locus_tag=Ga0194083_10242;product= transcription elongation factor GreA
+Ga0194083_1024	img_core_v400	CDS	1144	4146	.	-	0	ID=2737832365;locus_tag=Ga0194083_10243;product= carbamoyl-phosphate synthase large subunit
+Ga0194083_1025	img_core_v400	CDS	2	721	.	+	0	ID=2737832366;locus_tag=Ga0194083_10251;product=Adenylate cyclase, class 3
+Ga0194083_1025	img_core_v400	CDS	718	1188	.	+	0	ID=2737832367;locus_tag=Ga0194083_10252;product=type IV pilus assembly protein PilA
+Ga0194083_1025	img_core_v400	CDS	1223	2707	.	-	0	ID=2737832368;locus_tag=Ga0194083_10253;product=ATPase family associated with various cellular activities (AAA)
+Ga0194083_1025	img_core_v400	CDS	2884	3402	.	-	0	ID=2737832369;locus_tag=Ga0194083_10254;product= cyclic pyranopterin monophosphate synthase subunit MoaC
+Ga0194083_1025	img_core_v400	CDS	3451	4425	.	+	0	ID=2737832370;locus_tag=Ga0194083_10255;product=Peptidase family M48
+Ga0194083_1026	img_core_v400	CDS	1	123	.	+	0	ID=2737832371;locus_tag=Ga0194083_10261;product=hypothetical protein
+Ga0194083_1026	img_core_v400	CDS	129	521	.	+	0	ID=2737832372;locus_tag=Ga0194083_10262;product= phosphoribosyl-ATP pyrophosphatase
+Ga0194083_1026	img_core_v400	CDS	569	925	.	+	0	ID=2737832373;locus_tag=Ga0194083_10263;product=histidine triad (HIT) family protein
+Ga0194083_1026	img_core_v400	CDS	969	1196	.	+	0	ID=2737832374;locus_tag=Ga0194083_10264;product=sec-independent protein translocase protein TatA
+Ga0194083_1026	img_core_v400	CDS	1245	1733	.	+	0	ID=2737832375;locus_tag=Ga0194083_10265;product=sec-independent protein translocase protein TatB
+Ga0194083_1026	img_core_v400	CDS	1733	2524	.	+	0	ID=2737832376;locus_tag=Ga0194083_10266;product=sec-independent protein translocase protein TatC
+Ga0194083_1026	img_core_v400	CDS	2529	3677	.	-	0	ID=2737832377;locus_tag=Ga0194083_10267;product=serine pepetdase DegS
+Ga0194083_1026	img_core_v400	CDS	3776	4459	.	+	0	ID=2737832378;locus_tag=Ga0194083_10268;product=dinuclear metal center protein, YbgI/SA1388 family
+Ga0194083_1027	img_core_v400	CDS	2	871	.	-	0	ID=2737832379;locus_tag=Ga0194083_10271;product=gluconate 2-dehydrogenase
+Ga0194083_1027	img_core_v400	CDS	1001	1852	.	+	0	ID=2737832380;locus_tag=Ga0194083_10272;product=3-hydroxybutyryl-CoA dehydrogenase
+Ga0194083_1027	img_core_v400	CDS	1873	3276	.	+	0	ID=2737832381;locus_tag=Ga0194083_10273;product= NADPH-glutathione reductase
+Ga0194083_1027	img_core_v400	CDS	3282	4139	.	-	0	ID=2737832382;locus_tag=Ga0194083_10274;product=phosphatidylserine decarboxylase
+Ga0194083_1027	img_core_v400	CDS	4181	4828	.	+	0	ID=2737832383;locus_tag=Ga0194083_10275;product=Aminotransferase class I and II
+Ga0194083_1028	img_core_v400	CDS	3	650	.	-	0	ID=2737832384;locus_tag=Ga0194083_10281;product=carboxymethylenebutenolidase
+Ga0194083_1028	img_core_v400	CDS	960	1283	.	+	0	ID=2737832385;locus_tag=Ga0194083_10282;product=putative addiction module killer protein
+Ga0194083_1028	img_core_v400	CDS	1267	1593	.	+	0	ID=2737832386;locus_tag=Ga0194083_10283;product=probable addiction module antidote protein
+Ga0194083_1028	img_core_v400	CDS	1728	3371	.	-	0	ID=2737832387;locus_tag=Ga0194083_10284;product= DNA polymerase I
+Ga0194083_1029	img_core_v400	CDS	2	361	.	-	0	ID=2737832388;locus_tag=Ga0194083_10291;product=ribonuclease PH
+Ga0194083_1029	img_core_v400	CDS	497	1366	.	+	0	ID=2737832389;locus_tag=Ga0194083_10292;product=TIGR00255 family protein
+Ga0194083_1029	img_core_v400	CDS	1370	1990	.	+	0	ID=2737832390;locus_tag=Ga0194083_10293;product= guanylate kinase
+Ga0194083_1029	img_core_v400	CDS	2014	2217	.	+	0	ID=2737832391;locus_tag=Ga0194083_10294;product= DNA-directed RNA polymerase subunit omega
+Ga0194083_1029	img_core_v400	CDS	2339	4603	.	+	0	ID=2737832392;locus_tag=Ga0194083_10295;product=GTP pyrophosphokinase
+Ga0194083_1029	img_core_v400	CDS	4605	5162	.	-	0	ID=2737832393;locus_tag=Ga0194083_10296;product= transcription elongation factor GreB
+Ga0194083_1029	img_core_v400	tRNA	5229	5302	.	-	0	ID=2737832394;locus_tag=Ga0194083_10297
+Ga0194083_1029	img_core_v400	CDS	5416	6243	.	+	0	ID=2737832395;locus_tag=Ga0194083_10298;product=peptidyl-prolyl cis-trans isomerase C
+Ga0194083_1029	img_core_v400	CDS	6304	6702	.	+	0	ID=2737832396;locus_tag=Ga0194083_10299;product=hypothetical protein
+Ga0194083_1030	img_core_v400	CDS	61	1296	.	-	0	ID=2737832397;locus_tag=Ga0194083_10301;product=alanine-synthesizing transaminase
+Ga0194083_1030	img_core_v400	CDS	1407	1799	.	+	0	ID=2737832398;locus_tag=Ga0194083_10302;product=Uncharacterized conserved protein, contains Mth938-like domain
+Ga0194083_1030	img_core_v400	CDS	1953	2429	.	+	0	ID=2737832399;locus_tag=Ga0194083_10303;product=peroxiredoxin Q/BCP
+Ga0194083_1030	img_core_v400	CDS	2621	4279	.	+	0	ID=2737832400;locus_tag=Ga0194083_10304;product=PhoH-like ATPase
+Ga0194083_1030	img_core_v400	CDS	4309	5736	.	-	0	ID=2737832401;locus_tag=Ga0194083_10305;product= primary replicative DNA helicase
+Ga0194083_1030	img_core_v400	CDS	5926	6378	.	-	0	ID=2737832402;locus_tag=Ga0194083_10306;product= LSU ribosomal protein L9P
+Ga0194083_1030	img_core_v400	CDS	6392	6673	.	-	0	ID=2737832403;locus_tag=Ga0194083_10307;product= SSU ribosomal protein S18P
+Ga0194083_1030	img_core_v400	CDS	6685	6972	.	-	0	ID=2737832404;locus_tag=Ga0194083_10308;product= restart primosome assembly protein PriB
+Ga0194083_1030	img_core_v400	CDS	7000	7371	.	-	0	ID=2737832405;locus_tag=Ga0194083_10309;product= SSU ribosomal protein S6P
+Ga0194083_1030	img_core_v400	CDS	7453	9606	.	-	0	ID=2737832406;locus_tag=Ga0194083_103010;product=cation/acetate symporter
+Ga0194083_1030	img_core_v400	CDS	9572	9859	.	-	0	ID=2737832407;locus_tag=Ga0194083_103011;product=putative solute:sodium symporter small subunit
+Ga0194083_1030	img_core_v400	CDS	9838	10452	.	-	0	ID=2737832408;locus_tag=Ga0194083_103012;product=Tetratricopeptide repeat-containing protein
+Ga0194083_1030	img_core_v400	CDS	10695	11267	.	+	0	ID=2737832409;locus_tag=Ga0194083_103013;product=CBS domain-containing protein
+Ga0194083_1031	img_core_v400	CDS	1	540	.	+	0	ID=2737832410;locus_tag=Ga0194083_10311;product=alpha/beta hydrolase fold
+Ga0194083_1031	img_core_v400	CDS	522	1373	.	-	0	ID=2737832411;locus_tag=Ga0194083_10312;product=Uncharacterized conserved protein, contains NRDE domain
+Ga0194083_1031	img_core_v400	CDS	1377	2324	.	-	0	ID=2737832412;locus_tag=Ga0194083_10313;product=hypothetical protein
+Ga0194083_1031	img_core_v400	CDS	2387	3406	.	+	0	ID=2737832413;locus_tag=Ga0194083_10314;product=UPF0755 protein
+Ga0194083_1031	img_core_v400	CDS	3411	3830	.	+	0	ID=2737832414;locus_tag=Ga0194083_10315;product=dTMP kinase
+Ga0194083_1032	img_core_v400	CDS	2	235	.	-	0	ID=2737832415;locus_tag=Ga0194083_10321;product=formate dehydrogenase family accessory protein FdhD
+Ga0194083_1032	img_core_v400	CDS	232	3114	.	-	0	ID=2737832416;locus_tag=Ga0194083_10322;product= formate dehydrogenase alpha subunit
+Ga0194083_1032	img_core_v400	CDS	3125	3310	.	-	0	ID=2737832417;locus_tag=Ga0194083_10323;product=NADH-ubiquinone oxidoreductase-F iron-sulfur binding region
+Ga0194083_1033	img_core_v400	CDS	2	970	.	-	0	ID=2737832418;locus_tag=Ga0194083_10331;product=phosphoribosylaminoimidazolecarboxamide formyltransferase/IMP cyclohydrolase
+Ga0194083_1033	img_core_v400	CDS	1005	1241	.	-	0	ID=2737832419;locus_tag=Ga0194083_10332;product=Fis family transcriptional regulator, factor for inversion stimulation protein
+Ga0194083_1033	img_core_v400	CDS	1238	2302	.	-	0	ID=2737832420;locus_tag=Ga0194083_10333;product= tRNA-U20-dihydrouridine synthase
+Ga0194083_1033	img_core_v400	CDS	2387	2869	.	+	0	ID=2737832421;locus_tag=Ga0194083_10334;product=membrane protein YqaA, SNARE-associated domain
+Ga0194083_1033	img_core_v400	CDS	2876	3646	.	-	0	ID=2737832422;locus_tag=Ga0194083_10335;product=23S rRNA pseudouridine2604 synthase
+Ga0194083_1034	img_core_v400	CDS	3	143	.	-	0	ID=2737832423;locus_tag=Ga0194083_10341;product=TrkA-N domain-containing protein
+Ga0194083_1034	img_core_v400	CDS	187	1569	.	-	0	ID=2737832424;locus_tag=Ga0194083_10342;product= L-glutamine synthetase
+Ga0194083_1034	img_core_v400	CDS	1574	2230	.	-	0	ID=2737832425;locus_tag=Ga0194083_10343;product=carbonic anhydrase
+Ga0194083_1034	img_core_v400	CDS	2290	3375	.	+	0	ID=2737832426;locus_tag=Ga0194083_10344;product=Glyoxylase, beta-lactamase superfamily II
+Ga0194083_1034	img_core_v400	CDS	3385	4260	.	-	0	ID=2737832427;locus_tag=Ga0194083_10345;product=hypothetical protein
+Ga0194083_1034	img_core_v400	CDS	4265	5041	.	-	0	ID=2737832428;locus_tag=Ga0194083_10346;product=1-acyl-sn-glycerol-3-phosphate acyltransferase
+Ga0194083_1034	img_core_v400	CDS	5034	5381	.	-	0	ID=2737832429;locus_tag=Ga0194083_10347;product=HAD-hyrolase-like
+Ga0194083_1035	img_core_v400	CDS	36	989	.	-	0	ID=2737832430;locus_tag=Ga0194083_10351;product= protein translocase subunit secF
+Ga0194083_1035	img_core_v400	CDS	1003	2883	.	-	0	ID=2737832431;locus_tag=Ga0194083_10352;product=preprotein translocase subunit SecD
+Ga0194083_1035	img_core_v400	CDS	2934	3305	.	-	0	ID=2737832432;locus_tag=Ga0194083_10353;product= protein translocase subunit yajC
+Ga0194083_1035	img_core_v400	CDS	3426	4529	.	-	0	ID=2737832433;locus_tag=Ga0194083_10354;product=membrane-bound lytic murein transglycosylase A
+Ga0194083_1035	img_core_v400	CDS	4581	4739	.	+	0	ID=2737832434;locus_tag=Ga0194083_10355;product=hypothetical protein
+Ga0194083_1035	img_core_v400	CDS	4765	5469	.	-	0	ID=2737832435;locus_tag=Ga0194083_10356;product= two component transcriptional regulator, LuxR family
+Ga0194083_1036	img_core_v400	CDS	3	512	.	+	0	ID=2737832436;locus_tag=Ga0194083_10361;product=branched-chain amino acid aminotransferase, group I
+Ga0194083_1036	img_core_v400	CDS	518	727	.	+	0	ID=2737832437;locus_tag=Ga0194083_10362;product=Zinc-finger domain-containing protein
+Ga0194083_1036	img_core_v400	CDS	1087	2598	.	-	0	ID=2737832438;locus_tag=Ga0194083_10363;product=putative tricarboxylic transport membrane protein
+Ga0194083_1036	img_core_v400	CDS	2611	3099	.	-	0	ID=2737832439;locus_tag=Ga0194083_10364;product=Tripartite tricarboxylate transporter TctB family protein
+Ga0194083_1036	img_core_v400	CDS	3340	3732	.	+	0	ID=2737832440;locus_tag=Ga0194083_10365;product=hypothetical protein
+Ga0194083_1036	img_core_v400	CDS	3740	5215	.	-	0	ID=2737832441;locus_tag=Ga0194083_10366;product=MFS transporter, PAT family, beta-lactamase induction signal transducer AmpG
+Ga0194083_1036	img_core_v400	CDS	5323	6156	.	+	0	ID=2737832442;locus_tag=Ga0194083_10367;product=Zn-dependent protease with chaperone function
+Ga0194083_1036	img_core_v400	CDS	6153	6371	.	-	0	ID=2737832443;locus_tag=Ga0194083_10368;product=hypothetical protein
+Ga0194083_1037	img_core_v400	CDS	2	406	.	+	0	ID=2737832444;locus_tag=Ga0194083_10371;product=hypothetical protein
+Ga0194083_1037	img_core_v400	CDS	488	1651	.	-	0	ID=2737832445;locus_tag=Ga0194083_10372;product=MFS transporter, PPP family, 3-phenylpropionic acid transporter
+Ga0194083_1037	img_core_v400	CDS	1653	2753	.	-	0	ID=2737832446;locus_tag=Ga0194083_10373;product= chorismate synthase
+Ga0194083_1037	img_core_v400	CDS	2784	3233	.	-	0	ID=2737832447;locus_tag=Ga0194083_10374;product=CBS domain-containing protein
+Ga0194083_1037	img_core_v400	CDS	3334	3906	.	-	0	ID=2737832448;locus_tag=Ga0194083_10375;product=YihY family inner membrane protein
+Ga0194083_1038	img_core_v400	CDS	3	590	.	+	0	ID=2737832449;locus_tag=Ga0194083_10381;product=Pyridine nucleotide-disulphide oxidoreductase
+Ga0194083_1038	img_core_v400	CDS	734	967	.	+	0	ID=2737832450;locus_tag=Ga0194083_10382;product= LSU ribosomal protein L28P
+Ga0194083_1038	img_core_v400	CDS	979	1149	.	+	0	ID=2737832451;locus_tag=Ga0194083_10383;product= LSU ribosomal protein L33P
+Ga0194083_1038	img_core_v400	CDS	1213	2439	.	-	0	ID=2737832452;locus_tag=Ga0194083_10384;product=stearoyl-CoA desaturase (delta-9 desaturase)
+Ga0194083_1038	img_core_v400	CDS	2610	3878	.	-	0	ID=2737832453;locus_tag=Ga0194083_10385;product=16S rRNA (cytosine967-C5)-methyltransferase
+Ga0194083_1038	img_core_v400	CDS	3914	4729	.	+	0	ID=2737832454;locus_tag=Ga0194083_10386;product=peptide chain release factor 3
+Ga0194083_1039	img_core_v400	CDS	3	158	.	+	0	ID=2737832455;locus_tag=Ga0194083_10391;product=hypothetical protein
+Ga0194083_1039	img_core_v400	CDS	222	1034	.	+	0	ID=2737832456;locus_tag=Ga0194083_10392;product=phospholipid/cholesterol/gamma-HCH transport system ATP-binding protein
+Ga0194083_1039	img_core_v400	CDS	1031	1807	.	+	0	ID=2737832457;locus_tag=Ga0194083_10393;product=phospholipid/cholesterol/gamma-HCH transport system permease protein
+Ga0194083_1039	img_core_v400	CDS	1822	2283	.	+	0	ID=2737832458;locus_tag=Ga0194083_10394;product=phospholipid/cholesterol/gamma-HCH transport system substrate-binding protein
+Ga0194083_1039	img_core_v400	CDS	2280	3020	.	+	0	ID=2737832459;locus_tag=Ga0194083_10395;product=phospholipid-binding lipoprotein MlaA
+Ga0194083_1039	img_core_v400	CDS	3038	3658	.	+	0	ID=2737832460;locus_tag=Ga0194083_10396;product=phospholipid transport system substrate-binding protein
+Ga0194083_1039	img_core_v400	CDS	3655	3924	.	+	0	ID=2737832461;locus_tag=Ga0194083_10397;product=phospholipid transport system transporter-binding protein
+Ga0194083_1040	img_core_v400	CDS	3	821	.	-	0	ID=2737832462;locus_tag=Ga0194083_10401;product=hypothetical protein
+Ga0194083_1040	img_core_v400	CDS	864	2006	.	+	0	ID=2737832463;locus_tag=Ga0194083_10402;product=hypothetical protein
+Ga0194083_1040	img_core_v400	CDS	2014	2733	.	+	0	ID=2737832464;locus_tag=Ga0194083_10403;product=16S rRNA (uracil1498-N3)-methyltransferase
+Ga0194083_1040	img_core_v400	CDS	2744	3910	.	+	0	ID=2737832465;locus_tag=Ga0194083_10404;product=Predicted arabinose efflux permease, MFS family
+Ga0194083_1040	img_core_v400	CDS	3897	4745	.	-	0	ID=2737832466;locus_tag=Ga0194083_10405;product=Lysophospholipase, alpha-beta hydrolase superfamily
+Ga0194083_1040	img_core_v400	CDS	4742	6238	.	-	0	ID=2737832467;locus_tag=Ga0194083_10406;product=Acetylornithine deacetylase/Succinyl-diaminopimelate desuccinylase
+Ga0194083_1040	img_core_v400	CDS	6248	6829	.	-	0	ID=2737832468;locus_tag=Ga0194083_10407;product=methionine biosynthesis protein MetW
+Ga0194083_1040	img_core_v400	CDS	6826	8007	.	-	0	ID=2737832469;locus_tag=Ga0194083_10408;product= homoserine O-acetyltransferase
+Ga0194083_1040	img_core_v400	CDS	8369	8710	.	+	0	ID=2737832470;locus_tag=Ga0194083_10409;product=RNA recognition motif. (a.k.a. RRM, RBD, or RNP domain)
+Ga0194083_1041	img_core_v400	CDS	3	1019	.	-	0	ID=2737832471;locus_tag=Ga0194083_10411;product=16S rRNA (cytosine967-C5)-methyltransferase
+Ga0194083_1041	img_core_v400	CDS	1112	5344	.	-	0	ID=2737832472;locus_tag=Ga0194083_10412;product= DNA-directed RNA polymerase subunit beta'
+Ga0194083_1041	img_core_v400	CDS	5369	7588	.	-	0	ID=2737832473;locus_tag=Ga0194083_10413;product=DNA-directed RNA polymerase, beta subunit
+Ga0194083_1042	img_core_v400	CDS	2	79	.	-	0	ID=2737832474;locus_tag=Ga0194083_10421;product=hypothetical protein
+Ga0194083_1042	img_core_v400	CDS	192	803	.	+	0	ID=2737832475;locus_tag=Ga0194083_10422;product=hypothetical protein
+Ga0194083_1042	img_core_v400	CDS	800	1333	.	+	0	ID=2737832476;locus_tag=Ga0194083_10423;product=Thiol-disulfide isomerase or thioredoxin
+Ga0194083_1042	img_core_v400	CDS	1542	2000	.	+	0	ID=2737832477;locus_tag=Ga0194083_10424;product= biotin carboxyl carrier protein
+Ga0194083_1042	img_core_v400	CDS	2012	3361	.	+	0	ID=2737832478;locus_tag=Ga0194083_10425;product=acetyl-CoA carboxylase, biotin carboxylase subunit
+Ga0194083_1042	img_core_v400	CDS	3365	3502	.	+	0	ID=2737832479;locus_tag=Ga0194083_10426;product=hypothetical protein
+Ga0194083_1043	img_core_v400	CDS	3	686	.	-	0	ID=2737832480;locus_tag=Ga0194083_10431;product=Nucleoside-diphosphate-sugar epimerase
+Ga0194083_1043	img_core_v400	CDS	745	1776	.	+	0	ID=2737832481;locus_tag=Ga0194083_10432;product=CDP-4-dehydro-6-deoxyglucose reductase
+Ga0194083_1043	img_core_v400	CDS	1795	2394	.	-	0	ID=2737832482;locus_tag=Ga0194083_10433;product=protein SCO1/2
+Ga0194083_1043	img_core_v400	CDS	2394	3308	.	-	0	ID=2737832483;locus_tag=Ga0194083_10434;product=protoheme IX farnesyltransferase
+Ga0194083_1043	img_core_v400	CDS	3321	4022	.	-	0	ID=2737832484;locus_tag=Ga0194083_10435;product=Cytochrome oxidase assembly protein
+Ga0194083_1044	img_core_v400	CDS	3	752	.	-	0	ID=2737832485;locus_tag=Ga0194083_10441;product= amino acid/amide ABC transporter membrane protein 1, HAAT family
+Ga0194083_1044	img_core_v400	CDS	944	2242	.	-	0	ID=2737832486;locus_tag=Ga0194083_10442;product=putative ATPase
+Ga0194083_1044	img_core_v400	CDS	2252	2890	.	-	0	ID=2737832487;locus_tag=Ga0194083_10443;product=outer membrane lipoprotein carrier protein
+Ga0194083_1044	img_core_v400	CDS	2892	5159	.	-	0	ID=2737832488;locus_tag=Ga0194083_10444;product= DNA translocase FtsK
+Ga0194083_1044	img_core_v400	CDS	5307	5984	.	-	0	ID=2737832489;locus_tag=Ga0194083_10445;product=cAMP-binding domain of CRP or a regulatory subunit of cAMP-dependent protein kinases
+Ga0194083_1045	img_core_v400	CDS	1	1890	.	-	0	ID=2737832490;locus_tag=Ga0194083_10451;product=ribonuclease, Rne/Rng family
+Ga0194083_1045	img_core_v400	CDS	2375	3373	.	+	0	ID=2737832491;locus_tag=Ga0194083_10452;product=23S rRNA pseudouridine955/2504/2580 synthase
+Ga0194083_1045	img_core_v400	CDS	3436	3747	.	+	0	ID=2737832492;locus_tag=Ga0194083_10453;product=DNA-binding protein H-NS
+Ga0194083_1045	img_core_v400	CDS	3827	4486	.	+	0	ID=2737832493;locus_tag=Ga0194083_10454;product=phosphoglycolate phosphatase
+Ga0194083_1045	img_core_v400	CDS	4479	4871	.	+	0	ID=2737832494;locus_tag=Ga0194083_10455;product=Ferredoxin subunit of nitrite reductase or a ring-hydroxylating dioxygenase
+Ga0194083_1045	img_core_v400	CDS	4880	5428	.	+	0	ID=2737832495;locus_tag=Ga0194083_10456;product=Peptidase family S49
+Ga0194083_1046	img_core_v400	CDS	3	452	.	+	0	ID=2737832496;locus_tag=Ga0194083_10461;product=hypothetical protein
+Ga0194083_1046	img_core_v400	CDS	449	1102	.	-	0	ID=2737832497;locus_tag=Ga0194083_10462;product=glutathione S-transferase
+Ga0194083_1046	img_core_v400	CDS	1162	2253	.	+	0	ID=2737832498;locus_tag=Ga0194083_10463;product= ferrochelatase
+Ga0194083_1046	img_core_v400	RNA	2271	2450	.	+	0	ID=2737832499;locus_tag=Ga0194083_10464
+Ga0194083_1046	img_core_v400	CDS	2474	3286	.	+	0	ID=2737832500;locus_tag=Ga0194083_10465;product=Uncharacterized membrane protein YfcA
+Ga0194083_1046	img_core_v400	CDS	3634	3948	.	+	0	ID=2737832501;locus_tag=Ga0194083_10466;product=SWIB/MDM2 domain-containing protein
+Ga0194083_1046	img_core_v400	CDS	4030	4176	.	-	0	ID=2737832502;locus_tag=Ga0194083_10467;product=hypothetical protein
+Ga0194083_1047	img_core_v400	CDS	1	804	.	-	0	ID=2737832503;locus_tag=Ga0194083_10471;product=DNA-binding transcriptional regulator, LysR family
+Ga0194083_1047	img_core_v400	CDS	929	2350	.	+	0	ID=2737832504;locus_tag=Ga0194083_10472;product= ribulose 1,5-bisphosphate carboxylase large subunit
+Ga0194083_1047	img_core_v400	CDS	2379	2726	.	+	0	ID=2737832505;locus_tag=Ga0194083_10473;product= ribulose 1,5-bisphosphate carboxylase small subunit
+Ga0194083_1047	img_core_v400	CDS	2851	3654	.	+	0	ID=2737832506;locus_tag=Ga0194083_10474;product=nitric oxide reductase NorQ protein
+Ga0194083_1047	img_core_v400	CDS	3668	6025	.	+	0	ID=2737832507;locus_tag=Ga0194083_10475;product=von Willebrand factor type A domain-containing protein
+Ga0194083_1047	img_core_v400	CDS	6039	6356	.	+	0	ID=2737832508;locus_tag=Ga0194083_10476;product=hypothetical protein
+Ga0194083_1047	img_core_v400	CDS	6362	6475	.	-	0	ID=2737832509;locus_tag=Ga0194083_10477;product=hypothetical protein
+Ga0194083_1048	img_core_v400	CDS	2	412	.	-	0	ID=2737832510;locus_tag=Ga0194083_10481;product=SecY translocase
+Ga0194083_1048	img_core_v400	CDS	448	879	.	-	0	ID=2737832511;locus_tag=Ga0194083_10482;product= LSU ribosomal protein L15P
+Ga0194083_1048	img_core_v400	CDS	896	1078	.	-	0	ID=2737832512;locus_tag=Ga0194083_10483;product= LSU ribosomal protein L30P
+Ga0194083_1048	img_core_v400	CDS	1090	1608	.	-	0	ID=2737832513;locus_tag=Ga0194083_10484;product= SSU ribosomal protein S5P
+Ga0194083_1048	img_core_v400	CDS	1627	1992	.	-	0	ID=2737832514;locus_tag=Ga0194083_10485;product= LSU ribosomal protein L18P
+Ga0194083_1048	img_core_v400	CDS	2004	2537	.	-	0	ID=2737832515;locus_tag=Ga0194083_10486;product= LSU ribosomal protein L6P
+Ga0194083_1048	img_core_v400	CDS	2561	2956	.	-	0	ID=2737832516;locus_tag=Ga0194083_10487;product= SSU ribosomal protein S8P
+Ga0194083_1048	img_core_v400	CDS	2975	3280	.	-	0	ID=2737832517;locus_tag=Ga0194083_10488;product= SSU ribosomal protein S14P
+Ga0194083_1048	img_core_v400	CDS	3289	3828	.	-	0	ID=2737832518;locus_tag=Ga0194083_10489;product= LSU ribosomal protein L5P
+Ga0194083_1048	img_core_v400	CDS	3831	4151	.	-	0	ID=2737832519;locus_tag=Ga0194083_104810;product= LSU ribosomal protein L24P
+Ga0194083_1048	img_core_v400	CDS	4161	4529	.	-	0	ID=2737832520;locus_tag=Ga0194083_104811;product= LSU ribosomal protein L14P
+Ga0194083_1048	img_core_v400	CDS	4753	5577	.	+	0	ID=2737832521;locus_tag=Ga0194083_104812;product=pyrroline-5-carboxylate reductase
+Ga0194083_1048	img_core_v400	CDS	5579	6448	.	-	0	ID=2737832522;locus_tag=Ga0194083_104813;product= 4-hydroxybenzoate polyprenyltransferase
+Ga0194083_1049	img_core_v400	CDS	107	742	.	+	0	ID=2737832523;locus_tag=Ga0194083_10491;product=DNA-nicking endonuclease, Smr domain
+Ga0194083_1049	img_core_v400	CDS	743	3133	.	-	0	ID=2737832524;locus_tag=Ga0194083_10492;product=putative ABC transport system permease protein
+Ga0194083_1050	img_core_v400	CDS	3	236	.	+	0	ID=2737832525;locus_tag=Ga0194083_10501;product=Enoyl-(Acyl carrier protein) reductase
+Ga0194083_1050	img_core_v400	CDS	367	1050	.	-	0	ID=2737832526;locus_tag=Ga0194083_10502;product=SOUL heme-binding protein
+Ga0194083_1050	img_core_v400	CDS	1068	1565	.	-	0	ID=2737832527;locus_tag=Ga0194083_10503;product=hypothetical protein
+Ga0194083_1050	img_core_v400	CDS	1649	2326	.	+	0	ID=2737832528;locus_tag=Ga0194083_10504;product=heme exporter protein A
+Ga0194083_1050	img_core_v400	CDS	2328	2996	.	+	0	ID=2737832529;locus_tag=Ga0194083_10505;product=heme exporter protein B
+Ga0194083_1050	img_core_v400	CDS	2993	3727	.	+	0	ID=2737832530;locus_tag=Ga0194083_10506;product=heme exporter protein C
+Ga0194083_1050	img_core_v400	CDS	3729	3917	.	+	0	ID=2737832531;locus_tag=Ga0194083_10507;product=heme exporter protein D
+Ga0194083_1050	img_core_v400	CDS	3914	4363	.	+	0	ID=2737832532;locus_tag=Ga0194083_10508;product=cytochrome c-type biogenesis protein CcmE
+Ga0194083_1050	img_core_v400	CDS	4404	6374	.	+	0	ID=2737832533;locus_tag=Ga0194083_10509;product=cytochrome c-type biogenesis protein CcmF
+Ga0194083_1050	img_core_v400	CDS	6378	6860	.	+	0	ID=2737832534;locus_tag=Ga0194083_105010;product=cytochrome c biogenesis protein CcmG, thiol:disulfide interchange protein DsbE
+Ga0194083_1051	img_core_v400	CDS	2	1633	.	+	0	ID=2737832535;locus_tag=Ga0194083_10511;product=AsmA-like C-terminal region
+Ga0194083_1051	img_core_v400	CDS	1647	2453	.	+	0	ID=2737832536;locus_tag=Ga0194083_10512;product=nitrilase
+Ga0194083_1051	img_core_v400	CDS	2453	4171	.	+	0	ID=2737832537;locus_tag=Ga0194083_10513;product=two-component system, LuxR family, sensor histidine kinase DctS
+Ga0194083_1052	img_core_v400	CDS	2	535	.	+	0	ID=2737832538;locus_tag=Ga0194083_10521;product= ATP:cob(I)alamin adenosyltransferase
+Ga0194083_1052	img_core_v400	CDS	567	1853	.	-	0	ID=2737832539;locus_tag=Ga0194083_10522;product=uracil-xanthine permease
+Ga0194083_1052	img_core_v400	CDS	1910	2815	.	-	0	ID=2737832540;locus_tag=Ga0194083_10523;product=Permease of the drug/metabolite transporter (DMT) superfamily
+Ga0194083_1052	img_core_v400	CDS	2852	3409	.	-	0	ID=2737832541;locus_tag=Ga0194083_10524;product=FAD dependent oxidoreductase
+Ga0194083_1053	img_core_v400	CDS	44	676	.	-	0	ID=2737832542;locus_tag=Ga0194083_10531;product= uracil phosphoribosyltransferase
+Ga0194083_1053	img_core_v400	CDS	726	1160	.	-	0	ID=2737832543;locus_tag=Ga0194083_10532;product=Uncharacterized membrane protein YGL010W
+Ga0194083_1053	img_core_v400	CDS	1229	2320	.	-	0	ID=2737832544;locus_tag=Ga0194083_10533;product=ATP-binding protein involved in chromosome partitioning
+Ga0194083_1053	img_core_v400	CDS	2494	4578	.	+	0	ID=2737832545;locus_tag=Ga0194083_10534;product= methionyl-tRNA synthetase
+Ga0194083_1053	img_core_v400	CDS	4612	4950	.	+	0	ID=2737832546;locus_tag=Ga0194083_10535;product=Sulfate permease family protein
+Ga0194083_1054	img_core_v400	CDS	1	357	.	+	0	ID=2737832547;locus_tag=Ga0194083_10541;product=sarcosine oxidase, gamma subunit family, heterotetrameric form
+Ga0194083_1054	img_core_v400	CDS	354	1292	.	-	0	ID=2737832548;locus_tag=Ga0194083_10542;product=LysR family transcriptional regulator, glycine cleavage system transcriptional activator
+Ga0194083_1054	img_core_v400	CDS	1403	2935	.	+	0	ID=2737832549;locus_tag=Ga0194083_10543;product=trimethylamine---corrinoid protein Co-methyltransferase
+Ga0194083_1054	img_core_v400	CDS	2946	3743	.	+	0	ID=2737832550;locus_tag=Ga0194083_10544;product=2,4-dienoyl-CoA reductase
+Ga0194083_1055	img_core_v400	CDS	1	774	.	+	0	ID=2737832551;locus_tag=Ga0194083_10551;product=tRNA (guanine37-N1)-methyltransferase
+Ga0194083_1055	img_core_v400	CDS	873	1229	.	+	0	ID=2737832552;locus_tag=Ga0194083_10552;product= LSU ribosomal protein L19P
+Ga0194083_1055	img_core_v400	CDS	1323	2030	.	+	0	ID=2737832553;locus_tag=Ga0194083_10553;product=NUDIX domain-containing protein
+Ga0194083_1055	img_core_v400	CDS	2040	2966	.	+	0	ID=2737832554;locus_tag=Ga0194083_10554;product=adenosylcobinamide-phosphate synthase
+Ga0194083_1055	img_core_v400	CDS	2984	3904	.	-	0	ID=2737832555;locus_tag=Ga0194083_10555;product=ribosome biogenesis GTPase
+Ga0194083_1055	img_core_v400	CDS	3901	5175	.	-	0	ID=2737832556;locus_tag=Ga0194083_10556;product=STE24 endopeptidase
+Ga0194083_1055	img_core_v400	CDS	5212	5790	.	+	0	ID=2737832557;locus_tag=Ga0194083_10557;product=oligoribonuclease
+Ga0194083_1055	img_core_v400	CDS	6257	8182	.	+	0	ID=2737832558;locus_tag=Ga0194083_10558;product=Superfamily II DNA and RNA helicase
+Ga0194083_1055	img_core_v400	CDS	8208	8585	.	-	0	ID=2737832559;locus_tag=Ga0194083_10559;product=NAD-binding of NADP-dependent 3-hydroxyisobutyrate dehydrogenase
+Ga0194083_1056	img_core_v400	CDS	2	397	.	+	0	ID=2737832560;locus_tag=Ga0194083_10561;product=ACT domain-containing protein
+Ga0194083_1056	img_core_v400	CDS	400	1827	.	+	0	ID=2737832561;locus_tag=Ga0194083_10562;product=threonine synthase
+Ga0194083_1056	img_core_v400	CDS	1831	3078	.	+	0	ID=2737832562;locus_tag=Ga0194083_10563;product=molybdopterin molybdotransferase
+Ga0194083_1056	img_core_v400	CDS	3089	3340	.	+	0	ID=2737832563;locus_tag=Ga0194083_10564;product= molybdopterin synthase subunit MoaD
+Ga0194083_1056	img_core_v400	CDS	3344	3823	.	+	0	ID=2737832564;locus_tag=Ga0194083_10565;product= molybdopterin synthase subunit MoaE
+Ga0194083_1056	img_core_v400	CDS	3902	3976	.	+	0	ID=2737832565;locus_tag=Ga0194083_10566;product=hypothetical protein
+Ga0194083_1057	img_core_v400	CDS	1	540	.	+	0	ID=2737832566;locus_tag=Ga0194083_10571;product=AmpD protein
+Ga0194083_1057	img_core_v400	CDS	944	3313	.	+	0	ID=2737832567;locus_tag=Ga0194083_10572;product=ribonucleoside-diphosphate reductase alpha chain
+Ga0194083_1058	img_core_v400	CDS	2	184	.	+	0	ID=2737832568;locus_tag=Ga0194083_10581;product=hypothetical protein
+Ga0194083_1058	img_core_v400	CDS	191	670	.	+	0	ID=2737832569;locus_tag=Ga0194083_10582;product=regulatory protein
+Ga0194083_1058	img_core_v400	CDS	680	1588	.	+	0	ID=2737832570;locus_tag=Ga0194083_10583;product=EamA-like transporter family protein
+Ga0194083_1058	img_core_v400	CDS	1585	2502	.	-	0	ID=2737832571;locus_tag=Ga0194083_10584;product= N-acetyl-gamma-glutamyl-phosphate reductase
+Ga0194083_1058	img_core_v400	CDS	2692	3852	.	+	0	ID=2737832572;locus_tag=Ga0194083_10585;product= succinyl-CoA synthetase (ADP-forming) beta subunit
+Ga0194083_1058	img_core_v400	CDS	3905	4060	.	+	0	ID=2737832573;locus_tag=Ga0194083_10586;product=CoA binding domain-containing protein
+Ga0194083_1059	img_core_v400	CDS	1	462	.	-	0	ID=2737832574;locus_tag=Ga0194083_10591;product=hypothetical protein
+Ga0194083_1059	img_core_v400	CDS	468	1421	.	-	0	ID=2737832575;locus_tag=Ga0194083_10592;product=glycine betaine/proline transport system substrate-binding protein
+Ga0194083_1059	img_core_v400	CDS	1669	2556	.	+	0	ID=2737832576;locus_tag=Ga0194083_10593;product=Uncharacterized conserved protein, DUF849 family
+Ga0194083_1059	img_core_v400	CDS	2587	3552	.	+	0	ID=2737832577;locus_tag=Ga0194083_10594;product=carnitine 3-dehydrogenase
+Ga0194083_1059	img_core_v400	CDS	3557	4039	.	+	0	ID=2737832578;locus_tag=Ga0194083_10595;product=acyl-CoA thioester hydrolase
+Ga0194083_1059	img_core_v400	CDS	4036	4221	.	+	0	ID=2737832579;locus_tag=Ga0194083_10596;product=hypothetical protein
+Ga0194083_1060	img_core_v400	CDS	76	1377	.	+	0	ID=2737832580;locus_tag=Ga0194083_10601;product=DNA polymerase V
+Ga0194083_1060	img_core_v400	CDS	1408	3750	.	-	0	ID=2737832581;locus_tag=Ga0194083_10602;product= ATP-dependent Clp protease ATP-binding subunit ClpA
+Ga0194083_1060	img_core_v400	CDS	3814	4170	.	-	0	ID=2737832582;locus_tag=Ga0194083_10603;product=ATP-dependent Clp protease adaptor protein ClpS
+Ga0194083_1061	img_core_v400	CDS	1	1959	.	+	0	ID=2737832583;locus_tag=Ga0194083_10611;product= RNAse R
+Ga0194083_1061	img_core_v400	CDS	2019	2570	.	+	0	ID=2737832584;locus_tag=Ga0194083_10612;product=YggT family protein
+Ga0194083_1061	img_core_v400	CDS	2588	3856	.	-	0	ID=2737832585;locus_tag=Ga0194083_10613;product=D-amino-acid dehydrogenase
+Ga0194083_1061	img_core_v400	CDS	4102	4836	.	+	0	ID=2737832586;locus_tag=Ga0194083_10614;product=small subunit ribosomal protein S2
+Ga0194083_1061	img_core_v400	CDS	4950	5249	.	+	0	ID=2737832587;locus_tag=Ga0194083_10615;product=translation elongation factor Ts
+Ga0194083_1062	img_core_v400	CDS	1	1245	.	-	0	ID=2737832588;locus_tag=Ga0194083_10621;product=Sigma-70 factor, region 1.2
+Ga0194083_1062	img_core_v400	CDS	1508	3016	.	-	0	ID=2737832589;locus_tag=Ga0194083_10622;product= DNA primase
+Ga0194083_1063	img_core_v400	CDS	2	604	.	-	0	ID=2737832590;locus_tag=Ga0194083_10631;product= ribosomal large subunit pseudouridine synthase A
+Ga0194083_1063	img_core_v400	CDS	601	1611	.	-	0	ID=2737832591;locus_tag=Ga0194083_10632;product= FecR family protein
+Ga0194083_1063	img_core_v400	CDS	1654	2478	.	+	0	ID=2737832592;locus_tag=Ga0194083_10633;product=small conductance mechanosensitive channel
+Ga0194083_1063	img_core_v400	CDS	2505	3479	.	+	0	ID=2737832593;locus_tag=Ga0194083_10634;product= tRNA-U20a,U20b-dihydrouridine synthase
+Ga0194083_1063	img_core_v400	CDS	3504	4577	.	+	0	ID=2737832594;locus_tag=Ga0194083_10635;product= glutamate-cysteine ligase
+Ga0194083_1064	img_core_v400	CDS	3	110	.	+	0	ID=2737832595;locus_tag=Ga0194083_10641;product=hypothetical protein
+Ga0194083_1064	img_core_v400	CDS	128	574	.	+	0	ID=2737832596;locus_tag=Ga0194083_10642;product=hypothetical protein
+Ga0194083_1064	img_core_v400	CDS	576	1637	.	-	0	ID=2737832597;locus_tag=Ga0194083_10643;product= carbohydrate ABC transporter ATP-binding protein, CUT1 family
+Ga0194083_1064	img_core_v400	CDS	1647	2537	.	-	0	ID=2737832598;locus_tag=Ga0194083_10644;product= carbohydrate ABC transporter membrane protein 2, CUT1 family
+Ga0194083_1064	img_core_v400	CDS	2534	3406	.	-	0	ID=2737832599;locus_tag=Ga0194083_10645;product= carbohydrate ABC transporter membrane protein 1, CUT1 family
+Ga0194083_1064	img_core_v400	CDS	3468	4766	.	-	0	ID=2737832600;locus_tag=Ga0194083_10646;product= carbohydrate ABC transporter substrate-binding protein, CUT1 family
+Ga0194083_1064	img_core_v400	CDS	4894	5862	.	-	0	ID=2737832601;locus_tag=Ga0194083_10647;product=glucokinase
+Ga0194083_1064	img_core_v400	CDS	5895	6338	.	-	0	ID=2737832602;locus_tag=Ga0194083_10648;product= thioredoxin
+Ga0194083_1065	img_core_v400	CDS	2	130	.	-	0	ID=2737832603;locus_tag=Ga0194083_10651;product=HIUase/Transthyretin family protein
+Ga0194083_1065	img_core_v400	CDS	146	865	.	+	0	ID=2737832604;locus_tag=Ga0194083_10652;product=DNA-binding transcriptional regulator, GntR family
+Ga0194083_1065	img_core_v400	CDS	862	1812	.	+	0	ID=2737832605;locus_tag=Ga0194083_10653;product=putative urate catabolism protein
+Ga0194083_1065	img_core_v400	CDS	1815	3590	.	+	0	ID=2737832606;locus_tag=Ga0194083_10654;product=N-carbamoyl-L-amino-acid hydrolase
+Ga0194083_1065	img_core_v400	CDS	3587	4834	.	+	0	ID=2737832607;locus_tag=Ga0194083_10655;product=Acetylornithine deacetylase/Succinyl-diaminopimelate desuccinylase
+Ga0194083_1065	img_core_v400	CDS	5066	5911	.	+	0	ID=2737832608;locus_tag=Ga0194083_10656;product=NitT/TauT family transport system substrate-binding protein
+Ga0194083_1066	img_core_v400	CDS	45	1340	.	-	0	ID=2737832609;locus_tag=Ga0194083_10661;product=glutamate--cysteine ligase
+Ga0194083_1066	img_core_v400	CDS	1358	2638	.	-	0	ID=2737832610;locus_tag=Ga0194083_10662;product= glutamate-5-semialdehyde dehydrogenase
+Ga0194083_1066	img_core_v400	CDS	2673	3497	.	-	0	ID=2737832611;locus_tag=Ga0194083_10663;product= DNA polymerase III, delta subunit
+Ga0194083_1067	img_core_v400	CDS	3	1376	.	-	0	ID=2737832612;locus_tag=Ga0194083_10671;product=Choline dehydrogenase
+Ga0194083_1067	img_core_v400	CDS	1529	2686	.	+	0	ID=2737832613;locus_tag=Ga0194083_10672;product=alkane 1-monooxygenase
+Ga0194083_1067	img_core_v400	CDS	2795	3793	.	+	0	ID=2737832614;locus_tag=Ga0194083_10673;product= glyceraldehyde-3-phosphate dehydrogenase (NAD+)
+Ga0194083_1067	img_core_v400	CDS	3790	4470	.	-	0	ID=2737832615;locus_tag=Ga0194083_10674;product=hypothetical protein
+Ga0194083_1067	img_core_v400	CDS	4464	5273	.	-	0	ID=2737832616;locus_tag=Ga0194083_10675;product=BirA family transcriptional regulator, biotin operon repressor / biotin-[acetyl-CoA-carboxylase] ligase
+Ga0194083_1067	img_core_v400	CDS	5275	5760	.	-	0	ID=2737832617;locus_tag=Ga0194083_10676;product=hypothetical protein
+Ga0194083_1067	img_core_v400	CDS	5864	7090	.	+	0	ID=2737832618;locus_tag=Ga0194083_10677;product=DNA topoisomerase III
+Ga0194083_1068	img_core_v400	CDS	2	691	.	+	0	ID=2737832619;locus_tag=Ga0194083_10681;product= pantothenate synthetase
+Ga0194083_1068	img_core_v400	CDS	688	1704	.	-	0	ID=2737832620;locus_tag=Ga0194083_10682;product=glycerol-3-phosphate dehydrogenase (NAD(P)+)
+Ga0194083_1068	img_core_v400	CDS	1717	2163	.	-	0	ID=2737832621;locus_tag=Ga0194083_10683;product= protein translocase subunit secB
+Ga0194083_1068	img_core_v400	CDS	2193	2450	.	-	0	ID=2737832622;locus_tag=Ga0194083_10684;product=glutaredoxin 3
+Ga0194083_1068	img_core_v400	CDS	2466	2876	.	-	0	ID=2737832623;locus_tag=Ga0194083_10685;product=Rhodanese-related sulfurtransferase
+Ga0194083_1068	img_core_v400	CDS	2947	3690	.	+	0	ID=2737832624;locus_tag=Ga0194083_10686;product=2,3-bisphosphoglycerate-dependent phosphoglycerate mutase
+Ga0194083_1068	img_core_v400	CDS	3762	3872	.	+	0	ID=2737832625;locus_tag=Ga0194083_10687;product=hypothetical protein
+Ga0194083_1069	img_core_v400	CDS	1	759	.	+	0	ID=2737832626;locus_tag=Ga0194083_10691;product=chlorophyllide reductase subunit Y
+Ga0194083_1069	img_core_v400	CDS	756	2282	.	+	0	ID=2737832627;locus_tag=Ga0194083_10692;product=chlorophyllide a reductase subunit Z
+Ga0194083_1069	img_core_v400	CDS	2384	2527	.	+	0	ID=2737832628;locus_tag=Ga0194083_10693;product=light-harvesting complex 1 beta chain
+Ga0194083_1069	img_core_v400	CDS	2572	2796	.	+	0	ID=2737832629;locus_tag=Ga0194083_10694;product=light-harvesting complex 1 beta chain
+Ga0194083_1069	img_core_v400	CDS	2807	3016	.	+	0	ID=2737832630;locus_tag=Ga0194083_10695;product=light-harvesting complex 1 alpha chain
+Ga0194083_1069	img_core_v400	CDS	3100	3936	.	+	0	ID=2737832631;locus_tag=Ga0194083_10696;product=photosynthetic reaction center L subunit
+Ga0194083_1069	img_core_v400	CDS	3988	4965	.	+	0	ID=2737832632;locus_tag=Ga0194083_10697;product=photosynthetic reaction center M subunit
+Ga0194083_1069	img_core_v400	CDS	4962	6050	.	+	0	ID=2737832633;locus_tag=Ga0194083_10698;product=photosynthetic reaction center cytochrome c subunit
+Ga0194083_1069	img_core_v400	CDS	6093	6578	.	+	0	ID=2737832634;locus_tag=Ga0194083_10699;product=hypothetical protein
+Ga0194083_1070	img_core_v400	CDS	2	97	.	-	0	ID=2737832635;locus_tag=Ga0194083_10701;product=hypothetical protein
+Ga0194083_1070	img_core_v400	CDS	174	284	.	+	0	ID=2737832636;locus_tag=Ga0194083_10702;product=lipoprotein-attachment site-containing protein
+Ga0194083_1070	img_core_v400	CDS	304	1578	.	+	0	ID=2737832637;locus_tag=Ga0194083_10703;product=diaminopimelate decarboxylase
+Ga0194083_1070	img_core_v400	CDS	1571	2173	.	-	0	ID=2737832638;locus_tag=Ga0194083_10704;product=sulfoxide reductase heme-binding subunit YedZ
+Ga0194083_1070	img_core_v400	CDS	2173	3153	.	-	0	ID=2737832639;locus_tag=Ga0194083_10705;product=sulfoxide reductase catalytic subunit YedY
+Ga0194083_1071	img_core_v400	CDS	3	587	.	+	0	ID=2737832640;locus_tag=Ga0194083_10711;product=O-methyltransferase
+Ga0194083_1071	img_core_v400	CDS	625	1578	.	+	0	ID=2737832641;locus_tag=Ga0194083_10712;product=3-hydroxyethyl bacteriochlorophyllide a dehydrogenase
+Ga0194083_1071	img_core_v400	CDS	1575	2582	.	+	0	ID=2737832642;locus_tag=Ga0194083_10713;product=chlorophyllide a reductase subunit X
+Ga0194083_1071	img_core_v400	CDS	2615	3448	.	+	0	ID=2737832643;locus_tag=Ga0194083_10714;product=chlorophyllide reductase subunit Y
+Ga0194083_1072	img_core_v400	CDS	1	882	.	+	0	ID=2737832644;locus_tag=Ga0194083_10721;product=integrase/recombinase XerD
+Ga0194083_1072	img_core_v400	CDS	883	1686	.	-	0	ID=2737832645;locus_tag=Ga0194083_10722;product=Uncharacterized conserved protein, contains ferritin-like DUF455 domain
+Ga0194083_1072	img_core_v400	CDS	1730	2254	.	+	0	ID=2737832646;locus_tag=Ga0194083_10723;product=Carbonic anhydrase or acetyltransferase, isoleucine patch superfamily
+Ga0194083_1072	img_core_v400	CDS	2320	3045	.	+	0	ID=2737832647;locus_tag=Ga0194083_10724;product=molecular chaperone Hsp33
+Ga0194083_1073	img_core_v400	CDS	1	390	.	-	0	ID=2737832648;locus_tag=Ga0194083_10731;product=Protein of unknown function, DUF484
+Ga0194083_1073	img_core_v400	CDS	511	1497	.	+	0	ID=2737832649;locus_tag=Ga0194083_10732;product=integrase/recombinase XerC
+Ga0194083_1073	img_core_v400	CDS	1573	2682	.	+	0	ID=2737832650;locus_tag=Ga0194083_10733;product=GTPase, G3E family
+Ga0194083_1073	img_core_v400	CDS	2853	3965	.	+	0	ID=2737832651;locus_tag=Ga0194083_10734;product= transcriptional regulator, TraR/DksA family
+Ga0194083_1073	img_core_v400	CDS	4276	4701	.	+	0	ID=2737832652;locus_tag=Ga0194083_10735;product=MraZ protein
+Ga0194083_1073	img_core_v400	CDS	4710	5633	.	+	0	ID=2737832653;locus_tag=Ga0194083_10736;product=16S rRNA (cytosine1402-N4)-methyltransferase
+Ga0194083_1073	img_core_v400	CDS	5630	5926	.	+	0	ID=2737832654;locus_tag=Ga0194083_10737;product=cell division protein FtsL
+Ga0194083_1073	img_core_v400	CDS	5923	6822	.	+	0	ID=2737832655;locus_tag=Ga0194083_10738;product=Penicillin binding protein transpeptidase domain-containing protein
+Ga0194083_1074	img_core_v400	CDS	3	1571	.	-	0	ID=2737832656;locus_tag=Ga0194083_10741;product= glycyl-tRNA synthetase beta chain
+Ga0194083_1074	img_core_v400	CDS	1583	2488	.	-	0	ID=2737832657;locus_tag=Ga0194083_10742;product= glycyl-tRNA synthetase alpha chain
+Ga0194083_1074	img_core_v400	CDS	2564	3658	.	-	0	ID=2737832658;locus_tag=Ga0194083_10743;product=apolipoprotein N-acyltransferase
+Ga0194083_1075	img_core_v400	CDS	3	1067	.	+	0	ID=2737832659;locus_tag=Ga0194083_10751;product=ATP-dependent DNA helicase, RecQ family
+Ga0194083_1075	img_core_v400	CDS	1133	1273	.	+	0	ID=2737832660;locus_tag=Ga0194083_10752;product=hypothetical protein
+Ga0194083_1075	img_core_v400	CDS	1462	3318	.	+	0	ID=2737832661;locus_tag=Ga0194083_10753;product=phosphoenolpyruvate carboxykinase (GTP)
+Ga0194083_1075	img_core_v400	CDS	3408	3827	.	-	0	ID=2737832662;locus_tag=Ga0194083_10754;product=hypothetical protein
+Ga0194083_1075	img_core_v400	CDS	3933	4391	.	+	0	ID=2737832663;locus_tag=Ga0194083_10755;product=regulatory helix-turn-helix protein, lysR family
+Ga0194083_1076	img_core_v400	CDS	164	634	.	+	0	ID=2737832664;locus_tag=Ga0194083_10761;product= SSU ribosomal protein S7P
+Ga0194083_1076	img_core_v400	CDS	716	2818	.	+	0	ID=2737832665;locus_tag=Ga0194083_10762;product= translation elongation factor 2 (EF-2/EF-G)
+Ga0194083_1076	img_core_v400	CDS	2928	3116	.	+	0	ID=2737832666;locus_tag=Ga0194083_10763;product=Elongation factor Tu GTP binding domain-containing protein
+Ga0194083_1077	img_core_v400	CDS	1	912	.	+	0	ID=2737832667;locus_tag=Ga0194083_10771;product=hypothetical protein
+Ga0194083_1077	img_core_v400	CDS	952	1197	.	+	0	ID=2737832668;locus_tag=Ga0194083_10772;product=antitoxin CcdA
+Ga0194083_1077	img_core_v400	CDS	1207	1536	.	+	0	ID=2737832669;locus_tag=Ga0194083_10773;product=toxin CcdB
+Ga0194083_1077	img_core_v400	tRNA	1544	1615	.	-	0	ID=2737832670;locus_tag=Ga0194083_10774
+Ga0194083_1077	img_core_v400	CDS	1647	2834	.	-	0	ID=2737832671;locus_tag=Ga0194083_10775;product=hypothetical protein
+Ga0194083_1077	img_core_v400	CDS	2843	3055	.	-	0	ID=2737832672;locus_tag=Ga0194083_10776;product=hypothetical protein
+Ga0194083_1078	img_core_v400	CDS	3	920	.	-	0	ID=2737832673;locus_tag=Ga0194083_10781;product=3-phosphoshikimate 1-carboxyvinyltransferase
+Ga0194083_1078	img_core_v400	CDS	931	1809	.	-	0	ID=2737832674;locus_tag=Ga0194083_10782;product=prephenate dehydrogenase
+Ga0194083_1078	img_core_v400	CDS	1834	2916	.	-	0	ID=2737832675;locus_tag=Ga0194083_10783;product= chorismate mutase
+Ga0194083_1078	img_core_v400	CDS	2931	3020	.	-	0	ID=2737832676;locus_tag=Ga0194083_10784;product=hypothetical protein
+Ga0194083_1079	img_core_v400	CDS	3	1484	.	+	0	ID=2737832677;locus_tag=Ga0194083_10791;product= short chain enoyl-CoA hydratase /3-hydroxyacyl-CoA dehydrogenase
+Ga0194083_1079	img_core_v400	CDS	1586	2761	.	+	0	ID=2737832678;locus_tag=Ga0194083_10792;product=acetyl-CoA C-acetyltransferase
+Ga0194083_1079	img_core_v400	CDS	2920	4386	.	+	0	ID=2737832679;locus_tag=Ga0194083_10793;product=butyryl-CoA dehydrogenase
+Ga0194083_1080	img_core_v400	CDS	1	114	.	+	0	ID=2737832680;locus_tag=Ga0194083_10801;product=hypothetical protein
+Ga0194083_1080	img_core_v400	CDS	123	2096	.	+	0	ID=2737832681;locus_tag=Ga0194083_10802;product= peptidoglycan glycosyltransferase /cell elongation-specific peptidoglycan D,D-transpeptidase
+Ga0194083_1080	img_core_v400	CDS	2093	2902	.	-	0	ID=2737832682;locus_tag=Ga0194083_10803;product=hypothetical protein
+Ga0194083_1080	img_core_v400	CDS	3088	4752	.	-	0	ID=2737832683;locus_tag=Ga0194083_10804;product=choline dehydrogenase
+Ga0194083_1080	img_core_v400	CDS	4849	6603	.	+	0	ID=2737832684;locus_tag=Ga0194083_10805;product=long-chain acyl-CoA synthetase
+Ga0194083_1080	img_core_v400	CDS	6606	7520	.	+	0	ID=2737832685;locus_tag=Ga0194083_10806;product=bile acid:Na+ symporter, BASS family
+Ga0194083_1080	img_core_v400	CDS	7534	7797	.	-	0	ID=2737832686;locus_tag=Ga0194083_10807;product=Sulfite exporter TauE/SafE
+Ga0194083_1081	img_core_v400	CDS	3	491	.	+	0	ID=2737832687;locus_tag=Ga0194083_10811;product=Transketolase, C-terminal domain
+Ga0194083_1081	img_core_v400	CDS	658	1737	.	+	0	ID=2737832688;locus_tag=Ga0194083_10812;product=TRAP-type mannitol/chloroaromatic compound transport system, substrate-binding protein
+Ga0194083_1081	img_core_v400	CDS	1869	2471	.	+	0	ID=2737832689;locus_tag=Ga0194083_10813;product=TRAP-type mannitol/chloroaromatic compound transport system, small permease component
+Ga0194083_1081	img_core_v400	CDS	2468	4243	.	+	0	ID=2737832690;locus_tag=Ga0194083_10814;product=TRAP transporter, DctM subunit
+Ga0194083_1081	img_core_v400	CDS	4259	4708	.	+	0	ID=2737832691;locus_tag=Ga0194083_10815;product=dUTP pyrophosphatase
+Ga0194083_1081	img_core_v400	CDS	4711	5250	.	-	0	ID=2737832692;locus_tag=Ga0194083_10816;product=FKBP-type peptidyl-prolyl cis-trans isomerase SlyD
+Ga0194083_1081	img_core_v400	CDS	5265	6413	.	+	0	ID=2737832693;locus_tag=Ga0194083_10817;product=50S ribosomal protein L16 3-hydroxylase
+Ga0194083_1081	img_core_v400	CDS	6915	7091	.	-	0	ID=2737832694;locus_tag=Ga0194083_10818;product=NlpB/DapX lipoprotein
+Ga0194083_1082	img_core_v400	CDS	3	875	.	-	0	ID=2737832695;locus_tag=Ga0194083_10821;product=HflK protein
+Ga0194083_1082	img_core_v400	CDS	918	2096	.	-	0	ID=2737832696;locus_tag=Ga0194083_10822;product=GTP-binding protein HflX
+Ga0194083_1082	img_core_v400	CDS	2093	2338	.	-	0	ID=2737832697;locus_tag=Ga0194083_10823;product= RNA-binding protein Hfq
+Ga0194083_1082	img_core_v400	CDS	2418	3755	.	-	0	ID=2737832698;locus_tag=Ga0194083_10824;product=GTP-binding protein
+Ga0194083_1082	img_core_v400	CDS	3802	4938	.	-	0	ID=2737832699;locus_tag=Ga0194083_10825;product= Beta-barrel assembly machine subunit BamB
+Ga0194083_1082	img_core_v400	CDS	4935	5594	.	-	0	ID=2737832700;locus_tag=Ga0194083_10826;product=Putative negative regulator of RcsB-dependent stress response
+Ga0194083_1082	img_core_v400	CDS	5639	6937	.	-	0	ID=2737832701;locus_tag=Ga0194083_10827;product= histidyl-tRNA synthetase
+Ga0194083_1082	img_core_v400	CDS	6958	8007	.	-	0	ID=2737832702;locus_tag=Ga0194083_10828;product= 4-hydroxy-3-methylbut-2-en-1-yl diphosphate synthase
+Ga0194083_1083	img_core_v400	CDS	3	791	.	-	0	ID=2737832703;locus_tag=Ga0194083_10831;product=NusB family protein
+Ga0194083_1083	img_core_v400	CDS	803	1345	.	-	0	ID=2737832704;locus_tag=Ga0194083_10832;product=LemA protein
+Ga0194083_1083	img_core_v400	CDS	1447	3420	.	-	0	ID=2737832705;locus_tag=Ga0194083_10833;product=RNA polymerase Rpb1, domain 5
+Ga0194083_1084	img_core_v400	CDS	1	1368	.	+	0	ID=2737832706;locus_tag=Ga0194083_10841;product= C-terminal processing peptidase-3. Serine peptidase. MEROPS family S41A
+Ga0194083_1084	img_core_v400	CDS	1376	2134	.	+	0	ID=2737832707;locus_tag=Ga0194083_10842;product=Molybdopterin or thiamine biosynthesis adenylyltransferase
+Ga0194083_1084	img_core_v400	CDS	2135	2629	.	-	0	ID=2737832708;locus_tag=Ga0194083_10843;product=Endonuclease YncB, thermonuclease family
+Ga0194083_1084	img_core_v400	CDS	2653	3153	.	+	0	ID=2737832709;locus_tag=Ga0194083_10844;product=hemerythrin-like metal-binding domain protein
+Ga0194083_1084	img_core_v400	CDS	3246	4400	.	+	0	ID=2737832710;locus_tag=Ga0194083_10845;product=L-lactate dehydrogenase (cytochrome)
+Ga0194083_1084	img_core_v400	CDS	4397	4624	.	+	0	ID=2737832711;locus_tag=Ga0194083_10846;product=impB/mucB/samB family protein
+Ga0194083_1085	img_core_v400	CDS	2	160	.	+	0	ID=2737832712;locus_tag=Ga0194083_10851;product=hypothetical protein
+Ga0194083_1085	img_core_v400	CDS	157	1368	.	+	0	ID=2737832713;locus_tag=Ga0194083_10852;product=glycine betaine/proline transport system ATP-binding protein
+Ga0194083_1085	img_core_v400	CDS	1437	2693	.	+	0	ID=2737832714;locus_tag=Ga0194083_10853;product=Predicted arabinose efflux permease, MFS family
+Ga0194083_1085	img_core_v400	CDS	2690	3574	.	+	0	ID=2737832715;locus_tag=Ga0194083_10854;product=EamA domain-containing membrane protein RarD
+Ga0194083_1085	img_core_v400	CDS	3590	3931	.	-	0	ID=2737832716;locus_tag=Ga0194083_10855;product=hypothetical protein
+Ga0194083_1086	img_core_v400	CDS	1	927	.	+	0	ID=2737832717;locus_tag=Ga0194083_10861;product=FAD binding domain of DNA photolyase
+Ga0194083_1086	img_core_v400	CDS	931	1104	.	-	0	ID=2737832718;locus_tag=Ga0194083_10862;product=Rubredoxin
+Ga0194083_1086	img_core_v400	CDS	1158	2072	.	+	0	ID=2737832719;locus_tag=Ga0194083_10863;product=hydroxymethylpyrimidine/phosphomethylpyrimidine kinase
+Ga0194083_1086	img_core_v400	CDS	2110	3411	.	+	0	ID=2737832720;locus_tag=Ga0194083_10864;product= glutamate-1-semialdehyde 2,1-aminomutase
+Ga0194083_1086	img_core_v400	CDS	3413	3532	.	+	0	ID=2737832721;locus_tag=Ga0194083_10865;product=hypothetical protein
+Ga0194083_1087	img_core_v400	CDS	3	1166	.	+	0	ID=2737832722;locus_tag=Ga0194083_10871;product=Glycine/D-amino acid oxidase (deaminating)
+Ga0194083_1087	img_core_v400	CDS	1241	1594	.	+	0	ID=2737832723;locus_tag=Ga0194083_10872;product=conserved hypothetical protein
+Ga0194083_1087	img_core_v400	CDS	1587	1964	.	+	0	ID=2737832724;locus_tag=Ga0194083_10873;product=conserved hypothetical protein
+Ga0194083_1087	img_core_v400	CDS	1971	3323	.	-	0	ID=2737832725;locus_tag=Ga0194083_10874;product= signal recognition particle subunit FFH/SRP54 (srp54)
+Ga0194083_1088	img_core_v400	CDS	1	444	.	-	0	ID=2737832726;locus_tag=Ga0194083_10881;product=ArgJ family protein
+Ga0194083_1088	img_core_v400	CDS	468	3209	.	-	0	ID=2737832727;locus_tag=Ga0194083_10882;product= protein translocase subunit secA
+Ga0194083_1088	img_core_v400	CDS	3366	3482	.	-	0	ID=2737832728;locus_tag=Ga0194083_10883;product=hypothetical protein
+Ga0194083_1089	img_core_v400	CDS	2	376	.	-	0	ID=2737832729;locus_tag=Ga0194083_10891;product=hypothetical protein
+Ga0194083_1089	img_core_v400	CDS	385	1011	.	-	0	ID=2737832730;locus_tag=Ga0194083_10892;product=hypothetical protein
+Ga0194083_1089	img_core_v400	tRNA	1049	1138	.	-	0	ID=2737832731;locus_tag=Ga0194083_10893
+Ga0194083_1089	img_core_v400	tRNA	1218	1288	.	-	0	ID=2737832732;locus_tag=Ga0194083_10894
+Ga0194083_1089	img_core_v400	tRNA	1363	1435	.	-	0	ID=2737832733;locus_tag=Ga0194083_10895
+Ga0194083_1089	img_core_v400	CDS	1523	3418	.	-	0	ID=2737832734;locus_tag=Ga0194083_10896;product= ATP-dependent proteinase. Serine peptidase. MEROPS family S16
+Ga0194083_1090	img_core_v400	CDS	2	538	.	-	0	ID=2737832735;locus_tag=Ga0194083_10901;product= phosphoglycolate phosphatase
+Ga0194083_1090	img_core_v400	CDS	535	1215	.	-	0	ID=2737832736;locus_tag=Ga0194083_10902;product=ribulose-phosphate 3-epimerase
+Ga0194083_1090	img_core_v400	CDS	1277	1672	.	+	0	ID=2737832737;locus_tag=Ga0194083_10903;product=ApaG protein
+Ga0194083_1090	img_core_v400	CDS	1676	2650	.	+	0	ID=2737832738;locus_tag=Ga0194083_10904;product= thiamine-phosphate kinase
+Ga0194083_1090	img_core_v400	CDS	2598	3197	.	+	0	ID=2737832739;locus_tag=Ga0194083_10905;product=phosphatidylglycerophosphatase A
+Ga0194083_1090	img_core_v400	CDS	3185	3661	.	+	0	ID=2737832740;locus_tag=Ga0194083_10906;product=nicotinamide-nucleotide amidase
+Ga0194083_1090	img_core_v400	CDS	3668	4447	.	-	0	ID=2737832741;locus_tag=Ga0194083_10907;product=uncharacterized protein
+Ga0194083_1090	img_core_v400	CDS	4548	6179	.	+	0	ID=2737832742;locus_tag=Ga0194083_10908;product=Glutamate synthase domain-containing protein 2
+Ga0194083_1090	img_core_v400	CDS	6170	6589	.	-	0	ID=2737832743;locus_tag=Ga0194083_10909;product=putative toxin-antitoxin system toxin component, PIN family
+Ga0194083_1090	img_core_v400	CDS	6586	6876	.	-	0	ID=2737832744;locus_tag=Ga0194083_109010;product=hypothetical protein
+Ga0194083_1091	img_core_v400	CDS	3	1118	.	+	0	ID=2737832745;locus_tag=Ga0194083_10911;product= amino acid/amide ABC transporter substrate-binding protein, HAAT family
+Ga0194083_1091	img_core_v400	CDS	1226	1798	.	+	0	ID=2737832746;locus_tag=Ga0194083_10912;product=polyhydroxyalkanoate synthesis repressor PhaR
+Ga0194083_1091	img_core_v400	CDS	1830	3179	.	+	0	ID=2737832747;locus_tag=Ga0194083_10913;product= SSU ribosomal protein S12P methylthiotransferase
+Ga0194083_1092	img_core_v400	CDS	3	167	.	-	0	ID=2737832748;locus_tag=Ga0194083_10921;product=Polyphosphate kinase N-terminal domain-containing protein
+Ga0194083_1092	img_core_v400	CDS	205	1062	.	-	0	ID=2737832749;locus_tag=Ga0194083_10922;product=UDP-2,3-diacylglucosamine pyrophosphatase LpxH
+Ga0194083_1092	img_core_v400	CDS	1062	1904	.	-	0	ID=2737832750;locus_tag=Ga0194083_10923;product= ornithine-acyl[acyl carrier protein] N-acyltransferase
+Ga0194083_1092	img_core_v400	CDS	2036	3253	.	-	0	ID=2737832751;locus_tag=Ga0194083_10924;product=Glycosyltransferase involved in cell wall bisynthesis
+Ga0194083_1092	img_core_v400	CDS	3400	4635	.	+	0	ID=2737832752;locus_tag=Ga0194083_10925;product=UDPglucose 6-dehydrogenase
+Ga0194083_1092	img_core_v400	CDS	4717	4986	.	+	0	ID=2737832753;locus_tag=Ga0194083_10926;product=hypothetical protein
+Ga0194083_1092	img_core_v400	CDS	5056	5277	.	+	0	ID=2737832754;locus_tag=Ga0194083_10927;product=Protein of unknown function (DUF962)
+Ga0194083_1093	img_core_v400	CDS	1	324	.	+	0	ID=2737832755;locus_tag=Ga0194083_10931;product=putative toxin-antitoxin system toxin component, PIN family
+Ga0194083_1093	img_core_v400	CDS	336	1334	.	+	0	ID=2737832756;locus_tag=Ga0194083_10932;product=DNA polymerase-3 subunit epsilon
+Ga0194083_1093	img_core_v400	CDS	1450	3114	.	+	0	ID=2737832757;locus_tag=Ga0194083_10933;product=sulfate-transporting ATPase
+Ga0194083_1093	img_core_v400	CDS	3125	3601	.	+	0	ID=2737832758;locus_tag=Ga0194083_10934;product=hypothetical protein
+Ga0194083_1093	img_core_v400	CDS	3604	4149	.	+	0	ID=2737832759;locus_tag=Ga0194083_10935;product=hypothetical protein
+Ga0194083_1093	img_core_v400	CDS	4216	4290	.	+	0	ID=2737832760;locus_tag=Ga0194083_10936;product=hypothetical protein
+Ga0194083_1094	img_core_v400	CDS	2	118	.	-	0	ID=2737832761;locus_tag=Ga0194083_10941;product=hypothetical protein
+Ga0194083_1094	img_core_v400	CDS	135	1784	.	-	0	ID=2737832762;locus_tag=Ga0194083_10942;product= CTP synthase
+Ga0194083_1094	img_core_v400	CDS	1855	3108	.	+	0	ID=2737832763;locus_tag=Ga0194083_10943;product=phosphopantothenoylcysteine decarboxylase / phosphopantothenate--cysteine ligase
+Ga0194083_1094	img_core_v400	CDS	3119	3496	.	-	0	ID=2737832764;locus_tag=Ga0194083_10944;product= camphor resistance protein CrcB
+Ga0194083_1094	img_core_v400	CDS	3493	4407	.	-	0	ID=2737832765;locus_tag=Ga0194083_10945;product=recombination associated protein RdgC
+Ga0194083_1094	img_core_v400	CDS	4460	5605	.	-	0	ID=2737832766;locus_tag=Ga0194083_10946;product=Lipopolysaccharide biosynthesis regulator YciM, contains six TPR domains and a predicted metal-binding C-terminal domain
+Ga0194083_1094	img_core_v400	CDS	5595	5870	.	-	0	ID=2737832767;locus_tag=Ga0194083_10947;product=Protein of unknown function (DUF1049)
+Ga0194083_1094	img_core_v400	CDS	5884	6225	.	-	0	ID=2737832768;locus_tag=Ga0194083_10948;product=integration host factor subunit beta
+Ga0194083_1094	img_core_v400	CDS	6255	7004	.	-	0	ID=2737832769;locus_tag=Ga0194083_10949;product=ribosomal protein S1
+Ga0194083_1095	img_core_v400	CDS	1	90	.	-	0	ID=2737832770;locus_tag=Ga0194083_10951;product=hypothetical protein
+Ga0194083_1095	img_core_v400	CDS	81	464	.	-	0	ID=2737832771;locus_tag=Ga0194083_10952;product=Diadenosine tetraphosphate (Ap4A) hydrolase
+Ga0194083_1095	img_core_v400	CDS	500	3853	.	-	0	ID=2737832772;locus_tag=Ga0194083_10953;product=Fe-S oxidoreductase
+Ga0194083_1096	img_core_v400	CDS	2	859	.	-	0	ID=2737832773;locus_tag=Ga0194083_10961;product=multiple sugar transport system ATP-binding protein
+Ga0194083_1096	img_core_v400	CDS	958	1734	.	-	0	ID=2737832774;locus_tag=Ga0194083_10962;product=DNA-binding transcriptional regulator, FadR family
+Ga0194083_1096	img_core_v400	CDS	1860	2687	.	+	0	ID=2737832775;locus_tag=Ga0194083_10963;product=uronate dehydrogenase
+Ga0194083_1096	img_core_v400	CDS	2684	3580	.	+	0	ID=2737832776;locus_tag=Ga0194083_10964;product= gluconolactonase
+Ga0194083_1096	img_core_v400	CDS	3630	4604	.	+	0	ID=2737832777;locus_tag=Ga0194083_10965;product=tripartite ATP-independent transporter solute receptor, DctP family
+Ga0194083_1096	img_core_v400	CDS	4723	4911	.	+	0	ID=2737832778;locus_tag=Ga0194083_10966;product=hypothetical protein
+Ga0194083_1097	img_core_v400	CDS	1	354	.	+	0	ID=2737832779;locus_tag=Ga0194083_10971;product=Glycine cleavage T-protein C-terminal barrel domain-containing protein
+Ga0194083_1097	img_core_v400	CDS	375	1742	.	+	0	ID=2737832780;locus_tag=Ga0194083_10972;product=FAD dependent oxidoreductase
+Ga0194083_1097	img_core_v400	CDS	1785	2579	.	-	0	ID=2737832781;locus_tag=Ga0194083_10973;product=ABC-type phosphate/phosphonate transport system, substrate-binding protein
+Ga0194083_1097	img_core_v400	CDS	2624	3601	.	-	0	ID=2737832782;locus_tag=Ga0194083_10974;product=Fatty acid desaturase
+Ga0194083_1097	img_core_v400	CDS	3603	3929	.	-	0	ID=2737832783;locus_tag=Ga0194083_10975;product=sarcosine oxidase, gamma subunit family, heterotetrameric form
+Ga0194083_1098	img_core_v400	CDS	1	1467	.	+	0	ID=2737832784;locus_tag=Ga0194083_10981;product=translation initiation factor IF-2
+Ga0194083_1098	img_core_v400	CDS	1479	1850	.	+	0	ID=2737832785;locus_tag=Ga0194083_10982;product= ribosome-binding factor A
+Ga0194083_1098	img_core_v400	CDS	1854	2819	.	+	0	ID=2737832786;locus_tag=Ga0194083_10983;product= tRNA pseudouridine synthase B
+Ga0194083_1098	img_core_v400	CDS	2816	3739	.	+	0	ID=2737832787;locus_tag=Ga0194083_10984;product=GTP-binding protein TypA/BipA
+Ga0194083_1099	img_core_v400	CDS	3	155	.	+	0	ID=2737832788;locus_tag=Ga0194083_10991;product=High potential iron-sulfur protein
+Ga0194083_1099	img_core_v400	CDS	211	1395	.	-	0	ID=2737832789;locus_tag=Ga0194083_10992;product= methionine adenosyltransferase
+Ga0194083_1099	img_core_v400	CDS	1540	2412	.	+	0	ID=2737832790;locus_tag=Ga0194083_10993;product=KDO2-lipid IV(A) lauroyltransferase
+Ga0194083_1099	img_core_v400	CDS	2364	3080	.	-	0	ID=2737832791;locus_tag=Ga0194083_10994;product=GTP-binding protein
+Ga0194083_1099	img_core_v400	CDS	3194	3808	.	+	0	ID=2737832792;locus_tag=Ga0194083_10995;product=Cytochrome c553
+Ga0194083_1100	img_core_v400	CDS	3	488	.	-	0	ID=2737832793;locus_tag=Ga0194083_11001;product=Glutamine amidotransferases class-II
+Ga0194083_1100	img_core_v400	CDS	664	1359	.	-	0	ID=2737832794;locus_tag=Ga0194083_11002;product=putative transposase
+Ga0194083_1100	img_core_v400	CDS	1369	2517	.	-	0	ID=2737832795;locus_tag=Ga0194083_11003;product=dGTPase
+Ga0194083_1100	img_core_v400	CDS	2528	3406	.	-	0	ID=2737832796;locus_tag=Ga0194083_11004;product= 3-dehydroquinate synthase
+Ga0194083_1101	img_core_v400	CDS	1	270	.	+	0	ID=2737832797;locus_tag=Ga0194083_11011;product=hypothetical protein
+Ga0194083_1101	img_core_v400	CDS	351	776	.	+	0	ID=2737832798;locus_tag=Ga0194083_11012;product= nucleoside diphosphate kinase
+Ga0194083_1101	img_core_v400	CDS	796	1938	.	+	0	ID=2737832799;locus_tag=Ga0194083_11013;product= 23S rRNA m(2)A-2503 methyltransferase
+Ga0194083_1101	img_core_v400	CDS	1935	2690	.	+	0	ID=2737832800;locus_tag=Ga0194083_11014;product=type IV pilus assembly protein PilF
+Ga0194083_1101	img_core_v400	CDS	2680	3255	.	+	0	ID=2737832801;locus_tag=Ga0194083_11015;product=Helix-turn-helix domain-containing protein
+Ga0194083_1102	img_core_v400	CDS	3	260	.	+	0	ID=2737832802;locus_tag=Ga0194083_11021;product=hypothetical protein
+Ga0194083_1102	img_core_v400	CDS	273	917	.	-	0	ID=2737832803;locus_tag=Ga0194083_11022;product=glutathione S-transferase
+Ga0194083_1102	img_core_v400	CDS	943	2346	.	+	0	ID=2737832804;locus_tag=Ga0194083_11023;product=adenylosuccinate lyase
+Ga0194083_1102	img_core_v400	CDS	2389	2949	.	-	0	ID=2737832805;locus_tag=Ga0194083_11024;product=Uncharacterized conserved protein YaeQ, suppresses RfaH defect
+Ga0194083_1102	img_core_v400	CDS	2958	3386	.	-	0	ID=2737832806;locus_tag=Ga0194083_11025;product=hypothetical protein
+Ga0194083_1102	img_core_v400	CDS	3464	4000	.	-	0	ID=2737832807;locus_tag=Ga0194083_11026;product=hypothetical protein
+Ga0194083_1103	img_core_v400	CDS	85	963	.	+	0	ID=2737832808;locus_tag=Ga0194083_11031;product=protein TonB
+Ga0194083_1103	img_core_v400	CDS	965	1741	.	+	0	ID=2737832809;locus_tag=Ga0194083_11032;product=monofunctional biosynthetic peptidoglycan transglycosylase
+Ga0194083_1103	img_core_v400	CDS	1738	2310	.	+	0	ID=2737832810;locus_tag=Ga0194083_11033;product= Holliday junction endonuclease RuvC
+Ga0194083_1103	img_core_v400	CDS	2333	2506	.	-	0	ID=2737832811;locus_tag=Ga0194083_11034;product=hypothetical protein
+Ga0194083_1103	img_core_v400	CDS	2525	3448	.	-	0	ID=2737832812;locus_tag=Ga0194083_11035;product= UDP-3-O-[3-hydroxymyristoyl] N-acetylglucosamine deacetylase
+Ga0194083_1103	img_core_v400	CDS	3463	3741	.	-	0	ID=2737832813;locus_tag=Ga0194083_11036;product=hypothetical protein
+Ga0194083_1104	img_core_v400	CDS	2	1672	.	+	0	ID=2737832814;locus_tag=Ga0194083_11041;product=PAS domain S-box-containing protein
+Ga0194083_1104	img_core_v400	CDS	1700	2323	.	+	0	ID=2737832815;locus_tag=Ga0194083_11042;product= two component transcriptional regulator, LuxR family
+Ga0194083_1104	img_core_v400	CDS	2347	3201	.	+	0	ID=2737832816;locus_tag=Ga0194083_11043;product=methylenetetrahydrofolate dehydrogenase (NADP+) / methenyltetrahydrofolate cyclohydrolase
+Ga0194083_1104	img_core_v400	CDS	3198	3626	.	-	0	ID=2737832817;locus_tag=Ga0194083_11044;product=protein of unknown function (DUF4149)
+Ga0194083_1104	img_core_v400	CDS	3623	4099	.	-	0	ID=2737832818;locus_tag=Ga0194083_11045;product= transcription elongation factor GreA
+Ga0194083_1104	img_core_v400	CDS	4113	6773	.	-	0	ID=2737832819;locus_tag=Ga0194083_11046;product= carbamoyl-phosphate synthase large subunit
+Ga0194083_1105	img_core_v400	CDS	1	417	.	+	0	ID=2737832820;locus_tag=Ga0194083_11051;product=DnaA regulatory inactivator Hda
+Ga0194083_1105	img_core_v400	CDS	414	1082	.	+	0	ID=2737832821;locus_tag=Ga0194083_11052;product=HAD-superfamily subfamily IB hydrolase, TIGR01490
+Ga0194083_1105	img_core_v400	CDS	1079	2641	.	+	0	ID=2737832822;locus_tag=Ga0194083_11053;product=poly(A) polymerase
+Ga0194083_1105	img_core_v400	CDS	2645	3157	.	+	0	ID=2737832823;locus_tag=Ga0194083_11054;product=2-amino-4-hydroxy-6-hydroxymethyldihydropteridine diphosphokinase
+Ga0194083_1105	img_core_v400	CDS	3209	3451	.	+	0	ID=2737832824;locus_tag=Ga0194083_11055;product=prevent-host-death family protein
+Ga0194083_1105	img_core_v400	CDS	3445	3711	.	+	0	ID=2737832825;locus_tag=Ga0194083_11056;product=toxin-antitoxin system, toxin component, Txe/YoeB family
+Ga0194083_1105	img_core_v400	CDS	3728	4360	.	-	0	ID=2737832826;locus_tag=Ga0194083_11057;product= Pyridoxamine 5'-phosphate oxidase
+Ga0194083_1105	img_core_v400	CDS	4357	4746	.	-	0	ID=2737832827;locus_tag=Ga0194083_11058;product=lactoylglutathione lyase
+Ga0194083_1105	img_core_v400	CDS	4762	4977	.	-	0	ID=2737832828;locus_tag=Ga0194083_11059;product=hypothetical protein
+Ga0194083_1106	img_core_v400	CDS	3	527	.	-	0	ID=2737832829;locus_tag=Ga0194083_11061;product= transcriptional regulator, GntR family
+Ga0194083_1106	img_core_v400	CDS	628	1782	.	+	0	ID=2737832830;locus_tag=Ga0194083_11062;product=alkanesulfonate monooxygenase
+Ga0194083_1106	img_core_v400	CDS	1810	2721	.	+	0	ID=2737832831;locus_tag=Ga0194083_11063;product=Predicted oxidoreductase
+Ga0194083_1106	img_core_v400	CDS	2763	3296	.	+	0	ID=2737832832;locus_tag=Ga0194083_11064;product=NADH-FMN oxidoreductase RutF, flavin reductase (DIM6/NTAB) family
+Ga0194083_1106	img_core_v400	CDS	3374	4216	.	-	0	ID=2737832833;locus_tag=Ga0194083_11065;product= carbohydrate ABC transporter membrane protein 2, CUT1 family
+Ga0194083_1106	img_core_v400	CDS	4213	4887	.	-	0	ID=2737832834;locus_tag=Ga0194083_11066;product= carbohydrate ABC transporter membrane protein 1, CUT1 family
+Ga0194083_1107	img_core_v400	CDS	1	2313	.	+	0	ID=2737832835;locus_tag=Ga0194083_11071;product=malate dehydrogenase (oxaloacetate-decarboxylating)(NADP+)
+Ga0194083_1107	img_core_v400	CDS	2608	3150	.	+	0	ID=2737832836;locus_tag=Ga0194083_11072;product=Barstar (barnase inhibitor)
+Ga0194083_1107	img_core_v400	CDS	3197	3973	.	-	0	ID=2737832837;locus_tag=Ga0194083_11073;product= dimethyladenosine transferase
+Ga0194083_1107	img_core_v400	CDS	3970	5310	.	-	0	ID=2737832838;locus_tag=Ga0194083_11074;product= periplasmic chaperone for outer membrane proteins SurA
+Ga0194083_1107	img_core_v400	CDS	5303	6895	.	-	0	ID=2737832839;locus_tag=Ga0194083_11075;product=Organic solvent tolerance protein
+Ga0194083_1108	img_core_v400	CDS	3	167	.	+	0	ID=2737832840;locus_tag=Ga0194083_11081;product=hypothetical protein
+Ga0194083_1108	img_core_v400	CDS	164	1174	.	+	0	ID=2737832841;locus_tag=Ga0194083_11082;product=DNA polymerase-3 subunit delta'
+Ga0194083_1108	img_core_v400	CDS	1186	1992	.	+	0	ID=2737832842;locus_tag=Ga0194083_11083;product=TatD DNase family protein
+Ga0194083_1108	img_core_v400	CDS	2340	3149	.	+	0	ID=2737832843;locus_tag=Ga0194083_11084;product=arginine/ornithine transport system substrate-binding protein
+Ga0194083_1108	img_core_v400	CDS	3162	3848	.	+	0	ID=2737832844;locus_tag=Ga0194083_11085;product=arginine/ornithine transport system permease protein
+Ga0194083_1108	img_core_v400	CDS	3849	4562	.	+	0	ID=2737832845;locus_tag=Ga0194083_11086;product=arginine/ornithine transport system permease protein
+Ga0194083_1108	img_core_v400	CDS	4572	5714	.	+	0	ID=2737832846;locus_tag=Ga0194083_11087;product=hypothetical protein
+Ga0194083_1108	img_core_v400	CDS	5733	6521	.	+	0	ID=2737832847;locus_tag=Ga0194083_11088;product=arginine/ornithine transport system ATP-binding protein
+Ga0194083_1108	img_core_v400	CDS	6542	7009	.	-	0	ID=2737832848;locus_tag=Ga0194083_11089;product=LD-carboxypeptidase
+Ga0194083_1109	img_core_v400	CDS	93	695	.	+	0	ID=2737832849;locus_tag=Ga0194083_11091;product=cytochrome c oxidase assembly protein subunit 11
+Ga0194083_1109	img_core_v400	CDS	695	901	.	+	0	ID=2737832850;locus_tag=Ga0194083_11092;product=Protein of unknown function (DUF2970)
+Ga0194083_1109	img_core_v400	CDS	952	1833	.	+	0	ID=2737832851;locus_tag=Ga0194083_11093;product=cytochrome c oxidase subunit 3
+Ga0194083_1109	img_core_v400	CDS	1896	2132	.	-	0	ID=2737832852;locus_tag=Ga0194083_11094;product=Protein of unknown function (DUF2909)
+Ga0194083_1109	img_core_v400	CDS	2174	2905	.	+	0	ID=2737832853;locus_tag=Ga0194083_11095;product=surfeit locus 1 family protein
+Ga0194083_1109	img_core_v400	CDS	2895	3596	.	+	0	ID=2737832854;locus_tag=Ga0194083_11096;product=hypothetical protein
+Ga0194083_1109	img_core_v400	CDS	3593	3964	.	+	0	ID=2737832855;locus_tag=Ga0194083_11097;product=Cytochrome oxidase assembly protein
+Ga0194083_1110	img_core_v400	CDS	2	622	.	-	0	ID=2737832856;locus_tag=Ga0194083_11101;product=lipopolysaccharide export system protein LptA
+Ga0194083_1110	img_core_v400	CDS	707	1336	.	-	0	ID=2737832857;locus_tag=Ga0194083_11102;product=thiol:disulfide interchange protein DsbA
+Ga0194083_1110	img_core_v400	CDS	1397	1975	.	-	0	ID=2737832858;locus_tag=Ga0194083_11103;product=Sporulation related domain-containing protein
+Ga0194083_1110	img_core_v400	CDS	1975	3681	.	-	0	ID=2737832859;locus_tag=Ga0194083_11104;product= arginyl-tRNA synthetase
+Ga0194083_1111	img_core_v400	CDS	3	1361	.	-	0	ID=2737832860;locus_tag=Ga0194083_11111;product=aminopeptidase N
+Ga0194083_1111	img_core_v400	CDS	1376	2500	.	-	0	ID=2737832861;locus_tag=Ga0194083_11112;product= bacterial peptide chain release factor 2 (bRF-2)
+Ga0194083_1111	img_core_v400	CDS	2580	3116	.	+	0	ID=2737832862;locus_tag=Ga0194083_11113;product=Aldo/keto reductase family protein
+Ga0194083_1112	img_core_v400	CDS	3	1223	.	+	0	ID=2737832863;locus_tag=Ga0194083_11121;product=trk system potassium uptake protein TrkA
+Ga0194083_1112	img_core_v400	CDS	1250	2713	.	+	0	ID=2737832864;locus_tag=Ga0194083_11122;product=trk system potassium uptake protein TrkH
+Ga0194083_1112	img_core_v400	CDS	2879	3154	.	+	0	ID=2737832865;locus_tag=Ga0194083_11123;product=hypothetical protein
+Ga0194083_1112	img_core_v400	CDS	3172	3837	.	+	0	ID=2737832866;locus_tag=Ga0194083_11124;product=haloacid dehalogenase superfamily, subfamily IA, variant 3 with third motif having DD or ED
+Ga0194083_1112	img_core_v400	CDS	3820	4068	.	-	0	ID=2737832867;locus_tag=Ga0194083_11125;product= formate dehydrogenase delta subunit
+Ga0194083_1112	img_core_v400	CDS	4078	4584	.	-	0	ID=2737832868;locus_tag=Ga0194083_11126;product=formate dehydrogenase family accessory protein FdhD
+Ga0194083_1113	img_core_v400	CDS	1	213	.	-	0	ID=2737832869;locus_tag=Ga0194083_11131;product=protein FliS
+Ga0194083_1113	img_core_v400	CDS	271	927	.	-	0	ID=2737832870;locus_tag=Ga0194083_11132;product=hypothetical protein
+Ga0194083_1113	img_core_v400	CDS	936	1475	.	-	0	ID=2737832871;locus_tag=Ga0194083_11133;product=hypothetical protein
+Ga0194083_1113	img_core_v400	CDS	1517	2227	.	-	0	ID=2737832872;locus_tag=Ga0194083_11134;product= RNA polymerase, sigma 28 subunit, SigD/FliA/WhiG
+Ga0194083_1113	img_core_v400	CDS	2238	3053	.	-	0	ID=2737832873;locus_tag=Ga0194083_11135;product=flagellar biosynthesis protein FlhG
+Ga0194083_1113	img_core_v400	CDS	3046	4323	.	-	0	ID=2737832874;locus_tag=Ga0194083_11136;product=Flagellar biosynthesis GTPase FlhF
+Ga0194083_1113	img_core_v400	CDS	4341	4682	.	-	0	ID=2737832875;locus_tag=Ga0194083_11137;product=FHIPEP family protein
+Ga0194083_1114	img_core_v400	CDS	3	1388	.	+	0	ID=2737832876;locus_tag=Ga0194083_11141;product=D-lactate dehydrogenase (cytochrome)
+Ga0194083_1114	img_core_v400	CDS	1449	2288	.	+	0	ID=2737832877;locus_tag=Ga0194083_11142;product=hypothetical protein
+Ga0194083_1114	img_core_v400	CDS	2328	3251	.	-	0	ID=2737832878;locus_tag=Ga0194083_11143;product=chromosome partitioning protein, ParB family
+Ga0194083_1114	img_core_v400	CDS	3248	3787	.	-	0	ID=2737832879;locus_tag=Ga0194083_11144;product=hypothetical protein
+Ga0194083_1114	img_core_v400	CDS	3790	4512	.	-	0	ID=2737832880;locus_tag=Ga0194083_11145;product=chromosome partitioning protein
+Ga0194083_1115	img_core_v400	CDS	3	995	.	+	0	ID=2737832881;locus_tag=Ga0194083_11151;product= glutamyl-tRNA reductase
+Ga0194083_1115	img_core_v400	CDS	1005	2105	.	+	0	ID=2737832882;locus_tag=Ga0194083_11152;product= bacterial peptide chain release factor 1 (bRF-1)
+Ga0194083_1115	img_core_v400	CDS	2098	2934	.	+	0	ID=2737832883;locus_tag=Ga0194083_11153;product= [protein release factor]-glutamine N5-methyltransferase
+Ga0194083_1115	img_core_v400	CDS	2992	3315	.	+	0	ID=2737832884;locus_tag=Ga0194083_11154;product=monothiol glutaredoxin
+Ga0194083_1115	img_core_v400	CDS	3299	5050	.	-	0	ID=2737832885;locus_tag=Ga0194083_11155;product= prolyl-tRNA synthetase
+Ga0194083_1115	img_core_v400	CDS	5139	5762	.	+	0	ID=2737832886;locus_tag=Ga0194083_11156;product=putative (di)nucleoside polyphosphate hydrolase
+Ga0194083_1115	img_core_v400	CDS	5759	6682	.	-	0	ID=2737832887;locus_tag=Ga0194083_11157;product=glutamate 5-kinase
+Ga0194083_1116	img_core_v400	CDS	3	299	.	+	0	ID=2737832888;locus_tag=Ga0194083_11161;product=Enoyl-(Acyl carrier protein) reductase
+Ga0194083_1116	img_core_v400	CDS	331	1089	.	+	0	ID=2737832889;locus_tag=Ga0194083_11162;product=3-oxoacyl-[acyl-carrier protein] reductase
+Ga0194083_1116	img_core_v400	CDS	1114	1977	.	+	0	ID=2737832890;locus_tag=Ga0194083_11163;product=2-keto-4-pentenoate hydratase/2-oxohepta-3-ene-1,7-dioic acid hydratase (catechol pathway)
+Ga0194083_1116	img_core_v400	CDS	2117	3139	.	+	0	ID=2737832891;locus_tag=Ga0194083_11164;product= 3-dehydroquinate synthase
+Ga0194083_1117	img_core_v400	CDS	96	1835	.	+	0	ID=2737832892;locus_tag=Ga0194083_11171;product=Signal transduction histidine kinase
+Ga0194083_1117	img_core_v400	CDS	1817	2524	.	+	0	ID=2737832893;locus_tag=Ga0194083_11172;product=DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain
+Ga0194083_1117	img_core_v400	CDS	2592	3347	.	+	0	ID=2737832894;locus_tag=Ga0194083_11173;product=SapC protein
+Ga0194083_1117	img_core_v400	CDS	3371	3709	.	+	0	ID=2737832895;locus_tag=Ga0194083_11174;product=Polymer-forming protein
+Ga0194083_1117	img_core_v400	CDS	3790	4077	.	-	0	ID=2737832896;locus_tag=Ga0194083_11175;product=hypothetical protein
+Ga0194083_1118	img_core_v400	CDS	1	852	.	-	0	ID=2737832897;locus_tag=Ga0194083_11181;product=flavoprotein, HI0933 family
+Ga0194083_1118	img_core_v400	CDS	914	1999	.	+	0	ID=2737832898;locus_tag=Ga0194083_11182;product= O-sialoglycoprotein endopeptidase
+Ga0194083_1118	img_core_v400	CDS	2017	3315	.	+	0	ID=2737832899;locus_tag=Ga0194083_11183;product= amino acid/amide ABC transporter substrate-binding protein, HAAT family
+Ga0194083_1118	img_core_v400	CDS	3436	3702	.	+	0	ID=2737832900;locus_tag=Ga0194083_11184;product= SSU ribosomal protein S15P
+Ga0194083_1118	img_core_v400	CDS	3935	5122	.	+	0	ID=2737832901;locus_tag=Ga0194083_11185;product=polyribonucleotide nucleotidyltransferase
+Ga0194083_1119	img_core_v400	CDS	1	159	.	-	0	ID=2737832902;locus_tag=Ga0194083_11191;product=hypothetical protein
+Ga0194083_1119	img_core_v400	CDS	173	1246	.	-	0	ID=2737832903;locus_tag=Ga0194083_11192;product=GTP-binding protein
+Ga0194083_1119	img_core_v400	CDS	1369	1626	.	-	0	ID=2737832904;locus_tag=Ga0194083_11193;product=large subunit ribosomal protein L27
+Ga0194083_1119	img_core_v400	CDS	1641	1952	.	-	0	ID=2737832905;locus_tag=Ga0194083_11194;product= LSU ribosomal protein L21P
+Ga0194083_1119	img_core_v400	CDS	2110	3090	.	+	0	ID=2737832906;locus_tag=Ga0194083_11195;product=octaprenyl-diphosphate synthase
+Ga0194083_1119	img_core_v400	CDS	3214	4920	.	+	0	ID=2737832907;locus_tag=Ga0194083_11196;product=type IV pilus assembly protein PilB
+Ga0194083_1119	img_core_v400	CDS	4936	5382	.	+	0	ID=2737832908;locus_tag=Ga0194083_11197;product=Type II secretion system (T2SS), protein F
+Ga0194083_1120	img_core_v400	CDS	3	377	.	+	0	ID=2737832909;locus_tag=Ga0194083_11201;product=translation elongation factor TU
+Ga0194083_1120	img_core_v400	CDS	400	711	.	+	0	ID=2737832910;locus_tag=Ga0194083_11202;product= SSU ribosomal protein S10P
+Ga0194083_1120	img_core_v400	CDS	918	1583	.	+	0	ID=2737832911;locus_tag=Ga0194083_11203;product= LSU ribosomal protein L3P
+Ga0194083_1120	img_core_v400	CDS	1583	2203	.	+	0	ID=2737832912;locus_tag=Ga0194083_11204;product= LSU ribosomal protein L4P
+Ga0194083_1120	img_core_v400	CDS	2200	2514	.	+	0	ID=2737832913;locus_tag=Ga0194083_11205;product= LSU ribosomal protein L23P
+Ga0194083_1120	img_core_v400	CDS	2517	3341	.	+	0	ID=2737832914;locus_tag=Ga0194083_11206;product= LSU ribosomal protein L2P
+Ga0194083_1120	img_core_v400	CDS	3354	3629	.	+	0	ID=2737832915;locus_tag=Ga0194083_11207;product= SSU ribosomal protein S19P
+Ga0194083_1120	img_core_v400	CDS	3639	3968	.	+	0	ID=2737832916;locus_tag=Ga0194083_11208;product= LSU ribosomal protein L22P
+Ga0194083_1120	img_core_v400	CDS	3984	4856	.	+	0	ID=2737832917;locus_tag=Ga0194083_11209;product= SSU ribosomal protein S3P
+Ga0194083_1120	img_core_v400	CDS	4859	5275	.	+	0	ID=2737832918;locus_tag=Ga0194083_112010;product= LSU ribosomal protein L16P
+Ga0194083_1120	img_core_v400	CDS	5293	5493	.	+	0	ID=2737832919;locus_tag=Ga0194083_112011;product= LSU ribosomal protein L29P
+Ga0194083_1120	img_core_v400	CDS	5505	5774	.	+	0	ID=2737832920;locus_tag=Ga0194083_112012;product=small subunit ribosomal protein S17
+Ga0194083_1120	img_core_v400	CDS	5869	6378	.	+	0	ID=2737832921;locus_tag=Ga0194083_112013;product=Peroxiredoxin
+Ga0194083_1120	img_core_v400	CDS	6382	6870	.	-	0	ID=2737832922;locus_tag=Ga0194083_112014;product=Acetyltransferase (GNAT) domain-containing protein
+Ga0194083_1120	img_core_v400	CDS	6876	6989	.	-	0	ID=2737832923;locus_tag=Ga0194083_112015;product=hypothetical protein
+Ga0194083_1121	img_core_v400	CDS	3	362	.	+	0	ID=2737832924;locus_tag=Ga0194083_11211;product=hypothetical protein
+Ga0194083_1121	img_core_v400	CDS	378	1583	.	+	0	ID=2737832925;locus_tag=Ga0194083_11212;product=acetyl-CoA acyltransferase
+Ga0194083_1121	img_core_v400	CDS	1586	2350	.	+	0	ID=2737832926;locus_tag=Ga0194083_11213;product=Enoyl-CoA hydratase/carnithine racemase
+Ga0194083_1121	img_core_v400	CDS	2365	2973	.	-	0	ID=2737832927;locus_tag=Ga0194083_11214;product=hypothetical protein
+Ga0194083_1121	img_core_v400	CDS	3020	3448	.	-	0	ID=2737832928;locus_tag=Ga0194083_11215;product=acyl-CoA thioesterase YciA
+Ga0194083_1121	img_core_v400	CDS	3487	5301	.	+	0	ID=2737832929;locus_tag=Ga0194083_11216;product=ATP-binding cassette, subfamily B
+Ga0194083_1121	img_core_v400	CDS	5309	6229	.	+	0	ID=2737832930;locus_tag=Ga0194083_11217;product=DNA-binding transcriptional regulator, LysR family
+Ga0194083_1121	img_core_v400	CDS	6242	7285	.	+	0	ID=2737832931;locus_tag=Ga0194083_11218;product= dihydroorotase
+Ga0194083_1121	img_core_v400	CDS	7272	8051	.	+	0	ID=2737832932;locus_tag=Ga0194083_11219;product=Protein of unknown function (DUF3025)
+Ga0194083_1121	img_core_v400	CDS	8120	8326	.	+	0	ID=2737832933;locus_tag=Ga0194083_112110;product=hypothetical protein
+Ga0194083_1122	img_core_v400	CDS	1	720	.	+	0	ID=2737832934;locus_tag=Ga0194083_11221;product=AMP-binding enzyme C-terminal domain-containing protein
+Ga0194083_1122	img_core_v400	CDS	736	1179	.	-	0	ID=2737832935;locus_tag=Ga0194083_11222;product=Nucleotide-binding universal stress protein,  UspA family
+Ga0194083_1122	img_core_v400	CDS	1284	3269	.	+	0	ID=2737832936;locus_tag=Ga0194083_11223;product=Cu2+-exporting ATPase
+Ga0194083_1123	img_core_v400	CDS	3	146	.	+	0	ID=2737832937;locus_tag=Ga0194083_11231;product=hypothetical protein
+Ga0194083_1123	img_core_v400	CDS	191	772	.	+	0	ID=2737832938;locus_tag=Ga0194083_11232;product=glutathione peroxidase
+Ga0194083_1123	img_core_v400	CDS	787	1764	.	-	0	ID=2737832939;locus_tag=Ga0194083_11233;product=MerR HTH family regulatory protein
+Ga0194083_1123	img_core_v400	CDS	1882	2373	.	+	0	ID=2737832940;locus_tag=Ga0194083_11234;product=Rrf2 family protein
+Ga0194083_1123	img_core_v400	CDS	2562	2774	.	+	0	ID=2737832941;locus_tag=Ga0194083_11235;product=TIGR03643 family protein
+Ga0194083_1123	img_core_v400	CDS	2780	3298	.	-	0	ID=2737832942;locus_tag=Ga0194083_11236;product=TIGR00645 family protein
+Ga0194083_1124	img_core_v400	CDS	3	602	.	+	0	ID=2737832943;locus_tag=Ga0194083_11241;product=Acyl-CoA dehydrogenase, C-terminal domain
+Ga0194083_1124	img_core_v400	CDS	620	1591	.	+	0	ID=2737832944;locus_tag=Ga0194083_11242;product=nitronate monooxygenase
+Ga0194083_1124	img_core_v400	CDS	1645	2349	.	+	0	ID=2737832945;locus_tag=Ga0194083_11243;product=4-azaleucine resistance probable transporter AzlC
+Ga0194083_1124	img_core_v400	CDS	2342	2665	.	+	0	ID=2737832946;locus_tag=Ga0194083_11244;product=Branched-chain amino acid transport protein AzlD
+Ga0194083_1124	img_core_v400	CDS	2727	3593	.	-	0	ID=2737832947;locus_tag=Ga0194083_11245;product= transcriptional regulator, LacI family
+Ga0194083_1125	img_core_v400	CDS	2	190	.	-	0	ID=2737832948;locus_tag=Ga0194083_11251;product=Elongation factor Tu GTP binding domain-containing protein
+Ga0194083_1125	img_core_v400	tRNA	240	311	.	-	0	ID=2737832949;locus_tag=Ga0194083_11252
+Ga0194083_1125	img_core_v400	tRNA	373	443	.	-	0	ID=2737832950;locus_tag=Ga0194083_11253
+Ga0194083_1125	img_core_v400	tRNA	525	607	.	-	0	ID=2737832951;locus_tag=Ga0194083_11254
+Ga0194083_1125	img_core_v400	CDS	689	1417	.	-	0	ID=2737832952;locus_tag=Ga0194083_11255;product= Uracil-DNA glycosylase
+Ga0194083_1125	img_core_v400	CDS	1426	2226	.	-	0	ID=2737832953;locus_tag=Ga0194083_11256;product= indole-3-glycerol phosphate synthase
+Ga0194083_1125	img_core_v400	CDS	2223	3269	.	-	0	ID=2737832954;locus_tag=Ga0194083_11257;product= anthranilate phosphoribosyltransferase
+Ga0194083_1125	img_core_v400	CDS	3279	3848	.	-	0	ID=2737832955;locus_tag=Ga0194083_11258;product= anthranilate synthase, component II
+Ga0194083_1125	img_core_v400	CDS	3845	5356	.	-	0	ID=2737832956;locus_tag=Ga0194083_11259;product=anthranilate synthase component 1
+Ga0194083_1126	img_core_v400	CDS	1	168	.	+	0	ID=2737832957;locus_tag=Ga0194083_11261;product=hypothetical protein
+Ga0194083_1126	img_core_v400	CDS	183	1271	.	+	0	ID=2737832958;locus_tag=Ga0194083_11262;product= amino acid/amide ABC transporter membrane protein 2, HAAT family
+Ga0194083_1126	img_core_v400	CDS	1285	2055	.	+	0	ID=2737832959;locus_tag=Ga0194083_11263;product= amino acid/amide ABC transporter ATP-binding protein 1, HAAT family
+Ga0194083_1126	img_core_v400	CDS	2076	2792	.	+	0	ID=2737832960;locus_tag=Ga0194083_11264;product= amino acid/amide ABC transporter ATP-binding protein 2, HAAT family
+Ga0194083_1126	img_core_v400	CDS	2837	3961	.	+	0	ID=2737832961;locus_tag=Ga0194083_11265;product=lysyl-tRNA synthetase
+Ga0194083_1127	img_core_v400	CDS	2	1150	.	-	0	ID=2737832962;locus_tag=Ga0194083_11271;product=DNA gyrase/topoisomerase IV, subunit A
+Ga0194083_1127	img_core_v400	CDS	1396	2043	.	+	0	ID=2737832963;locus_tag=Ga0194083_11272;product=OmpA-OmpF porin, OOP family
+Ga0194083_1127	img_core_v400	CDS	2109	2825	.	+	0	ID=2737832964;locus_tag=Ga0194083_11273;product= 3-demethylubiquinone-9 3-methyltransferase
+Ga0194083_1127	img_core_v400	CDS	2822	3175	.	+	0	ID=2737832965;locus_tag=Ga0194083_11274;product=Haloacid dehalogenase-like hydrolase
+Ga0194083_1128	img_core_v400	CDS	3	797	.	+	0	ID=2737832966;locus_tag=Ga0194083_11281;product=flavoprotein, HI0933 family/uncharacterized flavoprotein, PP_4765 family
+Ga0194083_1128	img_core_v400	RNA	792	889	.	-	0	ID=2737832967;locus_tag=Ga0194083_11282
+Ga0194083_1128	img_core_v400	CDS	926	2686	.	+	0	ID=2737832968;locus_tag=Ga0194083_11283;product=DNA polymerase-3 subunit gamma/tau
+Ga0194083_1128	img_core_v400	CDS	2708	3040	.	+	0	ID=2737832969;locus_tag=Ga0194083_11284;product=hypothetical protein
+Ga0194083_1128	img_core_v400	CDS	3044	3652	.	+	0	ID=2737832970;locus_tag=Ga0194083_11285;product= DNA replication and repair protein RecR
+Ga0194083_1128	img_core_v400	CDS	3662	5104	.	-	0	ID=2737832971;locus_tag=Ga0194083_11286;product=membrane-bound lytic murein transglycosylase D
+Ga0194083_1129	img_core_v400	CDS	2	2638	.	-	0	ID=2737832972;locus_tag=Ga0194083_11291;product=glutamate-ammonia-ligase adenylyltransferase
+Ga0194083_1129	img_core_v400	CDS	2662	5004	.	+	0	ID=2737832973;locus_tag=Ga0194083_11292;product=Protein of unknown function
+Ga0194083_1130	img_core_v400	CDS	3	758	.	+	0	ID=2737832974;locus_tag=Ga0194083_11301;product=ABC transporter
+Ga0194083_1130	img_core_v400	CDS	751	1518	.	+	0	ID=2737832975;locus_tag=Ga0194083_11302;product=Uncharacterized membrane protein
+Ga0194083_1130	img_core_v400	CDS	1521	1742	.	+	0	ID=2737832976;locus_tag=Ga0194083_11303;product=Protein of unknown function (DUF2788)
+Ga0194083_1130	img_core_v400	CDS	1869	2474	.	+	0	ID=2737832977;locus_tag=Ga0194083_11304;product=ribosome maturation factor RimP
+Ga0194083_1130	img_core_v400	CDS	2529	4028	.	+	0	ID=2737832978;locus_tag=Ga0194083_11305;product= NusA antitermination factor
+Ga0194083_1130	img_core_v400	CDS	4060	4611	.	+	0	ID=2737832979;locus_tag=Ga0194083_11306;product=Translation initiation factor IF-2, N-terminal region
+Ga0194083_1131	img_core_v400	CDS	1	1347	.	-	0	ID=2737832980;locus_tag=Ga0194083_11311;product= glutamate synthase (NADH) small subunit
+Ga0194083_1131	img_core_v400	CDS	1368	5546	.	-	0	ID=2737832981;locus_tag=Ga0194083_11312;product= glutamate synthase (NADH) large subunit
+Ga0194083_1132	img_core_v400	CDS	1	495	.	+	0	ID=2737832982;locus_tag=Ga0194083_11321;product=putative quinone oxidoreductase, YhdH/YhfP family
+Ga0194083_1132	img_core_v400	CDS	512	2614	.	+	0	ID=2737832983;locus_tag=Ga0194083_11322;product=Acyl-CoA synthetase (NDP forming)
+Ga0194083_1132	img_core_v400	CDS	2611	3429	.	+	0	ID=2737832984;locus_tag=Ga0194083_11323;product=enoyl-CoA hydratase
+Ga0194083_1132	img_core_v400	CDS	3481	4233	.	+	0	ID=2737832985;locus_tag=Ga0194083_11324;product=3-hydroxyisobutyrate dehydrogenase
+Ga0194083_1133	img_core_v400	CDS	3	836	.	-	0	ID=2737832986;locus_tag=Ga0194083_11331;product=Thiamine pyrophosphate enzyme, central domain
+Ga0194083_1133	img_core_v400	CDS	850	2043	.	-	0	ID=2737832987;locus_tag=Ga0194083_11332;product=Predicted arabinose efflux permease, MFS family
+Ga0194083_1133	img_core_v400	CDS	2047	3066	.	-	0	ID=2737832988;locus_tag=Ga0194083_11333;product=C-terminal, D2-small domain-containing protein, of ClpB protein
+Ga0194083_1134	img_core_v400	CDS	3	716	.	+	0	ID=2737832989;locus_tag=Ga0194083_11341;product=NADH dehydrogenase
+Ga0194083_1134	img_core_v400	CDS	731	1240	.	+	0	ID=2737832990;locus_tag=Ga0194083_11342;product= NADH dehydrogenase subunit I
+Ga0194083_1134	img_core_v400	CDS	1271	1921	.	+	0	ID=2737832991;locus_tag=Ga0194083_11343;product= NADH dehydrogenase subunit J
+Ga0194083_1134	img_core_v400	CDS	1918	2235	.	+	0	ID=2737832992;locus_tag=Ga0194083_11344;product= NADH dehydrogenase subunit K
+Ga0194083_1134	img_core_v400	CDS	2274	3674	.	+	0	ID=2737832993;locus_tag=Ga0194083_11345;product=proton-translocating NADH-quinone oxidoreductase, chain L
+Ga0194083_1135	img_core_v400	CDS	1	681	.	-	0	ID=2737832994;locus_tag=Ga0194083_11351;product=HpcH/HpaI aldolase/citrate lyase family protein
+Ga0194083_1135	img_core_v400	CDS	690	1676	.	-	0	ID=2737832995;locus_tag=Ga0194083_11352;product= malate dehydrogenase (NAD)
+Ga0194083_1135	img_core_v400	CDS	1814	2617	.	+	0	ID=2737832996;locus_tag=Ga0194083_11353;product= transcriptional regulator, GntR family
+Ga0194083_1135	img_core_v400	CDS	2762	3193	.	+	0	ID=2737832997;locus_tag=Ga0194083_11354;product= succinate dehydrogenase subunit C
+Ga0194083_1135	img_core_v400	CDS	3216	3581	.	+	0	ID=2737832998;locus_tag=Ga0194083_11355;product= succinate dehydrogenase subunit D
+Ga0194083_1135	img_core_v400	CDS	3586	4461	.	+	0	ID=2737832999;locus_tag=Ga0194083_11356;product=FAD binding domain-containing protein
+Ga0194083_1136	img_core_v400	CDS	49	801	.	+	0	ID=2737833000;locus_tag=Ga0194083_11361;product=Metal-dependent hydrolase, endonuclease/exonuclease/phosphatase family
+Ga0194083_1136	img_core_v400	CDS	804	2030	.	+	0	ID=2737833001;locus_tag=Ga0194083_11362;product=cardiolipin synthase
+Ga0194083_1136	img_core_v400	CDS	2113	2823	.	+	0	ID=2737833002;locus_tag=Ga0194083_11363;product= GTP cyclohydrolase I
+Ga0194083_1136	img_core_v400	CDS	2827	3252	.	+	0	ID=2737833003;locus_tag=Ga0194083_11364;product=Sensors of blue-light using FAD
+Ga0194083_1136	img_core_v400	CDS	3261	4079	.	+	0	ID=2737833004;locus_tag=Ga0194083_11365;product=Protein of unknown function (DUF429)
+Ga0194083_1136	img_core_v400	CDS	4104	4493	.	+	0	ID=2737833005;locus_tag=Ga0194083_11366;product=Uncharacterized conserved protein, MAPEG superfamily
+Ga0194083_1136	img_core_v400	CDS	4504	4851	.	+	0	ID=2737833006;locus_tag=Ga0194083_11367;product=LexA-binding, inner membrane-associated putative hydrolase
+Ga0194083_1137	img_core_v400	CDS	3	347	.	+	0	ID=2737833007;locus_tag=Ga0194083_11371;product=DNA-binding transcriptional regulator, MarR family
+Ga0194083_1137	img_core_v400	CDS	446	1120	.	+	0	ID=2737833008;locus_tag=Ga0194083_11372;product= two component transcriptional regulator, winged helix family
+Ga0194083_1137	img_core_v400	CDS	1101	2612	.	+	0	ID=2737833009;locus_tag=Ga0194083_11373;product=two-component system, OmpR family, sensor histidine kinase TctE
+Ga0194083_1137	img_core_v400	CDS	2640	3830	.	-	0	ID=2737833010;locus_tag=Ga0194083_11374;product=L-alanine-DL-glutamate epimerase
+Ga0194083_1137	img_core_v400	CDS	3846	4325	.	-	0	ID=2737833011;locus_tag=Ga0194083_11375;product=Aldehyde dehydrogenase family protein
+Ga0194083_1138	img_core_v400	CDS	3	623	.	-	0	ID=2737833012;locus_tag=Ga0194083_11381;product= DNA replication and repair protein RecO
+Ga0194083_1138	img_core_v400	CDS	623	1609	.	-	0	ID=2737833013;locus_tag=Ga0194083_11382;product=GTP-binding protein Era
+Ga0194083_1138	img_core_v400	CDS	1606	2289	.	-	0	ID=2737833014;locus_tag=Ga0194083_11383;product= RNAse III
+Ga0194083_1138	img_core_v400	CDS	2312	3292	.	-	0	ID=2737833015;locus_tag=Ga0194083_11384;product= signal peptidase I Serine peptidase. MEROPS family S26A
+Ga0194083_1138	img_core_v400	CDS	3292	5100	.	-	0	ID=2737833016;locus_tag=Ga0194083_11385;product= GTP-binding protein LepA
+Ga0194083_1138	img_core_v400	CDS	5614	7110	.	-	0	ID=2737833017;locus_tag=Ga0194083_11386;product=serine protease Do
+Ga0194083_1138	img_core_v400	CDS	7124	8125	.	-	0	ID=2737833018;locus_tag=Ga0194083_11387;product= sigma E regulatory protein, MucB/RseB
+Ga0194083_1138	img_core_v400	CDS	8140	8643	.	-	0	ID=2737833019;locus_tag=Ga0194083_11388;product=Anti sigma-E protein RseA, N-terminal domain
+Ga0194083_1138	img_core_v400	CDS	8646	9287	.	-	0	ID=2737833020;locus_tag=Ga0194083_11389;product= RNA polymerase, sigma-24 subunit, RpoE
+Ga0194083_1138	img_core_v400	CDS	9316	9768	.	-	0	ID=2737833021;locus_tag=Ga0194083_113810;product=hypothetical protein
+Ga0194083_1138	img_core_v400	CDS	9787	11031	.	-	0	ID=2737833022;locus_tag=Ga0194083_113811;product=3-oxoacyl-[acyl-carrier-protein] synthase II
+Ga0194083_1138	img_core_v400	CDS	11113	11352	.	-	0	ID=2737833023;locus_tag=Ga0194083_113812;product=acyl carrier protein
+Ga0194083_1138	img_core_v400	CDS	11396	12148	.	-	0	ID=2737833024;locus_tag=Ga0194083_113813;product= 3-oxoacyl-[acyl-carrier-protein] reductase
+Ga0194083_1138	img_core_v400	CDS	12163	13116	.	-	0	ID=2737833025;locus_tag=Ga0194083_113814;product=[acyl-carrier-protein] S-malonyltransferase
+Ga0194083_1138	img_core_v400	CDS	13142	14119	.	-	0	ID=2737833026;locus_tag=Ga0194083_113815;product=3-oxoacyl-[acyl-carrier-protein] synthase-3
+Ga0194083_1138	img_core_v400	CDS	14143	15165	.	-	0	ID=2737833027;locus_tag=Ga0194083_113816;product= phosphate:acyl-[acyl carrier protein] acyltransferase
+Ga0194083_1139	img_core_v400	CDS	2	139	.	-	0	ID=2737833028;locus_tag=Ga0194083_11391;product=hypothetical protein
+Ga0194083_1139	img_core_v400	CDS	158	1048	.	-	0	ID=2737833029;locus_tag=Ga0194083_11392;product=putrescine transport system permease protein
+Ga0194083_1139	img_core_v400	CDS	1066	2166	.	-	0	ID=2737833030;locus_tag=Ga0194083_11393;product=putrescine transport system ATP-binding protein
+Ga0194083_1139	img_core_v400	CDS	2255	3397	.	-	0	ID=2737833031;locus_tag=Ga0194083_11394;product=putrescine transport system substrate-binding protein
+Ga0194083_1139	img_core_v400	CDS	3465	4835	.	-	0	ID=2737833032;locus_tag=Ga0194083_11395;product=putrescine aminotransferase
+Ga0194083_1140	img_core_v400	CDS	1	648	.	-	0	ID=2737833033;locus_tag=Ga0194083_11401;product= farnesyl-diphosphate synthase
+Ga0194083_1140	img_core_v400	CDS	759	929	.	+	0	ID=2737833034;locus_tag=Ga0194083_11402;product=hypothetical protein
+Ga0194083_1140	img_core_v400	CDS	939	2693	.	-	0	ID=2737833035;locus_tag=Ga0194083_11403;product=ATP-binding cassette, subfamily B
+Ga0194083_1140	img_core_v400	CDS	2873	3166	.	+	0	ID=2737833036;locus_tag=Ga0194083_11404;product=chaperonin GroES
+Ga0194083_1018	img_core_v400	CRISPR	1861	1978		+		

@@ -1,0 +1,458 @@
+gene_oid	gene_length	query_start	query_end	evalue	bit_score	tigrfam_id	tigrfam_name
+2737840566	270	20	270	3.6e-94	300.9	TIGR01097	phosphonate ABC transporter, permease protein PhnE
+2737840567	316	2	246	4.8e-75	239.3	TIGR01098	phosphate/phosphite/phosphonate ABC transporter, periplasmic binding protein
+2737840567	316	2	286	2.9e-95	305.9	TIGR03431	phosphonate ABC transporter, periplasmic phosphonate binding protein
+2737840568	288	14	260	8.4e-89	283.1	TIGR02315	phosphonate ABC transporter, ATP-binding protein
+2737840573	1007	331	947	0.0e+00	715.2	TIGR02506	ribonucleoside-diphosphate reductase, alpha subunit
+2737840577	169	26	147	3.7e-50	154.8	TIGR01971	NADH-quinone oxidoreductase, chain I
+2737840582	135	1	130	6.4e-26	78.1	TIGR00556	phosphopantetheine--protein transferase domain
+2737840582	135	1	132	2.5e-32	98.9	TIGR00516	holo-[acyl-carrier-protein] synthase
+2737840583	249	9	249	4.1e-70	222	TIGR00559	pyridoxine 5'-phosphate synthase
+2737840584	249	9	160	2.5e-23	68.7	TIGR00613	DNA repair protein RecO
+2737840585	279	1	148	1.5e-24	73.7	TIGR00231	small GTP-binding protein domain
+2737840585	279	1	261	8.8e-75	238.5	TIGR00436	GTP-binding protein Era
+2737840586	236	2	229	7.7e-40	122.8	TIGR00129	formate dehydrogenase family accessory protein FdhD
+2737840589	325	3	317	0.0e+00	531.6	TIGR01306	guanosine monophosphate reductase, bacterial
+2737840592	383	7	354	1.3e-116	375.5	TIGR00328	flagellar biosynthetic protein FlhB
+2737840604	260	1	260	4.3e-110	355.1	TIGR00487	translation initiation factor IF-2
+2737840605	124	7	119	5.7e-28	84	TIGR00082	ribosome-binding factor A
+2737840606	326	13	225	1.4e-79	252.7	TIGR00431	tRNA pseudouridine(55) synthase
+2737840607	352	3	174	1.0e-29	90.5	TIGR00231	small GTP-binding protein domain
+2737840607	352	5	352	0.0e+00	522.7	TIGR01394	GTP-binding protein TypA/BipA
+2737840609	172	18	172	2.5e-29	88.5	TIGR00714	Fe-S protein assembly co-chaperone HscB
+2737840610	107	3	107	3.2e-55	172	TIGR02011	iron-sulfur cluster assembly protein IscA
+2737840610	107	3	107	7.2e-38	116.2	TIGR00049	Iron-sulfur cluster assembly accessory protein
+2737840611	128	3	127	3.1e-71	223.4	TIGR01999	FeS cluster assembly scaffold IscU
+2737840612	405	4	405	0.0e+00	711.9	TIGR02006	cysteine desulfurase IscS
+2737840612	405	8	387	0.0e+00	463.6	TIGR03402	cysteine desulfurase NifS
+2737840613	178	1	132	6.9e-48	149	TIGR00738	Rrf2 family protein
+2737840613	178	1	136	1.8e-66	209.2	TIGR02010	iron-sulfur cluster assembly transcription factor IscR
+2737840622	287	1	286	3.3e-104	334	TIGR03818	flagellar motor stator protein MotA
+2737840628	324	3	320	7.6e-120	385.9	TIGR00971	sulfate/thiosulfate-binding protein
+2737840629	287	18	282	0.0e+00	424.1	TIGR02139	sulfate ABC transporter, permease protein CysT
+2737840629	287	6	278	8.5e-102	327.2	TIGR00969	sulfate ABC transporter, permease protein
+2737840630	305	23	283	0.0e+00	433.9	TIGR02140	sulfate ABC transporter, permease protein CysW
+2737840630	305	9	280	5.9e-105	337.6	TIGR00969	sulfate ABC transporter, permease protein
+2737840631	331	3	243	7.5e-128	411	TIGR00968	sulfate ABC transporter, ATP-binding protein
+2737840632	438	18	438	0.0e+00	715.5	TIGR02014	chlorophyllide reductase subunit Z
+2737840633	517	52	477	0.0e+00	685.7	TIGR02015	chlorophyllide reductase subunit Y
+2737840641	287	8	287	1.8e-99	319.4	TIGR02963	xanthine dehydrogenase, small subunit
+2737840642	117	1	117	1.1e-39	121.5	TIGR02962	hydroxyisourate hydrolase
+2737840644	316	10	314	0.0e+00	504.7	TIGR03212	putative urate catabolism protein
+2737840647	438	20	432	1.5e-79	254.7	TIGR00275	flavoprotein, HI0933 family
+2737840647	438	40	438	0.0e+00	479.6	TIGR03862	uncharacterized flavoprotein, PP_4765 family
+2737840648	110	9	109	1.6e-43	133.3	TIGR01068	thioredoxin
+2737840649	420	1	418	0.0e+00	685.1	TIGR00767	transcription termination factor Rho
+2737840650	86	1	82	3.8e-23	67.6	TIGR00105	ribosomal protein L31
+2737840655	325	1	324	4.3e-95	304.9	TIGR00133	aspartyl/glutamyl-tRNA(Asn/Gln) amidotransferase, B subunit
+2737840660	372	20	184	2.8e-32	97.8	TIGR03082	membrane protein AbrB duplication
+2737840662	282	5	281	1.4e-108	348.8	TIGR00655	formyltetrahydrofolate deformylase
+2737840664	502	62	473	0.0e+00	507.2	TIGR00387	glycolate oxidase, subunit GlcD
+2737840669	603	1	573	5.6e-72	229.7	TIGR00361	DNA internalization-related competence protein ComEC/Rec2
+2737840669	603	3	141	4.1e-21	63.1	TIGR00360	ComEC/Rec2-related protein
+2737840672	303	37	277	3.2e-76	241.9	TIGR00761	acetylglutamate kinase
+2737840673	305	2	304	6.6e-103	329.7	TIGR01214	dTDP-4-dehydrorhamnose reductase
+2737840674	355	3	339	0.0e+00	505.7	TIGR01181	dTDP-glucose 4,6-dehydratase
+2737840689	770	413	770	0.0e+00	529.1	TIGR00487	translation initiation factor IF-2
+2737840689	770	497	658	1.2e-34	106.6	TIGR00231	small GTP-binding protein domain
+2737840690	494	367	416	6.0e-22	65.3	TIGR01954	transcription termination factor NusA, C-terminal duplication
+2737840690	494	4	345	3.2e-121	392	TIGR01953	transcription termination factor NusA
+2737840698	879	25	877	0.0e+00	755.5	TIGR01693	[Protein-PII] uridylyltransferase
+2737840699	271	3	255	1.9e-98	314.9	TIGR00500	methionine aminopeptidase, type I
+2737840700	573	7	573	0.0e+00	719	TIGR01735	phosphoribosylformylglycinamidine synthase, single chain form
+2737840702	271	1	269	2.8e-87	278.5	TIGR00577	DNA-formamidopyrimidine glycosylase
+2737840703	342	7	283	4.1e-111	356.9	TIGR01084	A/G-specific adenine glycosylase
+2737840708	113	9	112	2.3e-15	42.6	TIGR00547	periplasmic chaperone LolA
+2737840709	224	50	224	4.4e-38	117.2	TIGR00157	ribosome small subunit-dependent GTPase A
+2737840715	127	1	116	1.2e-52	163.1	TIGR01024	ribosomal protein L19, bacterial type
+2737840716	265	1	239	6.9e-82	260.2	TIGR00088	tRNA (guanine-N1)-methyltransferase
+2737840717	202	14	202	8.8e-46	141.4	TIGR02273	16S rRNA processing protein RimM
+2737840718	83	2	81	4.2e-29	86.7	TIGR00002	ribosomal protein S16
+2737840721	161	11	139	1.2e-43	134.4	TIGR01498	2-amino-4-hydroxy-6-hydroxymethyldihydropteridine diphosphokinase
+2737840725	525	8	525	0.0e+00	818.7	TIGR03248	galactarate dehydratase
+2737840727	653	136	263	6.8e-28	83.5	TIGR00229	PAS domain S-box
+2737840731	404	27	403	0.0e+00	479	TIGR00630	excinuclease ABC, A subunit
+2737840733	165	1	165	5.2e-57	178.9	TIGR00621	single stranded DNA-binding protein (ssb)
+2737840737	417	28	288	1.7e-63	200.8	TIGR00765	YihY family inner membrane protein
+2737840741	432	17	427	0.0e+00	468.9	TIGR00786	TRAP transporter, DctM subunit
+2737840744	578	27	564	0.0e+00	442.1	TIGR00110	dihydroxy-acid dehydratase
+2737840748	538	25	529	0.0e+00	702.2	TIGR02891	cytochrome c oxidase, subunit I
+2737840761	112	3	112	9.4e-52	160	TIGR00686	alkylphosphonate utilization operon protein PhnA
+2737840765	317	2	312	0.0e+00	432.2	TIGR01202	2-desacetyl-2-hydroxyethyl bacteriochlorophyllide A dehydrogenase
+2737840766	233	37	233	1.4e-106	342.1	TIGR02016	chlorophyllide reductase iron protein subunit X
+2737840768	174	30	159	5.4e-36	109.9	TIGR01951	transcription antitermination factor NusB
+2737840769	168	17	150	9.1e-43	131.8	TIGR00114	6,7-dimethyl-8-ribityllumazine synthase
+2737840770	375	11	208	1.9e-74	235.6	TIGR00506	3,4-dihydroxy-2-butanone 4-phosphate synthase
+2737840771	216	1	211	1.9e-58	183	TIGR00187	riboflavin synthase, alpha subunit
+2737840772	192	25	131	2.8e-45	139.4	TIGR01848	polyhydroxyalkanoate synthesis repressor PhaR
+2737840773	293	14	293	3.7e-104	336.1	TIGR01125	ribosomal protein S12 methylthiotransferase RimO
+2737840773	293	14	293	2.8e-61	194.5	TIGR00089	radical SAM methylthiotransferase, MiaB/RimO family
+2737840774	224	5	224	8.5e-99	317.6	TIGR00204	1-deoxy-D-xylulose-5-phosphate synthase
+2737840776	84	20	76	2.7e-24	71.3	TIGR01280	exodeoxyribonuclease VII, small subunit
+2737840783	177	2	176	2.5e-76	241.4	TIGR03654	ribosomal protein L6, bacterial type
+2737840784	121	4	121	2.2e-35	107.7	TIGR00060	ribosomal protein L18, bacterial type
+2737840785	172	14	169	1.1e-67	212.8	TIGR01021	ribosomal protein S5, bacterial/organelle type
+2737840786	60	7	60	8.7e-27	78.9	TIGR01308	ribosomal protein L30, bacterial/organelle
+2737840787	143	2	143	1.2e-49	153.9	TIGR01071	ribosomal protein L15, bacterial/organelle
+2737840789	66	1	59	4.4e-20	58.4	TIGR02727	5,10-methenyltetrahydrofolate synthetase
+2737840793	467	9	466	0.0e+00	575.2	TIGR01173	UDP-N-acetylglucosamine diphosphorylase/glucosamine-1-phosphate N-acetyltransferase
+2737840801	139	8	128	8.5e-18	51	TIGR00051	acyl-CoA thioester hydrolase, YbgC/YbaW family
+2737840805	199	10	150	4.1e-16	45.9	TIGR00725	TIGR00725 family protein
+2737840805	199	10	186	6.5e-64	202	TIGR00730	TIGR00730 family protein
+2737840807	541	254	529	3.9e-63	199	TIGR00552	NAD+ synthetase
+2737840811	145	23	137	8.0e-25	74.4	TIGR00369	uncharacterized domain 1
+2737840811	145	25	138	3.5e-48	149.7	TIGR02286	phenylacetic acid degradation protein PaaD
+2737840812	267	9	267	2.6e-102	327.7	TIGR02280	phenylacetate degradation probable enoyl-CoA hydratase paaB
+2737840815	661	96	172	9.5e-25	72.6	TIGR01901	filamentous hemagglutinin family N-terminal domain
+2737840819	252	172	249	2.6e-24	71.6	TIGR01352	TonB family C-terminal domain
+2737840825	128	10	126	9.3e-30	89.6	TIGR00004	reactive intermediate/imine deaminase
+2737840831	328	3	324	0.0e+00	465.9	TIGR01759	malate dehydrogenase
+2737840833	143	6	138	1.2e-33	102.1	TIGR02970	succinate dehydrogenase, cytochrome b556 subunit
+2737840834	122	15	120	1.5e-36	111.1	TIGR02968	succinate dehydrogenase, hydrophobic membrane anchor protein
+2737840835	601	11	601	0.0e+00	914.9	TIGR01816	succinate dehydrogenase, flavoprotein subunit, E. coli/mitochondrial subgroup
+2737840835	601	14	601	0.0e+00	780.9	TIGR01812	succinate dehydrogenase or fumarate reductase, flavoprotein subunitGram-negative/mitochondrial subgroup
+2737840836	234	8	226	2.7e-87	277.9	TIGR00384	succinate dehydrogenase and fumarate reductase iron-sulfur protein
+2737840838	432	16	430	0.0e+00	763.8	TIGR01798	citrate synthase I (hexameric type)
+2737840839	483	1	482	0.0e+00	763.5	TIGR00170	3-isopropylmalate dehydratase, large subunit
+2737840840	217	1	196	6.0e-86	273.2	TIGR00171	3-isopropylmalate dehydratase, small subunit
+2737840841	356	2	351	0.0e+00	499.4	TIGR00169	3-isopropylmalate dehydrogenase
+2737840842	208	3	208	5.0e-103	330.8	TIGR01745	aspartate-semialdehyde dehydrogenase, gamma-proteobacterial
+2737840843	1963	5	969	0.0e+00	929	TIGR00630	excinuclease ABC, A subunit
+2737840846	321	1	295	9.4e-127	409.6	TIGR03156	GTP-binding protein HflX
+2737840846	321	123	288	5.8e-13	36	TIGR00231	small GTP-binding protein domain
+2737840847	456	131	406	4.6e-93	297.4	TIGR01933	HflK protein
+2737840848	299	154	289	2.8e-45	140.5	TIGR01932	HflC protein
+2737840859	907	13	904	0.0e+00	1136.1	TIGR02414	aminopeptidase N, Escherichia coli type
+2737840862	223	11	223	1.3e-70	223.6	TIGR00608	DNA repair protein radc
+2737840864	308	3	283	3.2e-102	327.5	TIGR00216	(E)-4-hydroxy-3-methyl-but-2-enyl pyrophosphate reductase (IPP and DMAPP forming)
+2737840865	436	1	428	0.0e+00	551.4	TIGR00414	seryl-tRNA synthetase
+2737840867	514	466	514	2.2e-10	26.9	TIGR00229	PAS domain S-box
+2737840870	176	12	118	5.4e-16	45	TIGR00229	PAS domain S-box
+2737840874	321	29	282	4.2e-67	212.3	TIGR00787	tripartite ATP-independent periplasmic transporter solute receptor, DctP family
+2737840876	370	17	370	2.2e-105	338.7	TIGR00786	TRAP transporter, DctM subunit
+2737840877	405	12	405	0.0e+00	579.8	TIGR00561	NAD(P) transhydrogenase, alpha subunit
+2737840881	647	18	179	5.2e-33	101.6	TIGR03061	YhgE/Pip N-terminal domain
+2737840881	647	189	216	3.3e-06	15.1	TIGR03057	X-X-X-Leu-X-X-Gly heptad repeats
+2737840881	647	431	635	5.6e-37	115	TIGR03062	YhgE/Pip C-terminal domain
+2737840885	230	1	227	7.3e-78	247.5	TIGR02964	xanthine dehydrogenase accessory protein XdhC
+2737840888	202	29	194	2.7e-46	143.4	TIGR00093	pseudouridine synthase
+2737840890	315	15	52	2.9e-10	26.2	TIGR02276	40-residue YVTN family beta-propeller repeat
+2737840895	471	6	470	0.0e+00	654.1	TIGR00653	glutamine synthetase, type I
+2737840900	351	17	327	1.1e-111	359.1	TIGR03167	tRNA 2-selenouridine synthase
+2737840905	449	1	448	0.0e+00	739.8	TIGR00514	acetyl-CoA carboxylase, biotin carboxylase subunit
+2737840906	154	1	154	5.2e-60	188.5	TIGR00531	acetyl-CoA carboxylase, biotin carboxyl carrier protein
+2737840909	444	1	442	0.0e+00	649	TIGR01081	UDP-N-acetylmuramate:L-alanyl-gamma-D-glutamyl-meso-diaminopimelate ligase
+2737840910	372	23	371	0.0e+00	549.3	TIGR00034	phospho-2-dehydro-3-deoxyheptonate aldolase
+2737840915	83	3	83	8.2e-26	77.9	TIGR01682	molybdopterin converting factor, subunit 1, non-archaeal
+2737840915	83	3	83	9.6e-18	51.7	TIGR01687	MoaD family protein, archaeal
+2737840916	228	1	139	4.8e-29	87.3	TIGR00177	molybdenum cofactor synthesis domain
+2737840917	906	2	906	0.0e+00	1121.7	TIGR00594	DNA-directed DNA polymerase III (polc)
+2737840923	724	7	724	0.0e+00	843	TIGR02068	cyanophycin synthetase
+2737840926	379	5	355	0.0e+00	445.2	TIGR02349	chaperone protein DnaJ
+2737840928	382	1	382	0.0e+00	547.9	TIGR00873	6-phosphogluconate dehydrogenase (decarboxylating)
+2737840930	207	1	160	6.6e-58	182.1	TIGR00787	tripartite ATP-independent periplasmic transporter solute receptor, DctP family
+2737840932	656	7	642	0.0e+00	877.1	TIGR00136	glucose-inhibited division protein A
+2737840933	215	28	211	6.7e-54	168.4	TIGR00138	16S rRNA (guanine(527)-N(7))-methyltransferase RsmG
+2737840935	307	3	307	0.0e+00	457.1	TIGR00435	cysteinyl-tRNA synthetase
+2737840940	345	4	343	0.0e+00	466.2	TIGR00856	dihydroorotase, homodimeric type
+2737840942	222	14	113	1.1e-27	82.7	TIGR01726	amine acid ABC transporter, permease protein, 3-TM region, His/Glu/Gln/Arg/opine family
+2737840943	239	18	120	4.1e-22	64.8	TIGR01726	amine acid ABC transporter, permease protein, 3-TM region, His/Glu/Gln/Arg/opine family
+2737840947	329	11	325	0.0e+00	422.1	TIGR04348	putative glycosyltransferase, TIGR04348 family
+2737840948	422	363	412	5.3e-26	77.8	TIGR04373	EgtB-related enzyme signature domain
+2737840949	324	17	321	6.9e-104	333.2	TIGR03438	dimethylhistidine N-methyltransferase
+2737840965	377	50	373	3.0e-58	183.2	TIGR01730	RND family efflux transporter, MFP subunit
+2737840968	604	2	598	0.0e+00	801.2	TIGR00459	aspartyl-tRNA synthetase, bacterial type
+2737840973	320	1	308	4.3e-102	327.5	TIGR00938	homoserine kinase, Neisseria type
+2737840978	140	2	140	2.3e-53	166.6	TIGR00639	phosphoribosylglycinamide formyltransferase, formyltetrahydrofolate-dependent
+2737840979	111	1	106	1.3e-38	118.6	TIGR00119	acetolactate synthase, small subunit
+2737840980	338	14	328	0.0e+00	434.3	TIGR00465	ketol-acid reductoisomerase
+2737840981	271	32	195	7.1e-40	122.7	TIGR00473	CDP-diacylglycerol--serine O-phosphatidyltransferase
+2737840982	512	4	499	0.0e+00	700.8	TIGR00973	2-isopropylmalate synthase, bacterial type
+2737840984	1147	25	56	2.2e-10	26.4	TIGR02601	autotransporter-associated beta strand repeat
+2737840986	176	1	160	2.0e-64	202.3	TIGR00168	translation initiation factor IF-3
+2737840988	67	2	64	4.4e-27	80.5	TIGR00001	ribosomal protein L35
+2737840989	120	1	114	1.0e-52	163.4	TIGR01032	ribosomal protein L20
+2737840990	345	37	345	5.0e-95	304.4	TIGR00468	phenylalanyl-tRNA synthetase, alpha subunit
+2737840991	774	1	774	0.0e+00	707.5	TIGR00472	phenylalanyl-tRNA synthetase, beta subunit, non-spirochete bacterial
+2737840999	277	7	274	2.3e-45	140.8	TIGR00507	shikimate dehydrogenase
+2737841005	277	3	276	1.3e-78	249.8	TIGR00507	shikimate dehydrogenase
+2737841010	145	7	123	4.1e-74	232.6	TIGR02792	protocatechuate 4,5-dioxygenase, alpha subunit
+2737841013	369	2	369	1.6e-98	316	TIGR00663	DNA polymerase III, beta subunit
+2737841014	466	18	464	0.0e+00	560.4	TIGR00362	chromosomal replication initiator protein DnaA
+2737841015	44	1	44	8.6e-28	82.6	TIGR01030	ribosomal protein L34, bacterial type
+2737841016	79	1	68	1.0e-08	21.6	TIGR00188	ribonuclease P protein component, eubacterial
+2737841017	91	7	80	5.9e-29	86	TIGR00278	putative membrane protein insertion efficiency factor
+2737841018	563	370	549	1.2e-70	224.5	TIGR03592	membrane protein insertase, YidC/Oxa1 family, C-terminal domain
+2737841018	563	4	369	1.8e-112	363.5	TIGR03593	membrane protein insertase, YidC/Oxa1 family, N-terminal domain
+2737841023	334	237	329	3.0e-24	71.2	TIGR01727	oligopeptide/dipeptide ABC transporter, ATP-binding protein, C-terminal domain
+2737841026	478	33	470	8.3e-88	281	TIGR00479	23S rRNA (uracil-5-)-methyltransferase RumA
+2737841029	588	48	587	0.0e+00	743.3	TIGR00110	dihydroxy-acid dehydratase
+2737841030	776	19	776	0.0e+00	1182.9	TIGR02386	DNA-directed RNA polymerase, beta' subunit, predominant form
+2737841031	794	1	791	0.0e+00	1108	TIGR02013	DNA-directed RNA polymerase, beta subunit
+2737841037	127	4	125	6.6e-35	106.3	TIGR01396	flagellar basal-body rod protein FlgB
+2737841038	141	4	140	1.8e-49	153.6	TIGR01395	flagellar basal-body rod protein FlgC
+2737841040	402	1	402	6.7e-50	156.7	TIGR03506	flagellar hook-basal body protein
+2737841049	305	9	303	1.8e-107	344.7	TIGR00212	hydroxymethylbilane synthase
+2737841051	180	11	180	6.1e-64	202.6	TIGR00838	argininosuccinate lyase
+2737841060	210	63	191	1.4e-10	27.6	TIGR01509	haloacid dehalogenase superfamily, subfamily IA, variant 3 with third motif having DD or ED
+2737841063	141	4	123	7.6e-33	99.4	TIGR00150	tRNA threonylcarbamoyl adenosine modification protein YjeE
+2737841064	341	1	341	3.5e-130	419.9	TIGR00276	epoxyqueuosine reductase
+2737841067	106	1	94	8.5e-40	121.3	TIGR00988	integration host factor, beta subunit
+2737841074	281	3	257	1.4e-68	217.6	TIGR00154	4-diphosphocytidyl-2C-methyl-D-erythritol kinase
+2737841076	323	10	320	2.8e-128	413.2	TIGR01251	ribose-phosphate pyrophosphokinase
+2737841077	209	3	184	2.3e-44	137.3	TIGR00731	ribosomal protein bL25, Ctc-form
+2737841078	231	2	188	9.8e-65	203.8	TIGR00447	aminoacyl-tRNA hydrolase
+2737841080	246	12	153	1.6e-35	108.3	TIGR00177	molybdenum cofactor synthesis domain
+2737841081	1030	3	1021	0.0e+00	779.9	TIGR00915	The (Largely Gram-negative Bacterial) Hydrophobe/Amphiphile Efflux-1 (HAE1) Family
+2737841082	271	1	182	2.4e-45	140.8	TIGR01730	RND family efflux transporter, MFP subunit
+2737841083	347	1	347	0.0e+00	518.1	TIGR02089	tartrate dehydrogenase
+2737841088	472	27	466	0.0e+00	591.4	TIGR00665	replicative DNA helicase
+2737841089	680	1	541	0.0e+00	493.4	TIGR00398	methionine--tRNA ligase
+2737841089	680	560	680	3.4e-42	130.7	TIGR00399	methionyl-tRNA synthetase C-terminal region/beta chain
+2737841090	480	12	477	1.7e-101	326.3	TIGR00815	high affinity sulphate transporter 1
+2737841092	178	23	178	1.8e-57	179.9	TIGR02159	phenylacetate-CoA oxygenase, PaaJ subunit
+2737841093	367	6	365	0.0e+00	427.2	TIGR02160	phenylacetate-CoA oxygenase/reductase, PaaK subunit
+2737841094	285	17	285	1.4e-98	315.6	TIGR00676	5,10-methylenetetrahydrofolate reductase, prokaryotic form
+2737841095	282	2	243	4.7e-55	172.4	TIGR00478	TlyA family rRNA methyltransferase/putative hemolysin
+2737841096	118	2	110	1.3e-43	135.3	TIGR00936	adenosylhomocysteinase
+2737841100	294	2	291	4.8e-127	409.1	TIGR01505	2-hydroxy-3-oxopropionate reductase
+2737841104	422	8	422	0.0e+00	469.7	TIGR02212	lipoprotein releasing system, transmembrane protein, LolC/E family
+2737841105	232	10	230	1.1e-100	321.6	TIGR02211	lipoprotein releasing system, ATP-binding protein
+2737841106	279	2	270	2.1e-51	160.8	TIGR00010	hydrolase, TatD family
+2737841114	510	6	503	2.6e-86	276.2	TIGR02734	phytoene desaturase
+2737841118	752	8	752	0.0e+00	1213.3	TIGR00759	pyruvate dehydrogenase E1 component, homodimeric type
+2737841123	135	5	135	4.1e-54	168.4	TIGR00357	methionine-R-sulfoxide reductase
+2737841124	180	1	177	8.1e-55	171.8	TIGR00997	intracellular septation protein A
+2737841129	318	1	318	2.2e-71	226.5	TIGR00520	L-asparaginase, type II
+2737841130	223	4	221	7.3e-73	230.5	TIGR00498	SOS regulatory protein LexA
+2737841135	256	4	256	3.3e-110	353.3	TIGR01963	3-hydroxybutyrate dehydrogenase
+2737841138	206	18	205	3.8e-43	133.4	TIGR00095	16S rRNA (guanine(966)-N(2))-methyltransferase RsmD
+2737841139	168	10	164	6.1e-60	188.8	TIGR01510	pantetheine-phosphate adenylyltransferase, bacterial
+2737841139	168	10	70	2.3e-19	56.6	TIGR00125	cytidyltransferase-like domain
+2737841140	540	1	538	0.0e+00	449.6	TIGR00644	single-stranded-DNA-specific exonuclease RecJ
+2737841147	301	2	290	0.0e+00	523.5	TIGR00388	glycyl-tRNA synthetase, tetrameric type, alpha subunit
+2737841148	710	1	709	0.0e+00	621.3	TIGR00211	glycyl-tRNA synthetase, tetrameric type, beta subunit
+2737841149	195	3	160	2.4e-34	106.1	TIGR00213	D,D-heptose 1,7-bisphosphate phosphatase
+2737841149	195	4	149	4.6e-35	108.5	TIGR01662	HAD-superfamily hydrolase, subfamily IIIA
+2737841149	195	4	151	2.8e-46	144.8	TIGR01656	histidinol-phosphate phosphatase family domain
+2737841150	249	56	188	1.3e-31	95.2	TIGR00530	1-acyl-sn-glycerol-3-phosphate acyltransferases
+2737841155	125	1	125	1.2e-39	121.4	TIGR00527	glycine cleavage system H protein
+2737841156	425	16	419	0.0e+00	443.9	TIGR00786	TRAP transporter, DctM subunit
+2737841158	622	59	593	1.4e-89	287.4	TIGR00206	flagellar basal-body M-ring protein/flagellar hook-basal body protein (fliF)
+2737841159	348	11	348	1.9e-95	306	TIGR00207	flagellar motor switch protein FliG
+2737841161	374	2	374	0.0e+00	469.4	TIGR01026	ATPase, FliI/YscN family
+2737841164	793	20	787	0.0e+00	712.4	TIGR02416	carbon-monoxide dehydrogenase, large subunit
+2737841167	372	159	331	9.8e-15	41.8	TIGR00231	small GTP-binding protein domain
+2737841167	372	3	334	0.0e+00	464.5	TIGR02729	Obg family GTPase CgtA
+2737841168	86	1	83	3.8e-41	125.3	TIGR00062	ribosomal protein L27
+2737841169	103	2	102	6.6e-40	121.9	TIGR00061	ribosomal protein L21
+2737841177	240	163	240	4.1e-21	61.4	TIGR01352	TonB family C-terminal domain
+2737841180	329	35	291	1.4e-59	187.6	TIGR00787	tripartite ATP-independent periplasmic transporter solute receptor, DctP family
+2737841191	289	31	289	1.3e-111	359.2	TIGR04553	putative selenate ABC transporter periplasmic binding protein
+2737841191	289	5	249	4.6e-75	239.3	TIGR01098	phosphate/phosphite/phosphonate ABC transporter, periplasmic binding protein
+2737841193	278	15	278	7.5e-64	201.6	TIGR01097	phosphonate ABC transporter, permease protein PhnE
+2737841194	277	21	276	8.8e-81	257.1	TIGR01097	phosphonate ABC transporter, permease protein PhnE
+2737841196	159	9	153	2.6e-81	256.8	TIGR01957	NADH-quinone oxidoreductase, B subunit
+2737841199	128	5	77	8.5e-30	88.9	TIGR00810	protein translocase, SecG subunit
+2737841200	252	9	241	3.6e-67	212.5	TIGR00419	triosephosphate isomerase
+2737841201	336	1	336	0.0e+00	452	TIGR02824	putative NAD(P)H quinone oxidoreductase, PIG3 family
+2737841202	703	12	694	0.0e+00	1045.7	TIGR03591	polyribonucleotide nucleotidyltransferase
+2737841203	88	3	88	2.1e-40	123.2	TIGR00952	ribosomal protein S15, bacterial/organelle
+2737841205	777	1	774	0.0e+00	1115.8	TIGR02068	cyanophycin synthetase
+2737841206	1000	2	1000	0.0e+00	727.3	TIGR02168	chromosome segregation protein SMC, common bacterial type
+2737841209	325	1	305	0.0e+00	541.9	TIGR01115	photosynthetic reaction center M subunit
+2737841210	278	35	273	0.0e+00	428.1	TIGR01157	photosynthetic reaction center L subunit
+2737841217	171	11	170	1.9e-47	147.3	TIGR00077	lipoprotein signal peptidase
+2737841219	260	1	260	0.0e+00	455.5	TIGR00485	translation elongation factor TU
+2737841221	127	67	124	1.8e-18	52.5	TIGR00964	preprotein translocase, SecE subunit, bacterial
+2737841222	193	21	193	1.5e-71	226.9	TIGR00922	transcription termination/antitermination factor NusG
+2737841223	143	3	142	2.5e-67	211.3	TIGR01632	50S ribosomal protein uL11, bacterial form
+2737841224	231	3	229	7.5e-105	335.3	TIGR01169	ribosomal protein L1, bacterial/chloroplast
+2737841226	125	1	125	4.2e-50	155.5	TIGR00855	ribosomal protein L7/L12
+2737841228	187	1	186	8.6e-90	286.4	TIGR01258	phosphoglycerate mutase, BPG-dependent, family 1
+2737841229	483	52	294	8.2e-66	208.3	TIGR00225	C-terminal peptidase (prc)
+2737841233	581	1	581	0.0e+00	554.8	TIGR01450	exodeoxyribonuclease V, gamma subunit
+2737841234	634	1	633	0.0e+00	947.8	TIGR02188	acetate--CoA ligase
+2737841240	257	10	257	4.4e-80	254.6	TIGR02431	beta-ketoadipate pathway transcriptional regulators, PcaR/PcaU/PobR family
+2737841242	86	1	80	2.9e-16	45.8	TIGR00369	uncharacterized domain 1
+2737841245	397	7	395	5.5e-127	409.8	TIGR01930	acetyl-CoA acetyltransferases
+2737841256	345	7	328	0.0e+00	569.5	TIGR02012	protein RecA
+2737841260	410	2	410	0.0e+00	733.8	TIGR01369	carbamoyl-phosphate synthase, large subunit
+2737841261	387	12	386	0.0e+00	481.5	TIGR01368	carbamoyl-phosphate synthase, small subunit
+2737841266	158	5	156	2.9e-59	185.6	TIGR01462	transcription elongation factor GreA
+2737841267	157	6	104	1.4e-23	69.5	TIGR00253	putative RNA-binding protein, YhbY family
+2737841268	220	21	216	4.7e-62	194.9	TIGR00438	cell division protein FtsJ
+2737841269	622	91	585	0.0e+00	788.8	TIGR01241	ATP-dependent metalloprotease FtsH
+2737841270	285	16	277	2.4e-93	298.5	TIGR01496	dihydropteroate synthase
+2737841271	442	6	442	0.0e+00	582.4	TIGR01455	phosphoglucosamine mutase
+2737841274	262	29	261	1.1e-55	174.4	TIGR00726	YfiH family protein
+2737841276	571	49	569	0.0e+00	718.8	TIGR01838	poly(R)-hydroxyalkanoic acid synthase, class I
+2737841277	393	6	391	0.0e+00	469.5	TIGR01930	acetyl-CoA acetyltransferases
+2737841278	245	4	244	5.0e-117	375.8	TIGR01829	acetoacetyl-CoA reductase
+2737841281	471	2	29	1.9e-07	17.6	TIGR01409	Tat (twin-arginine translocation) pathway signal sequence
+2737841289	718	113	716	0.0e+00	572.3	TIGR01511	copper-(or silver)-translocating P-type ATPase
+2737841289	718	132	715	0.0e+00	598	TIGR01525	heavy metal translocating P-type ATPase
+2737841289	718	176	701	7.2e-89	286.3	TIGR01494	ATPase, P-type (transporting), HAD superfamily, subfamily IC
+2737841292	401	23	387	1.4e-112	362.4	TIGR01891	amidohydrolase
+2737841295	142	1	142	2.0e-35	108.1	TIGR00701	TIGR00701 family protein
+2737841301	283	4	283	7.3e-122	393.2	TIGR03138	7-cyano-7-deazaguanine reductase
+2737841306	329	6	329	0.0e+00	460.4	TIGR01722	methylmalonic acid semialdehyde dehydrogenase
+2737841308	211	1	201	2.5e-52	163.6	TIGR00427	membrane protein, MarC family
+2737841313	195	1	54	5.1e-19	54.5	TIGR00090	ribosome silencing factor RsfS/YbeB/iojap
+2737841314	155	1	155	8.2e-45	138.6	TIGR00246	rRNA large subunit m3Psi methyltransferase RlmH
+2737841315	200	1	194	5.3e-46	142.5	TIGR00172	MAF protein
+2737841316	490	13	427	0.0e+00	494.5	TIGR00757	ribonuclease, Rne/Rng family
+2737841328	400	136	297	1.0e-52	164.2	TIGR00093	pseudouridine synthase
+2737841329	269	5	178	1.0e-33	102.6	TIGR00281	segregation and condensation protein B
+2737841341	104	3	101	3.5e-19	55.7	TIGR03824	flagellar biosynthesis anti-sigma factor FlgM
+2737841342	235	107	234	6.3e-33	99.8	TIGR03170	flagella basal body P-ring formation protein FlgA
+2737841343	239	1	120	9.7e-13	35.3	TIGR00231	small GTP-binding protein domain
+2737841343	239	1	239	5.8e-103	331.8	TIGR00092	GTP-binding protein YchF
+2737841344	393	124	381	9.4e-67	211.4	TIGR01988	Ubiquinone biosynthesis hydroxylase, UbiH/UbiF/VisC/COQ6 family
+2737841348	192	3	192	8.4e-85	271.5	TIGR01792	urease, alpha subunit
+2737841349	112	1	103	4.5e-47	144.7	TIGR00192	urease, beta subunit
+2737841351	100	1	100	1.8e-56	174.9	TIGR00193	urease, gamma subunit
+2737841352	426	36	410	0.0e+00	600.4	TIGR03407	urea ABC transporter, urea binding protein
+2737841353	516	231	516	2.1e-129	417.3	TIGR03409	urea ABC transporter, permease protein UrtB
+2737841362	328	1	327	0.0e+00	438.1	TIGR00204	1-deoxy-D-xylulose-5-phosphate synthase
+2737841364	374	26	117	6.0e-14	38.2	TIGR00637	ModE molybdate transport repressor domain
+2737841366	349	2	321	3.9e-91	291.8	TIGR01891	amidohydrolase
+2737841370	258	1	257	5.6e-99	316.7	TIGR01968	septum site-determining protein MinD
+2737841371	86	1	84	5.0e-33	99.2	TIGR01215	cell division topological specificity factor MinE
+2737841381	460	2	430	0.0e+00	551.4	TIGR00959	signal recognition particle protein
+2737841382	445	4	439	0.0e+00	482.1	TIGR00089	radical SAM methylthiotransferase, MiaB/RimO family
+2737841382	445	4	442	0.0e+00	577	TIGR01574	tRNA-N(6)-(isopentenyl)adenosine-37 thiotransferase enzyme MiaB
+2737841386	302	90	203	2.6e-17	49.2	TIGR00093	pseudouridine synthase
+2737841395	1048	2	981	0.0e+00	1327.2	TIGR01967	RNA helicase HrpA
+2737841398	302	2	302	1.1e-83	266.8	TIGR00081	phosphoribosylaminoimidazole-succinocarboxamide synthase
+2737841400	317	4	106	2.6e-35	106.9	TIGR01068	thioredoxin
+2737841401	169	6	160	1.5e-66	208.8	TIGR01162	phosphoribosylaminoimidazole carboxylase, PurE protein
+2737841405	100	11	96	3.2e-27	81.2	TIGR00029	ribosomal protein S20
+2737841406	560	41	559	0.0e+00	440.6	TIGR01695	murein biosynthesis integral membrane protein MurJ
+2737841408	343	6	334	0.0e+00	438.1	TIGR00878	phosphoribosylaminoimidazole synthetase
+2737841410	228	3	226	3.9e-70	221.9	TIGR03420	DnaA regulatory inactivator Hda
+2737841411	204	3	193	5.8e-26	78.6	TIGR01488	Haloacid Dehalogenase superfamily, subfamily IB, phosphoserine phosphatase-like
+2737841411	204	3	204	1.2e-42	133.5	TIGR01490	HAD-superfamily subfamily IB hydrolase, TIGR01490
+2737841413	316	2	297	1.5e-98	315.8	TIGR00128	malonyl CoA-acyl carrier protein transacylase
+2737841414	325	3	325	0.0e+00	426.5	TIGR00747	3-oxoacyl-(acyl-carrier-protein) synthase III
+2737841415	354	7	341	3.9e-109	350.8	TIGR00182	fatty acid/phospholipid synthesis protein PlsX
+2737841416	60	2	55	3.8e-24	71	TIGR01031	ribosomal protein L32
+2737841418	193	6	192	1.3e-80	255.8	TIGR00566	glutamine amidotransferase of anthranilate synthase or aminodeoxychorismate synthase
+2737841419	499	26	492	0.0e+00	529.7	TIGR00564	anthranilate synthase component I, non-proteobacterial lineages
+2737841420	244	14	239	3.9e-59	187.7	TIGR01449	2-phosphoglycolate phosphatase, prokaryotic
+2737841420	244	52	210	3.1e-11	31.7	TIGR01509	haloacid dehalogenase superfamily, subfamily IA, variant 3 with third motif having DD or ED
+2737841420	244	68	204	5.7e-13	37.6	TIGR01549	haloacid dehalogenase superfamily, subfamily IA, variant 1 with third motif having Dx(3-4)D or Dx(3-4)E
+2737841421	226	6	222	3.9e-96	306.4	TIGR01163	ribulose-phosphate 3-epimerase
+2737841423	116	2	116	3.9e-42	130.3	TIGR01379	thiamine-phosphate kinase
+2737841424	269	1	258	2.8e-80	256.1	TIGR00967	preprotein translocase, SecY subunit
+2737841425	37	1	37	8.7e-25	72.9	TIGR01022	ribosomal protein L36, bacterial type
+2737841427	121	3	114	2.3e-56	175.3	TIGR03631	ribosomal protein uS13, bacterial form
+2737841428	134	15	131	3.5e-58	181.4	TIGR03632	ribosomal protein uS11, bacterial form
+2737841429	207	3	207	1.2e-86	275.6	TIGR01017	ribosomal protein S4, bacterial/organelle type
+2737841430	330	20	318	4.3e-111	356.8	TIGR02027	DNA-directed RNA polymerase, alpha subunit, bacterial and chloroplast-type
+2737841431	128	6	117	7.9e-50	154.1	TIGR00059	ribosomal protein L17
+2737841433	129	1	127	3.2e-41	127	TIGR00199	amidohydrolase, PncC family
+2737841436	475	4	474	0.0e+00	898.9	TIGR03225	benzoyl-CoA oxygenase, B subunit
+2737841437	552	7	552	0.0e+00	965.1	TIGR03222	benzoyl-CoA-dihydrodiol lyase
+2737841438	255	5	167	1.1e-74	236	TIGR01172	serine O-acetyltransferase
+2737841439	243	1	240	2.4e-55	174	TIGR00050	RNA methyltransferase, TrmH family, group 1
+2737841442	878	9	873	0.0e+00	975.7	TIGR01070	DNA mismatch repair protein MutS
+2737841444	314	1	314	0.0e+00	526.3	TIGR00382	endopeptidase Clp ATP-binding regulatory subunit (clpX)
+2737841445	202	9	200	3.3e-108	345.8	TIGR00493	ATP-dependent Clp endopeptidase, proteolytic subunit ClpP
+2737841446	437	11	417	0.0e+00	437.6	TIGR00115	trigger factor
+2737841456	227	1	227	2.5e-78	248.8	TIGR00044	pyridoxal phosphate enzyme, YggS family
+2737841458	238	12	193	2.3e-78	248	TIGR03717	integral membrane protein, YjbE family
+2737841459	298	3	297	1.5e-126	407.6	TIGR01019	succinyl-CoA synthetase, alpha subunit
+2737841460	386	1	386	0.0e+00	526.1	TIGR01016	succinyl-CoA synthetase, beta subunit
+2737841461	262	12	260	3.0e-98	314.9	TIGR01851	N-acetyl-gamma-glutamyl-phosphate reductase, uncommon form
+2737841472	245	53	245	2.4e-58	182.7	TIGR00091	tRNA (guanine-N(7)-)-methyltransferase
+2737841473	305	26	305	1.1e-45	142.1	TIGR00005	pseudouridine synthase, RluA family
+2737841478	385	12	373	0.0e+00	459	TIGR01392	homoserine O-acetyltransferase
+2737841479	194	6	192	2.9e-75	238.2	TIGR02081	methionine biosynthesis protein MetW
+2737841485	343	30	286	7.0e-86	273.8	TIGR00787	tripartite ATP-independent periplasmic transporter solute receptor, DctP family
+2737841486	425	17	421	0.0e+00	492	TIGR00786	TRAP transporter, DctM subunit
+2737841493	928	229	922	0.0e+00	712.1	TIGR01591	formate dehydrogenase, alpha subunit, archaeal-type
+2737841497	70	2	59	1.1e-27	81.9	TIGR00030	ribosomal protein S21
+2737841498	410	6	402	4.4e-119	383.8	TIGR00275	flavoprotein, HI0933 family
+2737841499	286	32	271	8.3e-88	280.1	TIGR01469	uroporphyrin-III C-methyltransferase
+2737841502	246	30	218	3.8e-64	201.9	TIGR03598	ribosome biogenesis GTP-binding protein YsxC/EngB
+2737841505	437	141	435	9.2e-81	257.2	TIGR03144	cytochrome c-type biogenesis protein CcsB
+2737841519	266	1	265	4.1e-115	369.4	TIGR00735	imidazoleglycerol phosphate synthase, cyclase subunit
+2737841521	246	3	237	9.1e-82	260.1	TIGR00007	phosphoribosylformimino-5-aminoimidazole carboxamide ribotide isomerase
+2737841522	218	6	216	1.6e-64	203.4	TIGR01855	imidazole glycerol phosphate synthase, glutamine amidotransferase subunit
+2737841524	364	16	363	1.8e-97	312.3	TIGR01141	histidinol-phosphate aminotransferase
+2737841528	394	2	391	0.0e+00	463.8	TIGR01514	nicotinate phosphoribosyltransferase
+2737841533	462	16	453	4.6e-69	219.7	TIGR00937	chromate transporter, chromate ion transporter (CHR) family
+2737841536	787	15	784	0.0e+00	734.2	TIGR01062	DNA topoisomerase IV, A subunit, proteobacterial
+2737841542	190	106	182	4.5e-26	76.9	TIGR01901	filamentous hemagglutinin family N-terminal domain
+2737841550	357	23	357	2.6e-72	229.7	TIGR00786	TRAP transporter, DctM subunit
+2737841553	379	5	370	0.0e+00	422.2	TIGR00420	tRNA (5-methylaminomethyl-2-thiouridylate)-methyltransferase
+2737841554	324	1	322	4.9e-107	344.2	TIGR02484	CitB domain protein
+2737841555	371	48	371	0.0e+00	447.5	TIGR02745	cytochrome c oxidase accessory protein FixG
+2737841556	305	33	300	3.5e-86	275	TIGR00782	cytochrome c oxidase, cbb3-type, subunit III
+2737841558	208	12	192	7.3e-92	293.2	TIGR00781	cytochrome c oxidase, cbb3-type, subunit II
+2737841559	478	8	477	0.0e+00	789	TIGR00780	cytochrome c oxidase, cbb3-type, subunit I
+2737841560	45	1	45	5.9e-16	44.2	TIGR00847	cytochrome oxidase maturation protein, cbb3-type
+2737841563	137	3	132	3.3e-45	139.5	TIGR01216	ATP synthase, F1 epsilon subunit (delta in mitochondria)
+2737841564	467	3	466	0.0e+00	815.8	TIGR01039	ATP synthase, F1 beta subunit
+2737841565	295	1	293	2.9e-104	334.8	TIGR01146	ATP synthase, F1 gamma subunit
+2737841566	517	2	517	0.0e+00	807.5	TIGR00962	proton translocating ATP synthase, F1 alpha subunit
+2737841567	180	7	178	3.4e-40	124.2	TIGR01145	ATP synthase, F1 delta subunit
+2737841568	156	10	156	6.7e-43	132.2	TIGR01144	ATP synthase, F0 subunit b
+2737841569	82	19	76	7.4e-27	79.5	TIGR01260	ATP synthase, F0 subunit c
+2737841570	292	26	289	1.7e-44	138.4	TIGR01131	ATP synthase subunit 6 (eukaryotes),also subunit A (prokaryotes)
+2737841574	728	16	728	0.0e+00	843.2	TIGR00239	2-oxoglutarate dehydrogenase, E1 component
+2737841576	632	2	632	0.0e+00	1093.9	TIGR02316	propionate--CoA ligase
+2737841579	280	13	269	1.3e-98	315.4	TIGR00097	hydroxymethylpyrimidine kinase/phosphomethylpyrimidine kinase
+2737841580	239	10	205	1.0e-68	216.5	TIGR00693	thiamine-phosphate diphosphorylase
+2737841581	280	17	269	2.3e-82	262.3	TIGR00694	hydroxyethylthiazole kinase
+2737841584	440	20	439	1.9e-129	418.2	TIGR02034	sulfate adenylyltransferase, large subunit
+2737841586	89	1	88	1.3e-33	101.2	TIGR01402	flagellar biosynthetic protein FliQ
+2737841587	252	53	249	6.4e-86	274.2	TIGR01103	flagellar biosynthetic protein FliP
+2737841588	113	15	84	1.3e-22	65.9	TIGR03500	flagellar biosynthetic protein FliO
+2737841589	99	17	93	1.2e-31	94.7	TIGR02480	flagellar motor switch protein FliN
+2737841590	329	4	325	1.9e-79	253.1	TIGR01397	flagellar motor switch protein FliM
+2737841596	149	4	148	3.8e-49	152.2	TIGR00576	deoxyuridine 5'-triphosphate nucleotidohydrolase (dut)
+2737841597	403	4	399	7.5e-127	409.5	TIGR00521	phosphopantothenoylcysteine decarboxylase / phosphopantothenate--cysteine ligase
+2737841598	548	1	540	0.0e+00	778.9	TIGR00337	CTP synthase
+2737841599	284	12	275	1.2e-118	380.9	TIGR01362	3-deoxy-8-phosphooctulonate synthase
+2737841601	428	4	427	0.0e+00	683	TIGR01060	phosphopyruvate hydratase
+2737841615	205	13	158	3.0e-44	136.7	TIGR00177	molybdenum cofactor synthesis domain
+2737841616	851	611	838	1.3e-43	135.6	TIGR02937	RNA polymerase sigma factor, sigma-70 family
+2737841616	851	612	849	1.8e-121	391.2	TIGR02393	RNA polymerase sigma factor RpoD, C-terminal domain
+2737841620	632	10	632	0.0e+00	765.3	TIGR00344	alanine--tRNA ligase
+2737841621	382	36	382	0.0e+00	534.8	TIGR01780	succinate-semialdehyde dehydrogenase
+2737841623	151	42	145	9.5e-33	98.9	TIGR00043	rRNA maturation RNase YbeY
+2737841625	191	1	191	9.2e-61	190.7	TIGR00084	Holliday junction DNA helicase, RuvA subunit
+2737841626	233	36	233	6.4e-102	326.6	TIGR00635	Holliday junction DNA helicase, RuvB subunit
+2737841627	707	19	138	1.9e-13	36.8	TIGR00229	PAS domain S-box
+2737841635	504	2	468	0.0e+00	515.2	TIGR01134	amidophosphoribosyltransferase
+2737841637	172	1	115	3.5e-14	39.2	TIGR00229	PAS domain S-box
+2737841638	139	17	139	8.4e-48	147.8	TIGR02425	4-carboxymuconolactone decarboxylase
+2737841639	198	3	184	1.3e-67	214	TIGR01926	uncharacterized peroxidase-related enzyme
+2737841639	198	65	114	8.8e-12	31.6	TIGR00778	alkylhydroperoxidase AhpD family core domain
+2737841646	446	13	421	0.0e+00	528.3	TIGR00032	argininosuccinate synthase
+2737841647	350	9	350	1.3e-73	233.7	TIGR00179	UDP-N-acetylenolpyruvoylglucosamine reductase
+2737841653	228	6	219	9.7e-54	168.1	TIGR01189	heme ABC exporter, ATP-binding protein CcmA
+2737841656	400	2	400	0.0e+00	691.9	TIGR02430	3-oxoadipyl-CoA thiolase
+2737841656	400	6	398	1.2e-129	419.6	TIGR01930	acetyl-CoA acetyltransferases
+2737841658	392	1	389	1.5e-127	412.7	TIGR00409	prolyl-tRNA synthetase, family II
+2737841660	349	19	338	2.2e-119	384.2	TIGR01430	adenosine deaminase
+2737841671	142	1	142	2.5e-38	117.4	TIGR00242	division/cell wall cluster transcriptional repressor MraZ
+2737841672	309	1	305	1.3e-100	322.8	TIGR00006	16S rRNA (cytosine(1402)-N(4))-methyltransferase
+2737841673	98	1	85	2.5e-23	68.1	TIGR02209	cell division protein FtsL
+2737841675	512	16	501	0.0e+00	437.6	TIGR01085	UDP-N-acetylmuramyl-tripeptide synthetase
+2737841677	364	39	364	2.1e-129	418.1	TIGR00069	histidinol dehydrogenase
+2737841678	213	2	187	4.7e-64	201.7	TIGR00070	ATP phosphoribosyltransferase
+2737841679	421	1	419	0.0e+00	573.9	TIGR01072	UDP-N-acetylglucosamine 1-carboxyvinyltransferase
+2737841684	1126	37	167	1.8e-16	47.5	TIGR00640	methylmalonyl-CoA mutase C-terminal domain
+2737841684	1126	578	1126	2.8e-117	379	TIGR00641	methylmalonyl-CoA mutase N-terminal domain
+2737841693	162	10	155	1.6e-42	130.9	TIGR01419	PTS IIA-like nitrogen-regulatory protein PtsN
+2737841694	109	1	104	5.6e-35	106.2	TIGR00741	ribosomal subunit interface protein
+2737841696	328	2	327	7.6e-73	231.6	TIGR00383	magnesium Mg(2+) and cobalt Co(2+) transport protein (corA)
+2737841697	255	3	246	6.9e-44	136.1	TIGR01704	5'-methylthioadenosine/S-adenosylhomocysteine nucleosidase
+2737841706	461	27	461	2.0e-60	190.9	TIGR01844	type I secretion outer membrane protein, TolC family
+2737841712	400	171	376	7.6e-54	168.8	TIGR01583	formate dehydrogenase, gamma subunit
+2737841715	867	26	866	0.0e+00	830.9	TIGR00392	isoleucyl-tRNA synthetase
+2737841716	345	17	330	5.1e-75	238.5	TIGR00083	riboflavin kinase/FMN adenylyltransferase
+2737841718	392	148	313	3.3e-20	59.5	TIGR00254	diguanylate cyclase (GGDEF) domain
