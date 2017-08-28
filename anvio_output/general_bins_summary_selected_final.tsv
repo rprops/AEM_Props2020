@@ -1,4 +1,4 @@
-Sample	bins	taxon	total_length	num_contigs	GC_content	percent_complete	percent_redundancy	IMG_taxonid
+Sample	bins	taxon	bin_size	num_contigs	GC_content	percent_complete	percent_redundancy	IMG_taxonid
 Fa13.BD.MLB.DN	Fa13.BD.MLB.DN.fa_MC	None	2136585	292	58.1270664043	66.1870503597	0.719424460432	2737471806
 Sp13.BD.MM110.DD	Sp13.BD.MM110.DD.fa_MC	Limnohabitans	2286934	459	60.0567530405	84.8920863309	6.47482014388	2737471802
 Su13.BD.MLB.SD.C	Su13.BD.MLB.SD.C_bin2.fa	Limnohabitans	1011158	213	58.264065347	62.5899280576	0.719424460432	2737471804

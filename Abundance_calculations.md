@@ -1,0 +1,92 @@
+# Abundance calculations
+Ruben Props  
+August 17 2017  
+
+
+
+
+
+```r
+# Read data
+mean_coverage <- read.table("./anvio_output/mean_coverage_selected_final.tsv", header = TRUE)
+std_coverage <- read.table("./anvio_output/std_coverage_selected_final.tsv", header = TRUE)
+bin_size <- read.table("./anvio_output/general_bins_summary_selected_final.tsv", header = TRUE)[, c(2,4)]
+total_reads <- read.table("./anvio_output/sample_reads.tsv", header = TRUE)
+read_length <- 150
+
+# From wide to long format
+mean_coverage_long <- gather(mean_coverage, Sample_ID, coverage, 
+                             Fa13_BD_MLB_DN:Su13_BD_MM15_SN_C, factor_key=TRUE)
+mean_coverage_long[,2] <- gsub(mean_coverage_long[,2], pattern = "_C", 
+                               replacement = "")
+
+std_coverage_long <- gather(std_coverage, Sample_ID, std_coverage, 
+                            Fa13_BD_MLB_DN:Su13_BD_MM15_SN_C, 
+                            factor_key=TRUE)
+std_coverage_long[,2] <- gsub(std_coverage_long[,2], pattern = "_C", 
+                            replacement = "")
+ 
+coverage_data <- data.frame(mean_coverage_long, 
+                            std_coverage = std_coverage_long[,3])
+
+# Read and add metadata
+meta <- read.csv2("metadata.csv")
+meta$Sample_ID <- gsub(meta$Sample_ID, pattern = ".", replacement = "_", fixed = TRUE)
+data_total <- left_join(coverage_data, total_reads, by = c("Sample_ID" = "Bin"))
+data_total <- left_join(data_total, bin_size, by = "bins")
+data_total <- left_join(data_total, meta, by =  "Sample_ID")
+
+# Calculate relative abundance of the bins
+data_total$mean_rel_abundance <- 100*(data_total$coverage*data_total$bin_size)/(read_length*data_total$Total_reads)
+data_total$upper_rel_abundance <- 100*((data_total$coverage+data_total$std_coverage)*data_total$bin_size)/(read_length*data_total$Total_reads)
+data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_coverage)*data_total$bin_size)/(read_length*data_total$Total_reads)
+```
+
+# Plot 
+Formula used to calculate relative abundances:
+$$Relative\ abundance =100*(\frac{mean\ coverage * bin\ size}{read\ length*total\ sample\ reads })$$
+
+
+```r
+# Plot abundance distributions of all bins
+
+p_season <- ggplot(data = data_total, aes(x = bins, y = mean_rel_abundance, fill = bins))+
+  geom_point(size = 4, shape = 21, alpha = 0.7)+
+  geom_boxplot(alpha = 0.3)+
+  scale_fill_brewer(palette = "Paired")+
+  facet_grid(.~Site)+
+  theme_bw()+
+  geom_errorbar(aes(ymin=lower_rel_abundance, 
+                    ymax=upper_rel_abundance, 
+                    width=.1))+
+  facet_grid(Season~.)+
+  # ylim(0,1)+ 
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        strip.text.y=element_text(size=18))+
+  ylab("Mean relative abundance (%)")
+
+p_station <- ggplot(data = data_total, aes(x = bins, y = mean_rel_abundance, fill = bins))+
+  geom_point(size = 4, shape = 21, alpha = 0.7)+
+  geom_boxplot(alpha = 0.3)+
+  scale_fill_brewer(palette = "Paired")+
+  facet_grid(.~Site)+
+  theme_bw()+
+  geom_errorbar(aes(ymin=lower_rel_abundance, 
+                    ymax=upper_rel_abundance, 
+                    width=.1))+
+  facet_grid(Site~.)+
+  # ylim(0,1)+ 
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        strip.text.y=element_text(size=18))+
+  ylab("Mean relative abundance (%)")
+
+grid.arrange(p_season, p_station, nrow = 2)
+```
+
+<img src="Figures/cached/plot data-1-1.png" style="display: block; margin: auto;" />
