@@ -35,6 +35,8 @@ library('dplyr')
 library('ggplot2')
 library("grid")
 library("gridExtra")
+library("easyGgplot2")
+source("functions.R")
 ```
 
 ```{r read-format data, warning = FALSE}
@@ -73,11 +75,11 @@ data_total$upper_rel_abundance <- 100*((data_total$coverage+data_total$std_cover
 data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_coverage)*data_total$bin_size)/(read_length*data_total$Total_reads)
 ```
 
-# Plot 
+# 1. Investigate MAG- and 16S-based abundances
 Formula used to calculate relative abundances:
 $$Relative\ abundance =100*(\frac{mean\ coverage * bin\ size}{read\ length*total\ sample\ reads })$$
 
-```{r plot data-1, warning = FALSE, fig.width = 15, fig.height = 30}
+```{r plot abundances, warning = FALSE, fig.width = 15, fig.height = 30}
 # Plot abundance distributions of all bins
 
 p_season <- ggplot(data = data_total, aes(x = bins, y = mean_rel_abundance, fill = bins))+
@@ -117,4 +119,105 @@ p_station <- ggplot(data = data_total, aes(x = bins, y = mean_rel_abundance, fil
   ylab("Mean relative abundance (%)")
 
 grid.arrange(p_season, p_station, nrow = 2)
+```
+
+# 2. Investigate sequence characteristics within coding DNA sequences (CDS)
+```{r gc-analysis, dpi = 500, warning = FALSE, fig.width = 15, fig.height = 30}
+# First we need the files that map the gene ID to the sequence ID (linux cmd: https://github.com/rprops/MetaG_lakeMI/wiki/11.-Genome-annotation)
+# These are stored in the IMG_annotation data for each genome bin
+
+# Next, extract the %GC of each gene from the gff file
+Bin_2737471681 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471681/IMG_Data/133052.assembled.gff", 
+                                      outputFolder = "GC_analysis")
+Bin_2737471682 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471682/IMG_Data/133053.assembled.gff", 
+                                      outputFolder = "GC_analysis")
+Bin_2737471683 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471683/IMG_Data/133054.assembled.gff", 
+                                      outputFolder = "GC_analysis")
+Bin_2737471793 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471793/IMG_Data/133647.assembled.gff", 
+                                      outputFolder = "GC_analysis")
+Bin_2737471794 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471794/IMG_Data/133648.assembled.gff", 
+                                      outputFolder = "GC_analysis")
+Bin_2737471795 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471795/IMG_Data/133649.assembled.gff", 
+                                      outputFolder = "GC_analysis")
+Bin_2737471797 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471797/IMG_Data/133651.assembled.gff", 
+                                      outputFolder = "GC_analysis")
+Bin_2737471799 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471799/IMG_Data/133653.assembled.gff", 
+                                      outputFolder = "GC_analysis")
+Bin_2737471802 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471802/IMG_Data/133656.assembled.gff", 
+                                      outputFolder = "GC_analysis")
+Bin_2737471804 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471804/IMG_Data/133658.assembled.gff", 
+                                      outputFolder = "GC_analysis")
+Bin_2737471805 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471805/IMG_Data/133659.assembled.gff", 
+                                      outputFolder = "GC_analysis")
+Bin_2737471806 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471806/IMG_Data/133660.assembled.gff", 
+                                      outputFolder = "GC_analysis")
+
+
+# Use these files to make dataframes mapping function (COGs) and %GC
+Bin_2737471681_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133052.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471681/IMG_Data/2737471681/2737471681.gene_oid_2_seq_id.txt", 
+                             functions = "./IMG_annotation/IMG_2737471681/IMG_Data/2737471681/2737471681.cog.tab.txt", 
+                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471681")
+
+Bin_2737471682_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133053.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471682/IMG_Data/2737471682/2737471682.gene_oid_2_seq_id.txt", 
+                             functions = "./IMG_annotation/IMG_2737471682/IMG_Data/2737471682/2737471682.cog.tab.txt", 
+                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471682")
+
+Bin_2737471683_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133054.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471683/IMG_Data/2737471683/2737471683.gene_oid_2_seq_id.txt", 
+                             functions = "./IMG_annotation/IMG_2737471683/IMG_Data/2737471683/2737471683.cog.tab.txt", 
+                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471683")
+
+Bin_2737471793_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133647.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471793/IMG_Data/2737471793/2737471793.gene_oid_2_seq_id.txt", 
+                             functions = "./IMG_annotation/IMG_2737471793/IMG_Data/2737471793/2737471793.cog.tab.txt", 
+                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471793")
+
+Bin_2737471794_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133648.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471794/IMG_Data/2737471794/2737471794.gene_oid_2_seq_id.txt", 
+                             functions = "./IMG_annotation/IMG_2737471794/IMG_Data/2737471794/2737471794.cog.tab.txt", 
+                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471794")
+
+Bin_2737471795_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133649.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471795/IMG_Data/2737471795/2737471795.gene_oid_2_seq_id.txt", 
+                             functions = "./IMG_annotation/IMG_2737471795/IMG_Data/2737471795/2737471795.cog.tab.txt", 
+                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471795")
+
+Bin_2737471797_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133651.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471797/IMG_Data/2737471797/2737471797.gene_oid_2_seq_id.txt", 
+                             functions = "./IMG_annotation/IMG_2737471797/IMG_Data/2737471797/2737471797.cog.tab.txt", 
+                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471797")
+
+Bin_2737471799_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133653.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471799/IMG_Data/2737471799/2737471799.gene_oid_2_seq_id.txt", 
+                             functions = "./IMG_annotation/IMG_2737471799/IMG_Data/2737471799/2737471799.cog.tab.txt", 
+                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471799")
+
+Bin_2737471802_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133656.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471802/IMG_Data/2737471802/2737471802.gene_oid_2_seq_id.txt", 
+                             functions = "./IMG_annotation/IMG_2737471802/IMG_Data/2737471802/2737471802.cog.tab.txt", 
+                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471802")
+
+Bin_2737471804_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133658.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471804/IMG_Data/2737471804/2737471804.gene_oid_2_seq_id.txt", 
+                             functions = "./IMG_annotation/IMG_2737471804/IMG_Data/2737471804/2737471804.cog.tab.txt", 
+                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471804")
+
+Bin_2737471805_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133659.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471805/IMG_Data/2737471805/2737471805.gene_oid_2_seq_id.txt", 
+                             functions = "./IMG_annotation/IMG_2737471805/IMG_Data/2737471805/2737471805.cog.tab.txt", 
+                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471805")
+
+Bin_2737471806_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133660.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471806/IMG_Data/2737471806/2737471806.gene_oid_2_seq_id.txt", 
+                             functions = "./IMG_annotation/IMG_2737471806/IMG_Data/2737471806/2737471806.cog.tab.txt", 
+                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471806")
+
+merged_gc_cog <- rbind(Bin_2737471681_gc_cog, Bin_2737471682_gc_cog, Bin_2737471683_gc_cog,
+                       Bin_2737471793_gc_cog, Bin_2737471794_gc_cog, Bin_2737471795_gc_cog,
+                       Bin_2737471797_gc_cog, Bin_2737471799_gc_cog, Bin_2737471802_gc_cog,
+                       Bin_2737471804_gc_cog, Bin_2737471805_gc_cog, Bin_2737471806_gc_cog)
+merged_gc_cog$genome_id <- as.character(merged_gc_cog$genome_id)
+```
+
+# 3. Analysis of gene length distribution
+```{r gene length analysis, dpi = 300, warning = FALSE, fig.width = 5, fig.height = 20}
+p_cog_length <- easyGgplot2::ggplot2.histogram(data = merged_gc_cog, xName = 'gene_length',
+                  groupName = 'genome_id', alpha = 0.5,
+                  legendPosition = "top", binwidth = 0.15, addMeanLine=TRUE, meanLineColor="black",
+                  meanLineType="dashed")+ theme_bw()+ ylim(0,15)+
+  facet_grid(genome_id~.)+
+  labs(x = "Gene length (bp)", y = "Count")+ theme(legend.position="none", axis.text.x = element_text(angle = 45))+
+  ggtitle("Limnohabitans MAGs")+ xlim(0,2000)
+
+print(p_cog_length)
 ```
