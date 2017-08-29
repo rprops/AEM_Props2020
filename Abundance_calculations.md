@@ -1,6 +1,6 @@
 # Abundance calculations
 Ruben Props  
-August 17 2017  
+`r format(Sys.time(), '%d %B, %Y')`  
 
 
 
