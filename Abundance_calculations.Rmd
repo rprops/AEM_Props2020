@@ -27,8 +27,9 @@ knitr::opts_chunk$set(eval = TRUE,
                       engine = "R", # Chunks will always have R code, unless noted
                       error = TRUE,
                       fig.path="Figures/cached/",  # Set the figure options
-                      fig.align = "center"
-                      )
+                      fig.align = "center",
+                      fig.width = 7, 
+                      fig.height = 6)
 # Load libraries
 library('tidyr')
 library('dplyr')
