@@ -583,13 +583,16 @@ cog_meta <- droplevels(cog_meta)
 merged_gc_cog <- dplyr::left_join(merged_gc_cog, cog_meta, by = c("cog_id" = "COG_ID"))
 merged_gc_cog <- merged_gc_cog[!is.na(merged_gc_cog$COG_functional_category),]
 
+# Visualize distribution across major metabolism functional COG groups per genome.
 p_cog_func_group <- ggplot(data = merged_gc_cog, aes(x=COG_functional_category, fill = COG_functional_cluster))+
   geom_bar(stat="count", width=0.7, color = "black", size = 0.75)+
   theme_bw()+
   facet_grid(genome_id~.)+
   scale_fill_brewer(palette = "Accent")+
-  labs(x = "Gene length (bp)", y = "Count")+ theme(legend.position="none", axis.text.x = element_text(angle = 90, hjust = 1))+
-  ggtitle("Limnohabitans MAGs")
+  labs(x = "Gene length (bp)", y = "Count")+ theme(legend.position="bottom", axis.text.x = element_text(angle = 90, hjust = 1),
+                                                   legend.text = element_text(size = 7))+
+  ggtitle("Limnohabitans MAGs")+
+  guides(fill=guide_legend(nrow=2,byrow=TRUE))
 
 print(p_cog_func_group)
 ```
@@ -602,14 +605,12 @@ p_cog_func_clust <- ggplot(data = merged_gc_cog, aes(x=COG_functional_cluster, f
   theme_bw()+
   facet_grid(genome_id~.)+
   scale_fill_brewer(palette = "Accent")+
-  labs(x = "Gene length (bp)", y = "Count")+ theme(legend.position="none", axis.text.x = element_text(angle = 90, hjust = 1))+
-  ggtitle("Limnohabitans MAGs")
+  labs(x = "Gene length (bp)", y = "Count")+ theme(legend.position="bottom",axis.text.x = element_text(angle = 90, hjust = 1),
+                                                   legend.text = element_text(size = 7))+
+  ggtitle("Limnohabitans MAGs")+
+  guides(fill=guide_legend(nrow=2,byrow=TRUE))
 
 print(p_cog_func_clust)
 ```
 
 <img src="Figures/cached/COG functional categories-2.png" style="display: block; margin: auto;" />
-
-```r
-# Visualize distribution across major metabolism functional groups per genome.
-```
