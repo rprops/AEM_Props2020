@@ -42,7 +42,10 @@ data_total$upper_rel_abundance <- 100*((data_total$coverage+data_total$std_cover
 data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_coverage)*data_total$bin_size)/(read_length*data_total$Total_reads)
 ```
 
-# 1. Investigate MAG- and 16S-based abundances
+# 1. Phylogenetic tree
+![RAxML tree for Limnohabitans genomes](./Tree/PhyloTree_Limno.png)  
+
+# 2. Investigate MAG- and 16S-based abundances
 Formula used to calculate relative abundances:
 $$Relative\ abundance =100*(\frac{mean\ coverage * bin\ size}{read\ length*total\ sample\ reads })$$
 
@@ -91,7 +94,7 @@ grid.arrange(p_season, p_station, nrow = 2)
 
 <img src="Figures/cached/plot abundances-1.png" style="display: block; margin: auto;" />
 
-# 2. Investigate sequence characteristics within coding DNA sequences (CDS)
+# 3. Investigate sequence characteristics within coding DNA sequences (CDS)
 
 ```r
 # First we need the files that map the gene ID to the sequence ID (linux cmd: https://github.com/rprops/MetaG_lakeMI/wiki/11.-Genome-annotation)
@@ -540,7 +543,7 @@ merged_gc_cog <- rbind(Bin_2737471681_gc_cog, Bin_2737471682_gc_cog, Bin_2737471
 merged_gc_cog$genome_id <- as.character(merged_gc_cog$genome_id)
 ```
 
-# 3. Analysis of gene length distribution
+# 4.. Analysis of gene length distribution
 
 ```r
 p_cog_length <- easyGgplot2::ggplot2.histogram(data = merged_gc_cog, xName = 'gene_length',
