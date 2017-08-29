@@ -543,7 +543,7 @@ merged_gc_cog <- rbind(Bin_2737471681_gc_cog, Bin_2737471682_gc_cog, Bin_2737471
 merged_gc_cog$genome_id <- as.character(merged_gc_cog$genome_id)
 ```
 
-# 4.. Analysis of gene length distribution
+# 4. Analysis of gene length distribution
 
 ```r
 p_cog_length <- easyGgplot2::ggplot2.histogram(data = merged_gc_cog, xName = 'gene_length',
@@ -558,3 +558,58 @@ print(p_cog_length)
 ```
 
 <img src="Figures/cached/gene length analysis-1.png" style="display: block; margin: auto;" />
+
+# 5. COG functional categories
+Get COG ID to COG functional category mapping file here: ftp://ftp.ncbi.nih.gov/pub/wolf/COGs/COG0303/cogs.csv    
+
+The exact statistical analysis to compare genomes based on these profiles should be performed in STAMP.
+
+
+```r
+# Import COG mapping file
+cogid_2_cogcat <- read.csv("./Mapping_files/cogid_2_cogcat.csv", sep = ",", header = FALSE, fill = TRUE,col.names = c("COG_ID", "COG_class", "function"))[, 1:2]
+cogid_2_cogcat <- cogid_2_cogcat[(cogid_2_cogcat$COG_class)!="", ]
+cogid_2_cogcat <- droplevels(cogid_2_cogcat)
+
+# Read COG category file
+cog_categories <- read.table("./Mapping_files/cog_categories.tsv", header = TRUE, sep = "\t")
+
+# Merge COG metadata
+cog_meta <- dplyr::left_join(cog_categories, cogid_2_cogcat, by = c("COG_class" = "COG_class"))
+cog_meta <- droplevels(cog_meta)
+
+# Merge this metadata with the genome data from before
+# COGs with multiple classifications are currently still NA - work on this.
+merged_gc_cog <- dplyr::left_join(merged_gc_cog, cog_meta, by = c("cog_id" = "COG_ID"))
+merged_gc_cog <- merged_gc_cog[!is.na(merged_gc_cog$COG_functional_category),]
+
+p_cog_func_group <- ggplot(data = merged_gc_cog, aes(x=COG_functional_category, fill = COG_functional_cluster))+
+  geom_bar(stat="count", width=0.7, color = "black", size = 0.75)+
+  theme_bw()+
+  facet_grid(genome_id~.)+
+  scale_fill_brewer(palette = "Accent")+
+  labs(x = "Gene length (bp)", y = "Count")+ theme(legend.position="none", axis.text.x = element_text(angle = 90, hjust = 1))+
+  ggtitle("Limnohabitans MAGs")
+
+print(p_cog_func_group)
+```
+
+<img src="Figures/cached/COG functional categories-1.png" style="display: block; margin: auto;" />
+
+```r
+p_cog_func_clust <- ggplot(data = merged_gc_cog, aes(x=COG_functional_cluster, fill = COG_functional_cluster))+
+  geom_bar(stat="count", width=0.7, color = "black", size = 0.75)+
+  theme_bw()+
+  facet_grid(genome_id~.)+
+  scale_fill_brewer(palette = "Accent")+
+  labs(x = "Gene length (bp)", y = "Count")+ theme(legend.position="none", axis.text.x = element_text(angle = 90, hjust = 1))+
+  ggtitle("Limnohabitans MAGs")
+
+print(p_cog_func_clust)
+```
+
+<img src="Figures/cached/COG functional categories-2.png" style="display: block; margin: auto;" />
+
+```r
+# Visualize distribution across major metabolism functional groups per genome.
+```
