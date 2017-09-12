@@ -1,10 +1,13 @@
 ---
-title: "Abundance calculations"
+title: "Metagenomic analysis of Limnohabitans population in Lake Michigan"
 author: "Ruben Props"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+date: '`r format(Sys.time(), ''%d %B, %Y'')`'
 output:
+  pdf_document:
+    toc: yes
   html_document:
     code_folding: show
+    css: report_styles.css
     highlight: haddock
     keep_md: yes
     theme: united
@@ -13,7 +16,6 @@ output:
       collapsed: no
       smooth_scroll: yes
       toc_depth: 2
-    css: report_styles.css
 ---
 
 
