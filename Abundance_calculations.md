@@ -1,4 +1,4 @@
-# Abundance calculations
+# Metagenomic analysis of Limnohabitans population in Lake Michigan
 Ruben Props  
 `r format(Sys.time(), '%d %B, %Y')`  
 
@@ -614,3 +614,4 @@ print(p_cog_func_clust)
 ```
 
 <img src="Figures/cached/COG functional categories-2.png" style="display: block; margin: auto;" />
+
