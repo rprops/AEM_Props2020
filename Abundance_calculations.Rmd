@@ -1,10 +1,8 @@
 ---
 title: "Metagenomic analysis of Limnohabitans population in Lake Michigan"
 author: "Ruben Props"
-date: '`r format(Sys.time(), ''%d %B, %Y'')`'
+date: "Today"
 output:
-  pdf_document:
-    toc: yes
   html_document:
     code_folding: show
     css: report_styles.css
@@ -16,11 +14,14 @@ output:
       collapsed: no
       smooth_scroll: yes
       toc_depth: 2
+  pdf_document:
+    toc: yes
 ---
 
 
 ```{r setup, include = FALSE, warning = FALSE}
-knitr::opts_chunk$set(eval = TRUE, 
+library("knitr")
+opts_chunk$set(eval = TRUE, 
                       echo = TRUE, 
                       cache = TRUE,
                       include = TRUE,
@@ -39,6 +40,8 @@ library('ggplot2')
 library("grid")
 library("gridExtra")
 library("easyGgplot2")
+library("edgeR")
+library("DESeq2")
 source("functions.R")
 ```
 
@@ -68,7 +71,7 @@ coverage_data <- data.frame(mean_coverage_long,
 # Read and add metadata
 meta <- read.csv2("metadata.csv")
 meta$Sample_ID <- gsub(meta$Sample_ID, pattern = ".", replacement = "_", fixed = TRUE)
-data_total <- left_join(coverage_data, total_reads, by = c("Sample_ID" = "Bin"))
+data_total <- left_join(coverage_data, total_reads, by = c("Sample_ID" = "sample"))
 data_total <- left_join(data_total, bin_size, by = "bins")
 data_total <- left_join(data_total, meta, by =  "Sample_ID")
 
@@ -276,4 +279,115 @@ p_cog_func_clust <- ggplot(data = merged_gc_cog, aes(x=COG_functional_cluster, f
 
 print(p_cog_func_clust)
 ```
+# 6. Expression analysis
 
+Remember:  
+  1. Get total nr. of reads through the `samtools flagstat command`.
+  2. Get gene length through the DESMAN command: `python $DESMAN/scripts/Lengths.py -i CDS.fa > CDS.len`
+
+```{r import and process data, dpi = 300, warning = FALSE, fig.width = 7, fig.height = 7}
+expr_cov <- read.table("./metaT/Coverage_genes.tsv", header = TRUE)
+colnames(expr_cov) <- gsub(colnames(expr_cov), pattern = "Map_genes.",
+                           replacement = "")
+colnames(expr_cov)[1] <- "gene_oid"
+expr_cov$gene_oid <- as.character(expr_cov$gene_oid)
+
+# Merge gene annotations from all genomes in one file
+file_list <- list.dirs("./IMG_annotation", recursive = FALSE)
+merged_file <- merge_annotations(file_list[1:12], genoid_seqid = TRUE)
+
+# Annotate this expression table with Kegg Orthology and genome ids
+expr_cov <- dplyr::left_join(expr_cov, merged_file[, c(1,10)], by = c("gene_oid"))
+
+# Move to long format dataframe for visualization in ggplot2
+expr_cov_long <- tidyr::gather(expr_cov, sample, coverage, Fa13.BD.MLB.DN:Su13.BD.MM15.SN, 
+              factor_key = TRUE)
+
+# Calculate average read recruitment to genes (for edgeR/DESeq) and also normalize to transcripts per million (TPM) just in case
+# First read in gene lengths and total sample reads
+sample_reads_metaT <- read.table("./metaT/sample_reads.tsv", header = TRUE)
+gene_lengths_metaT <- read.table("./metaT/genes_concat.len", header = TRUE)
+gene_lengths_metaT$gene <- as.character(gene_lengths_metaT$gene)
+
+# Add this information to current long dataframe
+expr_cov_long <- dplyr::left_join(expr_cov_long, sample_reads_metaT, by = "sample")
+expr_cov_long <- dplyr::left_join(expr_cov_long, gene_lengths_metaT, by = c("gene_oid" = "gene"))
+
+# Now calculate average read recruitment and TPM (relative to the recruitment to these
+# genomes in this dataset)
+# 150 = read length
+expr_cov_long <- dplyr::mutate(expr_cov_long, 
+                               mapped_reads = round((coverage * length)/(150),0)
+                               ) # Be aware that this average is already rounded here..
+expr_cov_long <- dplyr::mutate(expr_cov_long, 
+                               reads_per_kb = mapped_reads/length/1000
+                               )
+expr_cov_long <- expr_cov_long %>% group_by(sample) %>% 
+  mutate(RPK_scaling = sum(reads_per_kb)/1e6)
+expr_cov_long <- expr_cov_long %>% 
+  mutate(TPM = reads_per_kb/RPK_scaling)
+
+# Now add the metadata to this long dataframe
+expr_cov_long <- left_join(expr_cov_long, meta[, 1:11], by = c("sample" = "Sample"))
+expr_cov_long$Genome_id <- as.factor(expr_cov_long$Genome_id)
+
+# Remove duplicate rows
+expr_cov_long <- expr_cov_long %>% distinct()
+```
+
+```{r KO annotation expression analysis, dpi = 300, warning = FALSE, fig.width = 7, fig.height = 7}
+# Format data for DESeq2
+## Put count matrices in list including a count matrix for each bin 
+expr_cov_bins <- list()
+for(i in 1:nlevels(expr_cov_long$Genome_id)){
+  expr_cov_bins[[i]] <-  expr_cov_long %>% 
+  filter(Genome_id == levels(expr_cov_long$Genome_id)[i]) %>% 
+  select(gene_oid, sample, mapped_reads) %>% 
+  spread(sample, mapped_reads)
+  r.bin <- expr_cov_bins[[i]]$gene_oid
+  expr_cov_bins[[i]] <- as.matrix(expr_cov_bins[[i]][, -1])
+  rownames(expr_cov_bins[[i]]) <- r.bin
+}
+
+# Metadata file
+meta_metaT <-  distinct(meta[, 2:nrow(meta)])
+rownames(meta_metaT) <- gsub(meta_metaT$Sample_ID, pattern="_", replacement = ".")
+meta_metaT <- as.matrix(meta_metaT)
+
+# Check order of colnames in count and rownames in metadata matrix 
+# and make sure these are in the same order!
+meta_metaT <- meta_metaT[match(colnames(expr_cov_bins[[1]]), rownames(meta_metaT)), ]
+all(rownames(meta_metaT) %in% colnames(expr_cov_bins[[1]]))
+
+# Perform DESeq2 for differential abundance testing for each genome separately
+## Season effect
+General_deseq_results_season <- list()
+for(i in 1:nlevels(expr_cov_long$Genome_id)){
+  cat(" --- Running DESeq2 on Genome_id:",levels(expr_cov_long$Genome_id)[i],sep = " ")
+  dds <- DESeqDataSetFromMatrix(countData = expr_cov_bins[[i]],
+                              colData = meta_metaT,
+                              design= ~ Site + Season) # Test for season but controlling for site
+  dds <- DESeq(dds)
+  resOrdered <- res[order(res$padj),]
+  General_deseq_results_season[[i]] <- results(dds)[order(results(dds)$padj), ] # specify contrasts here if need to
+  summary(results(dds))
+}
+
+## Site effect
+General_deseq_results_site <- list()
+for(i in 1:nlevels(expr_cov_long$Genome_id)){
+  cat(" --- Running DESeq2 on Genome_id:",levels(expr_cov_long$Genome_id)[i],sep = " ")
+  dds <- DESeqDataSetFromMatrix(countData = expr_cov_bins[[i]],
+                              colData = meta_metaT,
+                              design= ~ Season + Site) # Test for season but controlling for site
+  dds <- DESeq(dds)
+  resOrdered <- res[order(res$padj),]
+  General_deseq_results_site[[i]] <- results(dds)[order(results(dds)$padj), ] # specify contrasts here if need to
+  summary(results(dds))
+}
+##
+
+##
+
+sessionInfo()
+```

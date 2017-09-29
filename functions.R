@@ -97,3 +97,75 @@ gc2function <- function(seq_id_gc, gene_id_seq_id, functions, gc_thresh = 0.75,
   }
   return(merged_df)
 }
+
+# Merge annotation files outputted by IMG ER annotation pipeline into 
+# one merged dataframe that can be used for further analysis
+# Input is list of IMG annotation dirs, e.g. :
+# c("./IMG_annotation/IMG_2737471681", "./IMG_annotation/IMG_2737471682")
+merge_annotations <- function(paths_gen, genoid_seqid = FALSE){
+  cat(" --- I will merge the annotation files from the following genomes:\n" ,sep = " ")
+  print(data.frame(Genomes = paste(paths_gen)))
+  sum_tmp <- 0
+  for(genomes in paths_gen){
+    paths_ann <- list.files(list.dirs(paste(genomes, "/IMG_Data", sep = ""))[2],
+                            full.names = TRUE)
+    
+    # Only retain paths to functional annotation files
+    paths_ann <- paths_ann[grep(pattern = "ko|pfam|tigrfam|cog|gene_oid", x = paths_ann)]
+    
+    # Now extract relevant information from all these files
+    input_trimmed_ko <- paths_ann[grep("*ko*", paths_ann)] %>% 
+      read.table(header = TRUE, sep ="\t", quote=NULL, comment='',
+                 stringsAsFactors = FALSE) %>% 
+      dplyr::select(one_of(c("gene_oid", "ko_id",
+                             "ko_name")))
+    input_trimmed_cog <- paths_ann[grep("*cog*", paths_ann)] %>% 
+      read.table(header = TRUE, sep ="\t", quote=NULL, comment='',
+                 stringsAsFactors = FALSE) %>% 
+      dplyr::select(one_of(c("gene_oid", "cog_id",
+                             "cog_name")))
+    input_trimmed_pfam <- paths_ann[grep("*pfam*", paths_ann)] %>% 
+      read.table(header = TRUE, sep ="\t", quote=NULL, comment='',
+                 stringsAsFactors = FALSE) %>% 
+      dplyr::select(one_of(c("gene_oid", "pfam_id",
+                             "pfam_name")))
+    input_trimmed_tigrfam <- paths_ann[grep("*tigrfam*", paths_ann)] %>% 
+      read.table(header = TRUE, sep ="\t", quote=NULL, comment='',
+                 stringsAsFactors = FALSE) %>% 
+      dplyr::select(one_of(c("gene_oid", "tigrfam_id",
+                             "tigrfam_name")))
+    # Merge these files into one dataframe
+    input_trimmed_ko$gene_oid <- as.character(input_trimmed_ko$gene_oid)
+    input_trimmed_cog$gene_oid <- as.character(input_trimmed_cog$gene_oid)
+    input_trimmed_pfam$gene_oid <- as.character(input_trimmed_pfam$gene_oid)
+    input_trimmed_tigrfam$gene_oid <- as.character(input_trimmed_tigrfam$gene_oid)
+    
+    merged <- dplyr::full_join(input_trimmed_ko, input_trimmed_cog, by = "gene_oid")
+    merged <- dplyr::full_join(merged, input_trimmed_pfam, by = "gene_oid")
+    merged <- dplyr::full_join(merged, input_trimmed_tigrfam, by = "gene_oid")
+    
+    # This will allow the inclusion of all seqids insteads of just the annotated
+    # genes
+    if(genoid_seqid == TRUE){
+      input_trimmed_allgenid <- paths_ann[grep("*gene_oid*", paths_ann)] %>% 
+        read.table(header = FALSE, sep =" ", quote=NULL, comment='',
+                   stringsAsFactors = FALSE) %>% 
+        dplyr::select(one_of(c("V1")))
+      colnames(input_trimmed_allgenid) <- "gene_oid"
+      input_trimmed_allgenid$gene_oid <- as.character(input_trimmed_allgenid$gene_oid)
+      merged <- dplyr::full_join(merged, input_trimmed_allgenid, by = "gene_oid")
+      print(nrow(input_trimmed_allgenid))
+    }
+    
+    # add genome ID
+    merged$Genome_id <- gsub(genomes, pattern="^.*IMG_", replacement = "")
+    sum_tmp <- length(unique(merged$gene_oid)) + sum_tmp
+    print(sum_tmp)
+    
+    if(genomes != paths_gen[1]) {
+      merged_final <- rbind(merged_final, merged)
+    } else merged_final <- merged
+  }
+  cat(date(), ' --- Sucessfully merged files\n')
+  return(merged_final)
+}

@@ -1,6 +1,6 @@
 # Metagenomic analysis of Limnohabitans population in Lake Michigan
 Ruben Props  
-`r format(Sys.time(), '%d %B, %Y')`  
+Today  
 
 
 
@@ -32,7 +32,7 @@ coverage_data <- data.frame(mean_coverage_long,
 # Read and add metadata
 meta <- read.csv2("metadata.csv")
 meta$Sample_ID <- gsub(meta$Sample_ID, pattern = ".", replacement = "_", fixed = TRUE)
-data_total <- left_join(coverage_data, total_reads, by = c("Sample_ID" = "Bin"))
+data_total <- left_join(coverage_data, total_reads, by = c("Sample_ID" = "sample"))
 data_total <- left_join(data_total, bin_size, by = "bins")
 data_total <- left_join(data_total, meta, by =  "Sample_ID")
 
@@ -134,9 +134,9 @@ Bin_2737471681_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133052.as
 ```
 
 ```
-## Mon Aug 28 18:39:29 2017  --- There are 2248 genes with > 0.1 %
-## Mon Aug 28 18:39:29 2017  --- This is 100 % of all genes
-## Mon Aug 28 18:39:29 2017  --- The 10 genes with the highest GC% are:
+## Fri Sep 29 18:41:22 2017  --- There are 2248 genes with > 0.1 %
+## Fri Sep 29 18:41:22 2017  --- This is 100 % of all genes
+## Fri Sep 29 18:41:22 2017  --- The 10 genes with the highest GC% are:
 ##                                                                                   function_id
 ## 2239 NADPH-dependent 2,4-dienoyl-CoA reductase, sulfur reductase, or a related oxidoreductase
 ## 2240                    tRNA A37 threonylcarbamoyladenosine synthetase subunit TsaC/SUA5/YrdC
@@ -168,9 +168,9 @@ Bin_2737471682_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133053.as
 ```
 
 ```
-## Mon Aug 28 18:39:29 2017  --- There are 1882 genes with > 0.1 %
-## Mon Aug 28 18:39:29 2017  --- This is 100 % of all genes
-## Mon Aug 28 18:39:29 2017  --- The 10 genes with the highest GC% are:
+## Fri Sep 29 18:41:23 2017  --- There are 1882 genes with > 0.1 %
+## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
+## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
 ##                                                                function_id
 ## 1873                                   D-alanyl-D-alanine carboxypeptidase
 ## 1874                        Aspartate/methionine/tyrosine aminotransferase
@@ -202,9 +202,9 @@ Bin_2737471683_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133054.as
 ```
 
 ```
-## Mon Aug 28 18:39:29 2017  --- There are 1727 genes with > 0.1 %
-## Mon Aug 28 18:39:29 2017  --- This is 100 % of all genes
-## Mon Aug 28 18:39:29 2017  --- The 10 genes with the highest GC% are:
+## Fri Sep 29 18:41:23 2017  --- There are 1727 genes with > 0.1 %
+## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
+## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 1718                                            Type II secretory pathway, component PulF
 ## 1719                                                    Pyrroline-5-carboxylate reductase
@@ -236,9 +236,9 @@ Bin_2737471793_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133647.as
 ```
 
 ```
-## Mon Aug 28 18:39:29 2017  --- There are 1476 genes with > 0.1 %
-## Mon Aug 28 18:39:29 2017  --- This is 100 % of all genes
-## Mon Aug 28 18:39:29 2017  --- The 10 genes with the highest GC% are:
+## Fri Sep 29 18:41:23 2017  --- There are 1476 genes with > 0.1 %
+## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
+## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 1467 Acetolactate synthase large subunit or other thiamine pyrophosphate-requiring enzyme
 ## 1468                                            2-keto-3-deoxy-L-rhamnonate aldolase RhmA
@@ -270,9 +270,9 @@ Bin_2737471794_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133648.as
 ```
 
 ```
-## Mon Aug 28 18:39:29 2017  --- There are 1226 genes with > 0.1 %
-## Mon Aug 28 18:39:29 2017  --- This is 100 % of all genes
-## Mon Aug 28 18:39:29 2017  --- The 10 genes with the highest GC% are:
+## Fri Sep 29 18:41:23 2017  --- There are 1226 genes with > 0.1 %
+## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
+## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1217                                     Cytochrome c-type biogenesis protein CcmH/NrfF
 ## 1218                                          Type II secretory pathway, component PulK
@@ -304,9 +304,9 @@ Bin_2737471795_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133649.as
 ```
 
 ```
-## Mon Aug 28 18:39:29 2017  --- There are 1383 genes with > 0.1 %
-## Mon Aug 28 18:39:29 2017  --- This is 100 % of all genes
-## Mon Aug 28 18:39:29 2017  --- The 10 genes with the highest GC% are:
+## Fri Sep 29 18:41:23 2017  --- There are 1383 genes with > 0.1 %
+## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
+## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1374                                                 Glycerol-3-phosphate dehydrogenase
 ## 1375                                          Predicted amidophosphoribosyltransferases
@@ -338,9 +338,9 @@ Bin_2737471797_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133651.as
 ```
 
 ```
-## Mon Aug 28 18:39:29 2017  --- There are 1076 genes with > 0.1 %
-## Mon Aug 28 18:39:29 2017  --- This is 100 % of all genes
-## Mon Aug 28 18:39:29 2017  --- The 10 genes with the highest GC% are:
+## Fri Sep 29 18:41:23 2017  --- There are 1076 genes with > 0.1 %
+## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
+## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1067              DNA-directed RNA polymerase specialized sigma subunit, sigma24 family
 ## 1068                                7,8-dihydro-6-hydroxymethylpterin-pyrophosphokinase
@@ -372,9 +372,9 @@ Bin_2737471799_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133653.as
 ```
 
 ```
-## Mon Aug 28 18:39:29 2017  --- There are 522 genes with > 0.1 %
-## Mon Aug 28 18:39:29 2017  --- This is 100 % of all genes
-## Mon Aug 28 18:39:29 2017  --- The 10 genes with the highest GC% are:
+## Fri Sep 29 18:41:23 2017  --- There are 522 genes with > 0.1 %
+## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
+## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
 ##                                                               function_id
 ## 513                                             Glutathione S-transferase
 ## 514                                  DNA-nicking endonuclease, Smr domain
@@ -406,9 +406,9 @@ Bin_2737471802_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133656.as
 ```
 
 ```
-## Mon Aug 28 18:39:29 2017  --- There are 1691 genes with > 0.1 %
-## Mon Aug 28 18:39:29 2017  --- This is 100 % of all genes
-## Mon Aug 28 18:39:29 2017  --- The 10 genes with the highest GC% are:
+## Fri Sep 29 18:41:23 2017  --- There are 1691 genes with > 0.1 %
+## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
+## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
 ##                                                                 function_id
 ## 1682                          Pyrimidine reductase, riboflavin biosynthesis
 ## 1683               2-C-methyl-D-erythritol 4-phosphate cytidylyltransferase
@@ -440,9 +440,9 @@ Bin_2737471804_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133658.as
 ```
 
 ```
-## Mon Aug 28 18:39:29 2017  --- There are 749 genes with > 0.1 %
-## Mon Aug 28 18:39:29 2017  --- This is 100 % of all genes
-## Mon Aug 28 18:39:29 2017  --- The 10 genes with the highest GC% are:
+## Fri Sep 29 18:41:23 2017  --- There are 749 genes with > 0.1 %
+## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
+## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 740 Uncharacterized conserved protein, contains von Willebrand factor type A (vWA) domain
 ## 741                   Uncharacterized membrane protein AbrB, regulator of aidB expression
@@ -474,9 +474,9 @@ Bin_2737471805_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133659.as
 ```
 
 ```
-## Mon Aug 28 18:39:30 2017  --- There are 1172 genes with > 0.1 %
-## Mon Aug 28 18:39:30 2017  --- This is 100 % of all genes
-## Mon Aug 28 18:39:30 2017  --- The 10 genes with the highest GC% are:
+## Fri Sep 29 18:41:23 2017  --- There are 1172 genes with > 0.1 %
+## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
+## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
 ##                                                                   function_id
 ## 1163           Ribulose-5-phosphate 4-epimerase/Fuculose-1-phosphate aldolase
 ## 1164    Asp-tRNAAsn/Glu-tRNAGln amidotransferase A subunit or related amidase
@@ -508,9 +508,9 @@ Bin_2737471806_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133660.as
 ```
 
 ```
-## Mon Aug 28 18:39:30 2017  --- There are 1584 genes with > 0.1 %
-## Mon Aug 28 18:39:30 2017  --- This is 100 % of all genes
-## Mon Aug 28 18:39:30 2017  --- The 10 genes with the highest GC% are:
+## Fri Sep 29 18:41:23 2017  --- There are 1584 genes with > 0.1 %
+## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
+## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
 ##                                                                       function_id
 ## 1575                                   Predicted NAD/FAD-dependent oxidoreductase
 ## 1576                                                 Gamma-glutamyltranspeptidase
@@ -614,4 +614,297 @@ print(p_cog_func_clust)
 ```
 
 <img src="Figures/cached/COG functional categories-2.png" style="display: block; margin: auto;" />
+# 6. Expression analysis
 
+Remember:  
+  1. Get total nr. of reads through the `samtools flagstat command`.
+  2. Get gene length through the DESMAN command: `python $DESMAN/scripts/Lengths.py -i CDS.fa > CDS.len`
+
+
+```r
+expr_cov <- read.table("./metaT/Coverage_genes.tsv", header = TRUE)
+colnames(expr_cov) <- gsub(colnames(expr_cov), pattern = "Map_genes.",
+                           replacement = "")
+colnames(expr_cov)[1] <- "gene_oid"
+expr_cov$gene_oid <- as.character(expr_cov$gene_oid)
+
+# Merge gene annotations from all genomes in one file
+file_list <- list.dirs("./IMG_annotation", recursive = FALSE)
+merged_file <- merge_annotations(file_list[1:12], genoid_seqid = TRUE)
+```
+
+```
+##  --- I will merge the annotation files from the following genomes:
+##                            Genomes
+## 1  ./IMG_annotation/IMG_2737471681
+## 2  ./IMG_annotation/IMG_2737471682
+## 3  ./IMG_annotation/IMG_2737471683
+## 4  ./IMG_annotation/IMG_2737471793
+## 5  ./IMG_annotation/IMG_2737471794
+## 6  ./IMG_annotation/IMG_2737471795
+## 7  ./IMG_annotation/IMG_2737471797
+## 8  ./IMG_annotation/IMG_2737471799
+## 9  ./IMG_annotation/IMG_2737471802
+## 10 ./IMG_annotation/IMG_2737471804
+## 11 ./IMG_annotation/IMG_2737471805
+## 12 ./IMG_annotation/IMG_2737471806
+## [1] 3117
+## [1] 3117
+## [1] 2557
+## [1] 5674
+## [1] 2456
+## [1] 8130
+## [1] 2167
+## [1] 10297
+## [1] 1871
+## [1] 12168
+## [1] 2061
+## [1] 14229
+## [1] 1612
+## [1] 15841
+## [1] 804
+## [1] 16645
+## [1] 2661
+## [1] 19306
+## [1] 1157
+## [1] 20463
+## [1] 1743
+## [1] 22206
+## [1] 2334
+## [1] 24540
+## Fri Sep 29 18:42:07 2017  --- Sucessfully merged files
+```
+
+```r
+# Annotate this expression table with Kegg Orthology and genome ids
+expr_cov <- dplyr::left_join(expr_cov, merged_file[, c(1,10)], by = c("gene_oid"))
+
+# Move to long format dataframe for visualization in ggplot2
+expr_cov_long <- tidyr::gather(expr_cov, sample, coverage, Fa13.BD.MLB.DN:Su13.BD.MM15.SN, 
+              factor_key = TRUE)
+
+# Calculate average read recruitment to genes (for edgeR/DESeq) and also normalize to transcripts per million (TPM) just in case
+# First read in gene lengths and total sample reads
+sample_reads_metaT <- read.table("./metaT/sample_reads.tsv", header = TRUE)
+gene_lengths_metaT <- read.table("./metaT/genes_concat.len", header = TRUE)
+gene_lengths_metaT$gene <- as.character(gene_lengths_metaT$gene)
+
+# Add this information to current long dataframe
+expr_cov_long <- dplyr::left_join(expr_cov_long, sample_reads_metaT, by = "sample")
+expr_cov_long <- dplyr::left_join(expr_cov_long, gene_lengths_metaT, by = c("gene_oid" = "gene"))
+
+# Now calculate average read recruitment and TPM (relative to the recruitment to these
+# genomes in this dataset)
+# 150 = read length
+expr_cov_long <- dplyr::mutate(expr_cov_long, 
+                               mapped_reads = round((coverage * length)/(150),0)
+                               ) # Be aware that this average is already rounded here..
+expr_cov_long <- dplyr::mutate(expr_cov_long, 
+                               reads_per_kb = mapped_reads/length/1000
+                               )
+expr_cov_long <- expr_cov_long %>% group_by(sample) %>% 
+  mutate(RPK_scaling = sum(reads_per_kb)/1e6)
+expr_cov_long <- expr_cov_long %>% 
+  mutate(TPM = reads_per_kb/RPK_scaling)
+
+# Now add the metadata to this long dataframe
+expr_cov_long <- left_join(expr_cov_long, meta[, 1:11], by = c("sample" = "Sample"))
+expr_cov_long$Genome_id <- as.factor(expr_cov_long$Genome_id)
+
+# Remove duplicate rows
+expr_cov_long <- expr_cov_long %>% distinct()
+```
+
+
+```r
+# Format data for DESeq2
+## Put count matrices in list including a count matrix for each bin 
+expr_cov_bins <- list()
+for(i in 1:nlevels(expr_cov_long$Genome_id)){
+  expr_cov_bins[[i]] <-  expr_cov_long %>% 
+  filter(Genome_id == levels(expr_cov_long$Genome_id)[i]) %>% 
+  select(gene_oid, sample, mapped_reads) %>% 
+  spread(sample, mapped_reads)
+  r.bin <- expr_cov_bins[[i]]$gene_oid
+  expr_cov_bins[[i]] <- as.matrix(expr_cov_bins[[i]][, -1])
+  rownames(expr_cov_bins[[i]]) <- r.bin
+}
+
+# Metadata file
+meta_metaT <-  distinct(meta[, 2:nrow(meta)])
+rownames(meta_metaT) <- gsub(meta_metaT$Sample_ID, pattern="_", replacement = ".")
+meta_metaT <- as.matrix(meta_metaT)
+
+# Check order of colnames in count and rownames in metadata matrix 
+# and make sure these are in the same order!
+meta_metaT <- meta_metaT[match(colnames(expr_cov_bins[[1]]), rownames(meta_metaT)), ]
+all(rownames(meta_metaT) %in% colnames(expr_cov_bins[[1]]))
+```
+
+```
+## [1] TRUE
+```
+
+```r
+# Perform DESeq2 for differential abundance testing for each genome separately
+## Season effect
+General_deseq_results_season <- list()
+for(i in 1:nlevels(expr_cov_long$Genome_id)){
+  cat(" --- Running DESeq2 on Genome_id:",levels(expr_cov_long$Genome_id)[i],sep = " ")
+  dds <- DESeqDataSetFromMatrix(countData = expr_cov_bins[[i]],
+                              colData = meta_metaT,
+                              design= ~ Site + Season) # Test for season but controlling for site
+  dds <- DESeq(dds)
+  resOrdered <- res[order(res$padj),]
+  General_deseq_results_season[[i]] <- results(dds)[order(results(dds)$padj), ] # specify contrasts here if need to
+  summary(results(dds))
+}
+```
+
+```
+##  --- Running DESeq2 on Genome_id: 2737471681
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'res' not found
+```
+
+```r
+## Site effect
+General_deseq_results_site <- list()
+for(i in 1:nlevels(expr_cov_long$Genome_id)){
+  cat(" --- Running DESeq2 on Genome_id:",levels(expr_cov_long$Genome_id)[i],sep = " ")
+  dds <- DESeqDataSetFromMatrix(countData = expr_cov_bins[[i]],
+                              colData = meta_metaT,
+                              design= ~ Season + Site) # Test for season but controlling for site
+  dds <- DESeq(dds)
+  resOrdered <- res[order(res$padj),]
+  General_deseq_results_site[[i]] <- results(dds)[order(results(dds)$padj), ] # specify contrasts here if need to
+  summary(results(dds))
+}
+```
+
+```
+##  --- Running DESeq2 on Genome_id: 2737471681
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'res' not found
+```
+
+```r
+##
+
+##
+
+sessionInfo()
+```
+
+```
+## R version 3.4.1 (2017-06-30)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## Running under: Windows 8.1 x64 (build 9600)
+## 
+## Matrix products: default
+## 
+## locale:
+## [1] LC_COLLATE=English_United States.1252 
+## [2] LC_CTYPE=English_United States.1252   
+## [3] LC_MONETARY=English_United States.1252
+## [4] LC_NUMERIC=C                          
+## [5] LC_TIME=English_United States.1252    
+## 
+## attached base packages:
+##  [1] parallel  stats4    grid      stats     graphics  grDevices utils    
+##  [8] datasets  methods   base     
+## 
+## other attached packages:
+##  [1] bindrcpp_0.2               DESeq2_1.12.4             
+##  [3] SummarizedExperiment_1.2.3 Biobase_2.32.0            
+##  [5] GenomicRanges_1.24.3       GenomeInfoDb_1.8.7        
+##  [7] IRanges_2.6.1              S4Vectors_0.10.3          
+##  [9] BiocGenerics_0.18.0        edgeR_3.14.0              
+## [11] limma_3.28.21              easyGgplot2_1.0.0.9000    
+## [13] gridExtra_2.3              ggplot2_2.2.1             
+## [15] dplyr_0.7.4                tidyr_0.6.0               
+## [17] knitr_1.17                
+## 
+## loaded via a namespace (and not attached):
+##  [1] bit64_0.9-7          splines_3.4.1        Formula_1.2-2       
+##  [4] assertthat_0.2.0     latticeExtra_0.6-28  blob_1.1.0          
+##  [7] yaml_2.1.14          RSQLite_2.0          backports_1.1.1     
+## [10] lattice_0.20-35      glue_1.1.1           digest_0.6.12       
+## [13] RColorBrewer_1.1-2   XVector_0.12.1       checkmate_1.8.4     
+## [16] colorspace_1.3-2     htmltools_0.3.6      Matrix_1.2-11       
+## [19] plyr_1.8.4           XML_3.98-1.9         pkgconfig_2.0.1     
+## [22] genefilter_1.54.2    zlibbioc_1.18.0      xtable_1.8-2        
+## [25] scales_0.5.0         BiocParallel_1.6.6   htmlTable_1.9       
+## [28] tibble_1.3.4         annotate_1.50.0      nnet_7.3-12         
+## [31] lazyeval_0.2.0       survival_2.41-3      magrittr_1.5        
+## [34] memoise_1.1.0        evaluate_0.10.1      foreign_0.8-69      
+## [37] tools_3.4.1          data.table_1.10.4    stringr_1.2.0       
+## [40] locfit_1.5-9.1       munsell_0.4.3        cluster_2.0.6       
+## [43] AnnotationDbi_1.34.4 compiler_3.4.1       rlang_0.1.2         
+## [46] htmlwidgets_0.9      labeling_0.3         base64enc_0.1-3     
+## [49] rmarkdown_1.6        codetools_0.2-15     gtable_0.2.0        
+## [52] DBI_0.7              reshape2_1.4.2       R6_2.2.2            
+## [55] bit_1.1-12           bindr_0.1            Hmisc_4.0-3         
+## [58] rprojroot_1.2        stringi_1.1.5        Rcpp_0.12.13        
+## [61] geneplotter_1.50.0   rpart_4.1-11         acepack_1.4.1
+```
