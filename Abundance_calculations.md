@@ -614,7 +614,8 @@ print(p_cog_func_clust)
 ```
 
 <img src="Figures/cached/COG functional categories-2.png" style="display: block; margin: auto;" />
-# 6. Expression analysis
+
+# 6. Expression analysis  
 
 Remember:  
   1. Get total nr. of reads through the `samtools flagstat command`.
@@ -755,7 +756,6 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
                               colData = meta_metaT,
                               design= ~ Site + Season) # Test for season but controlling for site
   dds <- DESeq(dds)
-  resOrdered <- res[order(res$padj),]
   General_deseq_results_season[[i]] <- results(dds)[order(results(dds)$padj), ] # specify contrasts here if need to
   summary(results(dds))
 }
@@ -794,7 +794,489 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'res' not found
+## 
+## out of 3117 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 47, 1.5% 
+## LFC < 0 (down)   : 100, 3.2% 
+## outliers [1]     : 22, 0.71% 
+## low counts [2]   : 121, 3.9% 
+## (mean count < 1)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471682
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 2555 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 5, 0.2% 
+## LFC < 0 (down)   : 28, 1.1% 
+## outliers [1]     : 14, 0.55% 
+## low counts [2]   : 0, 0% 
+## (mean count < 0)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471683
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 2455 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 6, 0.24% 
+## LFC < 0 (down)   : 5, 0.2% 
+## outliers [1]     : 16, 0.65% 
+## low counts [2]   : 1510, 62% 
+## (mean count < 20)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471793
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 2167 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 1, 0.046% 
+## LFC < 0 (down)   : 2, 0.092% 
+## outliers [1]     : 14, 0.65% 
+## low counts [2]   : 0, 0% 
+## (mean count < 0)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471794
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 1871 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 0, 0% 
+## LFC < 0 (down)   : 1, 0.053% 
+## outliers [1]     : 9, 0.48% 
+## low counts [2]   : 0, 0% 
+## (mean count < 0)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471795
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 2061 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 13, 0.63% 
+## LFC < 0 (down)   : 9, 0.44% 
+## outliers [1]     : 15, 0.73% 
+## low counts [2]   : 554, 27% 
+## (mean count < 7)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471797
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 1611 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 19, 1.2% 
+## LFC < 0 (down)   : 67, 4.2% 
+## outliers [1]     : 16, 0.99% 
+## low counts [2]   : 281, 17% 
+## (mean count < 2)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471799
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 804 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 3, 0.37% 
+## LFC < 0 (down)   : 12, 1.5% 
+## outliers [1]     : 9, 1.1% 
+## low counts [2]   : 16, 2% 
+## (mean count < 0)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471802
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 2657 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 20, 0.75% 
+## LFC < 0 (down)   : 19, 0.72% 
+## outliers [1]     : 24, 0.9% 
+## low counts [2]   : 1177, 44% 
+## (mean count < 7)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471804
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 1157 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 16, 1.4% 
+## LFC < 0 (down)   : 9, 0.78% 
+## outliers [1]     : 6, 0.52% 
+## low counts [2]   : 358, 31% 
+## (mean count < 6)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471805
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 1743 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 1, 0.057% 
+## LFC < 0 (down)   : 2, 0.11% 
+## outliers [1]     : 8, 0.46% 
+## low counts [2]   : 0, 0% 
+## (mean count < 0)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471806
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 2334 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 5, 0.21% 
+## LFC < 0 (down)   : 5, 0.21% 
+## outliers [1]     : 18, 0.77% 
+## low counts [2]   : 0, 0% 
+## (mean count < 0)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
 ```
 
 ```r
@@ -806,7 +1288,6 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
                               colData = meta_metaT,
                               design= ~ Season + Site) # Test for season but controlling for site
   dds <- DESeq(dds)
-  resOrdered <- res[order(res$padj),]
   General_deseq_results_site[[i]] <- results(dds)[order(results(dds)$padj), ] # specify contrasts here if need to
   summary(results(dds))
 }
@@ -845,7 +1326,489 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'res' not found
+## 
+## out of 3117 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 444, 14% 
+## LFC < 0 (down)   : 210, 6.7% 
+## outliers [1]     : 22, 0.71% 
+## low counts [2]   : 0, 0% 
+## (mean count < 0)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471682
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 2555 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 446, 17% 
+## LFC < 0 (down)   : 298, 12% 
+## outliers [1]     : 14, 0.55% 
+## low counts [2]   : 0, 0% 
+## (mean count < 0)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471683
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 2455 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 129, 5.3% 
+## LFC < 0 (down)   : 264, 11% 
+## outliers [1]     : 16, 0.65% 
+## low counts [2]   : 48, 2% 
+## (mean count < 1)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471793
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 2167 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 123, 5.7% 
+## LFC < 0 (down)   : 217, 10% 
+## outliers [1]     : 14, 0.65% 
+## low counts [2]   : 84, 3.9% 
+## (mean count < 2)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471794
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 1871 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 118, 6.3% 
+## LFC < 0 (down)   : 282, 15% 
+## outliers [1]     : 9, 0.48% 
+## low counts [2]   : 37, 2% 
+## (mean count < 1)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471795
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 2061 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 170, 8.2% 
+## LFC < 0 (down)   : 338, 16% 
+## outliers [1]     : 15, 0.73% 
+## low counts [2]   : 0, 0% 
+## (mean count < 0)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471797
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 1611 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 329, 20% 
+## LFC < 0 (down)   : 153, 9.5% 
+## outliers [1]     : 16, 0.99% 
+## low counts [2]   : 0, 0% 
+## (mean count < 0)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471799
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 804 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 60, 7.5% 
+## LFC < 0 (down)   : 89, 11% 
+## outliers [1]     : 9, 1.1% 
+## low counts [2]   : 171, 21% 
+## (mean count < 3)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471802
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 2657 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 172, 6.5% 
+## LFC < 0 (down)   : 276, 10% 
+## outliers [1]     : 24, 0.9% 
+## low counts [2]   : 103, 3.9% 
+## (mean count < 1)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471804
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 1157 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 282, 24% 
+## LFC < 0 (down)   : 231, 20% 
+## outliers [1]     : 6, 0.52% 
+## low counts [2]   : 0, 0% 
+## (mean count < 0)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471805
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 1743 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 285, 16% 
+## LFC < 0 (down)   : 433, 25% 
+## outliers [1]     : 8, 0.46% 
+## low counts [2]   : 0, 0% 
+## (mean count < 0)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+## 
+##  --- Running DESeq2 on Genome_id: 2737471806
+```
+
+```
+## converting counts to integer mode
+```
+
+```
+## estimating size factors
+```
+
+```
+## estimating dispersions
+```
+
+```
+## gene-wise dispersion estimates
+```
+
+```
+## mean-dispersion relationship
+```
+
+```
+## final dispersion estimates
+```
+
+```
+## fitting model and testing
+```
+
+```
+## 
+## out of 2334 with nonzero total read count
+## adjusted p-value < 0.1
+## LFC > 0 (up)     : 411, 18% 
+## LFC < 0 (down)   : 267, 11% 
+## outliers [1]     : 18, 0.77% 
+## low counts [2]   : 0, 0% 
+## (mean count < 0)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
 ```
 
 ```r
@@ -901,10 +1864,9 @@ sessionInfo()
 ## [37] tools_3.4.1          data.table_1.10.4    stringr_1.2.0       
 ## [40] locfit_1.5-9.1       munsell_0.4.3        cluster_2.0.6       
 ## [43] AnnotationDbi_1.34.4 compiler_3.4.1       rlang_0.1.2         
-## [46] htmlwidgets_0.9      labeling_0.3         base64enc_0.1-3     
-## [49] rmarkdown_1.6        codetools_0.2-15     gtable_0.2.0        
-## [52] DBI_0.7              reshape2_1.4.2       R6_2.2.2            
-## [55] bit_1.1-12           bindr_0.1            Hmisc_4.0-3         
-## [58] rprojroot_1.2        stringi_1.1.5        Rcpp_0.12.13        
-## [61] geneplotter_1.50.0   rpart_4.1-11         acepack_1.4.1
+## [46] htmlwidgets_0.9      base64enc_0.1-3      rmarkdown_1.6       
+## [49] gtable_0.2.0         DBI_0.7              R6_2.2.2            
+## [52] bit_1.1-12           bindr_0.1            Hmisc_4.0-3         
+## [55] rprojroot_1.2        stringi_1.1.5        Rcpp_0.12.13        
+## [58] geneplotter_1.50.0   rpart_4.1-11         acepack_1.4.1
 ```

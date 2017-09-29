@@ -279,7 +279,8 @@ p_cog_func_clust <- ggplot(data = merged_gc_cog, aes(x=COG_functional_cluster, f
 
 print(p_cog_func_clust)
 ```
-# 6. Expression analysis
+
+# 6. Expression analysis  
 
 Remember:  
   1. Get total nr. of reads through the `samtools flagstat command`.
@@ -368,7 +369,6 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
                               colData = meta_metaT,
                               design= ~ Site + Season) # Test for season but controlling for site
   dds <- DESeq(dds)
-  resOrdered <- res[order(res$padj),]
   General_deseq_results_season[[i]] <- results(dds)[order(results(dds)$padj), ] # specify contrasts here if need to
   summary(results(dds))
 }
@@ -381,7 +381,6 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
                               colData = meta_metaT,
                               design= ~ Season + Site) # Test for season but controlling for site
   dds <- DESeq(dds)
-  resOrdered <- res[order(res$padj),]
   General_deseq_results_site[[i]] <- results(dds)[order(results(dds)$padj), ] # specify contrasts here if need to
   summary(results(dds))
 }
