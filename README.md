@@ -10,7 +10,7 @@ Digital normalization (BBnorm.sh – downsampling over high coverage areas) + cu
 
 IDBA-UD for creating individual assemblies:
 
-Stringent taxonomic classification using custom wrapper of ClassifyContigNR.py from the [DESMAN](https://github.com/chrisquince/DESMAN)
+Stringent taxonomic classification using custom wrapper of `ClassifyContigNR.py` from the [DESMAN](https://github.com/chrisquince/DESMAN)
 software.
 
 ## 2. Binning strategy
