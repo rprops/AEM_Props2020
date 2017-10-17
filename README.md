@@ -10,8 +10,10 @@ Digital normalization (BBnorm.sh – downsampling over high coverage areas) + cu
 
 IDBA-UD for creating individual assemblies:
 
-Stringent taxonomic classification using custom wrapper of `ClassifyContigNR.py` from the [DESMAN](https://github.com/chrisquince/DESMAN)
-software.
+Non-stringent taxonomic classification using custom wrapper of `ClassifyContigNR.py` from the [DESMAN](https://github.com/chrisquince/DESMAN)
+software. 
+
+Extracting target taxonomy and format into compatible output for `Vizbin`.
 
 ## 2. Binning strategy
 Rename contigs with anvi'o script, filtering out contigs shorter than 3kb for initial binning.
