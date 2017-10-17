@@ -16,11 +16,11 @@ software.
 Extracting target taxonomy and format into compatible output for `Vizbin`.
 
 ## 2. Binning strategy
-*Rename contigs with anvi'o script, filtering out contigs shorter than 3kb for initial binning.  
+* Rename contigs with anvi'o script, filtering out contigs shorter than 3kb for initial binning.  
 
-*Initial binning with `Vizbin` (default settings) overlaid by the taxonomy of interest (i.e. Beta-proteobacteria). Extract all Beta-proteobacteria bins.  
+* Initial binning with `Vizbin` (default settings) overlaid by the taxonomy of interest (i.e. Beta-proteobacteria). Extract all Beta-proteobacteria bins.  
 
-*Example vizbin plot for sample `Fa13.BD.MLB.DN`  
+* Example vizbin plot for sample `Fa13.BD.MLB.DN`  
 
 
 ## 3. Binning QC and refinement
