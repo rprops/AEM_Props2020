@@ -42,8 +42,93 @@ data_total$upper_rel_abundance <- 100*((data_total$coverage+data_total$std_cover
 data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_coverage)*data_total$bin_size)/(read_length*data_total$Total_reads)
 ```
 
-# 1. Phylogenetic tree
+# 1a. Phylogenetic tree
 ![RAxML tree for Limnohabitans genomes](./Tree/PhyloTree_Limno.png)  
+
+# 1b. Network analysis based on 16S data
+
+```r
+# import data
+df_phy <- import_mothur(mothur_shared_file = "./16S/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.an.unique_list.shared",
+                        mothur_constaxonomy_file = "./16S/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.an.unique_list.0.03.cons.taxonomy")
+
+# Filter out 2013 samples
+df_phy <- prune_samples(grep(pattern = ".", sample_names(df_phy), fixed = TRUE,
+     value = TRUE), df_phy)
+df_phy <- prune_samples(grep(pattern = "cD", sample_names(df_phy), fixed = TRUE,
+     value = TRUE, invert = TRUE), df_phy)
+
+# Perform prevalence filtering
+df_phy <- filter_taxa(df_phy, function(x) sum(x > 30) > (0.25*length(x)), TRUE)
+
+# Run spiec-easi
+sp_easi <- spiec.easi(df_phy, method='mb', lambda.min.ratio=1e-2,
+                           nlambda=20, icov.select.params=list(rep.num=50))
+```
+
+```
+## Normalizing/clr transformation of data with pseudocount ...
+```
+
+```
+## Inverse Covariance Estimation with mb ...
+```
+
+```
+## Model selection with stars ...
+```
+
+```
+## Done!
+```
+
+```r
+ig.mb <- adj2igraph(sp_easi$refit,  vertex.attr = list(name=taxa_names(df_phy)))
+vsize <- Biobase::rowMax(clr(t(otu_table(df_phy)), 1))+10
+Lineage_rel <- tax_table(df_phy)[,"Rank2"]
+Lineage_rel <- factor(Lineage_rel, levels = unique(Lineage_rel))
+
+# OTUs that are Limnohabitans
+limno_otus <- taxa_names(df_phy)[tax_table(df_phy)[,"Rank6"] == "betI_A"]
+limno_otus <- limno_otus[!is.na(limno_otus)]
+
+# Make Limno label
+limno_labs <- c()
+limno_labs[vertex.attributes(ig.mb)$name %in% limno_otus] <- "Limnohabitans sp."
+limno_labs[is.na(limno_labs)] <- ""
+
+# Plot network
+p_16S_network <- plot_network_custom(ig.mb, df_phy, type='taxa',
+             line_weight = 2, hjust = 0.5,
+             point_size = 0.1, alpha = 0.01, label=NULL, label_size = 3.95)+
+  scale_fill_brewer(palette = "Paired")+
+  scale_color_brewer(palette = "Paired")+
+  geom_point(aes(size = vsize, fill = Lineage_rel), alpha = 0.5,
+             colour="black", shape=21)+
+  guides(size = FALSE,
+    fill  = guide_legend(title = "Phylum", override.aes = list(size = 5),
+                         nrow = 4),
+    color = FALSE)+
+  theme(legend.position="bottom", legend.text=element_text(size=12),
+        text = element_text(size = 12),
+        plot.margin = unit(c(1,1,1,1), "cm"))+
+  scale_size(range = c(5, 15))+
+  geom_label_repel(aes(label = limno_labs), fontface = 'bold', color = 'black',
+                   box.padding = 0.35, point.padding = 0.5,
+                   segment.color = 'black',
+                   size = 4,
+                       # Width of the line segments.
+                   segment.size = 1.5,
+                   # Draw an arrow from the label to the data point.
+                   arrow = arrow(length = unit(0.015, 'npc')),
+                   nudge_x = -0.1,
+                   nudge_y = 0.6
+  )
+
+print(p_16S_network)
+```
+
+<img src="Figures/cached/network_16S-1.png" style="display: block; margin: auto;" />
 
 # 2. Investigate MAG- and 16S-based abundances
 Formula used to calculate relative abundances:
@@ -134,9 +219,9 @@ Bin_2737471681_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133052.as
 ```
 
 ```
-## Fri Sep 29 18:41:22 2017  --- There are 2248 genes with > 0.1 %
-## Fri Sep 29 18:41:22 2017  --- This is 100 % of all genes
-## Fri Sep 29 18:41:22 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 18 15:25:24 2017  --- There are 2248 genes with > 0.1 %
+## Wed Oct 18 15:25:24 2017  --- This is 100 % of all genes
+## Wed Oct 18 15:25:24 2017  --- The 10 genes with the highest GC% are:
 ##                                                                                   function_id
 ## 2239 NADPH-dependent 2,4-dienoyl-CoA reductase, sulfur reductase, or a related oxidoreductase
 ## 2240                    tRNA A37 threonylcarbamoyladenosine synthetase subunit TsaC/SUA5/YrdC
@@ -168,9 +253,9 @@ Bin_2737471682_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133053.as
 ```
 
 ```
-## Fri Sep 29 18:41:23 2017  --- There are 1882 genes with > 0.1 %
-## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
-## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 18 15:25:24 2017  --- There are 1882 genes with > 0.1 %
+## Wed Oct 18 15:25:24 2017  --- This is 100 % of all genes
+## Wed Oct 18 15:25:24 2017  --- The 10 genes with the highest GC% are:
 ##                                                                function_id
 ## 1873                                   D-alanyl-D-alanine carboxypeptidase
 ## 1874                        Aspartate/methionine/tyrosine aminotransferase
@@ -202,9 +287,9 @@ Bin_2737471683_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133054.as
 ```
 
 ```
-## Fri Sep 29 18:41:23 2017  --- There are 1727 genes with > 0.1 %
-## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
-## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 18 15:25:24 2017  --- There are 1727 genes with > 0.1 %
+## Wed Oct 18 15:25:24 2017  --- This is 100 % of all genes
+## Wed Oct 18 15:25:24 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 1718                                            Type II secretory pathway, component PulF
 ## 1719                                                    Pyrroline-5-carboxylate reductase
@@ -236,9 +321,9 @@ Bin_2737471793_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133647.as
 ```
 
 ```
-## Fri Sep 29 18:41:23 2017  --- There are 1476 genes with > 0.1 %
-## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
-## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 18 15:25:24 2017  --- There are 1476 genes with > 0.1 %
+## Wed Oct 18 15:25:24 2017  --- This is 100 % of all genes
+## Wed Oct 18 15:25:24 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 1467 Acetolactate synthase large subunit or other thiamine pyrophosphate-requiring enzyme
 ## 1468                                            2-keto-3-deoxy-L-rhamnonate aldolase RhmA
@@ -270,9 +355,9 @@ Bin_2737471794_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133648.as
 ```
 
 ```
-## Fri Sep 29 18:41:23 2017  --- There are 1226 genes with > 0.1 %
-## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
-## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 18 15:25:25 2017  --- There are 1226 genes with > 0.1 %
+## Wed Oct 18 15:25:25 2017  --- This is 100 % of all genes
+## Wed Oct 18 15:25:25 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1217                                     Cytochrome c-type biogenesis protein CcmH/NrfF
 ## 1218                                          Type II secretory pathway, component PulK
@@ -304,9 +389,9 @@ Bin_2737471795_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133649.as
 ```
 
 ```
-## Fri Sep 29 18:41:23 2017  --- There are 1383 genes with > 0.1 %
-## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
-## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 18 15:25:25 2017  --- There are 1383 genes with > 0.1 %
+## Wed Oct 18 15:25:25 2017  --- This is 100 % of all genes
+## Wed Oct 18 15:25:25 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1374                                                 Glycerol-3-phosphate dehydrogenase
 ## 1375                                          Predicted amidophosphoribosyltransferases
@@ -338,9 +423,9 @@ Bin_2737471797_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133651.as
 ```
 
 ```
-## Fri Sep 29 18:41:23 2017  --- There are 1076 genes with > 0.1 %
-## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
-## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 18 15:25:25 2017  --- There are 1076 genes with > 0.1 %
+## Wed Oct 18 15:25:25 2017  --- This is 100 % of all genes
+## Wed Oct 18 15:25:25 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1067              DNA-directed RNA polymerase specialized sigma subunit, sigma24 family
 ## 1068                                7,8-dihydro-6-hydroxymethylpterin-pyrophosphokinase
@@ -372,9 +457,9 @@ Bin_2737471799_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133653.as
 ```
 
 ```
-## Fri Sep 29 18:41:23 2017  --- There are 522 genes with > 0.1 %
-## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
-## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 18 15:25:25 2017  --- There are 522 genes with > 0.1 %
+## Wed Oct 18 15:25:25 2017  --- This is 100 % of all genes
+## Wed Oct 18 15:25:25 2017  --- The 10 genes with the highest GC% are:
 ##                                                               function_id
 ## 513                                             Glutathione S-transferase
 ## 514                                  DNA-nicking endonuclease, Smr domain
@@ -406,9 +491,9 @@ Bin_2737471802_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133656.as
 ```
 
 ```
-## Fri Sep 29 18:41:23 2017  --- There are 1691 genes with > 0.1 %
-## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
-## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 18 15:25:25 2017  --- There are 1691 genes with > 0.1 %
+## Wed Oct 18 15:25:25 2017  --- This is 100 % of all genes
+## Wed Oct 18 15:25:25 2017  --- The 10 genes with the highest GC% are:
 ##                                                                 function_id
 ## 1682                          Pyrimidine reductase, riboflavin biosynthesis
 ## 1683               2-C-methyl-D-erythritol 4-phosphate cytidylyltransferase
@@ -440,9 +525,9 @@ Bin_2737471804_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133658.as
 ```
 
 ```
-## Fri Sep 29 18:41:23 2017  --- There are 749 genes with > 0.1 %
-## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
-## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 18 15:25:26 2017  --- There are 749 genes with > 0.1 %
+## Wed Oct 18 15:25:26 2017  --- This is 100 % of all genes
+## Wed Oct 18 15:25:26 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 740 Uncharacterized conserved protein, contains von Willebrand factor type A (vWA) domain
 ## 741                   Uncharacterized membrane protein AbrB, regulator of aidB expression
@@ -474,9 +559,9 @@ Bin_2737471805_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133659.as
 ```
 
 ```
-## Fri Sep 29 18:41:23 2017  --- There are 1172 genes with > 0.1 %
-## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
-## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 18 15:25:26 2017  --- There are 1172 genes with > 0.1 %
+## Wed Oct 18 15:25:26 2017  --- This is 100 % of all genes
+## Wed Oct 18 15:25:26 2017  --- The 10 genes with the highest GC% are:
 ##                                                                   function_id
 ## 1163           Ribulose-5-phosphate 4-epimerase/Fuculose-1-phosphate aldolase
 ## 1164    Asp-tRNAAsn/Glu-tRNAGln amidotransferase A subunit or related amidase
@@ -508,9 +593,9 @@ Bin_2737471806_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133660.as
 ```
 
 ```
-## Fri Sep 29 18:41:23 2017  --- There are 1584 genes with > 0.1 %
-## Fri Sep 29 18:41:23 2017  --- This is 100 % of all genes
-## Fri Sep 29 18:41:23 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 18 15:25:26 2017  --- There are 1584 genes with > 0.1 %
+## Wed Oct 18 15:25:26 2017  --- This is 100 % of all genes
+## Wed Oct 18 15:25:26 2017  --- The 10 genes with the highest GC% are:
 ##                                                                       function_id
 ## 1575                                   Predicted NAD/FAD-dependent oxidoreductase
 ## 1576                                                 Gamma-glutamyltranspeptidase
@@ -673,7 +758,7 @@ merged_file <- merge_annotations(file_list[1:12], genoid_seqid = TRUE)
 ## [1] 22206
 ## [1] 2334
 ## [1] 24540
-## Fri Sep 29 18:42:07 2017  --- Sucessfully merged files
+## Wed Oct 18 15:26:03 2017  --- Sucessfully merged files
 ```
 
 ```r
@@ -757,7 +842,7 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
                               design= ~ Site + Season) # Test for season but controlling for site
   dds <- DESeq(dds)
   General_deseq_results_season[[i]] <- results(dds)[order(results(dds)$padj), ] # specify contrasts here if need to
-  summary(results(dds))
+  summary(results(dds, alpha=0.05))
 }
 ```
 
@@ -796,11 +881,11 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 3117 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 47, 1.5% 
-## LFC < 0 (down)   : 100, 3.2% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 30, 0.96% 
+## LFC < 0 (down)   : 71, 2.3% 
 ## outliers [1]     : 22, 0.71% 
-## low counts [2]   : 121, 3.9% 
+## low counts [2]   : 61, 2% 
 ## (mean count < 1)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
@@ -839,9 +924,9 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 2555 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 5, 0.2% 
-## LFC < 0 (down)   : 28, 1.1% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 4, 0.16% 
+## LFC < 0 (down)   : 21, 0.82% 
 ## outliers [1]     : 14, 0.55% 
 ## low counts [2]   : 0, 0% 
 ## (mean count < 0)
@@ -882,12 +967,12 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 2455 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 6, 0.24% 
-## LFC < 0 (down)   : 5, 0.2% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 2, 0.081% 
+## LFC < 0 (down)   : 1, 0.041% 
 ## outliers [1]     : 16, 0.65% 
-## low counts [2]   : 1510, 62% 
-## (mean count < 20)
+## low counts [2]   : 0, 0% 
+## (mean count < 0)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
 ## 
@@ -925,7 +1010,7 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 2167 with nonzero total read count
-## adjusted p-value < 0.1
+## adjusted p-value < 0.05
 ## LFC > 0 (up)     : 1, 0.046% 
 ## LFC < 0 (down)   : 2, 0.092% 
 ## outliers [1]     : 14, 0.65% 
@@ -968,7 +1053,7 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 1871 with nonzero total read count
-## adjusted p-value < 0.1
+## adjusted p-value < 0.05
 ## LFC > 0 (up)     : 0, 0% 
 ## LFC < 0 (down)   : 1, 0.053% 
 ## outliers [1]     : 9, 0.48% 
@@ -1011,12 +1096,12 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 2061 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 13, 0.63% 
-## LFC < 0 (down)   : 9, 0.44% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 3, 0.15% 
+## LFC < 0 (down)   : 4, 0.19% 
 ## outliers [1]     : 15, 0.73% 
-## low counts [2]   : 554, 27% 
-## (mean count < 7)
+## low counts [2]   : 0, 0% 
+## (mean count < 0)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
 ## 
@@ -1054,12 +1139,12 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 1611 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 19, 1.2% 
-## LFC < 0 (down)   : 67, 4.2% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 11, 0.68% 
+## LFC < 0 (down)   : 30, 1.9% 
 ## outliers [1]     : 16, 0.99% 
-## low counts [2]   : 281, 17% 
-## (mean count < 2)
+## low counts [2]   : 437, 27% 
+## (mean count < 3)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
 ## 
@@ -1097,11 +1182,11 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 804 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 3, 0.37% 
-## LFC < 0 (down)   : 12, 1.5% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 1, 0.12% 
+## LFC < 0 (down)   : 6, 0.75% 
 ## outliers [1]     : 9, 1.1% 
-## low counts [2]   : 16, 2% 
+## low counts [2]   : 0, 0% 
 ## (mean count < 0)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
@@ -1140,12 +1225,12 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 2657 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 20, 0.75% 
-## LFC < 0 (down)   : 19, 0.72% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 11, 0.41% 
+## LFC < 0 (down)   : 13, 0.49% 
 ## outliers [1]     : 24, 0.9% 
-## low counts [2]   : 1177, 44% 
-## (mean count < 7)
+## low counts [2]   : 1330, 50% 
+## (mean count < 8)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
 ## 
@@ -1183,12 +1268,12 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 1157 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 16, 1.4% 
-## LFC < 0 (down)   : 9, 0.78% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 7, 0.61% 
+## LFC < 0 (down)   : 6, 0.52% 
 ## outliers [1]     : 6, 0.52% 
-## low counts [2]   : 358, 31% 
-## (mean count < 6)
+## low counts [2]   : 202, 17% 
+## (mean count < 3)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
 ## 
@@ -1226,9 +1311,9 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 1743 with nonzero total read count
-## adjusted p-value < 0.1
+## adjusted p-value < 0.05
 ## LFC > 0 (up)     : 1, 0.057% 
-## LFC < 0 (down)   : 2, 0.11% 
+## LFC < 0 (down)   : 0, 0% 
 ## outliers [1]     : 8, 0.46% 
 ## low counts [2]   : 0, 0% 
 ## (mean count < 0)
@@ -1269,9 +1354,9 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 2334 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 5, 0.21% 
-## LFC < 0 (down)   : 5, 0.21% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 2, 0.086% 
+## LFC < 0 (down)   : 4, 0.17% 
 ## outliers [1]     : 18, 0.77% 
 ## low counts [2]   : 0, 0% 
 ## (mean count < 0)
@@ -1289,7 +1374,7 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
                               design= ~ Season + Site) # Test for season but controlling for site
   dds <- DESeq(dds)
   General_deseq_results_site[[i]] <- results(dds)[order(results(dds)$padj), ] # specify contrasts here if need to
-  summary(results(dds))
+  summary(results(dds, alpha=0.05))
 }
 ```
 
@@ -1328,9 +1413,9 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 3117 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 444, 14% 
-## LFC < 0 (down)   : 210, 6.7% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 356, 11% 
+## LFC < 0 (down)   : 140, 4.5% 
 ## outliers [1]     : 22, 0.71% 
 ## low counts [2]   : 0, 0% 
 ## (mean count < 0)
@@ -1371,12 +1456,12 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 2555 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 446, 17% 
-## LFC < 0 (down)   : 298, 12% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 335, 13% 
+## LFC < 0 (down)   : 218, 8.5% 
 ## outliers [1]     : 14, 0.55% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
+## low counts [2]   : 100, 3.9% 
+## (mean count < 1)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
 ## 
@@ -1414,12 +1499,12 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 2455 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 129, 5.3% 
-## LFC < 0 (down)   : 264, 11% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 98, 4% 
+## LFC < 0 (down)   : 195, 7.9% 
 ## outliers [1]     : 16, 0.65% 
-## low counts [2]   : 48, 2% 
-## (mean count < 1)
+## low counts [2]   : 284, 12% 
+## (mean count < 3)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
 ## 
@@ -1457,12 +1542,12 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 2167 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 123, 5.7% 
-## LFC < 0 (down)   : 217, 10% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 76, 3.5% 
+## LFC < 0 (down)   : 137, 6.3% 
 ## outliers [1]     : 14, 0.65% 
-## low counts [2]   : 84, 3.9% 
-## (mean count < 2)
+## low counts [2]   : 294, 14% 
+## (mean count < 5)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
 ## 
@@ -1500,12 +1585,12 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 1871 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 118, 6.3% 
-## LFC < 0 (down)   : 282, 15% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 88, 4.7% 
+## LFC < 0 (down)   : 202, 11% 
 ## outliers [1]     : 9, 0.48% 
-## low counts [2]   : 37, 2% 
-## (mean count < 1)
+## low counts [2]   : 72, 3.8% 
+## (mean count < 2)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
 ## 
@@ -1543,12 +1628,12 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 2061 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 170, 8.2% 
-## LFC < 0 (down)   : 338, 16% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 129, 6.3% 
+## LFC < 0 (down)   : 260, 13% 
 ## outliers [1]     : 15, 0.73% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
+## low counts [2]   : 118, 5.7% 
+## (mean count < 2)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
 ## 
@@ -1586,12 +1671,12 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 1611 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 329, 20% 
-## LFC < 0 (down)   : 153, 9.5% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 256, 16% 
+## LFC < 0 (down)   : 101, 6.3% 
 ## outliers [1]     : 16, 0.99% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
+## low counts [2]   : 94, 5.8% 
+## (mean count < 1)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
 ## 
@@ -1629,12 +1714,12 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 804 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 60, 7.5% 
-## LFC < 0 (down)   : 89, 11% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 39, 4.9% 
+## LFC < 0 (down)   : 63, 7.8% 
 ## outliers [1]     : 9, 1.1% 
-## low counts [2]   : 171, 21% 
-## (mean count < 3)
+## low counts [2]   : 78, 9.7% 
+## (mean count < 1)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
 ## 
@@ -1672,12 +1757,12 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 2657 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 172, 6.5% 
-## LFC < 0 (down)   : 276, 10% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 135, 5.1% 
+## LFC < 0 (down)   : 202, 7.6% 
 ## outliers [1]     : 24, 0.9% 
-## low counts [2]   : 103, 3.9% 
-## (mean count < 1)
+## low counts [2]   : 664, 25% 
+## (mean count < 4)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
 ## 
@@ -1715,9 +1800,9 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 1157 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 282, 24% 
-## LFC < 0 (down)   : 231, 20% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 244, 21% 
+## LFC < 0 (down)   : 198, 17% 
 ## outliers [1]     : 6, 0.52% 
 ## low counts [2]   : 0, 0% 
 ## (mean count < 0)
@@ -1758,9 +1843,9 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 1743 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 285, 16% 
-## LFC < 0 (down)   : 433, 25% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 237, 14% 
+## LFC < 0 (down)   : 373, 21% 
 ## outliers [1]     : 8, 0.46% 
 ## low counts [2]   : 0, 0% 
 ## (mean count < 0)
@@ -1801,9 +1886,9 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 ## 
 ## out of 2334 with nonzero total read count
-## adjusted p-value < 0.1
-## LFC > 0 (up)     : 411, 18% 
-## LFC < 0 (down)   : 267, 11% 
+## adjusted p-value < 0.05
+## LFC > 0 (up)     : 319, 14% 
+## LFC < 0 (down)   : 202, 8.7% 
 ## outliers [1]     : 18, 0.77% 
 ## low counts [2]   : 0, 0% 
 ## (mean count < 0)
@@ -1838,35 +1923,43 @@ sessionInfo()
 ##  [8] datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] bindrcpp_0.2               DESeq2_1.12.4             
-##  [3] SummarizedExperiment_1.2.3 Biobase_2.32.0            
-##  [5] GenomicRanges_1.24.3       GenomeInfoDb_1.8.7        
-##  [7] IRanges_2.6.1              S4Vectors_0.10.3          
-##  [9] BiocGenerics_0.18.0        edgeR_3.14.0              
-## [11] limma_3.28.21              easyGgplot2_1.0.0.9000    
-## [13] gridExtra_2.3              ggplot2_2.2.1             
-## [15] dplyr_0.7.4                tidyr_0.6.0               
-## [17] knitr_1.17                
+##  [1] bindrcpp_0.2               SpiecEasi_0.1.2           
+##  [3] DESeq2_1.12.4              SummarizedExperiment_1.2.3
+##  [5] Biobase_2.32.0             GenomicRanges_1.24.3      
+##  [7] GenomeInfoDb_1.8.7         IRanges_2.6.1             
+##  [9] S4Vectors_0.10.3           BiocGenerics_0.18.0       
+## [11] igraph_1.1.2               phyloseq_1.16.2           
+## [13] edgeR_3.14.0               limma_3.28.21             
+## [15] easyGgplot2_1.0.0.9000     gridExtra_2.3             
+## [17] ggplot2_2.2.1              dplyr_0.7.4               
+## [19] tidyr_0.6.0                knitr_1.17                
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] bit64_0.9-7          splines_3.4.1        Formula_1.2-2       
-##  [4] assertthat_0.2.0     latticeExtra_0.6-28  blob_1.1.0          
-##  [7] yaml_2.1.14          RSQLite_2.0          backports_1.1.1     
-## [10] lattice_0.20-35      glue_1.1.1           digest_0.6.12       
-## [13] RColorBrewer_1.1-2   XVector_0.12.1       checkmate_1.8.4     
-## [16] colorspace_1.3-2     htmltools_0.3.6      Matrix_1.2-11       
-## [19] plyr_1.8.4           XML_3.98-1.9         pkgconfig_2.0.1     
-## [22] genefilter_1.54.2    zlibbioc_1.18.0      xtable_1.8-2        
-## [25] scales_0.5.0         BiocParallel_1.6.6   htmlTable_1.9       
-## [28] tibble_1.3.4         annotate_1.50.0      nnet_7.3-12         
-## [31] lazyeval_0.2.0       survival_2.41-3      magrittr_1.5        
-## [34] memoise_1.1.0        evaluate_0.10.1      foreign_0.8-69      
-## [37] tools_3.4.1          data.table_1.10.4    stringr_1.2.0       
-## [40] locfit_1.5-9.1       munsell_0.4.3        cluster_2.0.6       
-## [43] AnnotationDbi_1.34.4 compiler_3.4.1       rlang_0.1.2         
-## [46] htmlwidgets_0.9      base64enc_0.1-3      rmarkdown_1.6       
-## [49] gtable_0.2.0         DBI_0.7              R6_2.2.2            
-## [52] bit_1.1-12           bindr_0.1            Hmisc_4.0-3         
-## [55] rprojroot_1.2        stringi_1.1.5        Rcpp_0.12.13        
-## [58] geneplotter_1.50.0   rpart_4.1-11         acepack_1.4.1
+##  [1] nlme_3.1-131         bit64_0.9-7          RColorBrewer_1.1-2  
+##  [4] rprojroot_1.2        tools_3.4.1          backports_1.1.1     
+##  [7] R6_2.2.2             vegan_2.4-4          rpart_4.1-11        
+## [10] Hmisc_4.0-3          DBI_0.7              lazyeval_0.2.0      
+## [13] mgcv_1.8-22          colorspace_1.3-2     permute_0.9-4       
+## [16] ade4_1.7-8           nnet_7.3-12          bit_1.1-12          
+## [19] compiler_3.4.1       htmlTable_1.9        labeling_0.3        
+## [22] scales_0.5.0         checkmate_1.8.4      genefilter_1.54.2   
+## [25] stringr_1.2.0        digest_0.6.12        foreign_0.8-69      
+## [28] rmarkdown_1.6        XVector_0.12.1       base64enc_0.1-3     
+## [31] pkgconfig_2.0.1      htmltools_0.3.6      htmlwidgets_0.9     
+## [34] rlang_0.1.2          huge_1.2.7           VGAM_1.0-4          
+## [37] RSQLite_2.0          bindr_0.1            jsonlite_1.5        
+## [40] BiocParallel_1.6.6   acepack_1.4.1        magrittr_1.5        
+## [43] Formula_1.2-2        biomformat_1.0.2     Matrix_1.2-11       
+## [46] Rcpp_0.12.13         munsell_0.4.3        ape_4.1             
+## [49] stringi_1.1.5        yaml_2.1.14          MASS_7.3-47         
+## [52] zlibbioc_1.18.0      rhdf5_2.16.0         plyr_1.8.4          
+## [55] blob_1.1.0           lattice_0.20-35      Biostrings_2.40.2   
+## [58] splines_3.4.1        multtest_2.28.0      annotate_1.50.0     
+## [61] locfit_1.5-9.1       boot_1.3-20          geneplotter_1.50.0  
+## [64] reshape2_1.4.2       codetools_0.2-15     XML_3.98-1.9        
+## [67] glue_1.1.1           evaluate_0.10.1      latticeExtra_0.6-28 
+## [70] data.table_1.10.4    foreach_1.4.3        gtable_0.2.0        
+## [73] assertthat_0.2.0     xtable_1.8-2         survival_2.41-3     
+## [76] tibble_1.3.4         iterators_1.0.8      memoise_1.1.0       
+## [79] AnnotationDbi_1.34.4 cluster_2.0.6
 ```

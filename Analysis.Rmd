@@ -21,7 +21,7 @@ output:
 
 ```{r setup, include = FALSE, warning = FALSE}
 library("knitr")
-opts_chunk$set(eval = TRUE, 
+knitr::opts_chunk$set(eval = TRUE, 
                       echo = TRUE, 
                       cache = TRUE,
                       include = TRUE,
@@ -41,7 +41,11 @@ library("grid")
 library("gridExtra")
 library("easyGgplot2")
 library("edgeR")
+library("phyloseq")
+library("ggrepel")
+library("igraph")
 library("DESeq2")
+library("SpiecEasi")
 source("functions.R")
 ```
 
@@ -81,8 +85,72 @@ data_total$upper_rel_abundance <- 100*((data_total$coverage+data_total$std_cover
 data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_coverage)*data_total$bin_size)/(read_length*data_total$Total_reads)
 ```
 
-# 1. Phylogenetic tree
+# 1a. Phylogenetic tree
 ![RAxML tree for Limnohabitans genomes](./Tree/PhyloTree_Limno.png)  
+
+# 1b. Network analysis based on 16S data
+```{r network_16S, warning = FALSE, fig.width = 9, fig.height = 8}
+# import data
+df_phy <- import_mothur(mothur_shared_file = "./16S/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.an.unique_list.shared",
+                        mothur_constaxonomy_file = "./16S/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.an.unique_list.0.03.cons.taxonomy")
+
+# Filter out 2013 samples
+df_phy <- prune_samples(grep(pattern = ".", sample_names(df_phy), fixed = TRUE,
+     value = TRUE), df_phy)
+df_phy <- prune_samples(grep(pattern = "cD", sample_names(df_phy), fixed = TRUE,
+     value = TRUE, invert = TRUE), df_phy)
+
+# Perform prevalence filtering
+df_phy <- filter_taxa(df_phy, function(x) sum(x > 30) > (0.25*length(x)), TRUE)
+
+# Run spiec-easi
+sp_easi <- spiec.easi(df_phy, method='mb', lambda.min.ratio=1e-2,
+                           nlambda=20, icov.select.params=list(rep.num=50))
+
+ig.mb <- adj2igraph(sp_easi$refit,  vertex.attr = list(name=taxa_names(df_phy)))
+vsize <- Biobase::rowMax(clr(t(otu_table(df_phy)), 1))+10
+Lineage_rel <- tax_table(df_phy)[,"Rank2"]
+Lineage_rel <- factor(Lineage_rel, levels = unique(Lineage_rel))
+
+# OTUs that are Limnohabitans
+limno_otus <- taxa_names(df_phy)[tax_table(df_phy)[,"Rank6"] == "betI_A"]
+limno_otus <- limno_otus[!is.na(limno_otus)]
+
+# Make Limno label
+limno_labs <- c()
+limno_labs[vertex.attributes(ig.mb)$name %in% limno_otus] <- "Limnohabitans sp."
+limno_labs[is.na(limno_labs)] <- ""
+
+# Plot network
+p_16S_network <- plot_network_custom(ig.mb, df_phy, type='taxa',
+             line_weight = 2, hjust = 0.5,
+             point_size = 0.1, alpha = 0.01, label=NULL, label_size = 3.95)+
+  scale_fill_brewer(palette = "Paired")+
+  scale_color_brewer(palette = "Paired")+
+  geom_point(aes(size = vsize, fill = Lineage_rel), alpha = 0.5,
+             colour="black", shape=21)+
+  guides(size = FALSE,
+    fill  = guide_legend(title = "Phylum", override.aes = list(size = 5),
+                         nrow = 4),
+    color = FALSE)+
+  theme(legend.position="bottom", legend.text=element_text(size=12),
+        text = element_text(size = 12),
+        plot.margin = unit(c(1,1,1,1), "cm"))+
+  scale_size(range = c(5, 15))+
+  geom_label_repel(aes(label = limno_labs), fontface = 'bold', color = 'black',
+                   box.padding = 0.35, point.padding = 0.5,
+                   segment.color = 'black',
+                   size = 4,
+                       # Width of the line segments.
+                   segment.size = 1.5,
+                   # Draw an arrow from the label to the data point.
+                   arrow = arrow(length = unit(0.015, 'npc')),
+                   nudge_x = -0.1,
+                   nudge_y = 0.6
+  )
+
+print(p_16S_network)
+```
 
 # 2. Investigate MAG- and 16S-based abundances
 Formula used to calculate relative abundances:
@@ -370,7 +438,7 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
                               design= ~ Site + Season) # Test for season but controlling for site
   dds <- DESeq(dds)
   General_deseq_results_season[[i]] <- results(dds)[order(results(dds)$padj), ] # specify contrasts here if need to
-  summary(results(dds))
+  summary(results(dds, alpha=0.05))
 }
 
 ## Site effect
@@ -382,7 +450,7 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
                               design= ~ Season + Site) # Test for season but controlling for site
   dds <- DESeq(dds)
   General_deseq_results_site[[i]] <- results(dds)[order(results(dds)$padj), ] # specify contrasts here if need to
-  summary(results(dds))
+  summary(results(dds, alpha=0.05))
 }
 ##
 
