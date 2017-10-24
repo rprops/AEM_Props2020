@@ -458,3 +458,11 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 
 sessionInfo()
 ```
+
+# 7. Sequence discrete populations
+```{r sequence discrete populations, dpi = 300, warning = FALSE, fig.width = 7, fig.height = 7}
+map_disc <- read.table("./SEQs_discrete/final.idhist", header = FALSE,
+                       row.names = NULL)
+colnames(map_disc) <- c("bin","sample", "%identity", "reads_mapped", "bases_mapped")
+
+```
