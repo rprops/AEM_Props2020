@@ -2008,8 +2008,8 @@ for(bin2plot in unique(map_disc$bin)){
         axis.text.x = element_text(angle = 45, hjust = 1),
         strip.text.y=element_text(size=14))+
       ylab("Proportion of reads mapped (%)")+
-      xlab("Nucleotide identity (%)")
-      # ylim(0,1.5)
+      xlab("Nucleotide identity (%)")+
+      ylim(0,.5)
   
   print(p_sdisc)
 }
