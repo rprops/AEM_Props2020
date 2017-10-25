@@ -1992,7 +1992,7 @@ map_disc <- dplyr::left_join(map_disc, total_reads2, by = "sample")
 map_disc <- map_disc %>% group_by(sample) %>% 
   mutate(rel_reads_mapped = 100*reads_mapped/Total_reads)
 
-# Plot
+# Plot distributions
 for(bin2plot in unique(map_disc$bin)){
     p_sdisc <- map_disc %>% filter(bin == bin2plot) %>% 
       ggplot(aes(x = identity, y = rel_reads_mapped, color = season))+
@@ -2025,7 +2025,7 @@ map_disc_cum <- map_disc  %>% filter(identity > id_thresh) %>% group_by(sample) 
   mutate(cum_rel_reads_mapped = cumsum(rel_reads_mapped))%>% 
   filter(identity == 100)
 
-p_sdisc_cum <- ggplot(map_disc_cum, aes(x = sample, y = cum_rel_reads_mapped, 
+p_sdisc_cum1 <- ggplot(map_disc_cum, aes(x = sample, y = cum_rel_reads_mapped, 
                                         fill = bin))+
   theme_bw()+
   scale_fill_brewer(palette = "Paired")+
@@ -2039,8 +2039,34 @@ p_sdisc_cum <- ggplot(map_disc_cum, aes(x = sample, y = cum_rel_reads_mapped,
   xlab("Sample")+
   guides(fill=guide_legend(nrow = 11))
 
-print(p_sdisc_cum)
+print(p_sdisc_cum1)
 ```
 
 <img src="Figures/cached/plot-cum-discrete-1.png" style="display: block; margin: auto;" />
+
+```r
+# Plot % reads over threshold of 0.99
+id_thresh <- 99
+map_disc_cum2 <- map_disc  %>% filter(identity > id_thresh) %>% group_by(sample) %>% 
+  mutate(cum_rel_reads_mapped = cumsum(rel_reads_mapped))%>% 
+  filter(identity == 100)
+
+p_sdisc_cum2 <- ggplot(map_disc_cum2, aes(x = sample, y = cum_rel_reads_mapped, 
+                                        fill = bin))+
+  theme_bw()+
+  scale_fill_brewer(palette = "Paired")+
+  geom_point(size = 4, shape = 21, color = "black")+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=14),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      strip.text.y=element_text(size=14), legend.position = "bottom")+
+  ylab(paste0("Proportion of reads mapped > ", id_thresh, "% NI"))+
+  xlab("Sample")+
+  guides(fill=guide_legend(nrow = 11))
+
+print(p_sdisc_cum2)
+```
+
+<img src="Figures/cached/plot-cum-discrete-2.png" style="display: block; margin: auto;" />
 
