@@ -1963,3 +1963,84 @@ sessionInfo()
 ## [76] tibble_1.3.4         iterators_1.0.8      memoise_1.1.0       
 ## [79] AnnotationDbi_1.34.4 cluster_2.0.6
 ```
+
+# 7. Sequence discrete populations
+
+**In order to check unspecific mapping sample reads were mapped consecutively to
+every bin using `BBmap.sh`.** This approach allows us to check the mapping specificity by evaluating the distribution of read identity to the putative genome bin.  
+
+
+```r
+map_disc <- read.table("./SEQs_discrete/final.idhist", header = FALSE,
+                       row.names = NULL)
+colnames(map_disc) <- c("bin","sample", "identity", "reads_mapped", "bases_mapped")
+
+# Add season metadata
+map_disc$season <- "Summer"
+map_disc$season[grep("Fa", map_disc$sample)] <- "Fall"
+map_disc$season[grep("Su", map_disc$sample)] <- "Summer"
+map_disc$season[grep("Sp", map_disc$sample)] <- "Spring"
+map_disc$sample <- gsub(".C","", map_disc$sample, fixed = TRUE)
+total_reads2 <- total_reads
+total_reads2$sample <- gsub("_", ".", fixed = TRUE,total_reads$sample)
+map_disc <- dplyr::left_join(map_disc, total_reads2, by = "sample")
+
+# Throw away all %identity below 60%
+# map_disc <- map_disc %>% filter(identity > 60)
+
+# Normalize reads_mapped to library sizes
+map_disc <- map_disc %>% group_by(sample) %>% 
+  mutate(rel_reads_mapped = 100*reads_mapped/Total_reads)
+
+# Plot
+for(bin2plot in unique(map_disc$bin)){
+    p_sdisc <- map_disc %>% filter(bin == bin2plot) %>% 
+      ggplot(aes(x = identity, y = rel_reads_mapped, color = season))+
+      theme_bw()+
+      scale_color_brewer(palette = "Accent")+
+      facet_wrap(~sample, nrow = 4)+
+      geom_line(size = 1.5)+
+      guides(color = FALSE)+
+      ggtitle(bin2plot)+
+      theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        strip.text.y=element_text(size=14))+
+      ylab("Proportion of reads mapped (%)")+
+      xlab("Nucleotide identity (%)")
+      # ylim(0,1.5)
+  
+  print(p_sdisc)
+}
+```
+
+<img src="Figures/cached/sequence discrete populations-1.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-2.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-3.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-4.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-5.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-6.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-7.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-8.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-9.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-10.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-11.png" style="display: block; margin: auto;" />
+
+
+```r
+# Plot % reads over threshold of 0.95
+id_thresh <- 95
+map_disc_cum <- map_disc  %>% filter(identity > id_thresh) %>% group_by(sample) %>% 
+  mutate(cum_rel_reads_mapped = cumsum(rel_reads_mapped))%>% 
+  filter(identity == 100)
+
+p_sdisc_cum <- ggplot(map_disc_cum, aes(x = sample, y = cum_rel_reads_mapped, 
+                                        fill = bin))+
+  theme_bw()+
+  scale_fill_brewer(palette = "Paired")+
+  geom_point(size = 4, shape = 21, color = "black")+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=14),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      strip.text.y=element_text(size=14), legend.position = "bottom")+
+  ylab(paste0("Proportion of reads mapped > ", id_thresh, "% NI"))+
+  xlab("Sample")+
+  guides(fill=guide_legend(nrow = 11))
+
+print(p_sdisc_cum)
+```
+
+<img src="Figures/cached/plot-cum-discrete-1.png" style="display: block; margin: auto;" />
+
