@@ -219,9 +219,9 @@ Bin_2737471681_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133052.as
 ```
 
 ```
-## Wed Oct 25 15:56:38 2017  --- There are 2248 genes with > 0.1 %
-## Wed Oct 25 15:56:38 2017  --- This is 100 % of all genes
-## Wed Oct 25 15:56:38 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 18:13:28 2017  --- There are 2248 genes with > 0.1 %
+## Wed Oct 25 18:13:28 2017  --- This is 100 % of all genes
+## Wed Oct 25 18:13:28 2017  --- The 10 genes with the highest GC% are:
 ##                                                                                   function_id
 ## 2239 NADPH-dependent 2,4-dienoyl-CoA reductase, sulfur reductase, or a related oxidoreductase
 ## 2240                    tRNA A37 threonylcarbamoyladenosine synthetase subunit TsaC/SUA5/YrdC
@@ -253,9 +253,9 @@ Bin_2737471682_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133053.as
 ```
 
 ```
-## Wed Oct 25 15:56:38 2017  --- There are 1882 genes with > 0.1 %
-## Wed Oct 25 15:56:38 2017  --- This is 100 % of all genes
-## Wed Oct 25 15:56:38 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 18:13:28 2017  --- There are 1882 genes with > 0.1 %
+## Wed Oct 25 18:13:28 2017  --- This is 100 % of all genes
+## Wed Oct 25 18:13:28 2017  --- The 10 genes with the highest GC% are:
 ##                                                                function_id
 ## 1873                                   D-alanyl-D-alanine carboxypeptidase
 ## 1874                        Aspartate/methionine/tyrosine aminotransferase
@@ -287,9 +287,9 @@ Bin_2737471683_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133054.as
 ```
 
 ```
-## Wed Oct 25 15:56:39 2017  --- There are 1727 genes with > 0.1 %
-## Wed Oct 25 15:56:39 2017  --- This is 100 % of all genes
-## Wed Oct 25 15:56:39 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 18:13:29 2017  --- There are 1727 genes with > 0.1 %
+## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
+## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 1718                                            Type II secretory pathway, component PulF
 ## 1719                                                    Pyrroline-5-carboxylate reductase
@@ -321,9 +321,9 @@ Bin_2737471793_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133647.as
 ```
 
 ```
-## Wed Oct 25 15:56:39 2017  --- There are 1476 genes with > 0.1 %
-## Wed Oct 25 15:56:39 2017  --- This is 100 % of all genes
-## Wed Oct 25 15:56:39 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 18:13:29 2017  --- There are 1476 genes with > 0.1 %
+## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
+## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 1467 Acetolactate synthase large subunit or other thiamine pyrophosphate-requiring enzyme
 ## 1468                                            2-keto-3-deoxy-L-rhamnonate aldolase RhmA
@@ -355,9 +355,9 @@ Bin_2737471794_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133648.as
 ```
 
 ```
-## Wed Oct 25 15:56:39 2017  --- There are 1226 genes with > 0.1 %
-## Wed Oct 25 15:56:39 2017  --- This is 100 % of all genes
-## Wed Oct 25 15:56:39 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 18:13:29 2017  --- There are 1226 genes with > 0.1 %
+## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
+## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1217                                     Cytochrome c-type biogenesis protein CcmH/NrfF
 ## 1218                                          Type II secretory pathway, component PulK
@@ -389,9 +389,9 @@ Bin_2737471795_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133649.as
 ```
 
 ```
-## Wed Oct 25 15:56:39 2017  --- There are 1383 genes with > 0.1 %
-## Wed Oct 25 15:56:39 2017  --- This is 100 % of all genes
-## Wed Oct 25 15:56:39 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 18:13:29 2017  --- There are 1383 genes with > 0.1 %
+## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
+## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1374                                                 Glycerol-3-phosphate dehydrogenase
 ## 1375                                          Predicted amidophosphoribosyltransferases
@@ -423,9 +423,9 @@ Bin_2737471797_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133651.as
 ```
 
 ```
-## Wed Oct 25 15:56:39 2017  --- There are 1076 genes with > 0.1 %
-## Wed Oct 25 15:56:39 2017  --- This is 100 % of all genes
-## Wed Oct 25 15:56:39 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 18:13:29 2017  --- There are 1076 genes with > 0.1 %
+## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
+## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1067              DNA-directed RNA polymerase specialized sigma subunit, sigma24 family
 ## 1068                                7,8-dihydro-6-hydroxymethylpterin-pyrophosphokinase
@@ -457,9 +457,9 @@ Bin_2737471799_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133653.as
 ```
 
 ```
-## Wed Oct 25 15:56:39 2017  --- There are 522 genes with > 0.1 %
-## Wed Oct 25 15:56:39 2017  --- This is 100 % of all genes
-## Wed Oct 25 15:56:39 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 18:13:29 2017  --- There are 522 genes with > 0.1 %
+## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
+## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
 ##                                                               function_id
 ## 513                                             Glutathione S-transferase
 ## 514                                  DNA-nicking endonuclease, Smr domain
@@ -491,9 +491,9 @@ Bin_2737471802_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133656.as
 ```
 
 ```
-## Wed Oct 25 15:56:39 2017  --- There are 1691 genes with > 0.1 %
-## Wed Oct 25 15:56:39 2017  --- This is 100 % of all genes
-## Wed Oct 25 15:56:39 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 18:13:29 2017  --- There are 1691 genes with > 0.1 %
+## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
+## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
 ##                                                                 function_id
 ## 1682                          Pyrimidine reductase, riboflavin biosynthesis
 ## 1683               2-C-methyl-D-erythritol 4-phosphate cytidylyltransferase
@@ -525,9 +525,9 @@ Bin_2737471804_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133658.as
 ```
 
 ```
-## Wed Oct 25 15:56:39 2017  --- There are 749 genes with > 0.1 %
-## Wed Oct 25 15:56:39 2017  --- This is 100 % of all genes
-## Wed Oct 25 15:56:39 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 18:13:29 2017  --- There are 749 genes with > 0.1 %
+## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
+## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 740 Uncharacterized conserved protein, contains von Willebrand factor type A (vWA) domain
 ## 741                   Uncharacterized membrane protein AbrB, regulator of aidB expression
@@ -559,9 +559,9 @@ Bin_2737471805_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133659.as
 ```
 
 ```
-## Wed Oct 25 15:56:40 2017  --- There are 1172 genes with > 0.1 %
-## Wed Oct 25 15:56:40 2017  --- This is 100 % of all genes
-## Wed Oct 25 15:56:40 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 18:13:29 2017  --- There are 1172 genes with > 0.1 %
+## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
+## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
 ##                                                                   function_id
 ## 1163           Ribulose-5-phosphate 4-epimerase/Fuculose-1-phosphate aldolase
 ## 1164    Asp-tRNAAsn/Glu-tRNAGln amidotransferase A subunit or related amidase
@@ -593,9 +593,9 @@ Bin_2737471806_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133660.as
 ```
 
 ```
-## Wed Oct 25 15:56:40 2017  --- There are 1584 genes with > 0.1 %
-## Wed Oct 25 15:56:40 2017  --- This is 100 % of all genes
-## Wed Oct 25 15:56:40 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 18:13:29 2017  --- There are 1584 genes with > 0.1 %
+## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
+## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
 ##                                                                       function_id
 ## 1575                                   Predicted NAD/FAD-dependent oxidoreductase
 ## 1576                                                 Gamma-glutamyltranspeptidase
@@ -758,7 +758,7 @@ merged_file <- merge_annotations(file_list[1:12], genoid_seqid = TRUE)
 ## [1] 22206
 ## [1] 2334
 ## [1] 24540
-## Wed Oct 25 15:57:15 2017  --- Sucessfully merged files
+## Wed Oct 25 18:14:05 2017  --- Sucessfully merged files
 ```
 
 ```r
@@ -1900,69 +1900,6 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ##
 
 ##
-
-sessionInfo()
-```
-
-```
-## R version 3.4.1 (2017-06-30)
-## Platform: x86_64-w64-mingw32/x64 (64-bit)
-## Running under: Windows 8.1 x64 (build 9600)
-## 
-## Matrix products: default
-## 
-## locale:
-## [1] LC_COLLATE=English_United States.1252 
-## [2] LC_CTYPE=English_United States.1252   
-## [3] LC_MONETARY=English_United States.1252
-## [4] LC_NUMERIC=C                          
-## [5] LC_TIME=English_United States.1252    
-## 
-## attached base packages:
-##  [1] parallel  stats4    grid      stats     graphics  grDevices utils    
-##  [8] datasets  methods   base     
-## 
-## other attached packages:
-##  [1] bindrcpp_0.2               SpiecEasi_0.1.2           
-##  [3] DESeq2_1.12.4              SummarizedExperiment_1.2.3
-##  [5] Biobase_2.32.0             GenomicRanges_1.24.3      
-##  [7] GenomeInfoDb_1.8.7         IRanges_2.6.1             
-##  [9] S4Vectors_0.10.3           BiocGenerics_0.18.0       
-## [11] igraph_1.1.2               ggrepel_0.7.0             
-## [13] phyloseq_1.16.2            edgeR_3.14.0              
-## [15] limma_3.28.21              easyGgplot2_1.0.0.9000    
-## [17] gridExtra_2.3              ggplot2_2.2.1             
-## [19] dplyr_0.7.4                tidyr_0.6.0               
-## [21] knitr_1.17                
-## 
-## loaded via a namespace (and not attached):
-##  [1] nlme_3.1-131         bit64_0.9-7          RColorBrewer_1.1-2  
-##  [4] rprojroot_1.2        tools_3.4.1          backports_1.1.1     
-##  [7] R6_2.2.2             vegan_2.4-4          rpart_4.1-11        
-## [10] Hmisc_4.0-3          DBI_0.7              lazyeval_0.2.0      
-## [13] mgcv_1.8-22          colorspace_1.3-2     permute_0.9-4       
-## [16] ade4_1.7-8           nnet_7.3-12          bit_1.1-12          
-## [19] compiler_3.4.1       htmlTable_1.9        labeling_0.3        
-## [22] scales_0.5.0         checkmate_1.8.4      genefilter_1.54.2   
-## [25] stringr_1.2.0        digest_0.6.12        foreign_0.8-69      
-## [28] rmarkdown_1.6        XVector_0.12.1       base64enc_0.1-3     
-## [31] pkgconfig_2.0.1      htmltools_0.3.6      htmlwidgets_0.9     
-## [34] rlang_0.1.2          huge_1.2.7           VGAM_1.0-4          
-## [37] RSQLite_2.0          bindr_0.1            jsonlite_1.5        
-## [40] BiocParallel_1.6.6   acepack_1.4.1        magrittr_1.5        
-## [43] Formula_1.2-2        biomformat_1.0.2     Matrix_1.2-11       
-## [46] Rcpp_0.12.13         munsell_0.4.3        ape_4.1             
-## [49] stringi_1.1.5        yaml_2.1.14          MASS_7.3-47         
-## [52] zlibbioc_1.18.0      rhdf5_2.16.0         plyr_1.8.4          
-## [55] blob_1.1.0           lattice_0.20-35      Biostrings_2.40.2   
-## [58] splines_3.4.1        multtest_2.28.0      annotate_1.50.0     
-## [61] locfit_1.5-9.1       boot_1.3-20          geneplotter_1.50.0  
-## [64] reshape2_1.4.2       codetools_0.2-15     XML_3.98-1.9        
-## [67] glue_1.1.1           evaluate_0.10.1      latticeExtra_0.6-28 
-## [70] data.table_1.10.4    foreach_1.4.3        gtable_0.2.0        
-## [73] assertthat_0.2.0     xtable_1.8-2         survival_2.41-3     
-## [76] tibble_1.3.4         iterators_1.0.8      memoise_1.1.0       
-## [79] AnnotationDbi_1.34.4 cluster_2.0.6
 ```
 
 # 7. Sequence discrete populations
@@ -2009,14 +1946,14 @@ for(bin2plot in unique(map_disc$bin)){
         axis.text.x = element_text(angle = 45, hjust = 1),
         strip.text.y=element_text(size=14))+
       ylab("Proportion of reads mapped (%)")+
-      xlab("Nucleotide identity (%)")+
-      ylim(0,.5)
+      xlab("Nucleotide identity (%)")
+      # ylim(0,.5)
   
   print(p_sdisc)
 }
 ```
 
-<img src="Figures/cached/sequence discrete populations-1.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-2.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-3.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-4.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-5.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-6.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-7.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-8.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-9.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-10.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-11.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/sequence discrete populations-1.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-2.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-3.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-4.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-5.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-6.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-7.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-8.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-9.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-10.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-11.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-12.png" style="display: block; margin: auto;" />
 
 
 ```r
@@ -2025,6 +1962,8 @@ id_thresh <- 95
 map_disc_cum <- map_disc  %>% filter(identity > id_thresh) %>% group_by(sample) %>% 
   mutate(cum_rel_reads_mapped = cumsum(rel_reads_mapped))%>% 
   filter(identity == 100)
+sum_cum <- map_disc_cum %>% group_by(sample) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
+colnames(sum_cum)[c(2)] <- "Sample2"
 
 p_sdisc_cum1 <- ggplot(map_disc_cum, aes(x = sample, y = cum_rel_reads_mapped, 
                                         fill = bin))+
@@ -2038,7 +1977,9 @@ p_sdisc_cum1 <- ggplot(map_disc_cum, aes(x = sample, y = cum_rel_reads_mapped,
       strip.text.y=element_text(size=14), legend.position = "bottom")+
   ylab(paste0("Proportion of reads mapped > ", id_thresh, "% NI"))+
   xlab("Sample")+
-  guides(fill=guide_legend(nrow = 11))
+  guides(fill=guide_legend(nrow = 11))+
+  geom_point(data = sum_cum, aes(x = Sample2, y = cum_bins_rel_reads_mapped),
+             shape = 22, fill = "black", size = 4)
 
 print(p_sdisc_cum1)
 ```
@@ -2051,6 +1992,8 @@ id_thresh <- 99
 map_disc_cum2 <- map_disc  %>% filter(identity > id_thresh) %>% group_by(sample) %>% 
   mutate(cum_rel_reads_mapped = cumsum(rel_reads_mapped))%>% 
   filter(identity == 100)
+sum_cum <- map_disc_cum2 %>% group_by(sample) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
+colnames(sum_cum)[c(2)] <- "Sample2"
 
 p_sdisc_cum2 <- ggplot(map_disc_cum2, aes(x = sample, y = cum_rel_reads_mapped, 
                                         fill = bin))+
@@ -2064,7 +2007,9 @@ p_sdisc_cum2 <- ggplot(map_disc_cum2, aes(x = sample, y = cum_rel_reads_mapped,
       strip.text.y=element_text(size=14), legend.position = "bottom")+
   ylab(paste0("Proportion of reads mapped > ", id_thresh, "% NI"))+
   xlab("Sample")+
-  guides(fill=guide_legend(nrow = 11))
+  guides(fill=guide_legend(nrow = 11))+
+  geom_point(data = sum_cum, aes(x = Sample2, y = cum_bins_rel_reads_mapped),
+             shape = 22, fill = "black", size = 4)
 
 print(p_sdisc_cum2)
 ```
