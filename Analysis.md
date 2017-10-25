@@ -8,9 +8,9 @@ Today
 
 ```r
 # Read data
-mean_coverage <- read.table("./anvio_output/mean_coverage_selected_final.tsv", header = TRUE)
-std_coverage <- read.table("./anvio_output/std_coverage_selected_final.tsv", header = TRUE)
-bin_size <- read.table("./anvio_output/general_bins_summary_selected_final.tsv", header = TRUE)[, c(2,4)]
+mean_coverage <- read.table("./anvio_output/rebin/mean_coverage_selected_final.tsv", header = TRUE)
+std_coverage <- read.table("./anvio_output/rebin/std_coverage_selected_final.tsv", header = TRUE)
+bin_size <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(2,4)]
 total_reads <- read.table("./anvio_output/sample_reads.tsv", header = TRUE)
 read_length <- 150
 
@@ -219,9 +219,9 @@ Bin_2737471681_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133052.as
 ```
 
 ```
-## Wed Oct 18 15:25:24 2017  --- There are 2248 genes with > 0.1 %
-## Wed Oct 18 15:25:24 2017  --- This is 100 % of all genes
-## Wed Oct 18 15:25:24 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 15:56:38 2017  --- There are 2248 genes with > 0.1 %
+## Wed Oct 25 15:56:38 2017  --- This is 100 % of all genes
+## Wed Oct 25 15:56:38 2017  --- The 10 genes with the highest GC% are:
 ##                                                                                   function_id
 ## 2239 NADPH-dependent 2,4-dienoyl-CoA reductase, sulfur reductase, or a related oxidoreductase
 ## 2240                    tRNA A37 threonylcarbamoyladenosine synthetase subunit TsaC/SUA5/YrdC
@@ -253,9 +253,9 @@ Bin_2737471682_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133053.as
 ```
 
 ```
-## Wed Oct 18 15:25:24 2017  --- There are 1882 genes with > 0.1 %
-## Wed Oct 18 15:25:24 2017  --- This is 100 % of all genes
-## Wed Oct 18 15:25:24 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 15:56:38 2017  --- There are 1882 genes with > 0.1 %
+## Wed Oct 25 15:56:38 2017  --- This is 100 % of all genes
+## Wed Oct 25 15:56:38 2017  --- The 10 genes with the highest GC% are:
 ##                                                                function_id
 ## 1873                                   D-alanyl-D-alanine carboxypeptidase
 ## 1874                        Aspartate/methionine/tyrosine aminotransferase
@@ -287,9 +287,9 @@ Bin_2737471683_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133054.as
 ```
 
 ```
-## Wed Oct 18 15:25:24 2017  --- There are 1727 genes with > 0.1 %
-## Wed Oct 18 15:25:24 2017  --- This is 100 % of all genes
-## Wed Oct 18 15:25:24 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 15:56:39 2017  --- There are 1727 genes with > 0.1 %
+## Wed Oct 25 15:56:39 2017  --- This is 100 % of all genes
+## Wed Oct 25 15:56:39 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 1718                                            Type II secretory pathway, component PulF
 ## 1719                                                    Pyrroline-5-carboxylate reductase
@@ -321,9 +321,9 @@ Bin_2737471793_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133647.as
 ```
 
 ```
-## Wed Oct 18 15:25:24 2017  --- There are 1476 genes with > 0.1 %
-## Wed Oct 18 15:25:24 2017  --- This is 100 % of all genes
-## Wed Oct 18 15:25:24 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 15:56:39 2017  --- There are 1476 genes with > 0.1 %
+## Wed Oct 25 15:56:39 2017  --- This is 100 % of all genes
+## Wed Oct 25 15:56:39 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 1467 Acetolactate synthase large subunit or other thiamine pyrophosphate-requiring enzyme
 ## 1468                                            2-keto-3-deoxy-L-rhamnonate aldolase RhmA
@@ -355,9 +355,9 @@ Bin_2737471794_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133648.as
 ```
 
 ```
-## Wed Oct 18 15:25:25 2017  --- There are 1226 genes with > 0.1 %
-## Wed Oct 18 15:25:25 2017  --- This is 100 % of all genes
-## Wed Oct 18 15:25:25 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 15:56:39 2017  --- There are 1226 genes with > 0.1 %
+## Wed Oct 25 15:56:39 2017  --- This is 100 % of all genes
+## Wed Oct 25 15:56:39 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1217                                     Cytochrome c-type biogenesis protein CcmH/NrfF
 ## 1218                                          Type II secretory pathway, component PulK
@@ -389,9 +389,9 @@ Bin_2737471795_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133649.as
 ```
 
 ```
-## Wed Oct 18 15:25:25 2017  --- There are 1383 genes with > 0.1 %
-## Wed Oct 18 15:25:25 2017  --- This is 100 % of all genes
-## Wed Oct 18 15:25:25 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 15:56:39 2017  --- There are 1383 genes with > 0.1 %
+## Wed Oct 25 15:56:39 2017  --- This is 100 % of all genes
+## Wed Oct 25 15:56:39 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1374                                                 Glycerol-3-phosphate dehydrogenase
 ## 1375                                          Predicted amidophosphoribosyltransferases
@@ -423,9 +423,9 @@ Bin_2737471797_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133651.as
 ```
 
 ```
-## Wed Oct 18 15:25:25 2017  --- There are 1076 genes with > 0.1 %
-## Wed Oct 18 15:25:25 2017  --- This is 100 % of all genes
-## Wed Oct 18 15:25:25 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 15:56:39 2017  --- There are 1076 genes with > 0.1 %
+## Wed Oct 25 15:56:39 2017  --- This is 100 % of all genes
+## Wed Oct 25 15:56:39 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1067              DNA-directed RNA polymerase specialized sigma subunit, sigma24 family
 ## 1068                                7,8-dihydro-6-hydroxymethylpterin-pyrophosphokinase
@@ -457,9 +457,9 @@ Bin_2737471799_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133653.as
 ```
 
 ```
-## Wed Oct 18 15:25:25 2017  --- There are 522 genes with > 0.1 %
-## Wed Oct 18 15:25:25 2017  --- This is 100 % of all genes
-## Wed Oct 18 15:25:25 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 15:56:39 2017  --- There are 522 genes with > 0.1 %
+## Wed Oct 25 15:56:39 2017  --- This is 100 % of all genes
+## Wed Oct 25 15:56:39 2017  --- The 10 genes with the highest GC% are:
 ##                                                               function_id
 ## 513                                             Glutathione S-transferase
 ## 514                                  DNA-nicking endonuclease, Smr domain
@@ -491,9 +491,9 @@ Bin_2737471802_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133656.as
 ```
 
 ```
-## Wed Oct 18 15:25:25 2017  --- There are 1691 genes with > 0.1 %
-## Wed Oct 18 15:25:25 2017  --- This is 100 % of all genes
-## Wed Oct 18 15:25:25 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 15:56:39 2017  --- There are 1691 genes with > 0.1 %
+## Wed Oct 25 15:56:39 2017  --- This is 100 % of all genes
+## Wed Oct 25 15:56:39 2017  --- The 10 genes with the highest GC% are:
 ##                                                                 function_id
 ## 1682                          Pyrimidine reductase, riboflavin biosynthesis
 ## 1683               2-C-methyl-D-erythritol 4-phosphate cytidylyltransferase
@@ -525,9 +525,9 @@ Bin_2737471804_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133658.as
 ```
 
 ```
-## Wed Oct 18 15:25:26 2017  --- There are 749 genes with > 0.1 %
-## Wed Oct 18 15:25:26 2017  --- This is 100 % of all genes
-## Wed Oct 18 15:25:26 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 15:56:39 2017  --- There are 749 genes with > 0.1 %
+## Wed Oct 25 15:56:39 2017  --- This is 100 % of all genes
+## Wed Oct 25 15:56:39 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 740 Uncharacterized conserved protein, contains von Willebrand factor type A (vWA) domain
 ## 741                   Uncharacterized membrane protein AbrB, regulator of aidB expression
@@ -559,9 +559,9 @@ Bin_2737471805_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133659.as
 ```
 
 ```
-## Wed Oct 18 15:25:26 2017  --- There are 1172 genes with > 0.1 %
-## Wed Oct 18 15:25:26 2017  --- This is 100 % of all genes
-## Wed Oct 18 15:25:26 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 15:56:40 2017  --- There are 1172 genes with > 0.1 %
+## Wed Oct 25 15:56:40 2017  --- This is 100 % of all genes
+## Wed Oct 25 15:56:40 2017  --- The 10 genes with the highest GC% are:
 ##                                                                   function_id
 ## 1163           Ribulose-5-phosphate 4-epimerase/Fuculose-1-phosphate aldolase
 ## 1164    Asp-tRNAAsn/Glu-tRNAGln amidotransferase A subunit or related amidase
@@ -593,9 +593,9 @@ Bin_2737471806_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133660.as
 ```
 
 ```
-## Wed Oct 18 15:25:26 2017  --- There are 1584 genes with > 0.1 %
-## Wed Oct 18 15:25:26 2017  --- This is 100 % of all genes
-## Wed Oct 18 15:25:26 2017  --- The 10 genes with the highest GC% are:
+## Wed Oct 25 15:56:40 2017  --- There are 1584 genes with > 0.1 %
+## Wed Oct 25 15:56:40 2017  --- This is 100 % of all genes
+## Wed Oct 25 15:56:40 2017  --- The 10 genes with the highest GC% are:
 ##                                                                       function_id
 ## 1575                                   Predicted NAD/FAD-dependent oxidoreductase
 ## 1576                                                 Gamma-glutamyltranspeptidase
@@ -758,7 +758,7 @@ merged_file <- merge_annotations(file_list[1:12], genoid_seqid = TRUE)
 ## [1] 22206
 ## [1] 2334
 ## [1] 24540
-## Wed Oct 18 15:26:03 2017  --- Sucessfully merged files
+## Wed Oct 25 15:57:15 2017  --- Sucessfully merged files
 ```
 
 ```r
@@ -1928,11 +1928,12 @@ sessionInfo()
 ##  [5] Biobase_2.32.0             GenomicRanges_1.24.3      
 ##  [7] GenomeInfoDb_1.8.7         IRanges_2.6.1             
 ##  [9] S4Vectors_0.10.3           BiocGenerics_0.18.0       
-## [11] igraph_1.1.2               phyloseq_1.16.2           
-## [13] edgeR_3.14.0               limma_3.28.21             
-## [15] easyGgplot2_1.0.0.9000     gridExtra_2.3             
-## [17] ggplot2_2.2.1              dplyr_0.7.4               
-## [19] tidyr_0.6.0                knitr_1.17                
+## [11] igraph_1.1.2               ggrepel_0.7.0             
+## [13] phyloseq_1.16.2            edgeR_3.14.0              
+## [15] limma_3.28.21              easyGgplot2_1.0.0.9000    
+## [17] gridExtra_2.3              ggplot2_2.2.1             
+## [19] dplyr_0.7.4                tidyr_0.6.0               
+## [21] knitr_1.17                
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] nlme_3.1-131         bit64_0.9-7          RColorBrewer_1.1-2  

@@ -53,9 +53,9 @@ source("functions.R")
 
 ```{r read-format data, warning = FALSE}
 # Read data
-mean_coverage <- read.table("./anvio_output/mean_coverage_selected_final.tsv", header = TRUE)
-std_coverage <- read.table("./anvio_output/std_coverage_selected_final.tsv", header = TRUE)
-bin_size <- read.table("./anvio_output/general_bins_summary_selected_final.tsv", header = TRUE)[, c(2,4)]
+mean_coverage <- read.table("./anvio_output/rebin/mean_coverage_selected_final.tsv", header = TRUE)
+std_coverage <- read.table("./anvio_output/rebin/std_coverage_selected_final.tsv", header = TRUE)
+bin_size <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(2,4)]
 total_reads <- read.table("./anvio_output/sample_reads.tsv", header = TRUE)
 read_length <- 150
 
@@ -457,8 +457,6 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ##
 
 ##
-
-sessionInfo()
 ```
 
 # 7. Sequence discrete populations
