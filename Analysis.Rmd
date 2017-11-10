@@ -464,6 +464,22 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 **In order to check unspecific mapping sample reads were mapped consecutively to
 every bin using `BBmap.sh`.** This approach allows us to check the mapping specificity by evaluating the distribution of read identity to the putative genome bin.  
 
+Competitive mapping was performed through `blastn` searches against a 1M and 10M read subsample from the interleaved fasta generated after QC (`seqtk`). Shell script used to achieve this:
+```
+#!/bin/bash
+set -e
+
+for file in `cat map.list`
+        do
+        echo $file
+		db=/scratch/vdenef_fluxm/rprops/DESMAN/metaG/vizbin_rebin_anvio_v230/SEQ_discrete/contigs/merged_bins-fixed.db
+		seqtk sample -s 777 /scratch/vdenef_fluxm/rprops/DESMAN/metaG/data/${file}/dt_int.fasta 1000000 > /scratch/vdenef_fluxm/rprops/DESMAN/metaG/data/${file}/dt_int_subs_1000000.fasta
+        qseqs=/scratch/vdenef_fluxm/rprops/DESMAN/metaG/data/${file}/dt_int_subs_1000000.fasta
+		blastn -query ${qseqs} -task megablast -db ${db} -out ./blast_output/${file}_blast.tsv -outfmt 6 -max_target_seqs 1 -num_threads 40 -perc_identity 60
+		rm ${qseqs}
+done
+```
+
 ```{r sequence discrete populations, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 7}
 map_disc <- read.table("./SEQs_discrete/final.idhist", header = FALSE,
                        row.names = NULL)
@@ -485,6 +501,10 @@ map_disc <- dplyr::left_join(map_disc, total_reads2, by = "sample")
 # Normalize reads_mapped to library sizes
 map_disc <- map_disc %>% group_by(sample) %>% 
   mutate(rel_reads_mapped = 100*reads_mapped/Total_reads)
+
+# Add observed genome size
+map_disc$bin <- gsub(".fa","",map_disc$bin)
+map_disc <- left_join(map_disc, bin_size, by = c("bin" = "bins"))
 
 # Plot distributions
 for(bin2plot in unique(map_disc$bin)){
@@ -510,7 +530,7 @@ for(bin2plot in unique(map_disc$bin)){
 ```
 
 ```{r plot-cum-discrete, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10}
-# Plot % reads over threshold of 0.95
+# Plot % reads corrected for genome size over threshold of 0.95
 id_thresh <- 95
 map_disc_cum <- map_disc  %>% filter(identity > id_thresh) %>% group_by(sample) %>% 
   mutate(cum_rel_reads_mapped = cumsum(rel_reads_mapped))%>% 
@@ -518,7 +538,7 @@ map_disc_cum <- map_disc  %>% filter(identity > id_thresh) %>% group_by(sample) 
 sum_cum <- map_disc_cum %>% group_by(sample) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
 colnames(sum_cum)[c(2)] <- "Sample2"
 
-p_sdisc_cum1 <- ggplot(map_disc_cum, aes(x = sample, y = cum_rel_reads_mapped, 
+p_sdisc_cum1 <- ggplot(map_disc_cum, aes(x = sample, y = 1e6*cum_rel_reads_mapped/bin_size, 
                                         fill = bin))+
   theme_bw()+
   scale_fill_brewer(palette = "Paired")+
@@ -531,8 +551,9 @@ p_sdisc_cum1 <- ggplot(map_disc_cum, aes(x = sample, y = cum_rel_reads_mapped,
   ylab(paste0("Proportion of reads mapped > ", id_thresh, "% NI"))+
   xlab("Sample")+
   guides(fill=guide_legend(nrow = 11))+
-  geom_point(data = sum_cum, aes(x = Sample2, y = cum_bins_rel_reads_mapped),
-             shape = 22, fill = "black", size = 4)
+  # geom_point(data = sum_cum, aes(x = Sample2, y = cum_bins_rel_reads_mapped),
+             # shape = 22, fill = "black", size = 4)+
+  ylim(0,2.5)
 
 print(p_sdisc_cum1)
 
@@ -544,7 +565,7 @@ map_disc_cum2 <- map_disc  %>% filter(identity > id_thresh) %>% group_by(sample)
 sum_cum <- map_disc_cum2 %>% group_by(sample) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
 colnames(sum_cum)[c(2)] <- "Sample2"
 
-p_sdisc_cum2 <- ggplot(map_disc_cum2, aes(x = sample, y = cum_rel_reads_mapped, 
+p_sdisc_cum2 <- ggplot(map_disc_cum2, aes(x = sample, y = 1e6*cum_rel_reads_mapped/bin_size, 
                                         fill = bin))+
   theme_bw()+
   scale_fill_brewer(palette = "Paired")+
@@ -557,9 +578,59 @@ p_sdisc_cum2 <- ggplot(map_disc_cum2, aes(x = sample, y = cum_rel_reads_mapped,
   ylab(paste0("Proportion of reads mapped > ", id_thresh, "% NI"))+
   xlab("Sample")+
   guides(fill=guide_legend(nrow = 11))+
-  geom_point(data = sum_cum, aes(x = Sample2, y = cum_bins_rel_reads_mapped),
-             shape = 22, fill = "black", size = 4)
+  # geom_point(data = sum_cum, aes(x = Sample2, y = cum_bins_rel_reads_mapped),
+             # shape = 22, fill = "black", size = 4)+
+  ylim(0,1.0)
 
 print(p_sdisc_cum2)
 ```
 
+### Competitive mapping using `blast` with 1M reads of interleaved fasta.  
+
+```{r blast-approach, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 7}
+blast_df <- read.table("./SEQs_discrete/merged_blast_1M.tsv", header = FALSE)
+colnames(blast_df) <- c("Sample", "Contig", "Identity")
+blast_df_map <- read.table("./SEQs_discrete/merged_contig_list.tsv", header = FALSE)
+colnames(blast_df_map) <- c("m_contig", "o_contig", "bin")
+
+# Round identity to integer
+blast_df$Identity <- round(blast_df$Identity, 0)
+blast_df$Identity <- factor(blast_df$Identity)
+blast_df <- left_join(blast_df, blast_df_map, by = c("Contig" = "m_contig"))
+
+blast_df_sum <- blast_df %>% group_by(Sample, bin) %>% count(Identity)
+blast_df_sum$Sample <- gsub("_blast.tsv", "", blast_df_sum$Sample)
+blast_df_sum <- data.frame(blast_df_sum)
+blast_df_sum$Identity <- as.numeric(as.character(blast_df_sum$Identity))
+
+# Normalize mapped reads per sample based on sample reads
+blast_df_sum <- blast_df_sum %>% ungroup %>% group_by(Sample, bin) %>% 
+  mutate(n_prop = 100*n/sum(n))
+
+# Add season variable
+blast_df_sum$season <- "Summer"
+blast_df_sum$season[grep("Fa", blast_df_sum$Sample)] <- "Fall"
+blast_df_sum$season[grep("Su", blast_df_sum$Sample)] <- "Summer"
+blast_df_sum$season[grep("Sp", blast_df_sum$Sample)] <- "Spring"
+
+for(bin2plot in unique(blast_df_sum$bin)){
+  p_blast_sdisc <- blast_df_sum %>% filter(bin == bin2plot) %>% 
+     ggplot(aes(x = Identity, y = n_prop, color = season))+
+      theme_bw()+
+      scale_color_brewer(palette = "Accent")+
+      facet_wrap(~Sample, nrow = 4)+
+      geom_line(size = 1.5)+
+      guides(color = FALSE)+
+      ggtitle(bin2plot)+
+      theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        strip.text.y=element_text(size=14))+
+      ylab("Proportion of reads mapped (%)")+
+      xlab("Nucleotide identity (%)")+
+    xlim(75,100)
+     
+print(p_blast_sdisc)
+}
+```
