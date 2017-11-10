@@ -1,7 +1,7 @@
 # Limno_lakeMI
 Repository for the analysis of reconstructed Limnohabitans genomes from lake Michigan
 
-# Analysis steps
+# Genome-centered metagenomics
 
 ## 1. QC and assembly
 Adapter + Quality trimming (qc.sh)
@@ -29,3 +29,6 @@ Extracting target taxonomy and format into compatible output for `Vizbin`.
 
 
 ## 4. Calculation of relative abundances
+
+
+
