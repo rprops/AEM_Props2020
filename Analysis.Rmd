@@ -627,7 +627,7 @@ for(bin2plot in unique(blast_df_sum$bin)){
         legend.background = element_rect(fill="transparent"),
         axis.text.x = element_text(angle = 45, hjust = 1),
         strip.text.y=element_text(size=14))+
-      ylab("Proportion of reads mapped (%)")+
+      ylab("Proportion of mapped reads (%)")+
       xlab("Nucleotide identity (%)")+
     xlim(75,100)
      
