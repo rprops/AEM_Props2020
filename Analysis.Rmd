@@ -602,10 +602,17 @@ blast_df_sum <- blast_df %>% group_by(Sample, bin) %>% count(Identity)
 blast_df_sum$Sample <- gsub("_blast.tsv", "", blast_df_sum$Sample)
 blast_df_sum <- data.frame(blast_df_sum)
 blast_df_sum$Identity <- as.numeric(as.character(blast_df_sum$Identity))
+blast_df_sum$bin <- gsub(".fa","",blast_df_sum$bin)
+blast_df_sum <- dplyr::left_join(blast_df_sum, bin_size, by = c("bin" = "bins"))
+
+# Normalize mapped reads per sample based on genome size
+blast_df_sum <- blast_df_sum %>% group_by(bin) %>% 
+  mutate(n_norm = 1e6*n/bin_size)
 
 # Normalize mapped reads per sample based on sample reads
-blast_df_sum <- blast_df_sum %>% ungroup %>% group_by(Sample, bin) %>% 
-  mutate(n_prop = 100*n/sum(n))
+# blast_subs <- 1e6
+# blast_df_sum <- blast_df_sum %>% ungroup %>% group_by(Sample) %>% 
+#   mutate(n_prop = 100*n/blast_subs)
 
 # Add season variable
 blast_df_sum$season <- "Summer"
@@ -615,7 +622,7 @@ blast_df_sum$season[grep("Sp", blast_df_sum$Sample)] <- "Spring"
 
 for(bin2plot in unique(blast_df_sum$bin)){
   p_blast_sdisc <- blast_df_sum %>% filter(bin == bin2plot) %>% 
-     ggplot(aes(x = Identity, y = n_prop, color = season))+
+     ggplot(aes(x = Identity, y = n_norm, color = season))+
       theme_bw()+
       scale_color_brewer(palette = "Accent")+
       facet_wrap(~Sample, nrow = 4)+
@@ -627,10 +634,35 @@ for(bin2plot in unique(blast_df_sum$bin)){
         legend.background = element_rect(fill="transparent"),
         axis.text.x = element_text(angle = 45, hjust = 1),
         strip.text.y=element_text(size=14))+
-      ylab("Proportion of mapped reads (%)")+
+      ylab("Reads per Mbp")+
       xlab("Nucleotide identity (%)")+
     xlim(75,100)
      
 print(p_blast_sdisc)
 }
+```
+
+```{r merged-blast-approach, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 10}
+
+# Plot one combined figure with proportions normalized for genome size
+p_blast_sdisc_merged <- blast_df_sum %>% 
+     ggplot(aes(x = Identity, y = n_norm, color = bin))+
+      theme_gray()+
+      scale_color_brewer("", palette = "Paired")+
+      facet_wrap(~Sample, nrow = 4)+
+      geom_line(size = 1.5, alpha = 0.7)+
+      ggtitle("Merged bins per sample")+
+      theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        strip.text.y=element_text(size=14),
+        legend.position = "bottom")+
+      ylab("Reads per Mbp")+
+      xlab("Nucleotide identity (%)")+
+    xlim(75,100)+
+  guides(color=guide_legend(ncol=3))
+     
+print(p_blast_sdisc_merged)
+
 ```
