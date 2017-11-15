@@ -154,11 +154,14 @@ p_16S_network <- plot_network_custom(ig.mb, df_phy, type='taxa',
 print(p_16S_network)
 ```
 
-# 2. Investigate MAG- and 16S-based abundances
+# 2. Investigate MAG- and 16S-based abundances  
+
+## 2.1. From coverage info (anvi'o)  
+
 Formula used to calculate relative abundances:
 $$Relative\ abundance =100*(\frac{mean\ coverage * bin\ size}{read\ length*total\ sample\ reads })$$
 
-```{r plot abundances, warning = FALSE, fig.width = 15, fig.height = 30}
+```{r plot-abundances-1, warning = FALSE, fig.width = 15, fig.height = 30}
 # Plot abundance distributions of all bins
 
 p_season <- ggplot(data = data_total, aes(x = bins, y = mean_rel_abundance, fill = bins))+
@@ -198,6 +201,91 @@ p_station <- ggplot(data = data_total, aes(x = bins, y = mean_rel_abundance, fil
   ylab("Mean relative abundance (%)")
 
 grid.arrange(p_season, p_station, nrow = 2)
+```
+
+## 2.1. From mapped reads info (BBmap - `pileup.sh`)  
+
+From: https://doi.org/10.1186/s13059-015-0834-7  
+
+*"The relative abundance of each MAG was estimated using the fraction of reads in each sample mapping to the respective MAG. Normalized on the size of that bin, this yielded the measure fraction of reads per nucleotide in bin. This measure was chosen since it is comparable across samples with varying sequencing output and different bin sizes. Using the CONCOCT input table, multiplying the average coverage per nucleotide with the length of the contig in question and summing over all contigs within a bin and within a sample gave the number of reads per bin within a sample. The fraction of reads in each sample mapping to each bin was then calculated by dividing this value with the total number of reads from each sample, after having removed duplicated reads."*
+
+```{r plot-abundances-2, dpi = 500, warning = FALSE, fig.width = 15, fig.height = 15}
+# Generated from SAM file with pileup.sh from BBmap toolset
+df_map_reads <- read.delim("./anvio_output/collection_vizbin_pileup_cov.tsv",
+                           stringsAsFactors = FALSE)
+df_map_reads$Sample <- gsub(df_map_reads$Sample, pattern = "_cov.tsv",
+                            replacement = "")
+
+# This file was generated in anvio with anvi-export-collections
+lab_map_reads <- read.delim("./anvio_output/collection_vizbin.tsv",
+                            header = FALSE)
+colnames(lab_map_reads) <- c("contig_split", "Bin")
+
+# Select Limnohabitans bins
+lab_map_reads <- lab_map_reads[lab_map_reads$Bin %in% data_total$bins, ]
+lab_map_reads$contig <- paste(
+  do.call(rbind, strsplit(as.character(lab_map_reads$contig_split), "_"))[, 1],
+  do.call(rbind, strsplit(as.character(lab_map_reads$contig_split), "_"))[, 2],
+  sep = "_"
+  )
+
+lab_map_reads <- lab_map_reads[ ,2:3] %>% distinct()
+
+# Merge dataframes
+df_map_merged <- left_join(lab_map_reads, df_map_reads, by = c("contig" = "X.ID")
+)
+df_map_merged[, 4:13] <- apply(df_map_merged[, 4:13], 2, FUN = function(x) as.numeric(x))
+
+df_map_merged <- df_map_merged %>% group_by(Bin, Sample) %>% summarise(sum_map_read = sum(Plus_reads))
+
+# Merge with metadata/bin sizes
+meta$Sample <- gsub(".C", "", meta$Sample, fixed = TRUE)
+meta$Sample <- gsub(".A", "", meta$Sample, fixed = TRUE)
+df_map_merged$Sample <- gsub(".C", "", df_map_merged$Sample, fixed = TRUE)
+df_map_merged <- left_join(df_map_merged, bin_size, by = c("Bin" = "bins"))
+df_map_merged <- left_join(df_map_merged, meta, "Sample")
+total_reads$sample <- gsub("_", ".", fixed = TRUE,total_reads$sample)
+df_map_merged <- left_join(df_map_merged, total_reads, c("Sample" = "sample"))
+
+df_map_merged <- df_map_merged %>% group_by(Bin,Sample) %>%
+  mutate(rel_abundance = 100*sum_map_read/Total_reads)
+
+df_map_merged <- df_map_merged %>% group_by(Bin,Sample) %>%
+  mutate(rel_norm_abundance = 100*sum_map_read/Total_reads/(bin_size/1e6))
+
+# Make plots
+
+p_season2 <- ggplot(data = df_map_merged, aes(x = Bin, y = rel_abundance, fill = Bin))+
+  geom_point(size = 4, shape = 21, alpha = 0.7)+
+  geom_boxplot(alpha = 0.3)+
+  scale_fill_brewer(palette = "Paired")+
+  theme_bw()+
+  facet_grid(Season~Site)+
+  # ylim(0,1)+ 
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(angle = 90, hjust = 1),
+        strip.text.y=element_text(size=18))+
+  ylab("Normalized relative abundance (%)")
+
+p_season2
+
+p_season3 <- ggplot(data = df_map_merged, aes(x = Bin, y = rel_norm_abundance, fill = Bin))+
+  geom_point(size = 4, shape = 21, alpha = 0.7)+
+  geom_boxplot(alpha = 0.3)+
+  scale_fill_brewer(palette = "Paired")+
+  theme_bw()+
+  facet_grid(Season~Site)+
+  # ylim(0,1)+ 
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(angle = 90, hjust = 1),
+        strip.text.y=element_text(size=18))+
+  ylab("relative abundance (%)")
+
+p_season3
 ```
 
 # 3. Investigate sequence characteristics within coding DNA sequences (CDS)
