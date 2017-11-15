@@ -246,7 +246,7 @@ p_season2 <- ggplot(data = df_map_merged, aes(x = Bin, y = rel_abundance, fill =
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
         axis.text.x = element_text(angle = 90, hjust = 1),
-        strip.text.y=element_text(size=18))+
+        strip.text=element_text(size=18))+
   ylab("Normalized relative abundance (%)")
 
 p_season2
@@ -266,7 +266,7 @@ p_season3 <- ggplot(data = df_map_merged, aes(x = Bin, y = rel_norm_abundance, f
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
         axis.text.x = element_text(angle = 90, hjust = 1),
-        strip.text.y=element_text(size=18))+
+        strip.text=element_text(size=18))+
   ylab("relative abundance (%)")
 
 p_season3
