@@ -161,46 +161,34 @@ print(p_16S_network)
 Formula used to calculate relative abundances:
 $$Relative\ abundance =100*(\frac{mean\ coverage * bin\ size}{read\ length*total\ sample\ reads })$$
 
-```{r plot-abundances-1, warning = FALSE, fig.width = 15, fig.height = 30}
+```{r plot-abundances-1, warning = FALSE, fig.width = 15, fig.height = 15}
+# Normalize for bin sizes
+data_total <- data_total %>% group_by(bins) %>% 
+  mutate(norm_mean_rel_abundance = mean_rel_abundance/(bin_size/1e6),
+         norm_upper_rel_abundance = upper_rel_abundance/(bin_size/1e6),
+         norm_lower_rel_abundance = lower_rel_abundance/(bin_size/1e6)
+         )
+
 # Plot abundance distributions of all bins
-
-p_season <- ggplot(data = data_total, aes(x = bins, y = mean_rel_abundance, fill = bins))+
+p_season1 <- ggplot(data = data_total, aes(x = bins, y = norm_mean_rel_abundance, fill = bins))+
   geom_point(size = 4, shape = 21, alpha = 0.7)+
   geom_boxplot(alpha = 0.3)+
   scale_fill_brewer(palette = "Paired")+
-  facet_grid(.~Site)+
   theme_bw()+
-  geom_errorbar(aes(ymin=lower_rel_abundance, 
-                    ymax=upper_rel_abundance, 
+  geom_errorbar(aes(ymin=norm_lower_rel_abundance, 
+                    ymax=norm_upper_rel_abundance, 
                     width=.1))+
-  facet_grid(Season~.)+
+  facet_grid(Season~Site)+
   # ylim(0,1)+ 
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
-        axis.text.x = element_text(angle = 45, hjust = 1),
-        strip.text.y=element_text(size=18))+
-  ylab("Mean relative abundance (%)")
+        axis.text.x = element_text(angle = 90, hjust = 1),
+        strip.text=element_text(size=18))+
+  ylab("Normalized relative abundance (%)")
 
-p_station <- ggplot(data = data_total, aes(x = bins, y = mean_rel_abundance, fill = bins))+
-  geom_point(size = 4, shape = 21, alpha = 0.7)+
-  geom_boxplot(alpha = 0.3)+
-  scale_fill_brewer(palette = "Paired")+
-  facet_grid(.~Site)+
-  theme_bw()+
-  geom_errorbar(aes(ymin=lower_rel_abundance, 
-                    ymax=upper_rel_abundance, 
-                    width=.1))+
-  facet_grid(Site~.)+
-  # ylim(0,1)+ 
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-        title=element_text(size=20), legend.text=element_text(size=14),
-        legend.background = element_rect(fill="transparent"),
-        axis.text.x = element_text(angle = 45, hjust = 1),
-        strip.text.y=element_text(size=18))+
-  ylab("Mean relative abundance (%)")
+p_season1
 
-grid.arrange(p_season, p_station, nrow = 2)
 ```
 
 ## 2.1. From mapped reads info (BBmap - `pileup.sh`)  
@@ -731,7 +719,6 @@ print(p_blast_sdisc)
 ```
 
 ```{r merged-blast-approach, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 10}
-
 # Plot one combined figure with proportions normalized for genome size
 p_blast_sdisc_merged <- blast_df_sum %>% 
      ggplot(aes(x = Identity, y = n_norm, color = bin))+
@@ -752,5 +739,65 @@ p_blast_sdisc_merged <- blast_df_sum %>%
   guides(color=guide_legend(ncol=3))
      
 print(p_blast_sdisc_merged)
+
+```
+
+```{r summary-blast-approach, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 10}
+blast_df_sum$Sample <- gsub(".C","",blast_df_sum$Sample,fixed = TRUE)
+blast_df_sum <- left_join(blast_df_sum, total_reads, by = c("Sample" = "sample"))
+
+# Divide normalized reads by 1M (fixed blast census)
+blast_df_sum <- blast_df_sum %>% mutate(n_norm_perc = 100*n_norm/1e6)
+
+# Plot % reads corrected for genome size over threshold of 0.95
+id_thresh <- 95
+map_disc_cum <- blast_df_sum  %>% filter(Identity > id_thresh) %>% group_by(Sample) %>% 
+  mutate(cum_rel_reads_mapped = cumsum(n_norm_perc))%>% 
+  filter(Identity == 100)
+sum_cum <- map_disc_cum %>% group_by(Sample) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
+
+p_sdisc_cum3 <- ggplot(map_disc_cum, aes(x = Sample, y = cum_rel_reads_mapped, 
+                                        fill = bin))+
+  theme_bw()+
+  scale_fill_brewer(palette = "Paired")+
+  geom_jitter(size = 4, shape = 21, color = "black", alpha = 0.7, width = 0.15)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=14),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      strip.text.y=element_text(size=14), legend.position = "bottom")+
+  ylab(paste0("Proportion of reads mapped > ", id_thresh, "% NI"))+
+  xlab("Sample")+
+  guides(fill=guide_legend(nrow = 11))
+  # geom_point(data = sum_cum, aes(x = Sample2, y = cum_bins_rel_reads_mapped),
+             # shape = 22, fill = "black", size = 4)+
+  # ylim(0,2.5)
+
+print(p_sdisc_cum3)
+
+# Plot % reads over threshold of 0.99
+id_thresh <- 99
+map_disc_cum <- blast_df_sum  %>% filter(Identity > id_thresh) %>% group_by(Sample) %>% 
+  mutate(cum_rel_reads_mapped = cumsum(n_norm_perc))%>% 
+  filter(Identity == 100)
+sum_cum <- map_disc_cum %>% group_by(Sample) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
+
+p_sdisc_cum4 <- ggplot(map_disc_cum, aes(x = Sample, y = cum_rel_reads_mapped, 
+                                        fill = bin))+
+  theme_bw()+
+  scale_fill_brewer(palette = "Paired")+
+  geom_jitter(size = 4, shape = 21, color = "black", alpha = 0.7, width = 0.15)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=14),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      strip.text.y=element_text(size=14), legend.position = "bottom")+
+  ylab(paste0("Proportion of reads mapped > ", id_thresh, "% NI"))+
+  xlab("Sample")+
+  guides(fill=guide_legend(nrow = 11))
+  # geom_point(data = sum_cum, aes(x = Sample2, y = cum_bins_rel_reads_mapped),
+             # shape = 22, fill = "black", size = 4)+
+  # ylim(0,2.5)
+print(p_sdisc_cum4)
 
 ```
