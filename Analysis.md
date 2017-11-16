@@ -10,7 +10,7 @@ Today
 # Read data
 mean_coverage <- read.table("./anvio_output/rebin/mean_coverage_selected_final.tsv", header = TRUE)
 std_coverage <- read.table("./anvio_output/rebin/std_coverage_selected_final.tsv", header = TRUE)
-bin_size <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(2,4)]
+bin_size <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(2,5)]
 total_reads <- read.table("./anvio_output/sample_reads.tsv", header = TRUE)
 read_length <- 150
 
@@ -301,9 +301,9 @@ Bin_2737471681_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133052.as
 ```
 
 ```
-## Wed Oct 25 18:13:28 2017  --- There are 2248 genes with > 0.1 %
-## Wed Oct 25 18:13:28 2017  --- This is 100 % of all genes
-## Wed Oct 25 18:13:28 2017  --- The 10 genes with the highest GC% are:
+## Thu Nov 16 15:49:06 2017  --- There are 2248 genes with > 0.1 %
+## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
+## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
 ##                                                                                   function_id
 ## 2239 NADPH-dependent 2,4-dienoyl-CoA reductase, sulfur reductase, or a related oxidoreductase
 ## 2240                    tRNA A37 threonylcarbamoyladenosine synthetase subunit TsaC/SUA5/YrdC
@@ -335,9 +335,9 @@ Bin_2737471682_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133053.as
 ```
 
 ```
-## Wed Oct 25 18:13:28 2017  --- There are 1882 genes with > 0.1 %
-## Wed Oct 25 18:13:28 2017  --- This is 100 % of all genes
-## Wed Oct 25 18:13:28 2017  --- The 10 genes with the highest GC% are:
+## Thu Nov 16 15:49:06 2017  --- There are 1882 genes with > 0.1 %
+## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
+## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
 ##                                                                function_id
 ## 1873                                   D-alanyl-D-alanine carboxypeptidase
 ## 1874                        Aspartate/methionine/tyrosine aminotransferase
@@ -369,9 +369,9 @@ Bin_2737471683_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133054.as
 ```
 
 ```
-## Wed Oct 25 18:13:29 2017  --- There are 1727 genes with > 0.1 %
-## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
-## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
+## Thu Nov 16 15:49:06 2017  --- There are 1727 genes with > 0.1 %
+## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
+## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 1718                                            Type II secretory pathway, component PulF
 ## 1719                                                    Pyrroline-5-carboxylate reductase
@@ -403,9 +403,9 @@ Bin_2737471793_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133647.as
 ```
 
 ```
-## Wed Oct 25 18:13:29 2017  --- There are 1476 genes with > 0.1 %
-## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
-## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
+## Thu Nov 16 15:49:06 2017  --- There are 1476 genes with > 0.1 %
+## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
+## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 1467 Acetolactate synthase large subunit or other thiamine pyrophosphate-requiring enzyme
 ## 1468                                            2-keto-3-deoxy-L-rhamnonate aldolase RhmA
@@ -437,9 +437,9 @@ Bin_2737471794_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133648.as
 ```
 
 ```
-## Wed Oct 25 18:13:29 2017  --- There are 1226 genes with > 0.1 %
-## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
-## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
+## Thu Nov 16 15:49:06 2017  --- There are 1226 genes with > 0.1 %
+## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
+## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1217                                     Cytochrome c-type biogenesis protein CcmH/NrfF
 ## 1218                                          Type II secretory pathway, component PulK
@@ -471,9 +471,9 @@ Bin_2737471795_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133649.as
 ```
 
 ```
-## Wed Oct 25 18:13:29 2017  --- There are 1383 genes with > 0.1 %
-## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
-## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
+## Thu Nov 16 15:49:06 2017  --- There are 1383 genes with > 0.1 %
+## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
+## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1374                                                 Glycerol-3-phosphate dehydrogenase
 ## 1375                                          Predicted amidophosphoribosyltransferases
@@ -505,9 +505,9 @@ Bin_2737471797_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133651.as
 ```
 
 ```
-## Wed Oct 25 18:13:29 2017  --- There are 1076 genes with > 0.1 %
-## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
-## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
+## Thu Nov 16 15:49:06 2017  --- There are 1076 genes with > 0.1 %
+## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
+## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1067              DNA-directed RNA polymerase specialized sigma subunit, sigma24 family
 ## 1068                                7,8-dihydro-6-hydroxymethylpterin-pyrophosphokinase
@@ -539,9 +539,9 @@ Bin_2737471799_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133653.as
 ```
 
 ```
-## Wed Oct 25 18:13:29 2017  --- There are 522 genes with > 0.1 %
-## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
-## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
+## Thu Nov 16 15:49:06 2017  --- There are 522 genes with > 0.1 %
+## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
+## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
 ##                                                               function_id
 ## 513                                             Glutathione S-transferase
 ## 514                                  DNA-nicking endonuclease, Smr domain
@@ -573,9 +573,9 @@ Bin_2737471802_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133656.as
 ```
 
 ```
-## Wed Oct 25 18:13:29 2017  --- There are 1691 genes with > 0.1 %
-## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
-## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
+## Thu Nov 16 15:49:06 2017  --- There are 1691 genes with > 0.1 %
+## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
+## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
 ##                                                                 function_id
 ## 1682                          Pyrimidine reductase, riboflavin biosynthesis
 ## 1683               2-C-methyl-D-erythritol 4-phosphate cytidylyltransferase
@@ -607,9 +607,9 @@ Bin_2737471804_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133658.as
 ```
 
 ```
-## Wed Oct 25 18:13:29 2017  --- There are 749 genes with > 0.1 %
-## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
-## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
+## Thu Nov 16 15:49:06 2017  --- There are 749 genes with > 0.1 %
+## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
+## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 740 Uncharacterized conserved protein, contains von Willebrand factor type A (vWA) domain
 ## 741                   Uncharacterized membrane protein AbrB, regulator of aidB expression
@@ -641,9 +641,9 @@ Bin_2737471805_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133659.as
 ```
 
 ```
-## Wed Oct 25 18:13:29 2017  --- There are 1172 genes with > 0.1 %
-## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
-## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
+## Thu Nov 16 15:49:07 2017  --- There are 1172 genes with > 0.1 %
+## Thu Nov 16 15:49:07 2017  --- This is 100 % of all genes
+## Thu Nov 16 15:49:07 2017  --- The 10 genes with the highest GC% are:
 ##                                                                   function_id
 ## 1163           Ribulose-5-phosphate 4-epimerase/Fuculose-1-phosphate aldolase
 ## 1164    Asp-tRNAAsn/Glu-tRNAGln amidotransferase A subunit or related amidase
@@ -675,9 +675,9 @@ Bin_2737471806_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133660.as
 ```
 
 ```
-## Wed Oct 25 18:13:29 2017  --- There are 1584 genes with > 0.1 %
-## Wed Oct 25 18:13:29 2017  --- This is 100 % of all genes
-## Wed Oct 25 18:13:29 2017  --- The 10 genes with the highest GC% are:
+## Thu Nov 16 15:49:07 2017  --- There are 1584 genes with > 0.1 %
+## Thu Nov 16 15:49:07 2017  --- This is 100 % of all genes
+## Thu Nov 16 15:49:07 2017  --- The 10 genes with the highest GC% are:
 ##                                                                       function_id
 ## 1575                                   Predicted NAD/FAD-dependent oxidoreductase
 ## 1576                                                 Gamma-glutamyltranspeptidase
@@ -710,21 +710,18 @@ merged_gc_cog <- rbind(Bin_2737471681_gc_cog, Bin_2737471682_gc_cog, Bin_2737471
 merged_gc_cog$genome_id <- as.character(merged_gc_cog$genome_id)
 ```
 
-# 4. Analysis of gene length distribution
+<!-- # 4. Analysis of gene length distribution -->
+<!-- ```{r gene length analysis, dpi = 300, warning = FALSE, fig.width = 5, fig.height = 20} -->
+<!-- p_cog_length <- easyGgplot2::ggplot2.histogram(data = merged_gc_cog, xName = 'gene_length', -->
+<!--                   groupName = 'genome_id', alpha = 0.5, -->
+<!--                   legendPosition = "top", binwidth = 0.15, addMeanLine=TRUE, meanLineColor="black", -->
+<!--                   meanLineType="dashed")+ theme_bw()+ ylim(0,15)+ -->
+<!--   facet_grid(genome_id~.)+ -->
+<!--   labs(x = "Gene length (bp)", y = "Count")+ theme(legend.position="none", axis.text.x = element_text(angle = 45))+ -->
+<!--   ggtitle("Limnohabitans MAGs")+ xlim(0,2000) -->
 
-```r
-p_cog_length <- easyGgplot2::ggplot2.histogram(data = merged_gc_cog, xName = 'gene_length',
-                  groupName = 'genome_id', alpha = 0.5,
-                  legendPosition = "top", binwidth = 0.15, addMeanLine=TRUE, meanLineColor="black",
-                  meanLineType="dashed")+ theme_bw()+ ylim(0,15)+
-  facet_grid(genome_id~.)+
-  labs(x = "Gene length (bp)", y = "Count")+ theme(legend.position="none", axis.text.x = element_text(angle = 45))+
-  ggtitle("Limnohabitans MAGs")+ xlim(0,2000)
-
-print(p_cog_length)
-```
-
-<img src="Figures/cached/gene length analysis-1.png" style="display: block; margin: auto;" />
+<!-- print(p_cog_length) -->
+<!-- ``` -->
 
 # 5. COG functional categories
 Get COG ID to COG functional category mapping file here: ftp://ftp.ncbi.nih.gov/pub/wolf/COGs/COG0303/cogs.csv    
@@ -840,7 +837,7 @@ merged_file <- merge_annotations(file_list[1:12], genoid_seqid = TRUE)
 ## [1] 22206
 ## [1] 2334
 ## [1] 24540
-## Wed Oct 25 18:14:05 2017  --- Sucessfully merged files
+## Thu Nov 16 15:49:23 2017  --- Sucessfully merged files
 ```
 
 ```r
@@ -2005,120 +2002,110 @@ for file in `cat map.list`
 done
 ```
 
-
-```r
-map_disc <- read.table("./SEQs_discrete/final.idhist", header = FALSE,
-                       row.names = NULL)
-colnames(map_disc) <- c("bin","sample", "identity", "reads_mapped", "bases_mapped")
-
-# Add season metadata
-map_disc$season <- "Summer"
-map_disc$season[grep("Fa", map_disc$sample)] <- "Fall"
-map_disc$season[grep("Su", map_disc$sample)] <- "Summer"
-map_disc$season[grep("Sp", map_disc$sample)] <- "Spring"
-map_disc$sample <- gsub(".C","", map_disc$sample, fixed = TRUE)
-total_reads2 <- total_reads
-total_reads2$sample <- gsub("_", ".", fixed = TRUE,total_reads$sample)
-map_disc <- dplyr::left_join(map_disc, total_reads2, by = "sample")
-
-# Throw away all %identity below 60%
-# map_disc <- map_disc %>% filter(identity > 60)
-
-# Normalize reads_mapped to library sizes
-map_disc <- map_disc %>% group_by(sample) %>% 
-  mutate(rel_reads_mapped = 100*reads_mapped/Total_reads)
-
-# Add observed genome size
-map_disc$bin <- gsub(".fa","",map_disc$bin)
-map_disc <- left_join(map_disc, bin_size, by = c("bin" = "bins"))
-
-# Plot distributions
-for(bin2plot in unique(map_disc$bin)){
-    p_sdisc <- map_disc %>% filter(bin == bin2plot) %>% 
-      ggplot(aes(x = identity, y = rel_reads_mapped, color = season))+
-      theme_bw()+
-      scale_color_brewer(palette = "Accent")+
-      facet_wrap(~sample, nrow = 4)+
-      geom_line(size = 1.5)+
-      guides(color = FALSE)+
-      ggtitle(bin2plot)+
-      theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-        title=element_text(size=20), legend.text=element_text(size=14),
-        legend.background = element_rect(fill="transparent"),
-        axis.text.x = element_text(angle = 45, hjust = 1),
-        strip.text.y=element_text(size=14))+
-      ylab("Proportion of reads mapped (%)")+
-      xlab("Nucleotide identity (%)")
-      # ylim(0,.5)
-  
-  print(p_sdisc)
-}
-```
-
-<img src="Figures/cached/sequence discrete populations-1.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-2.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-3.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-4.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-5.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-6.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-7.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-8.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-9.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-10.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-11.png" style="display: block; margin: auto;" /><img src="Figures/cached/sequence discrete populations-12.png" style="display: block; margin: auto;" />
-
-
-```r
-# Plot % reads corrected for genome size over threshold of 0.95
-id_thresh <- 95
-map_disc_cum <- map_disc  %>% filter(identity > id_thresh) %>% group_by(sample) %>% 
-  mutate(cum_rel_reads_mapped = cumsum(rel_reads_mapped))%>% 
-  filter(identity == 100)
-sum_cum <- map_disc_cum %>% group_by(sample) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
-colnames(sum_cum)[c(2)] <- "Sample2"
-
-p_sdisc_cum1 <- ggplot(map_disc_cum, aes(x = sample, y = 1e6*cum_rel_reads_mapped/bin_size, 
-                                        fill = bin))+
-  theme_bw()+
-  scale_fill_brewer(palette = "Paired")+
-  geom_point(size = 4, shape = 21, color = "black")+
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-      title=element_text(size=20), legend.text=element_text(size=14),
-      legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(angle = 45, hjust = 1),
-      strip.text.y=element_text(size=14), legend.position = "bottom")+
-  ylab(paste0("Proportion of reads mapped > ", id_thresh, "% NI"))+
-  xlab("Sample")+
-  guides(fill=guide_legend(nrow = 11))+
-  # geom_point(data = sum_cum, aes(x = Sample2, y = cum_bins_rel_reads_mapped),
-             # shape = 22, fill = "black", size = 4)+
-  ylim(0,2.5)
-
-print(p_sdisc_cum1)
-```
-
-<img src="Figures/cached/plot-cum-discrete-1.png" style="display: block; margin: auto;" />
-
-```r
-# Plot % reads over threshold of 0.99
-id_thresh <- 99
-map_disc_cum2 <- map_disc  %>% filter(identity > id_thresh) %>% group_by(sample) %>% 
-  mutate(cum_rel_reads_mapped = cumsum(rel_reads_mapped))%>% 
-  filter(identity == 100)
-sum_cum <- map_disc_cum2 %>% group_by(sample) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
-colnames(sum_cum)[c(2)] <- "Sample2"
-
-p_sdisc_cum2 <- ggplot(map_disc_cum2, aes(x = sample, y = 1e6*cum_rel_reads_mapped/bin_size, 
-                                        fill = bin))+
-  theme_bw()+
-  scale_fill_brewer(palette = "Paired")+
-  geom_point(size = 4, shape = 21, color = "black")+
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-      title=element_text(size=20), legend.text=element_text(size=14),
-      legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(angle = 45, hjust = 1),
-      strip.text.y=element_text(size=14), legend.position = "bottom")+
-  ylab(paste0("Proportion of reads mapped > ", id_thresh, "% NI"))+
-  xlab("Sample")+
-  guides(fill=guide_legend(nrow = 11))+
-  # geom_point(data = sum_cum, aes(x = Sample2, y = cum_bins_rel_reads_mapped),
-             # shape = 22, fill = "black", size = 4)+
-  ylim(0,1.0)
-
-print(p_sdisc_cum2)
-```
-
-<img src="Figures/cached/plot-cum-discrete-2.png" style="display: block; margin: auto;" />
+<!-- # ```{r sequence discrete populations, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 7} -->
+<!-- # map_disc <- read.table("./SEQs_discrete/final.idhist", header = FALSE, -->
+<!-- #                        row.names = NULL) -->
+<!-- # colnames(map_disc) <- c("bin","sample", "identity", "reads_mapped", "bases_mapped") -->
+<!-- #  -->
+<!-- # # Add season metadata -->
+<!-- # map_disc$season <- "Summer" -->
+<!-- # map_disc$season[grep("Fa", map_disc$sample)] <- "Fall" -->
+<!-- # map_disc$season[grep("Su", map_disc$sample)] <- "Summer" -->
+<!-- # map_disc$season[grep("Sp", map_disc$sample)] <- "Spring" -->
+<!-- # map_disc$sample <- gsub(".C","", map_disc$sample, fixed = TRUE) -->
+<!-- # total_reads2 <- total_reads -->
+<!-- # total_reads2$sample <- gsub("_", ".", fixed = TRUE,total_reads$sample) -->
+<!-- # map_disc <- dplyr::left_join(map_disc, total_reads2, by = "sample") -->
+<!-- #  -->
+<!-- # # Throw away all %identity below 60% -->
+<!-- # # map_disc <- map_disc %>% filter(identity > 60) -->
+<!-- #  -->
+<!-- # # Normalize reads_mapped to library sizes -->
+<!-- # map_disc <- map_disc %>% group_by(sample) %>%  -->
+<!-- #   mutate(rel_reads_mapped = 100*reads_mapped/Total_reads) -->
+<!-- #  -->
+<!-- # # Add observed genome size -->
+<!-- # map_disc$bin <- gsub(".fa","",map_disc$bin) -->
+<!-- # map_disc <- left_join(map_disc, bin_size, by = c("bin" = "bins")) -->
+<!-- #  -->
+<!-- # # Plot distributions -->
+<!-- # for(bin2plot in unique(map_disc$bin)){ -->
+<!-- #     p_sdisc <- map_disc %>% filter(bin == bin2plot) %>%  -->
+<!-- #       ggplot(aes(x = identity, y = rel_reads_mapped, color = season))+ -->
+<!-- #       theme_bw()+ -->
+<!-- #       scale_color_brewer(palette = "Accent")+ -->
+<!-- #       facet_wrap(~sample, nrow = 4)+ -->
+<!-- #       geom_line(size = 1.5)+ -->
+<!-- #       guides(color = FALSE)+ -->
+<!-- #       ggtitle(bin2plot)+ -->
+<!-- #       theme(axis.text=element_text(size=14), axis.title=element_text(size=20), -->
+<!-- #         title=element_text(size=20), legend.text=element_text(size=14), -->
+<!-- #         legend.background = element_rect(fill="transparent"), -->
+<!-- #         axis.text.x = element_text(angle = 45, hjust = 1), -->
+<!-- #         strip.text.y=element_text(size=14))+ -->
+<!-- #       ylab("Proportion of reads mapped (%)")+ -->
+<!-- #       xlab("Nucleotide identity (%)") -->
+<!-- #       # ylim(0,.5) -->
+<!-- #    -->
+<!-- #   print(p_sdisc) -->
+<!-- # } -->
+<!-- # ``` -->
+<!-- #  -->
+<!-- # ```{r plot-cum-discrete, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10} -->
+<!-- # # Plot % reads corrected for genome size over threshold of 0.95 -->
+<!-- # id_thresh <- 95 -->
+<!-- # map_disc_cum <- map_disc  %>% filter(identity > id_thresh) %>% group_by(sample) %>%  -->
+<!-- #   mutate(cum_rel_reads_mapped = cumsum(rel_reads_mapped))%>%  -->
+<!-- #   filter(identity == 100) -->
+<!-- # sum_cum <- map_disc_cum %>% group_by(sample, bin) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped)) -->
+<!-- # colnames(sum_cum)[c(2)] <- "Sample2" -->
+<!-- #  -->
+<!-- # p_sdisc_cum1 <- ggplot(map_disc_cum, aes(x = sample, y = 1e6*cum_rel_reads_mapped/bin_size,  -->
+<!-- #                                         fill = bin))+ -->
+<!-- #   theme_bw()+ -->
+<!-- #   scale_fill_brewer(palette = "Paired")+ -->
+<!-- #   geom_point(size = 4, shape = 21, color = "black")+ -->
+<!-- #   theme(axis.text=element_text(size=14), axis.title=element_text(size=20), -->
+<!-- #       title=element_text(size=20), legend.text=element_text(size=14), -->
+<!-- #       legend.background = element_rect(fill="transparent"), -->
+<!-- #       axis.text.x = element_text(angle = 45, hjust = 1), -->
+<!-- #       strip.text.y=element_text(size=14), legend.position = "bottom")+ -->
+<!-- #   ylab(paste0("Proportion of reads mapped > ", id_thresh, "% NI"))+ -->
+<!-- #   xlab("Sample")+ -->
+<!-- #   guides(fill=guide_legend(nrow = 11))+ -->
+<!-- #   # geom_point(data = sum_cum, aes(x = Sample2, y = cum_bins_rel_reads_mapped), -->
+<!-- #              # shape = 22, fill = "black", size = 4)+ -->
+<!-- #   ylim(0,2.5) -->
+<!-- #  -->
+<!-- # print(p_sdisc_cum1) -->
+<!-- #  -->
+<!-- # # Plot % reads over threshold of 0.99 -->
+<!-- # id_thresh <- 99 -->
+<!-- # map_disc_cum2 <- map_disc  %>% filter(identity > id_thresh) %>% group_by(sample) %>%  -->
+<!-- #   mutate(cum_rel_reads_mapped = cumsum(rel_reads_mapped))%>%  -->
+<!-- #   filter(identity == 100) -->
+<!-- # sum_cum <- map_disc_cum2 %>% group_by(sample, bin) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped)) -->
+<!-- # colnames(sum_cum)[c(2)] <- "Sample2" -->
+<!-- #  -->
+<!-- # p_sdisc_cum2 <- ggplot(map_disc_cum2, aes(x = sample, y = 1e6*cum_rel_reads_mapped/bin_size,  -->
+<!-- #                                         fill = bin))+ -->
+<!-- #   theme_bw()+ -->
+<!-- #   scale_fill_brewer(palette = "Paired")+ -->
+<!-- #   geom_point(size = 4, shape = 21, color = "black")+ -->
+<!-- #   theme(axis.text=element_text(size=14), axis.title=element_text(size=20), -->
+<!-- #       title=element_text(size=20), legend.text=element_text(size=14), -->
+<!-- #       legend.background = element_rect(fill="transparent"), -->
+<!-- #       axis.text.x = element_text(angle = 45, hjust = 1), -->
+<!-- #       strip.text.y=element_text(size=14), legend.position = "bottom")+ -->
+<!-- #   ylab(paste0("Proportion of reads mapped > ", id_thresh, "% NI"))+ -->
+<!-- #   xlab("Sample")+ -->
+<!-- #   guides(fill=guide_legend(nrow = 11))+ -->
+<!-- #   # geom_point(data = sum_cum, aes(x = Sample2, y = cum_bins_rel_reads_mapped), -->
+<!-- #              # shape = 22, fill = "black", size = 4)+ -->
+<!-- #   ylim(0,1.0) -->
+<!-- #  -->
+<!-- # print(p_sdisc_cum2) -->
+<!-- # ``` -->
 
 ### Competitive mapping using `blast` with 1M reads of interleaved fasta.  
 
@@ -2156,8 +2143,42 @@ blast_df_sum$season[grep("Fa", blast_df_sum$Sample)] <- "Fall"
 blast_df_sum$season[grep("Su", blast_df_sum$Sample)] <- "Summer"
 blast_df_sum$season[grep("Sp", blast_df_sum$Sample)] <- "Spring"
 
-for(bin2plot in unique(blast_df_sum$bin)){
-  p_blast_sdisc <- blast_df_sum %>% filter(bin == bin2plot) %>% 
+# Reformat sample names
+blast_df_sum$Sample <- gsub(".C", "", blast_df_sum$Sample, fixed = TRUE)
+blast_df_sum$Sample <- gsub(".", "_", blast_df_sum$Sample, fixed = TRUE)
+
+# Add metadata to dataframe
+blast_df_sum <- dplyr::left_join(blast_df_sum, meta, by = c("Sample" = "Sample_ID"))
+
+# Reorder site factor
+blast_df_sum$Site <- as.character(blast_df_sum$Site)
+blast_df_sum$Site <- gsub("Buoy","Muskegon Lake", blast_df_sum$Site)
+blast_df_sum$Site <- gsub("110","Lake Michigan\nsite M110", blast_df_sum$Site)
+blast_df_sum$Site <- gsub("15","Lake Michigan\nsite M15", blast_df_sum$Site)
+blast_df_sum$Site <- factor(blast_df_sum$Site, levels = c("Muskegon Lake",
+                                                          "Lake Michigan\nsite M15",
+                                                          "Lake Michigan\nsite M110"))
+blast_df_sum$Depth <- as.character(blast_df_sum$Depth)
+blast_df_sum$Depth <- factor(blast_df_sum$Depth, levels = c("Surface", "Mid", "Deep"))
+blast_df_sum$season <- as.character(blast_df_sum$season)
+blast_df_sum$season <- factor(blast_df_sum$season, levels = c("Summer", "Fall", "Spring"))
+
+# remove non-Limnohabbitans bin
+blast_df_sum <- blast_df_sum %>% dplyr::filter(bin != "B2_Fa13.BD.MLB.DN_rebin10")
+
+# Add extra column with new bin names
+new_bin_names <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(2,3)]
+blast_df_sum <- left_join(blast_df_sum, new_bin_names, by = c("bin" = "bins"))
+blast_df_sum$new_bin_name <- as.character(blast_df_sum$new_bin_name)
+blast_df_sum$new_bin_name <- factor(blast_df_sum$new_bin_name, levels =
+                                      c("MAG1_FA_MLB_DN","MAG2_FA_MLB_SN",
+                                        "MAG3_FA_MLB_SN", "MAG4_FA_M110_DN",
+                                        "MAG5_SP_M110_DD","MAG6_SP_M15_SD",
+                                        "MAG7_SU_MLB_SD","MAG8_SU_M110_DCMD",
+                                        "MAG9_SU_M15_SN","MAG10_SU_M15_SN"))
+# plot for individual bins
+for(bin2plot in unique(blast_df_sum$new_bin_name)){
+  p_blast_sdisc <- blast_df_sum %>% filter(new_bin_name == bin2plot) %>% 
      ggplot(aes(x = Identity, y = n_norm, color = season))+
       theme_bw()+
       scale_color_brewer(palette = "Accent")+
@@ -2178,13 +2199,13 @@ print(p_blast_sdisc)
 }
 ```
 
-<img src="Figures/cached/blast-approach-1.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-2.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-3.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-4.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-5.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-6.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-7.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-8.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-9.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-10.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-11.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/blast-approach-1.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-2.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-3.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-4.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-5.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-6.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-7.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-8.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-9.png" style="display: block; margin: auto;" /><img src="Figures/cached/blast-approach-10.png" style="display: block; margin: auto;" />
 
 
 ```r
 # Plot one combined figure with proportions normalized for genome size
 p_blast_sdisc_merged <- blast_df_sum %>% 
-     ggplot(aes(x = Identity, y = n_norm, color = bin))+
+     ggplot(aes(x = Identity, y = n_norm, color = new_bin_name))+
       theme_gray()+
       scale_color_brewer("", palette = "Paired")+
       facet_wrap(~Sample, nrow = 4)+
@@ -2206,34 +2227,64 @@ print(p_blast_sdisc_merged)
 
 <img src="Figures/cached/merged-blast-approach-1.png" style="display: block; margin: auto;" />
 
+```r
+# Plot for most abundant bin (B63)
+p_blast_sdisc_B63 <- blast_df_sum %>% filter(bin == "B63_Su13.BD.MM110.DCMD_rebin1") %>% 
+  ggplot(aes(x = Identity, y = n_norm, fill = season, group = Sample))+
+  theme_bw()+
+  facet_grid(season~Site)+
+  geom_line(size = 2, color = adjustcolor("black",0.5))+
+  geom_point(size = 3, alpha = 0.6, shape = 21)+
+  scale_fill_brewer(palette = "Accent")+
+  guides(color = FALSE, fill = FALSE)+
+  # ggtitle(bin2plot)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        strip.text=element_text(size=16),
+        panel.grid.minor = element_blank())+
+  ylab("Reads per Mbp")+
+  xlab("Nucleotide identity (%)")+
+  xlim(75,100)
+
+p_blast_sdisc_B63
+```
+
+<img src="Figures/cached/merged-blast-approach-2.png" style="display: block; margin: auto;" />
+
 
 ```r
-blast_df_sum$Sample <- gsub(".C","",blast_df_sum$Sample,fixed = TRUE)
 blast_df_sum <- left_join(blast_df_sum, total_reads, by = c("Sample" = "sample"))
+
+# Function to specify decimals in ggplot
+scaleFUN <- function(x) sprintf("%.2f", x)
 
 # Divide normalized reads by 1M (fixed blast census)
 blast_df_sum <- blast_df_sum %>% mutate(n_norm_perc = 100*n_norm/1e6)
 
 # Plot % reads corrected for genome size over threshold of 0.95
 id_thresh <- 95
-map_disc_cum <- blast_df_sum  %>% filter(Identity > id_thresh) %>% group_by(Sample) %>% 
+map_disc_cum <- blast_df_sum  %>% filter(Identity > id_thresh) %>% group_by(Sample, bin) %>% 
   mutate(cum_rel_reads_mapped = cumsum(n_norm_perc))%>% 
   filter(Identity == 100)
-sum_cum <- map_disc_cum %>% group_by(Sample) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
+sum_cum <- map_disc_cum %>% group_by(Sample, bin) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
 
-p_sdisc_cum3 <- ggplot(map_disc_cum, aes(x = Sample, y = cum_rel_reads_mapped, 
-                                        fill = bin))+
+p_sdisc_cum3 <- ggplot(map_disc_cum, aes(x = Site, y = cum_rel_reads_mapped, 
+                                        fill = new_bin_name))+
   theme_bw()+
   scale_fill_brewer(palette = "Paired")+
   geom_jitter(size = 4, shape = 21, color = "black", alpha = 0.7, width = 0.15)+
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
       title=element_text(size=20), legend.text=element_text(size=14),
       legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(angle = 45, hjust = 1),
-      strip.text.y=element_text(size=14), legend.position = "bottom")+
-  ylab(paste0("Proportion of reads mapped > ", id_thresh, "% NI"))+
-  xlab("Sample")+
-  guides(fill=guide_legend(nrow = 11))
+      axis.text.x = element_blank(),
+      strip.text=element_text(size=14), legend.position = "bottom")+
+  ylab(paste0("Norm. relative abundance ( > ", id_thresh, "% NI)"))+
+  xlab("")+
+  guides(fill=guide_legend(nrow = 11))+
+  facet_grid(season~Site, scales ="free")+
+  scale_y_continuous(labels=scaleFUN, limits = c(0,3))
   # geom_point(data = sum_cum, aes(x = Sample2, y = cum_bins_rel_reads_mapped),
              # shape = 22, fill = "black", size = 4)+
   # ylim(0,2.5)
@@ -2246,27 +2297,27 @@ print(p_sdisc_cum3)
 ```r
 # Plot % reads over threshold of 0.99
 id_thresh <- 99
-map_disc_cum <- blast_df_sum  %>% filter(Identity > id_thresh) %>% group_by(Sample) %>% 
+map_disc_cum <- blast_df_sum  %>% filter(Identity > id_thresh) %>% group_by(Sample, bin) %>% 
   mutate(cum_rel_reads_mapped = cumsum(n_norm_perc))%>% 
   filter(Identity == 100)
-sum_cum <- map_disc_cum %>% group_by(Sample) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
+sum_cum <- map_disc_cum %>% group_by(Sample, bin) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
 
-p_sdisc_cum4 <- ggplot(map_disc_cum, aes(x = Sample, y = cum_rel_reads_mapped, 
-                                        fill = bin))+
+p_sdisc_cum4 <- ggplot(map_disc_cum, aes(x = Site, y = cum_rel_reads_mapped, 
+                                        fill = new_bin_name))+
   theme_bw()+
   scale_fill_brewer(palette = "Paired")+
   geom_jitter(size = 4, shape = 21, color = "black", alpha = 0.7, width = 0.15)+
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
       title=element_text(size=20), legend.text=element_text(size=14),
       legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(angle = 45, hjust = 1),
-      strip.text.y=element_text(size=14), legend.position = "bottom")+
-  ylab(paste0("Proportion of reads mapped > ", id_thresh, "% NI"))+
-  xlab("Sample")+
-  guides(fill=guide_legend(nrow = 11))
-  # geom_point(data = sum_cum, aes(x = Sample2, y = cum_bins_rel_reads_mapped),
-             # shape = 22, fill = "black", size = 4)+
-  # ylim(0,2.5)
+      axis.text.x = element_blank(),
+      strip.text=element_text(size=14), legend.position = "bottom")+
+  ylab(paste0("Norm. relative abundance ( > ", id_thresh, "% NI)"))+
+  xlab("")+
+  guides(fill=guide_legend(nrow = 11))+
+  facet_grid(season~Site, scales ="free")+
+  scale_y_continuous(labels=scaleFUN, limits = c(0,1))
+
 print(p_sdisc_cum4)
 ```
 
