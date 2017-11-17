@@ -860,3 +860,13 @@ p_sdisc_cum4 <- ggplot(map_disc_cum, aes(x = Site, y = cum_rel_reads_mapped,
 print(p_sdisc_cum4)
 
 ```
+
+# Pangenome analysis  
+
+
+```{r panG-1, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10}
+
+
+
+
+```
