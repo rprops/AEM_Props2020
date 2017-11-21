@@ -2161,7 +2161,7 @@ blast_df_sum$Site <- factor(blast_df_sum$Site, levels = c("Muskegon Lake",
 blast_df_sum$Depth <- as.character(blast_df_sum$Depth)
 blast_df_sum$Depth <- factor(blast_df_sum$Depth, levels = c("Surface", "Mid", "Deep"))
 blast_df_sum$season <- as.character(blast_df_sum$season)
-blast_df_sum$season <- factor(blast_df_sum$season, levels = c("Summer", "Fall", "Spring"))
+blast_df_sum$season <- factor(blast_df_sum$season, levels = c("Spring", "Summer", "Fall"))
 
 # remove non-Limnohabbitans bin
 blast_df_sum <- blast_df_sum %>% dplyr::filter(bin != "B2_Fa13.BD.MLB.DN_rebin10")
@@ -2230,13 +2230,15 @@ print(p_blast_sdisc_merged)
 ```r
 # Plot for most abundant bin (B63)
 p_blast_sdisc_B63 <- blast_df_sum %>% filter(bin == "B63_Su13.BD.MM110.DCMD_rebin1") %>% 
-  ggplot(aes(x = Identity, y = n_norm, fill = season, group = Sample))+
+  ggplot(aes(x = Identity, y = n_norm, fill = season, group = Sample,
+             shape = Depth))+
   theme_bw()+
   facet_grid(season~Site)+
   geom_line(size = 2, color = adjustcolor("black",0.5))+
-  geom_point(size = 3, alpha = 0.6, shape = 21)+
+  geom_point(size = 3, alpha = 0.6)+
+  scale_shape_manual(values = c(21,22,24))+
   scale_fill_brewer(palette = "Accent")+
-  guides(color = FALSE, fill = FALSE)+
+  guides(color = FALSE, fill = FALSE, shape = FALSE)+
   # ggtitle(bin2plot)+
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
@@ -2263,6 +2265,10 @@ scaleFUN <- function(x) sprintf("%.2f", x)
 # Divide normalized reads by 1M (fixed blast census)
 blast_df_sum <- blast_df_sum %>% mutate(n_norm_perc = 100*n_norm/1e6)
 
+fill_palette <- c(rev(brewer.pal(11, "BrBG")[1:4]),
+                  brewer.pal(11, "PiYG")[9:10],
+                  brewer.pal(9, "PuBu")[4:7]
+                  )
 # Plot % reads corrected for genome size over threshold of 0.95
 id_thresh <- 95
 map_disc_cum <- blast_df_sum  %>% filter(Identity > id_thresh) %>% group_by(Sample, bin) %>% 
@@ -2270,24 +2276,22 @@ map_disc_cum <- blast_df_sum  %>% filter(Identity > id_thresh) %>% group_by(Samp
   filter(Identity == 100)
 sum_cum <- map_disc_cum %>% group_by(Sample, bin) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
 
-p_sdisc_cum3 <- ggplot(map_disc_cum, aes(x = Site, y = cum_rel_reads_mapped, 
+p_sdisc_cum3 <- ggplot(map_disc_cum, aes(x = new_bin_name, y = cum_rel_reads_mapped, 
                                         fill = new_bin_name))+
   theme_bw()+
-  scale_fill_brewer(palette = "Paired")+
+  scale_fill_manual("", values = fill_palette)+
   geom_jitter(size = 4, shape = 21, color = "black", alpha = 0.7, width = 0.15)+
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-      title=element_text(size=20), legend.text=element_text(size=14),
+      title=element_text(size=20), legend.text=element_text(size=12),
       legend.background = element_rect(fill="transparent"),
       axis.text.x = element_blank(),
       strip.text=element_text(size=14), legend.position = "bottom")+
   ylab(paste0("Norm. relative abundance ( > ", id_thresh, "% NI)"))+
   xlab("")+
-  guides(fill=guide_legend(nrow = 11))+
+  guides(fill=guide_legend(nrow = 3))+
   facet_grid(season~Site, scales ="free")+
-  scale_y_continuous(labels=scaleFUN, limits = c(0,3))
-  # geom_point(data = sum_cum, aes(x = Sample2, y = cum_bins_rel_reads_mapped),
-             # shape = 22, fill = "black", size = 4)+
-  # ylim(0,2.5)
+  scale_y_continuous(labels=scaleFUN, limits = c(0,3))+
+  coord_trans(y = "sqrt")
 
 print(p_sdisc_cum3)
 ```
@@ -2302,23 +2306,29 @@ map_disc_cum <- blast_df_sum  %>% filter(Identity > id_thresh) %>% group_by(Samp
   filter(Identity == 100)
 sum_cum <- map_disc_cum %>% group_by(Sample, bin) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
 
-p_sdisc_cum4 <- ggplot(map_disc_cum, aes(x = Site, y = cum_rel_reads_mapped, 
+p_sdisc_cum4 <- ggplot(map_disc_cum, aes(x = new_bin_name, y = cum_rel_reads_mapped, 
                                         fill = new_bin_name))+
   theme_bw()+
-  scale_fill_brewer(palette = "Paired")+
+  scale_fill_manual("", values = fill_palette)+
   geom_jitter(size = 4, shape = 21, color = "black", alpha = 0.7, width = 0.15)+
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-      title=element_text(size=20), legend.text=element_text(size=14),
+      title=element_text(size=20), legend.text=element_text(size=12),
       legend.background = element_rect(fill="transparent"),
       axis.text.x = element_blank(),
       strip.text=element_text(size=14), legend.position = "bottom")+
   ylab(paste0("Norm. relative abundance ( > ", id_thresh, "% NI)"))+
   xlab("")+
-  guides(fill=guide_legend(nrow = 11))+
+  guides(fill=guide_legend(nrow = 3))+
   facet_grid(season~Site, scales ="free")+
-  scale_y_continuous(labels=scaleFUN, limits = c(0,1))
+  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
+  coord_trans(y = "sqrt")
 
 print(p_sdisc_cum4)
 ```
 
 <img src="Figures/cached/summary-blast-approach-2.png" style="display: block; margin: auto;" />
+
+# Pangenome analysis  
+
+
+
