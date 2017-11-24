@@ -29,7 +29,7 @@
        inkscape:isstock="true">
       <path
          id="path5154"
-         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;stroke:#75ff00;stroke-opacity:1;fill:#75ff00;fill-opacity:1"
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;stroke:#75cc00;stroke-opacity:1;fill:#75cc00;fill-opacity:1"
          d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
          transform="scale(1.1) rotate(180) translate(1,0)" />
     </marker>
@@ -127,9 +127,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="-70.975215"
-     inkscape:cy="775.05419"
+     inkscape:zoom="1.4"
+     inkscape:cx="266.67095"
+     inkscape:cy="779.31785"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -15354,7 +15354,7 @@ AAAAAAAQkggSAAAAAAAAAAAACEkECQAAAAAAAAAAAIT0/1Wq+e7fhdqWAAAAAElFTkSuQmCC
        inkscape:export-ydpi="329" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Lend)"
-       d="m 585.80358,316.09435 46.33927,-0.0893 1e-5,113.21429 -76.70793,66.02418"
+       d="m 593.80358,314.09435 46.33927,-0.0893 1e-5,113.21429 -76.70793,66.02418"
        id="path4208"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccc"
@@ -15389,8 +15389,8 @@ AAAAAAAQkggSAAAAAAAAAAAACEkECQAAAAAAAAAAAIT0/1Wq+e7fhdqWAAAAAElFTkSuQmCC
          id="tspan5128-4"
          style="font-size:27.5px">B.</tspan></text>
     <path
-       style="fill:#75ff00;fill-opacity:1;fill-rule:evenodd;stroke:#75ff00;stroke-width:2.98990345;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5152)"
-       d="m 74.593383,48.973039 268.671147,-0.02602 33.20393,-0.0032"
+       style="fill:#75cc00;fill-opacity:1;fill-rule:evenodd;stroke:#75cc00;stroke-width:2.98990345;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5152)"
+       d="M 379.95044,48.973039 111.2793,48.947019 78.075366,48.943819"
        id="path5150"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccc" />
