@@ -214,52 +214,73 @@ df_map_merged <- left_join(df_map_merged, meta, "Sample")
 total_reads$sample <- gsub("_", ".", fixed = TRUE,total_reads$sample)
 df_map_merged <- left_join(df_map_merged, total_reads, c("Sample" = "sample"))
 
-df_map_merged <- df_map_merged %>% group_by(Bin,Sample) %>%
+df_map_merged <- df_map_merged %>% group_by(Bin, Sample) %>%
   mutate(rel_abundance = 100*sum_map_read/Total_reads)
 
-df_map_merged <- df_map_merged %>% group_by(Bin,Sample) %>%
+df_map_merged <- df_map_merged %>% group_by(Bin, Sample) %>%
   mutate(rel_norm_abundance = 100*sum_map_read/Total_reads/(bin_size/1e6))
 
-# Make plots
-
-p_season2 <- ggplot(data = df_map_merged, aes(x = Bin, y = rel_abundance, fill = Bin))+
-  geom_point(size = 4, shape = 21, alpha = 0.7)+
-  geom_boxplot(alpha = 0.3)+
-  scale_fill_brewer(palette = "Paired")+
-  theme_bw()+
-  facet_grid(Season~Site)+
-  # ylim(0,1)+ 
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-        title=element_text(size=20), legend.text=element_text(size=14),
-        legend.background = element_rect(fill="transparent"),
-        axis.text.x = element_text(angle = 90, hjust = 1),
-        strip.text=element_text(size=18))+
-  ylab("Normalized relative abundance (%)")
-
-p_season2
+# Rename bin names to more sensible names
+# Add extra column with new bin names
+new_bin_names <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(2,3)]
+df_map_merged <- left_join(df_map_merged, new_bin_names, by = c("Bin" = "bins"))
+df_map_merged$new_bin_name <- df_map_merged(blast_df_sum$new_bin_name)
 ```
 
-<img src="Figures/cached/plot-abundances-2-1.png" style="display: block; margin: auto;" />
+```
+## Error in df_map_merged(blast_df_sum$new_bin_name): could not find function "df_map_merged"
+```
 
 ```r
-p_season3 <- ggplot(data = df_map_merged, aes(x = Bin, y = rel_norm_abundance, fill = Bin))+
-  geom_point(size = 4, shape = 21, alpha = 0.7)+
-  geom_boxplot(alpha = 0.3)+
-  scale_fill_brewer(palette = "Paired")+
-  theme_bw()+
-  facet_grid(Season~Site)+
-  # ylim(0,1)+ 
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-        title=element_text(size=20), legend.text=element_text(size=14),
-        legend.background = element_rect(fill="transparent"),
-        axis.text.x = element_text(angle = 90, hjust = 1),
-        strip.text=element_text(size=18))+
-  ylab("relative abundance (%)")
+df_map_merged$new_bin_name <- factor(df_map_merged$new_bin_name, levels =
+                                      c("MAG1.FA-MLB-DN","MAG2.FA-MLB-SN",
+                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+                                        "MAG5.SP-M110-DD","MAG6.SP-M15-SD",
+                                        "MAG7.SU-MLB-SD","MAG8.SU-M110-DCMD",
+                                        "MAG9.SU-M15-SN","MAG10.SU-M15-SN"))
+df_map_merged$Site <- as.character(df_map_merged$Site)
+df_map_merged$Site <- gsub("110", "Lake Michigan\nsite M110", df_map_merged$Site)
+df_map_merged$Site <- gsub("15", "Lake Michigan\nsite M15", df_map_merged$Site)
+df_map_merged$Site <- gsub("Buoy", "Muskegon Lake", df_map_merged$Site)
+df_map_merged$Site <- factor(df_map_merged$Site, levels = c("Muskegon Lake",
+                                                            "Lake Michigan\nsite M15",
+                                                            "Lake Michigan\nsite M110"))
+df_map_merged$Season <- as.character(df_map_merged$Season)
+df_map_merged$Season <- factor(df_map_merged$Season, levels = c("Spring", "Summer","Fall"))
 
-p_season3
+# Remove non-limno bin
+df_map_merged <- df_map_merged %>% filter(new_bin_name != "MAG.noLIM")
+
+# Make plots
+p_abs2 <- ggplot(data = df_map_merged, aes(x = new_bin_name, y = rel_norm_abundance, fill = new_bin_name))+
+  theme_bw()+
+  scale_fill_manual("", values = fill_palette)+
+  geom_jitter(size = 4, shape = 21, color = "black", alpha = 0.7, width = 0.15)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_blank(),
+      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Norm. relative abundance (%)"))+
+  xlab("")+
+  guides(fill=guide_legend(nrow = 3))+
+  facet_grid(Season~Site, scales ="free")+
+  scale_y_continuous(labels=scaleFUN, limits = c(0,1.25))+
+  coord_trans(y = "sqrt")
 ```
 
-<img src="Figures/cached/plot-abundances-2-2.png" style="display: block; margin: auto;" />
+```
+## Error in check_breaks_labels(breaks, labels): object 'scaleFUN' not found
+```
+
+```r
+p_abs2
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'p_abs2' not found
+```
 
 # 3. Investigate sequence characteristics within coding DNA sequences (CDS)
 
@@ -301,9 +322,9 @@ Bin_2737471681_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133052.as
 ```
 
 ```
-## Thu Nov 16 15:49:06 2017  --- There are 2248 genes with > 0.1 %
-## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
-## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
+## Wed Nov 22 17:06:51 2017  --- There are 2248 genes with > 0.1 %
+## Wed Nov 22 17:06:51 2017  --- This is 100 % of all genes
+## Wed Nov 22 17:06:51 2017  --- The 10 genes with the highest GC% are:
 ##                                                                                   function_id
 ## 2239 NADPH-dependent 2,4-dienoyl-CoA reductase, sulfur reductase, or a related oxidoreductase
 ## 2240                    tRNA A37 threonylcarbamoyladenosine synthetase subunit TsaC/SUA5/YrdC
@@ -335,9 +356,9 @@ Bin_2737471682_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133053.as
 ```
 
 ```
-## Thu Nov 16 15:49:06 2017  --- There are 1882 genes with > 0.1 %
-## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
-## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
+## Wed Nov 22 17:06:51 2017  --- There are 1882 genes with > 0.1 %
+## Wed Nov 22 17:06:51 2017  --- This is 100 % of all genes
+## Wed Nov 22 17:06:51 2017  --- The 10 genes with the highest GC% are:
 ##                                                                function_id
 ## 1873                                   D-alanyl-D-alanine carboxypeptidase
 ## 1874                        Aspartate/methionine/tyrosine aminotransferase
@@ -369,9 +390,9 @@ Bin_2737471683_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133054.as
 ```
 
 ```
-## Thu Nov 16 15:49:06 2017  --- There are 1727 genes with > 0.1 %
-## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
-## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
+## Wed Nov 22 17:06:51 2017  --- There are 1727 genes with > 0.1 %
+## Wed Nov 22 17:06:51 2017  --- This is 100 % of all genes
+## Wed Nov 22 17:06:51 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 1718                                            Type II secretory pathway, component PulF
 ## 1719                                                    Pyrroline-5-carboxylate reductase
@@ -403,9 +424,9 @@ Bin_2737471793_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133647.as
 ```
 
 ```
-## Thu Nov 16 15:49:06 2017  --- There are 1476 genes with > 0.1 %
-## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
-## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
+## Wed Nov 22 17:06:51 2017  --- There are 1476 genes with > 0.1 %
+## Wed Nov 22 17:06:51 2017  --- This is 100 % of all genes
+## Wed Nov 22 17:06:51 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 1467 Acetolactate synthase large subunit or other thiamine pyrophosphate-requiring enzyme
 ## 1468                                            2-keto-3-deoxy-L-rhamnonate aldolase RhmA
@@ -437,9 +458,9 @@ Bin_2737471794_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133648.as
 ```
 
 ```
-## Thu Nov 16 15:49:06 2017  --- There are 1226 genes with > 0.1 %
-## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
-## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
+## Wed Nov 22 17:06:51 2017  --- There are 1226 genes with > 0.1 %
+## Wed Nov 22 17:06:51 2017  --- This is 100 % of all genes
+## Wed Nov 22 17:06:51 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1217                                     Cytochrome c-type biogenesis protein CcmH/NrfF
 ## 1218                                          Type II secretory pathway, component PulK
@@ -471,9 +492,9 @@ Bin_2737471795_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133649.as
 ```
 
 ```
-## Thu Nov 16 15:49:06 2017  --- There are 1383 genes with > 0.1 %
-## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
-## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
+## Wed Nov 22 17:06:52 2017  --- There are 1383 genes with > 0.1 %
+## Wed Nov 22 17:06:52 2017  --- This is 100 % of all genes
+## Wed Nov 22 17:06:52 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1374                                                 Glycerol-3-phosphate dehydrogenase
 ## 1375                                          Predicted amidophosphoribosyltransferases
@@ -505,9 +526,9 @@ Bin_2737471797_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133651.as
 ```
 
 ```
-## Thu Nov 16 15:49:06 2017  --- There are 1076 genes with > 0.1 %
-## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
-## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
+## Wed Nov 22 17:06:52 2017  --- There are 1076 genes with > 0.1 %
+## Wed Nov 22 17:06:52 2017  --- This is 100 % of all genes
+## Wed Nov 22 17:06:52 2017  --- The 10 genes with the highest GC% are:
 ##                                                                             function_id
 ## 1067              DNA-directed RNA polymerase specialized sigma subunit, sigma24 family
 ## 1068                                7,8-dihydro-6-hydroxymethylpterin-pyrophosphokinase
@@ -539,9 +560,9 @@ Bin_2737471799_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133653.as
 ```
 
 ```
-## Thu Nov 16 15:49:06 2017  --- There are 522 genes with > 0.1 %
-## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
-## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
+## Wed Nov 22 17:06:52 2017  --- There are 522 genes with > 0.1 %
+## Wed Nov 22 17:06:52 2017  --- This is 100 % of all genes
+## Wed Nov 22 17:06:52 2017  --- The 10 genes with the highest GC% are:
 ##                                                               function_id
 ## 513                                             Glutathione S-transferase
 ## 514                                  DNA-nicking endonuclease, Smr domain
@@ -573,9 +594,9 @@ Bin_2737471802_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133656.as
 ```
 
 ```
-## Thu Nov 16 15:49:06 2017  --- There are 1691 genes with > 0.1 %
-## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
-## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
+## Wed Nov 22 17:06:52 2017  --- There are 1691 genes with > 0.1 %
+## Wed Nov 22 17:06:52 2017  --- This is 100 % of all genes
+## Wed Nov 22 17:06:52 2017  --- The 10 genes with the highest GC% are:
 ##                                                                 function_id
 ## 1682                          Pyrimidine reductase, riboflavin biosynthesis
 ## 1683               2-C-methyl-D-erythritol 4-phosphate cytidylyltransferase
@@ -607,9 +628,9 @@ Bin_2737471804_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133658.as
 ```
 
 ```
-## Thu Nov 16 15:49:06 2017  --- There are 749 genes with > 0.1 %
-## Thu Nov 16 15:49:06 2017  --- This is 100 % of all genes
-## Thu Nov 16 15:49:06 2017  --- The 10 genes with the highest GC% are:
+## Wed Nov 22 17:06:52 2017  --- There are 749 genes with > 0.1 %
+## Wed Nov 22 17:06:52 2017  --- This is 100 % of all genes
+## Wed Nov 22 17:06:52 2017  --- The 10 genes with the highest GC% are:
 ##                                                                               function_id
 ## 740 Uncharacterized conserved protein, contains von Willebrand factor type A (vWA) domain
 ## 741                   Uncharacterized membrane protein AbrB, regulator of aidB expression
@@ -641,9 +662,9 @@ Bin_2737471805_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133659.as
 ```
 
 ```
-## Thu Nov 16 15:49:07 2017  --- There are 1172 genes with > 0.1 %
-## Thu Nov 16 15:49:07 2017  --- This is 100 % of all genes
-## Thu Nov 16 15:49:07 2017  --- The 10 genes with the highest GC% are:
+## Wed Nov 22 17:06:52 2017  --- There are 1172 genes with > 0.1 %
+## Wed Nov 22 17:06:52 2017  --- This is 100 % of all genes
+## Wed Nov 22 17:06:52 2017  --- The 10 genes with the highest GC% are:
 ##                                                                   function_id
 ## 1163           Ribulose-5-phosphate 4-epimerase/Fuculose-1-phosphate aldolase
 ## 1164    Asp-tRNAAsn/Glu-tRNAGln amidotransferase A subunit or related amidase
@@ -675,9 +696,9 @@ Bin_2737471806_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133660.as
 ```
 
 ```
-## Thu Nov 16 15:49:07 2017  --- There are 1584 genes with > 0.1 %
-## Thu Nov 16 15:49:07 2017  --- This is 100 % of all genes
-## Thu Nov 16 15:49:07 2017  --- The 10 genes with the highest GC% are:
+## Wed Nov 22 17:06:52 2017  --- There are 1584 genes with > 0.1 %
+## Wed Nov 22 17:06:52 2017  --- This is 100 % of all genes
+## Wed Nov 22 17:06:52 2017  --- The 10 genes with the highest GC% are:
 ##                                                                       function_id
 ## 1575                                   Predicted NAD/FAD-dependent oxidoreductase
 ## 1576                                                 Gamma-glutamyltranspeptidase
@@ -837,7 +858,7 @@ merged_file <- merge_annotations(file_list[1:12], genoid_seqid = TRUE)
 ## [1] 22206
 ## [1] 2334
 ## [1] 24540
-## Thu Nov 16 15:49:23 2017  --- Sucessfully merged files
+## Wed Nov 22 17:07:13 2017  --- Sucessfully merged files
 ```
 
 ```r
@@ -2171,11 +2192,11 @@ new_bin_names <- read.table("./anvio_output/rebin/general_bins_summary_selected_
 blast_df_sum <- left_join(blast_df_sum, new_bin_names, by = c("bin" = "bins"))
 blast_df_sum$new_bin_name <- as.character(blast_df_sum$new_bin_name)
 blast_df_sum$new_bin_name <- factor(blast_df_sum$new_bin_name, levels =
-                                      c("MAG1_FA_MLB_DN","MAG2_FA_MLB_SN",
-                                        "MAG3_FA_MLB_SN", "MAG4_FA_M110_DN",
-                                        "MAG5_SP_M110_DD","MAG6_SP_M15_SD",
-                                        "MAG7_SU_MLB_SD","MAG8_SU_M110_DCMD",
-                                        "MAG9_SU_M15_SN","MAG10_SU_M15_SN"))
+                                      c("MAG1.FA-MLB-DN","MAG2.FA-MLB-SN",
+                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+                                        "MAG5.SP-M110-DD","MAG6.SP-M15-SD",
+                                        "MAG7.SU-MLB-SD","MAG8.SU-M110-DCMD",
+                                        "MAG9.SU-M15-SN","MAG10.SU-M15-SN"))
 # plot for individual bins
 for(bin2plot in unique(blast_df_sum$new_bin_name)){
   p_blast_sdisc <- blast_df_sum %>% filter(new_bin_name == bin2plot) %>% 
@@ -2236,16 +2257,17 @@ p_blast_sdisc_B63 <- blast_df_sum %>% filter(bin == "B63_Su13.BD.MM110.DCMD_rebi
   facet_grid(season~Site)+
   geom_line(size = 2, color = adjustcolor("black",0.5))+
   geom_point(size = 3, alpha = 0.6)+
-  scale_shape_manual(values = c(21,22,24))+
+  scale_shape_manual("", values = c(21,22,24))+
   scale_fill_brewer(palette = "Accent")+
-  guides(color = FALSE, fill = FALSE, shape = FALSE)+
+  guides(color = FALSE, fill = FALSE)+
   # ggtitle(bin2plot)+
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
         axis.text.x = element_text(angle = 45, hjust = 1),
         strip.text=element_text(size=16),
-        panel.grid.minor = element_blank())+
+        panel.grid.minor = element_blank(),
+        legend.position = "bottom")+
   ylab("Reads per Mbp")+
   xlab("Nucleotide identity (%)")+
   xlim(75,100)
@@ -2285,7 +2307,8 @@ p_sdisc_cum3 <- ggplot(map_disc_cum, aes(x = new_bin_name, y = cum_rel_reads_map
       title=element_text(size=20), legend.text=element_text(size=12),
       legend.background = element_rect(fill="transparent"),
       axis.text.x = element_blank(),
-      strip.text=element_text(size=14), legend.position = "bottom")+
+      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
   ylab(paste0("Norm. relative abundance ( > ", id_thresh, "% NI)"))+
   xlab("")+
   guides(fill=guide_legend(nrow = 3))+
@@ -2315,18 +2338,79 @@ p_sdisc_cum4 <- ggplot(map_disc_cum, aes(x = new_bin_name, y = cum_rel_reads_map
       title=element_text(size=20), legend.text=element_text(size=12),
       legend.background = element_rect(fill="transparent"),
       axis.text.x = element_blank(),
-      strip.text=element_text(size=14), legend.position = "bottom")+
+      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
   ylab(paste0("Norm. relative abundance ( > ", id_thresh, "% NI)"))+
   xlab("")+
   guides(fill=guide_legend(nrow = 3))+
   facet_grid(season~Site, scales ="free")+
-  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
+  scale_y_continuous(labels=scaleFUN, limits = c(0,1.25))+
   coord_trans(y = "sqrt")
 
 print(p_sdisc_cum4)
 ```
 
 <img src="Figures/cached/summary-blast-approach-2.png" style="display: block; margin: auto;" />
+
+## Compare blast to bwa results  
+
+
+```r
+# Compare blast inferred abundances with bwa inferred abundances
+grid_arrange_shared_legend(p_abs2, p_sdisc_cum4, ncol = 2)
+```
+
+```
+## Error in grid_arrange_shared_legend(p_abs2, p_sdisc_cum4, ncol = 2): object 'p_abs2' not found
+```
+
+
+
+```r
+# Merge those two dataframes and make scatter plot highlighting the differences 
+df_map_merged_sm <- df_map_merged[, c("Bin","Sample","rel_norm_abundance", "Season", "Site")]
+df_map_merged_sm$Sample <- gsub(".", "_", df_map_merged_sm$Sample, fixed = TRUE)
+df_map_merged_sm <- data.frame(df_map_merged_sm, 
+                               interaction = interaction(df_map_merged_sm$Bin,
+                                                                         df_map_merged_sm$Sample),
+                              method = "bwa")
+
+map_disc_cum_sm <- map_disc_cum[, c("bin","Sample","cum_rel_reads_mapped")] 
+map_disc_cum_sm <- data.frame(map_disc_cum_sm, 
+                              interaction = interaction(map_disc_cum_sm$bin,
+                                                                         map_disc_cum_sm$Sample),
+                              method = "blastn")
+
+abs_merged <- left_join(df_map_merged_sm, map_disc_cum_sm, by = "interaction")
+abs_merged <- abs_merged[,c("Bin","Sample.x","rel_norm_abundance","cum_rel_reads_mapped",
+                            "Season", "Site")]
+colnames(abs_merged) <- c("Bin","Sample",
+                          "bwa_norm_abundance","blastn_norm_abundance",
+                          "Season", "Site")
+# Plot
+p_scat_abund <- ggplot(abs_merged, aes(x = bwa_norm_abundance, y = blastn_norm_abundance))+
+  theme_bw()+
+  geom_point(size = 4, shape = 21, color = "black", alpha = 0.7,
+             aes(fill = Bin))+
+  scale_fill_manual("", values = fill_palette)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Norm. relative abundance (blastn, > ", id_thresh, "% NI)"))+
+  xlab("Norm. relative abundance (BWA)")+
+  guides(fill=guide_legend(nrow = 3))+
+  facet_grid(Season~Site, scales ="free")+
+  scale_y_continuous(labels=scaleFUN)+
+  scale_x_continuous(labels=scaleFUN)+
+  geom_smooth(method = "lm", color = "black")
+  # coord_trans(x = "atanh", y = "atanh")
+
+print(p_scat_abund)
+```
+
+<img src="Figures/cached/comparison-bwa-2-1.png" style="display: block; margin: auto;" />
 
 # Pangenome analysis  
 
