@@ -39,9 +39,11 @@ knitr::opts_chunk$set(eval = TRUE,
 library('tidyr')
 library('dplyr')
 library('ggplot2')
+library("scales")
 library("grid")
 library("gridExtra")
 library("easyGgplot2")
+library("reshape2")
 library("edgeR")
 library("phyloseq")
 library("ggrepel")
@@ -88,10 +90,80 @@ data_total$upper_rel_abundance <- 100*((data_total$coverage+data_total$std_cover
 data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_coverage)*data_total$bin_size)/(read_length*data_total$Total_reads)
 ```
 
-# 1a. Phylogenetic tree
-![RAxML tree for Limnohabitans genomes](./Tree/PhyloTree_Limno.png)  
+# 1a. Phylogenetic tree & ANI annotation  
+
+```{r ANI-analysis, warning = FALSE, fig.width = 9, fig.height = 9, dpi = 500}
+# read file
+# data.ANI <- read.table("./ANI/ANIb_percentage_identity.tab")
+data.ANI <- read.table("./ANI/ANIb_percentage_identity.tab")
+
+# Replace genome names by better annotated names
+map_ani <- read.delim("./ANI/pyani_ref_names.tsv", stringsAsFactors = FALSE)
+for(i in 1:nrow(map_ani)){
+ colnames(data.ANI)[colnames(data.ANI) %in% map_ani$ani_file[i]] <- map_ani$ref_name[i]
+ rownames(data.ANI)[rownames(data.ANI) %in% map_ani$ani_file[i]] <- map_ani$ref_name[i]
+}
+
+# Remove pnec and root genomes from dataframe
+data.ANI <- data.ANI[grep("MAG|Lim", rownames(data.ANI)), grep("MAG|Lim", rownames(data.ANI))]
+
+# Order y-axis according to phylogenetic tree order
+ord_list_bin <- c(
+  "MAG5.SP-M110-DD", "MAG2.FA-MLB-SN",
+  "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+  "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
+  "MAG6.SP-M15-SD","MAG8.SU-M110-DCMD",
+  "Lim. sp. Rim11", "Lim. sp. 103DPR2",
+  "MAG7.SU-MLB-SD", "Lim. sp. Rim47",
+  "MAG9.SU-M15-SN", "Lim. sp. Rim28",
+  "Lim. sp. 63ED37-2","Lim. sp. 2KL-27",
+  "Lim. sp. 2KL-3", "Lim. sp. DM1",
+  "Lim. sp. II-D5"
+  )
+
+# order rows and columns
+data.ANI <- data.ANI[, order(match(colnames(data.ANI), ord_list_bin))]
+data.ANI <- data.ANI[order(match(rownames(data.ANI), ord_list_bin)), ]
+
+data.ANI <- get_upper_tri(data.ANI)
+
+# melt to dataframe
+df_pyani <- melt(as.matrix(data.ANI), na.rm = TRUE) # reshape into dataframe
+names(df_pyani)[c(1:3)] <- c("bin1", "bin2", "ANI")
+df_pyani[, 1] <- as.character(df_pyani[, 1]); df_pyani[, 2] <- as.character(df_pyani[, 2])
+df_pyani$bin2 <- factor(df_pyani$bin2, levels = ord_list_bin)
+df_pyani$bin1 <- factor(df_pyani$bin1, levels = rev(ord_list_bin))
+
+# make plot
+p_ani <- ggplot(data = df_pyani,
+       aes(x = bin2, y = bin1, fill = 100*ANI))+ 
+  geom_raster()+
+  scale_fill_distiller(palette = "RdBu", name = "Average\nNucleotide\nIdentity (%)\n",
+                       limits = 100*c(0.75,1.0), oob=squish) +
+  geom_text(aes(label = round(100*ANI, 0)), size = 4.5)+
+  xlab("")+
+  ylab("")+
+  scale_x_discrete(position = "top") +
+  theme(axis.title=element_text(size=14), strip.text.x=element_text(size=14),
+        legend.title=element_text(size=14), legend.text=element_text(size=14),
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size=14, angle = 55, hjust = 0),
+        title=element_text(size=20),
+        plot.margin = unit(c(1.1,1.1,1.1,1.1), "cm"),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill = "transparent",colour = NA),
+        plot.background = element_rect(fill = "transparent",colour = NA)
+  )
+
+svg(filename = "ANI_heatmap.svg", height= 9, width = 9, bg = "transparent")
+print(p_ani)
+dev.off()
+```
 
 # 1b. Network analysis based on 16S data
+
+
 ```{r network_16S, warning = FALSE, fig.width = 9, fig.height = 8}
 # import data
 df_phy <- import_mothur(mothur_shared_file = "./16S/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.an.unique_list.shared",
