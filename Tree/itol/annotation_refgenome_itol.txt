@@ -70,25 +70,14 @@ FIELD_COLORS,#a2bff3
 #=================================================================#
 DATA
 #node 9606 will have a filled circle, empty left triangle, nothing in the 3rd column and an empty rectangle
-Limnohabitans_Bin_CoolingWater_2724679690.fa,0
-Limnohabitans_planktonicus_II-D5_NZ_LFYT00000000_1.fa,0
-Limnohabitans_sp_103DPR2_NZ_CP011834_1.fa,0
-Limnohabitans_sp_2KL-27_NZ_CXOP00000000_1.fa,0
-Limnohabitans_sp_2KL-3_NZ_CXON00000000_1.fa,0
-Limnohabitans_sp_63ED37-2_NZ_CP011774_1.fa,0
-Limnohabitans_sp_DM1_NZ_CXOO00000000_1.fa,0
-Limnohabitans_sp_Rim11_NZ_CXOP00000000_1.fa,0
-Limnohabitans_sp_Rim28_NZ_ALKN00000000_1.fa,0
-Limnohabitans_sp_Rim47_2684622883.fa,0
-B21_Fa13.BD.MLB.SN_rebin4.fa,3
-B22_Fa13.BD.MLB.SN_rebin5.fa,3
-B28_Fa13.BD.MM110.DN_rebin2.fa,3
-B2_Fa13.BD.MLB.DN_rebin10.fa,3
-B38_Sp13.BD.MM110.DD_rebin5.fa,3
-B4_Fa13.BD.MLB.DN_rebin2.fa,3
-B52_Sp13.BD.MM15.SD_rebin1.fa,3
-B58_Su13.BD.MLB.SD.C_rebin3.fa,3
-B63_Su13.BD.MM110.DCMD_rebin1.fa,3
-B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined1.fa,3
-B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined2.fa,3
+B21_Fa13.BD.MLB.SN_rebin4.fa,1
+B22_Fa13.BD.MLB.SN_rebin5.fa,1
+B28_Fa13.BD.MM110.DN_rebin2.fa,1
+B38_Sp13.BD.MM110.DD_rebin5.fa,1
+B4_Fa13.BD.MLB.DN_rebin2.fa,1
+B52_Sp13.BD.MM15.SD_rebin1.fa,1
+B58_Su13.BD.MLB.SD.C_rebin3.fa,1
+B63_Su13.BD.MM110.DCMD_rebin1.fa,1
+B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined1.fa,1
+B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined2.fa,1
 

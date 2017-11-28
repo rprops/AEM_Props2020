@@ -34,17 +34,20 @@ knitr::opts_chunk$set(eval = TRUE,
                       fig.path="Figures/cached/",  # Set the figure options
                       fig.align = "center",
                       fig.width = 7, 
-                      fig.height = 6)
+                      fig.height = 6,
+                      dev.args=list(bg='transparent'))
 # Load libraries
 library('tidyr')
 library('dplyr')
 library('ggplot2')
 library("scales")
 library("grid")
+library("scales")
 library("gridExtra")
 library("easyGgplot2")
 library("reshape2")
 library("edgeR")
+library("Phenoflow")
 library("phyloseq")
 library("ggrepel")
 library("RColorBrewer")
@@ -91,10 +94,10 @@ data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_cover
 ```
 
 # 1a. Phylogenetic tree & ANI annotation  
+![Annotated phylogenomic tree](./tree/tree_annotated.png)
 
 ```{r ANI-analysis, warning = FALSE, fig.width = 9, fig.height = 9, dpi = 500}
 # read file
-# data.ANI <- read.table("./ANI/ANIb_percentage_identity.tab")
 data.ANI <- read.table("./ANI/ANIb_percentage_identity.tab")
 
 # Replace genome names by better annotated names
@@ -156,9 +159,9 @@ p_ani <- ggplot(data = df_pyani,
         plot.background = element_rect(fill = "transparent",colour = NA)
   )
 
-svg(filename = "ANI_heatmap.svg", height= 9, width = 9, bg = "transparent")
+# png("ANI_heatmap.png", height= 9, width = 9, res = 500, units = "in", bg = "transparent")
 print(p_ani)
-dev.off()
+# dev.off()
 ```
 
 # 1b. Network analysis based on 16S data
@@ -318,7 +321,7 @@ df_map_merged <- df_map_merged %>% group_by(Bin, Sample) %>%
 # Add extra column with new bin names
 new_bin_names <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(2,3)]
 df_map_merged <- left_join(df_map_merged, new_bin_names, by = c("Bin" = "bins"))
-df_map_merged$new_bin_name <- df_map_merged(blast_df_sum$new_bin_name)
+df_map_merged$new_bin_name <- as.character(df_map_merged$new_bin_name)
 df_map_merged$new_bin_name <- factor(df_map_merged$new_bin_name, levels =
                                       c("MAG1.FA-MLB-DN","MAG2.FA-MLB-SN",
                                         "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
@@ -336,7 +339,7 @@ df_map_merged$Season <- as.character(df_map_merged$Season)
 df_map_merged$Season <- factor(df_map_merged$Season, levels = c("Spring", "Summer","Fall"))
 
 # Remove non-limno bin
-df_map_merged <- df_map_merged %>% filter(new_bin_name != "MAG.noLIM")
+df_map_merged <- df_map_merged %>% dplyr::filter(new_bin_name != "MAG.noLIM")
 
 # Make plots
 p_abs2 <- ggplot(data = df_map_merged, aes(x = new_bin_name, y = rel_norm_abundance, fill = new_bin_name))+
@@ -571,7 +574,7 @@ expr_cov_long <- expr_cov_long %>% distinct()
 expr_cov_bins <- list()
 for(i in 1:nlevels(expr_cov_long$Genome_id)){
   expr_cov_bins[[i]] <-  expr_cov_long %>% 
-  filter(Genome_id == levels(expr_cov_long$Genome_id)[i]) %>% 
+  dplyr::filter(Genome_id == levels(expr_cov_long$Genome_id)[i]) %>% 
   select(gene_oid, sample, mapped_reads) %>% 
   spread(sample, mapped_reads)
   r.bin <- expr_cov_bins[[i]]$gene_oid
@@ -753,7 +756,7 @@ blast_df_map <- read.table("./SEQs_discrete/merged_contig_list.tsv", header = FA
 colnames(blast_df_map) <- c("m_contig", "o_contig", "bin")
 
 # Round identity to integer
-blast_df$Identity <- round(blast_df$Identity, 0)
+blast_df$Identity <- round(blast_df$Identity, 1)
 blast_df$Identity <- factor(blast_df$Identity)
 blast_df <- left_join(blast_df, blast_df_map, by = c("Contig" = "m_contig"))
 
@@ -784,7 +787,8 @@ blast_df_sum$Sample <- gsub(".C", "", blast_df_sum$Sample, fixed = TRUE)
 blast_df_sum$Sample <- gsub(".", "_", blast_df_sum$Sample, fixed = TRUE)
 
 # Add metadata to dataframe
-blast_df_sum <- dplyr::left_join(blast_df_sum, meta, by = c("Sample" = "Sample_ID"))
+meta_blast <- meta[, -1] %>% distinct()
+blast_df_sum <- dplyr::left_join(blast_df_sum, meta_blast, by = c("Sample" = "Sample_ID"))
 
 # Reorder site factor
 blast_df_sum$Site <- as.character(blast_df_sum$Site)
@@ -814,7 +818,7 @@ blast_df_sum$new_bin_name <- factor(blast_df_sum$new_bin_name, levels =
                                         "MAG9.SU-M15-SN","MAG10.SU-M15-SN"))
 # plot for individual bins
 for(bin2plot in unique(blast_df_sum$new_bin_name)){
-  p_blast_sdisc <- blast_df_sum %>% filter(new_bin_name == bin2plot) %>% 
+  p_blast_sdisc <- blast_df_sum %>% dplyr::filter(new_bin_name == bin2plot) %>% 
      ggplot(aes(x = Identity, y = n_norm, color = season))+
       theme_bw()+
       scale_color_brewer(palette = "Accent")+
@@ -858,7 +862,7 @@ p_blast_sdisc_merged <- blast_df_sum %>%
 print(p_blast_sdisc_merged)
 
 # Plot for most abundant bin (B63)
-p_blast_sdisc_B63 <- blast_df_sum %>% filter(bin == "B63_Su13.BD.MM110.DCMD_rebin1") %>% 
+p_blast_sdisc_B63 <- blast_df_sum %>% dplyr::filter(bin == "B63_Su13.BD.MM110.DCMD_rebin1") %>% 
   ggplot(aes(x = Identity, y = n_norm, fill = season, group = Sample,
              shape = Depth))+
   theme_bw()+
@@ -886,9 +890,6 @@ p_blast_sdisc_B63
 ```{r summary-blast-approach, dpi = 500, warning = FALSE, fig.width = 9, fig.height = 8}
 blast_df_sum <- left_join(blast_df_sum, total_reads, by = c("Sample" = "sample"))
 
-# Function to specify decimals in ggplot
-scaleFUN <- function(x) sprintf("%.2f", x)
-
 # Divide normalized reads by 1M (fixed blast census)
 blast_df_sum <- blast_df_sum %>% mutate(n_norm_perc = 100*n_norm/1e6)
 
@@ -898,9 +899,9 @@ fill_palette <- c(rev(brewer.pal(11, "BrBG")[1:4]),
                   )
 # Plot % reads corrected for genome size over threshold of 0.95
 id_thresh <- 95
-map_disc_cum <- blast_df_sum  %>% filter(Identity > id_thresh) %>% group_by(Sample, bin) %>% 
+map_disc_cum <- blast_df_sum  %>% dplyr::filter(Identity > id_thresh) %>% group_by(Sample, bin) %>% 
   mutate(cum_rel_reads_mapped = cumsum(n_norm_perc))%>% 
-  filter(Identity == 100)
+  dplyr::filter(Identity == 100)
 sum_cum <- map_disc_cum %>% group_by(Sample, bin) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
 
 p_sdisc_cum3 <- ggplot(map_disc_cum, aes(x = new_bin_name, y = cum_rel_reads_mapped, 
@@ -925,9 +926,10 @@ print(p_sdisc_cum3)
 
 # Plot % reads over threshold of 0.99
 id_thresh <- 99
-map_disc_cum <- blast_df_sum  %>% filter(Identity > id_thresh) %>% group_by(Sample, bin) %>% 
+map_disc_cum <- blast_df_sum  %>% distinct() %>% 
+  dplyr::filter(Identity > id_thresh) %>% group_by(Sample, bin) %>% 
   mutate(cum_rel_reads_mapped = cumsum(n_norm_perc))%>% 
-  filter(Identity == 100)
+  dplyr::filter(Identity == 100)
 sum_cum <- map_disc_cum %>% group_by(Sample, bin) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
 
 p_sdisc_cum4 <- ggplot(map_disc_cum, aes(x = new_bin_name, y = cum_rel_reads_mapped, 
@@ -980,6 +982,9 @@ abs_merged <- abs_merged[,c("Bin","Sample.x","rel_norm_abundance","cum_rel_reads
 colnames(abs_merged) <- c("Bin","Sample",
                           "bwa_norm_abundance","blastn_norm_abundance",
                           "Season", "Site")
+
+
+
 # Plot
 p_scat_abund <- ggplot(abs_merged, aes(x = bwa_norm_abundance, y = blastn_norm_abundance))+
   theme_bw()+
@@ -1001,6 +1006,71 @@ p_scat_abund <- ggplot(abs_merged, aes(x = bwa_norm_abundance, y = blastn_norm_a
   # coord_trans(x = "atanh", y = "atanh")
 
 print(p_scat_abund)
+```
+
+### Calculate temporospatial diversity in Lhab
+
+```{r diversity-Lhab, dpi = 500, warning = FALSE, fig.width = 9, fig.height = 5}
+abs_merged_div <- map_disc_cum[, c("Sample", "new_bin_name", "n_norm")]
+abs_merged_div$n_norm <- as.integer(abs_merged_div$n_norm )
+
+# Format long to wide format
+abs_table <- spread(abs_merged_div, Sample, n_norm)
+abs_table <- data.frame(abs_table)
+rownames(abs_table) <- abs_table[, 1]; abs_table <- abs_table[, -1]
+tax.table <- data.frame(MAGs = rownames(abs_table))
+rownames(tax.table) <- tax.table$MAGs
+
+# Make phyloseq object
+MAG_phy <- phyloseq(otu_table(abs_table, taxa_are_rows = TRUE), 
+         tax_table(as.matrix(tax.table)))
+
+# Run Diversity_16S()
+MAG_div <- Diversity_16S(MAG_phy, ncore = 3, parallel = TRUE,
+                         R = 100, brea = FALSE)
+
+MAG_div <- data.frame(Sample = rownames(MAG_div), MAG_div[,-c(3:6)])
+
+# Merge with metadata
+MAG_div <- left_join(MAG_div, meta_blast, by = c("Sample" = "Sample_ID"))
+
+# Annotate and order metavariables
+MAG_div$Site <- as.character(MAG_div$Site)
+MAG_div$Site <- gsub("Buoy","Muskegon Lake", MAG_div$Site)
+MAG_div$Site <- gsub("110","Lake Michigan\nsite M110", MAG_div$Site)
+MAG_div$Site <- gsub("15","Lake Michigan\nsite M15", MAG_div$Site)
+MAG_div$Site <- factor(MAG_div$Site, levels = c("Muskegon Lake",
+                                                          "Lake Michigan\nsite M15",
+                                                          "Lake Michigan\nsite M110"))
+MAG_div$Depth <- as.character(MAG_div$Depth)
+MAG_div$Depth <- factor(MAG_div$Depth, levels = c("Surface", "Mid", "Deep"))
+MAG_div$Season <- as.character(MAG_div$Season)
+MAG_div$Season <- factor(MAG_div$Season, levels = c("Spring", "Summer", "Fall"))
+
+# Plot results
+p_MAG_div <- ggplot(MAG_div, aes(x = Season, y = D2, 
+                                        fill = Season, shape = Depth))+
+  theme_bw()+
+  scale_fill_brewer(palette = "Accent")+
+  geom_point(size = 4, color = "black", alpha = 0.7)+
+  scale_shape_manual(values = c(21,24,23))+
+  # geom_boxplot(alpha = 0.4)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Limnohabitans population\n diversity (D2)"))+
+  guides(fill=FALSE)+
+  facet_grid(~Site, scales ="free")+
+  xlab("")+
+  geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+
+  scale_y_continuous(labels=scaleFUN, limits = c(0,6.5))
+  # coord_trans(y = "sqrt")
+
+
+print(p_MAG_div)
 ```
 
 # Pangenome analysis  

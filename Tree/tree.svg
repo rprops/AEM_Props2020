@@ -39,13 +39,13 @@
      inkscape:window-height="1027"
      id="namedview163"
      showgrid="false"
-     inkscape:zoom="0.45"
-     inkscape:cx="3359.1508"
-     inkscape:cy="-168.82677"
+     inkscape:zoom="0.6363961"
+     inkscape:cx="1072.1005"
+     inkscape:cy="442.35298"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g8537" />
+     inkscape:current-layer="g8559" />
   <defs
      id="defs4">
     <marker
@@ -4030,8 +4030,8 @@
          x="545.93903"
          id="tspan5957-1"
          sodipodi:role="line">Polynucleobacter <tspan
-   id="tspan4595"
-   style="font-style:normal">(Pnec)</tspan></tspan></text>
+   style="font-style:normal"
+   id="tspan31923">(5)</tspan></tspan></text>
     <g
        id="g4687"
        transform="translate(-24,0)"
@@ -4090,45 +4090,48 @@
          x="-640.97974"
          id="tspan5957-2"
          sodipodi:role="line">LimB</tspan></text>
-    <rect
-       transform="matrix(0,-1,-1,0,0,0)"
-       style="overflow:hidden;opacity:1;fill:#c6dbef;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.02250528;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.79041916"
-       id="rect4755-8-6-1-9-71"
-       width="180.75172"
-       height="13.215495"
-       x="-531.95593"
-       y="-1160.6969"
-       ry="0.69317025"
-       inkscape:export-xdpi="250"
-       inkscape:export-ydpi="250" />
-    <rect
-       transform="matrix(0,-1,-1,0,0,0)"
-       style="overflow:hidden;opacity:1;fill:#deebf7;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.43299997;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.79041916"
-       id="rect4755-8-6-1-9-71-8"
-       width="156.21199"
-       height="12.863303"
-       x="-433.72107"
-       y="-1160.5627"
-       ry="0.67469728"
-       inkscape:export-xdpi="250"
-       inkscape:export-ydpi="250" />
+    <g
+       id="g31933">
+      <rect
+         inkscape:export-ydpi="250"
+         inkscape:export-xdpi="250"
+         ry="0.69317025"
+         y="-1160.6969"
+         x="-531.95593"
+         height="13.215495"
+         width="180.75172"
+         id="rect4755-8-6-1-9-71"
+         style="overflow:hidden;opacity:1;fill:#c6dbef;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.02250528;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.79041916"
+         transform="matrix(0,-1,-1,0,0,0)" />
+      <rect
+         inkscape:export-ydpi="250"
+         inkscape:export-xdpi="250"
+         ry="0.67469728"
+         y="-1160.5627"
+         x="-433.72107"
+         height="12.863303"
+         width="156.21199"
+         id="rect4755-8-6-1-9-71-8"
+         style="overflow:hidden;opacity:1;fill:#deebf7;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.43299997;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.79041916"
+         transform="matrix(0,-1,-1,0,0,0)" />
+    </g>
     <text
        inkscape:transform-center-y="77.302009"
        inkscape:transform-center-x="-231.90619"
        transform="matrix(-4.9155175e-4,-0.99999988,0.99999988,-4.9155175e-4,0,0)"
        sodipodi:linespacing="125%"
        id="text5955-7-7"
-       y="1206.483"
-       x="-511.52359"
+       y="1206.4751"
+       x="-527.78595"
        style="font-style:normal;font-weight:normal;font-size:139.64239502px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;overflow:hidden;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"
        inkscape:export-xdpi="250"
        inkscape:export-ydpi="250"><tspan
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:43.75px;font-family:georgia;-inkscape-font-specification:georgia"
-         y="1206.483"
-         x="-511.52359"
+         y="1206.4751"
+         x="-527.78595"
          id="tspan5957-2-8"
-         sodipodi:role="line">LimD|E|A</tspan></text>
+         sodipodi:role="line">`LimD|E|A´</tspan></text>
     <text
        inkscape:transform-center-y="211.05786"
        inkscape:transform-center-x="-122.09957"

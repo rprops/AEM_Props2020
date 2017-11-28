@@ -43,11 +43,11 @@ data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_cover
 ```
 
 # 1a. Phylogenetic tree & ANI annotation  
+![Annotated phylogenomic tree](./tree/tree_annotated.png)
 
 
 ```r
 # read file
-# data.ANI <- read.table("./ANI/ANIb_percentage_identity.tab")
 data.ANI <- read.table("./ANI/ANIb_percentage_identity.tab")
 
 # Replace genome names by better annotated names
@@ -109,10 +109,15 @@ p_ani <- ggplot(data = df_pyani,
         plot.background = element_rect(fill = "transparent",colour = NA)
   )
 
+# png("ANI_heatmap.png", height= 9, width = 9, res = 500, units = "in", bg = "transparent")
 print(p_ani)
 ```
 
 <img src="Figures/cached/ANI-analysis-1.png" style="display: block; margin: auto;" />
+
+```r
+# dev.off()
+```
 
 # 1b. Network analysis based on 16S data
 
@@ -295,14 +300,7 @@ df_map_merged <- df_map_merged %>% group_by(Bin, Sample) %>%
 # Add extra column with new bin names
 new_bin_names <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(2,3)]
 df_map_merged <- left_join(df_map_merged, new_bin_names, by = c("Bin" = "bins"))
-df_map_merged$new_bin_name <- df_map_merged(blast_df_sum$new_bin_name)
-```
-
-```
-## Error in df_map_merged(blast_df_sum$new_bin_name): could not find function "df_map_merged"
-```
-
-```r
+df_map_merged$new_bin_name <- as.character(df_map_merged$new_bin_name)
 df_map_merged$new_bin_name <- factor(df_map_merged$new_bin_name, levels =
                                       c("MAG1.FA-MLB-DN","MAG2.FA-MLB-SN",
                                         "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
@@ -320,7 +318,7 @@ df_map_merged$Season <- as.character(df_map_merged$Season)
 df_map_merged$Season <- factor(df_map_merged$Season, levels = c("Spring", "Summer","Fall"))
 
 # Remove non-limno bin
-df_map_merged <- df_map_merged %>% filter(new_bin_name != "MAG.noLIM")
+df_map_merged <- df_map_merged %>% dplyr::filter(new_bin_name != "MAG.noLIM")
 
 # Make plots
 p_abs2 <- ggplot(data = df_map_merged, aes(x = new_bin_name, y = rel_norm_abundance, fill = new_bin_name))+
@@ -339,19 +337,15 @@ p_abs2 <- ggplot(data = df_map_merged, aes(x = new_bin_name, y = rel_norm_abunda
   facet_grid(Season~Site, scales ="free")+
   scale_y_continuous(labels=scaleFUN, limits = c(0,1.25))+
   coord_trans(y = "sqrt")
-```
 
-```
-## Error in check_breaks_labels(breaks, labels): object 'scaleFUN' not found
-```
-
-```r
 p_abs2
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'p_abs2' not found
+## Error in f(...): object 'fill_palette' not found
 ```
+
+<img src="Figures/cached/plot-abundances-2-1.png" style="display: block; margin: auto;" />
 
 # 3. Investigate sequence characteristics within coding DNA sequences (CDS)
 
@@ -362,30 +356,112 @@ p_abs2
 # Next, extract the %GC of each gene from the gff file
 Bin_2737471681 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471681/IMG_Data/133052.assembled.gff", 
                                       outputFolder = "GC_analysis")
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 Bin_2737471682 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471682/IMG_Data/133053.assembled.gff", 
                                       outputFolder = "GC_analysis")
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 Bin_2737471683 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471683/IMG_Data/133054.assembled.gff", 
                                       outputFolder = "GC_analysis")
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 Bin_2737471793 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471793/IMG_Data/133647.assembled.gff", 
                                       outputFolder = "GC_analysis")
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 Bin_2737471794 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471794/IMG_Data/133648.assembled.gff", 
                                       outputFolder = "GC_analysis")
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 Bin_2737471795 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471795/IMG_Data/133649.assembled.gff", 
                                       outputFolder = "GC_analysis")
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 Bin_2737471797 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471797/IMG_Data/133651.assembled.gff", 
                                       outputFolder = "GC_analysis")
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 Bin_2737471799 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471799/IMG_Data/133653.assembled.gff", 
                                       outputFolder = "GC_analysis")
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 Bin_2737471802 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471802/IMG_Data/133656.assembled.gff", 
                                       outputFolder = "GC_analysis")
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 Bin_2737471804 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471804/IMG_Data/133658.assembled.gff", 
                                       outputFolder = "GC_analysis")
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 Bin_2737471805 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471805/IMG_Data/133659.assembled.gff", 
                                       outputFolder = "GC_analysis")
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 Bin_2737471806 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471806/IMG_Data/133660.assembled.gff", 
                                       outputFolder = "GC_analysis")
+```
 
+```
+## Error in file(file, "rt"): cannot open the connection
+```
 
+```r
 # Use these files to make dataframes mapping function (COGs) and %GC
 Bin_2737471681_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133052.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471681/IMG_Data/2737471681/2737471681.gene_oid_2_seq_id.txt", 
                              functions = "./IMG_annotation/IMG_2737471681/IMG_Data/2737471681/2737471681.cog.tab.txt", 
@@ -393,31 +469,7 @@ Bin_2737471681_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133052.as
 ```
 
 ```
-## Wed Nov 22 17:06:51 2017  --- There are 2248 genes with > 0.1 %
-## Wed Nov 22 17:06:51 2017  --- This is 100 % of all genes
-## Wed Nov 22 17:06:51 2017  --- The 10 genes with the highest GC% are:
-##                                                                                   function_id
-## 2239 NADPH-dependent 2,4-dienoyl-CoA reductase, sulfur reductase, or a related oxidoreductase
-## 2240                    tRNA A37 threonylcarbamoyladenosine synthetase subunit TsaC/SUA5/YrdC
-## 2241                                 2-C-methyl-D-erythritol 4-phosphate cytidylyltransferase
-## 2242                                                                Mg-chelatase subunit ChlD
-## 2243                                                  Enoyl-CoA hydratase/carnithine racemase
-## 2244                                            Sugar or nucleoside kinase, ribokinase family
-## 2245                                       DNA-binding transcriptional regulator, MarR family
-## 2246                    NAD(P)H-hydrate repair enzyme Nnr, NAD(P)H-hydrate dehydratase domain
-## 2247                                                                              Peptidase E
-## 2248                                                               Sulfite exporter TauE/SafE
-##      function_name   GC
-## 2239           415 67.5
-## 2240           211 67.6
-## 2241           230 67.6
-## 2242           261 68.0
-## 2243           257 68.2
-## 2244           311 68.2
-## 2245           126 68.3
-## 2246           284 68.9
-## 2247           224 69.3
-## 2248           232 69.4
+## Error in file(file, "rt"): cannot open the connection
 ```
 
 ```r
@@ -427,31 +479,7 @@ Bin_2737471682_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133053.as
 ```
 
 ```
-## Wed Nov 22 17:06:51 2017  --- There are 1882 genes with > 0.1 %
-## Wed Nov 22 17:06:51 2017  --- This is 100 % of all genes
-## Wed Nov 22 17:06:51 2017  --- The 10 genes with the highest GC% are:
-##                                                                function_id
-## 1873                                   D-alanyl-D-alanine carboxypeptidase
-## 1874                        Aspartate/methionine/tyrosine aminotransferase
-## 1875                    DNA-binding transcriptional regulator, LysR family
-## 1876                   Predicted esterase of the alpha/beta hydrolase fold
-## 1877                                            Sulfite exporter TauE/SafE
-## 1878                              Endonuclease YncB, thermonuclease family
-## 1879    Predicted house-cleaning NTP pyrophosphatase, Maf/HAM1 superfamily
-## 1880                                           L-aminopeptidase/D-esterase
-## 1881 tRNA A37 threonylcarbamoyladenosine synthetase subunit TsaC/SUA5/YrdC
-## 1882                                                    Glycerate-2-kinase
-##      function_name   GC
-## 1873           470 68.0
-## 1874           393 68.1
-## 1875           297 68.1
-## 1876           181 68.2
-## 1877           232 68.3
-## 1878           192 68.5
-## 1879           193 68.9
-## 1880           348 69.0
-## 1881           211 69.5
-## 1882           422 73.0
+## Error in file(file, "rt"): cannot open the connection
 ```
 
 ```r
@@ -461,31 +489,7 @@ Bin_2737471683_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133054.as
 ```
 
 ```
-## Wed Nov 22 17:06:51 2017  --- There are 1727 genes with > 0.1 %
-## Wed Nov 22 17:06:51 2017  --- This is 100 % of all genes
-## Wed Nov 22 17:06:51 2017  --- The 10 genes with the highest GC% are:
-##                                                                               function_id
-## 1718                                            Type II secretory pathway, component PulF
-## 1719                                                    Pyrroline-5-carboxylate reductase
-## 1720                                                                     Shikimate kinase
-## 1721                          Phosphoribosylaminoimidazole carboxylase (NCAIR synthetase)
-## 1722                                                  ADP-heptose:LPS heptosyltransferase
-## 1723                                             Cobalamin biosynthesis protein CobD/CbiB
-## 1724 Acetolactate synthase large subunit or other thiamine pyrophosphate-requiring enzyme
-## 1725                                                               Uracil-DNA glycosylase
-## 1726             NAD(P)-dependent dehydrogenase, short-chain alcohol dehydrogenase family
-## 1727                tRNA A37 threonylcarbamoyladenosine synthetase subunit TsaC/SUA5/YrdC
-##      function_name   GC
-## 1718           397 63.1
-## 1719           266 63.1
-## 1720           172 63.2
-## 1721           375 63.7
-## 1722           334 63.8
-## 1723           320 63.9
-## 1724           550 64.0
-## 1725           202 64.2
-## 1726           251 64.4
-## 1727           211 64.6
+## Error in file(file, "rt"): cannot open the connection
 ```
 
 ```r
@@ -495,31 +499,7 @@ Bin_2737471793_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133647.as
 ```
 
 ```
-## Wed Nov 22 17:06:51 2017  --- There are 1476 genes with > 0.1 %
-## Wed Nov 22 17:06:51 2017  --- This is 100 % of all genes
-## Wed Nov 22 17:06:51 2017  --- The 10 genes with the highest GC% are:
-##                                                                               function_id
-## 1467 Acetolactate synthase large subunit or other thiamine pyrophosphate-requiring enzyme
-## 1468                                            2-keto-3-deoxy-L-rhamnonate aldolase RhmA
-## 1469            ABC-type dipeptide/oligopeptide/nickel transport system, ATPase component
-## 1470   Predicted Rossmann fold nucleotide-binding protein DprA/Smf involved in DNA uptake
-## 1471        NAD(P)H-dependent flavin oxidoreductase YrpB, nitropropane dioxygenase family
-## 1472                                           Pimeloyl-ACP methyl ester carboxylesterase
-## 1473                                    CO or xanthine dehydrogenase, FAD-binding subunit
-## 1474                        tRNA A37 threonylcarbamoyladenosine modification protein TsaB
-## 1475                                                            Mg-chelatase subunit ChlD
-## 1476                                                               Uracil-DNA glycosylase
-##      function_name   GC
-## 1467           550 67.3
-## 1468           255 67.4
-## 1469           316 67.5
-## 1470           350 67.7
-## 1471           336 68.0
-## 1472           282 68.0
-## 1473           284 68.1
-## 1474           220 68.3
-## 1475           261 68.3
-## 1476           202 69.2
+## Error in file(file, "rt"): cannot open the connection
 ```
 
 ```r
@@ -529,31 +509,7 @@ Bin_2737471794_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133648.as
 ```
 
 ```
-## Wed Nov 22 17:06:51 2017  --- There are 1226 genes with > 0.1 %
-## Wed Nov 22 17:06:51 2017  --- This is 100 % of all genes
-## Wed Nov 22 17:06:51 2017  --- The 10 genes with the highest GC% are:
-##                                                                             function_id
-## 1217                                     Cytochrome c-type biogenesis protein CcmH/NrfF
-## 1218                                          Type II secretory pathway, component PulK
-## 1219                                           Predicted ATPase with chaperone activity
-## 1220                                              Geranylgeranyl pyrophosphate synthase
-## 1221                                       Threonine/homoserine efflux transporter RhtA
-## 1222                                                         Predicted secreted protein
-## 1223                                                            Heme exporter protein D
-## 1224                                          UDP-N-acetylmuramyl pentapeptide synthase
-## 1225 Predicted Rossmann fold nucleotide-binding protein DprA/Smf involved in DNA uptake
-## 1226                                  CO or xanthine dehydrogenase, FAD-binding subunit
-##      function_name   GC
-## 1217           153 66.0
-## 1218           323 66.0
-## 1219           490 66.1
-## 1220           322 66.2
-## 1221           292 66.3
-## 1222           148 66.4
-## 1223            67 66.7
-## 1224           451 66.9
-## 1225           350 67.9
-## 1226           284 68.0
+## Error in file(file, "rt"): cannot open the connection
 ```
 
 ```r
@@ -563,31 +519,7 @@ Bin_2737471795_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133649.as
 ```
 
 ```
-## Wed Nov 22 17:06:52 2017  --- There are 1383 genes with > 0.1 %
-## Wed Nov 22 17:06:52 2017  --- This is 100 % of all genes
-## Wed Nov 22 17:06:52 2017  --- The 10 genes with the highest GC% are:
-##                                                                             function_id
-## 1374                                                 Glycerol-3-phosphate dehydrogenase
-## 1375                                          Predicted amidophosphoribosyltransferases
-## 1376 2-polyprenyl-6-methoxyphenol hydroxylase and related FAD-dependent oxidoreductases
-## 1377                                 DNA-binding transcriptional regulator, LysR family
-## 1378         Tat protein secretion system quality control protein TatD (DNase activity)
-## 1379                                              Phosphatidylglycerophosphate synthase
-## 1380                                     Methylase of polypeptide chain release factors
-## 1381                                                   Methionyl-tRNA formyltransferase
-## 1382                Tripartite-type tricarboxylate transporter, receptor component TctC
-## 1383                                                                    Cytochrome c553
-##      function_name   GC
-## 1374           532 66.9
-## 1375           225 67.0
-## 1376           387 67.0
-## 1377           297 67.1
-## 1378           256 67.1
-## 1379           192 67.5
-## 1380           280 67.9
-## 1381           307 68.0
-## 1382           319 68.9
-## 1383           121 69.4
+## Error in file(file, "rt"): cannot open the connection
 ```
 
 ```r
@@ -597,31 +529,7 @@ Bin_2737471797_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133651.as
 ```
 
 ```
-## Wed Nov 22 17:06:52 2017  --- There are 1076 genes with > 0.1 %
-## Wed Nov 22 17:06:52 2017  --- This is 100 % of all genes
-## Wed Nov 22 17:06:52 2017  --- The 10 genes with the highest GC% are:
-##                                                                             function_id
-## 1067              DNA-directed RNA polymerase specialized sigma subunit, sigma24 family
-## 1068                                7,8-dihydro-6-hydroxymethylpterin-pyrophosphokinase
-## 1069                                           tRNA A37 N6-isopentenylltransferase MiaA
-## 1070                                                   FAD/FMN-containing dehydrogenase
-## 1071                                            Phosphoribosyl-ATP pyrophosphohydrolase
-## 1072                                                ADP-heptose:LPS heptosyltransferase
-## 1073                                     UDP-N-acetylmuramoylalanine-D-glutamate ligase
-## 1074         Uncharacterized conserved protein YcfJ, contains glycine zipper 2TM domain
-## 1075 2-polyprenyl-6-methoxyphenol hydroxylase and related FAD-dependent oxidoreductases
-## 1076                                                    Copper oxidase (laccase) domain
-##      function_name   GC
-## 1067           182 58.9
-## 1068           160 58.9
-## 1069           308 58.9
-## 1070           459 59.1
-## 1071            92 59.1
-## 1072           334 59.5
-## 1073           448 59.7
-## 1074           179 59.7
-## 1075           387 59.7
-## 1076           249 60.0
+## Error in file(file, "rt"): cannot open the connection
 ```
 
 ```r
@@ -631,31 +539,7 @@ Bin_2737471799_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133653.as
 ```
 
 ```
-## Wed Nov 22 17:06:52 2017  --- There are 522 genes with > 0.1 %
-## Wed Nov 22 17:06:52 2017  --- This is 100 % of all genes
-## Wed Nov 22 17:06:52 2017  --- The 10 genes with the highest GC% are:
-##                                                               function_id
-## 513                                             Glutathione S-transferase
-## 514                                  DNA-nicking endonuclease, Smr domain
-## 515 Carbonic anhydrase or acetyltransferase, isoleucine patch superfamily
-## 516                                     Pyrroline-5-carboxylate reductase
-## 517                                      16S rRNA U1498 N3-methylase RsmE
-## 518                                         Thiamine monophosphate kinase
-## 519                      Nicotinamide mononucleotide (NMN) deamidase PncC
-## 520                         Pyrimidine reductase, riboflavin biosynthesis
-## 521                                                           Glucokinase
-## 522                                Nucleoside-diphosphate-sugar epimerase
-##     function_name   GC
-## 513           211 67.0
-## 514           184 67.1
-## 515           176 67.2
-## 516           266 67.3
-## 517           246 67.4
-## 518           317 67.7
-## 519           162 67.7
-## 520           218 67.8
-## 521           320 68.0
-## 522           314 69.7
+## Error in file(file, "rt"): cannot open the connection
 ```
 
 ```r
@@ -665,31 +549,7 @@ Bin_2737471802_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133656.as
 ```
 
 ```
-## Wed Nov 22 17:06:52 2017  --- There are 1691 genes with > 0.1 %
-## Wed Nov 22 17:06:52 2017  --- This is 100 % of all genes
-## Wed Nov 22 17:06:52 2017  --- The 10 genes with the highest GC% are:
-##                                                                 function_id
-## 1682                          Pyrimidine reductase, riboflavin biosynthesis
-## 1683               2-C-methyl-D-erythritol 4-phosphate cytidylyltransferase
-## 1684                      CO or xanthine dehydrogenase, FAD-binding subunit
-## 1685    Pyrimidine deaminase domain of riboflavin biosynthesis protein RibD
-## 1686                                      Phosphohistidine phosphatase SixA
-## 1687                                                       Cyanate permease
-## 1688                                              Mg-chelatase subunit ChlD
-## 1689                                        Chromate transport protein ChrA
-## 1690 Uncharacterized conserved protein YcbX, contains MOSC and Fe-S domains
-## 1691                               Predicted ATPase with chaperone activity
-##      function_name   GC
-## 1682           218 67.8
-## 1683           230 68.0
-## 1684           284 68.2
-## 1685           146 68.3
-## 1686           163 68.3
-## 1687           395 69.1
-## 1688           261 69.2
-## 1689           195 69.4
-## 1690           270 69.6
-## 1691           490 70.7
+## Error in file(file, "rt"): cannot open the connection
 ```
 
 ```r
@@ -699,31 +559,7 @@ Bin_2737471804_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133658.as
 ```
 
 ```
-## Wed Nov 22 17:06:52 2017  --- There are 749 genes with > 0.1 %
-## Wed Nov 22 17:06:52 2017  --- This is 100 % of all genes
-## Wed Nov 22 17:06:52 2017  --- The 10 genes with the highest GC% are:
-##                                                                               function_id
-## 740 Uncharacterized conserved protein, contains von Willebrand factor type A (vWA) domain
-## 741                   Uncharacterized membrane protein AbrB, regulator of aidB expression
-## 742                                Hydroxymethylpyrimidine/phosphomethylpyrimidine kinase
-## 743                                                         Urease accessory protein UreH
-## 744                                                   Rhodanese-related sulfurtransferase
-## 745                                    DNA-binding transcriptional regulator, MarR family
-## 746                                                 Geranylgeranyl pyrophosphate synthase
-## 747                   ABC-type phosphate/phosphonate transport system, permease component
-## 748                     ABC-type phosphate/phosphonate transport system, ATPase component
-## 749                   ABC-type phosphate/phosphonate transport system, permease component
-##     function_name   GC
-## 740           395 64.2
-## 741           352 64.3
-## 742           263 64.7
-## 743           269 65.1
-## 744           110 65.1
-## 745           126 65.7
-## 746           322 66.3
-## 747           283 66.3
-## 748           258 67.7
-## 749           283 67.9
+## Error in file(file, "rt"): cannot open the connection
 ```
 
 ```r
@@ -733,31 +569,7 @@ Bin_2737471805_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133659.as
 ```
 
 ```
-## Wed Nov 22 17:06:52 2017  --- There are 1172 genes with > 0.1 %
-## Wed Nov 22 17:06:52 2017  --- This is 100 % of all genes
-## Wed Nov 22 17:06:52 2017  --- The 10 genes with the highest GC% are:
-##                                                                   function_id
-## 1163           Ribulose-5-phosphate 4-epimerase/Fuculose-1-phosphate aldolase
-## 1164    Asp-tRNAAsn/Glu-tRNAGln amidotransferase A subunit or related amidase
-## 1165                                   Biotin-(acetyl-CoA carboxylase) ligase
-## 1166                       Imidazole glycerol phosphate synthase subunit HisF
-## 1167                        ABC-type sugar transport system, ATPase component
-## 1168                           Trk K+ transport system, NAD-binding component
-## 1169                                                Mg-chelatase subunit ChlI
-## 1170 NAD(P)-dependent dehydrogenase, short-chain alcohol dehydrogenase family
-## 1171                         Transcriptional regulator of heat shock response
-## 1172                                                 Phosphoheptose isomerase
-##      function_name   GC
-## 1163           219 58.2
-## 1164           475 58.2
-## 1165           238 58.2
-## 1166           256 58.3
-## 1167           338 58.4
-## 1168           225 58.5
-## 1169           423 58.8
-## 1170           251 58.9
-## 1171           346 59.0
-## 1172           176 59.2
+## Error in file(file, "rt"): cannot open the connection
 ```
 
 ```r
@@ -767,31 +579,7 @@ Bin_2737471806_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133660.as
 ```
 
 ```
-## Wed Nov 22 17:06:52 2017  --- There are 1584 genes with > 0.1 %
-## Wed Nov 22 17:06:52 2017  --- This is 100 % of all genes
-## Wed Nov 22 17:06:52 2017  --- The 10 genes with the highest GC% are:
-##                                                                       function_id
-## 1575                                   Predicted NAD/FAD-dependent oxidoreductase
-## 1576                                                 Gamma-glutamyltranspeptidase
-## 1577                                                       Acetyl esterase/lipase
-## 1578                            CO or xanthine dehydrogenase, FAD-binding subunit
-## 1579 3-hydroxyisobutyrate dehydrogenase or related beta-hydroxyacid dehydrogenase
-## 1580                                                       Uracil-DNA glycosylase
-## 1581        Asp-tRNAAsn/Glu-tRNAGln amidotransferase A subunit or related amidase
-## 1582                                                   Predicted secreted protein
-## 1583    ABC-type dipeptide/oligopeptide/nickel transport system, ATPase component
-## 1584                tRNA A37 threonylcarbamoyladenosine modification protein TsaB
-##      function_name   GC
-## 1575           331 67.0
-## 1576           539 67.0
-## 1577           312 67.2
-## 1578           284 67.3
-## 1579           286 67.3
-## 1580           202 67.4
-## 1581           475 67.5
-## 1582           148 67.8
-## 1583           316 67.8
-## 1584           220 69.8
+## Error in file(file, "rt"): cannot open the connection
 ```
 
 ```r
@@ -799,7 +587,18 @@ merged_gc_cog <- rbind(Bin_2737471681_gc_cog, Bin_2737471682_gc_cog, Bin_2737471
                        Bin_2737471793_gc_cog, Bin_2737471794_gc_cog, Bin_2737471795_gc_cog,
                        Bin_2737471797_gc_cog, Bin_2737471799_gc_cog, Bin_2737471802_gc_cog,
                        Bin_2737471804_gc_cog, Bin_2737471805_gc_cog, Bin_2737471806_gc_cog)
+```
+
+```
+## Error in eval(quote(list(...)), env): object 'Bin_2737471681_gc_cog' not found
+```
+
+```r
 merged_gc_cog$genome_id <- as.character(merged_gc_cog$genome_id)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'merged_gc_cog' not found
 ```
 
 <!-- # 4. Analysis of gene length distribution -->
@@ -837,8 +636,21 @@ cog_meta <- droplevels(cog_meta)
 # Merge this metadata with the genome data from before
 # COGs with multiple classifications are currently still NA - work on this.
 merged_gc_cog <- dplyr::left_join(merged_gc_cog, cog_meta, by = c("cog_id" = "COG_ID"))
-merged_gc_cog <- merged_gc_cog[!is.na(merged_gc_cog$COG_functional_category),]
+```
 
+```
+## Error in dplyr::left_join(merged_gc_cog, cog_meta, by = c(cog_id = "COG_ID")): object 'merged_gc_cog' not found
+```
+
+```r
+merged_gc_cog <- merged_gc_cog[!is.na(merged_gc_cog$COG_functional_category),]
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'merged_gc_cog' not found
+```
+
+```r
 # Visualize distribution across major metabolism functional COG groups per genome.
 p_cog_func_group <- ggplot(data = merged_gc_cog, aes(x=COG_functional_category, fill = COG_functional_cluster))+
   geom_bar(stat="count", width=0.7, color = "black", size = 0.75)+
@@ -849,11 +661,19 @@ p_cog_func_group <- ggplot(data = merged_gc_cog, aes(x=COG_functional_category, 
                                                    legend.text = element_text(size = 7))+
   ggtitle("Limnohabitans MAGs")+
   guides(fill=guide_legend(nrow=2,byrow=TRUE))
+```
 
+```
+## Error in ggplot(data = merged_gc_cog, aes(x = COG_functional_category, : object 'merged_gc_cog' not found
+```
+
+```r
 print(p_cog_func_group)
 ```
 
-<img src="Figures/cached/COG functional categories-1.png" style="display: block; margin: auto;" />
+```
+## Error in print(p_cog_func_group): object 'p_cog_func_group' not found
+```
 
 ```r
 p_cog_func_clust <- ggplot(data = merged_gc_cog, aes(x=COG_functional_cluster, fill = COG_functional_cluster))+
@@ -865,11 +685,19 @@ p_cog_func_clust <- ggplot(data = merged_gc_cog, aes(x=COG_functional_cluster, f
                                                    legend.text = element_text(size = 7))+
   ggtitle("Limnohabitans MAGs")+
   guides(fill=guide_legend(nrow=2,byrow=TRUE))
+```
 
+```
+## Error in ggplot(data = merged_gc_cog, aes(x = COG_functional_cluster, : object 'merged_gc_cog' not found
+```
+
+```r
 print(p_cog_func_clust)
 ```
 
-<img src="Figures/cached/COG functional categories-2.png" style="display: block; margin: auto;" />
+```
+## Error in print(p_cog_func_clust): object 'p_cog_func_clust' not found
+```
 
 # 6. Expression analysis  
 
@@ -893,49 +721,34 @@ merged_file <- merge_annotations(file_list[1:12], genoid_seqid = TRUE)
 ```
 ##  --- I will merge the annotation files from the following genomes:
 ##                            Genomes
-## 1  ./IMG_annotation/IMG_2737471681
-## 2  ./IMG_annotation/IMG_2737471682
-## 3  ./IMG_annotation/IMG_2737471683
-## 4  ./IMG_annotation/IMG_2737471793
-## 5  ./IMG_annotation/IMG_2737471794
-## 6  ./IMG_annotation/IMG_2737471795
-## 7  ./IMG_annotation/IMG_2737471797
-## 8  ./IMG_annotation/IMG_2737471799
-## 9  ./IMG_annotation/IMG_2737471802
-## 10 ./IMG_annotation/IMG_2737471804
-## 11 ./IMG_annotation/IMG_2737471805
-## 12 ./IMG_annotation/IMG_2737471806
-## [1] 3117
-## [1] 3117
-## [1] 2557
-## [1] 5674
-## [1] 2456
-## [1] 8130
-## [1] 2167
-## [1] 10297
-## [1] 1871
-## [1] 12168
-## [1] 2061
-## [1] 14229
-## [1] 1612
-## [1] 15841
-## [1] 804
-## [1] 16645
-## [1] 2661
-## [1] 19306
-## [1] 1157
-## [1] 20463
-## [1] 1743
-## [1] 22206
-## [1] 2334
-## [1] 24540
-## Wed Nov 22 17:07:13 2017  --- Sucessfully merged files
+## 1  ./IMG_annotation/IMG_2757320395
+## 2  ./IMG_annotation/IMG_2757320396
+## 3  ./IMG_annotation/IMG_2757320397
+## 4  ./IMG_annotation/IMG_2757320398
+## 5  ./IMG_annotation/IMG_2757320399
+## 6  ./IMG_annotation/IMG_2757320400
+## 7  ./IMG_annotation/IMG_2757320401
+## 8  ./IMG_annotation/IMG_2757320402
+## 9  ./IMG_annotation/IMG_2757320403
+## 10 ./IMG_annotation/IMG_2757320404
+## 11       ./IMG_annotation/old_bins
+## 12     ./IMG_annotation/References
+```
+
+```
+## Error in file(file, "rt"): invalid 'description' argument
 ```
 
 ```r
 # Annotate this expression table with Kegg Orthology and genome ids
 expr_cov <- dplyr::left_join(expr_cov, merged_file[, c(1,10)], by = c("gene_oid"))
+```
 
+```
+## Error in tbl_vars(y): object 'merged_file' not found
+```
+
+```r
 # Move to long format dataframe for visualization in ggplot2
 expr_cov_long <- tidyr::gather(expr_cov, sample, coverage, Fa13.BD.MLB.DN:Su13.BD.MM15.SN, 
               factor_key = TRUE)
@@ -967,7 +780,13 @@ expr_cov_long <- expr_cov_long %>%
 # Now add the metadata to this long dataframe
 expr_cov_long <- left_join(expr_cov_long, meta[, 1:11], by = c("sample" = "Sample"))
 expr_cov_long$Genome_id <- as.factor(expr_cov_long$Genome_id)
+```
 
+```
+## Error in `$<-.data.frame`(`*tmp*`, Genome_id, value = structure(integer(0), .Label = character(0), class = "factor")): replacement has 0 rows, data has 637988
+```
+
+```r
 # Remove duplicate rows
 expr_cov_long <- expr_cov_long %>% distinct()
 ```
@@ -979,14 +798,20 @@ expr_cov_long <- expr_cov_long %>% distinct()
 expr_cov_bins <- list()
 for(i in 1:nlevels(expr_cov_long$Genome_id)){
   expr_cov_bins[[i]] <-  expr_cov_long %>% 
-  filter(Genome_id == levels(expr_cov_long$Genome_id)[i]) %>% 
+  dplyr::filter(Genome_id == levels(expr_cov_long$Genome_id)[i]) %>% 
   select(gene_oid, sample, mapped_reads) %>% 
   spread(sample, mapped_reads)
   r.bin <- expr_cov_bins[[i]]$gene_oid
   expr_cov_bins[[i]] <- as.matrix(expr_cov_bins[[i]][, -1])
   rownames(expr_cov_bins[[i]]) <- r.bin
 }
+```
 
+```
+## Error in filter_impl(.data, quo): Evaluation error: object 'Genome_id' not found.
+```
+
+```r
 # Metadata file
 meta_metaT <-  distinct(meta[, 2:nrow(meta)])
 rownames(meta_metaT) <- gsub(meta_metaT$Sample_ID, pattern="_", replacement = ".")
@@ -995,11 +820,18 @@ meta_metaT <- as.matrix(meta_metaT)
 # Check order of colnames in count and rownames in metadata matrix 
 # and make sure these are in the same order!
 meta_metaT <- meta_metaT[match(colnames(expr_cov_bins[[1]]), rownames(meta_metaT)), ]
+```
+
+```
+## Error in expr_cov_bins[[1]]: subscript out of bounds
+```
+
+```r
 all(rownames(meta_metaT) %in% colnames(expr_cov_bins[[1]]))
 ```
 
 ```
-## [1] TRUE
+## Error in expr_cov_bins[[1]]: subscript out of bounds
 ```
 
 ```r
@@ -1018,521 +850,11 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 
 ```
-##  --- Running DESeq2 on Genome_id: 2737471681
+##  --- Running DESeq2 on Genome_id:
 ```
 
 ```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 3117 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 30, 0.96% 
-## LFC < 0 (down)   : 71, 2.3% 
-## outliers [1]     : 22, 0.71% 
-## low counts [2]   : 61, 2% 
-## (mean count < 1)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471682
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2555 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 4, 0.16% 
-## LFC < 0 (down)   : 21, 0.82% 
-## outliers [1]     : 14, 0.55% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471683
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2455 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 2, 0.081% 
-## LFC < 0 (down)   : 1, 0.041% 
-## outliers [1]     : 16, 0.65% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471793
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2167 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 1, 0.046% 
-## LFC < 0 (down)   : 2, 0.092% 
-## outliers [1]     : 14, 0.65% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471794
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 1871 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 0, 0% 
-## LFC < 0 (down)   : 1, 0.053% 
-## outliers [1]     : 9, 0.48% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471795
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2061 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 3, 0.15% 
-## LFC < 0 (down)   : 4, 0.19% 
-## outliers [1]     : 15, 0.73% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471797
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 1611 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 11, 0.68% 
-## LFC < 0 (down)   : 30, 1.9% 
-## outliers [1]     : 16, 0.99% 
-## low counts [2]   : 437, 27% 
-## (mean count < 3)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471799
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 804 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 1, 0.12% 
-## LFC < 0 (down)   : 6, 0.75% 
-## outliers [1]     : 9, 1.1% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471802
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2657 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 11, 0.41% 
-## LFC < 0 (down)   : 13, 0.49% 
-## outliers [1]     : 24, 0.9% 
-## low counts [2]   : 1330, 50% 
-## (mean count < 8)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471804
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 1157 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 7, 0.61% 
-## LFC < 0 (down)   : 6, 0.52% 
-## outliers [1]     : 6, 0.52% 
-## low counts [2]   : 202, 17% 
-## (mean count < 3)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471805
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 1743 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 1, 0.057% 
-## LFC < 0 (down)   : 0, 0% 
-## outliers [1]     : 8, 0.46% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471806
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2334 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 2, 0.086% 
-## LFC < 0 (down)   : 4, 0.17% 
-## outliers [1]     : 18, 0.77% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
+## Error in expr_cov_bins[[i]]: subscript out of bounds
 ```
 
 ```r
@@ -1550,521 +872,11 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
 ```
 
 ```
-##  --- Running DESeq2 on Genome_id: 2737471681
+##  --- Running DESeq2 on Genome_id:
 ```
 
 ```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 3117 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 356, 11% 
-## LFC < 0 (down)   : 140, 4.5% 
-## outliers [1]     : 22, 0.71% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471682
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2555 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 335, 13% 
-## LFC < 0 (down)   : 218, 8.5% 
-## outliers [1]     : 14, 0.55% 
-## low counts [2]   : 100, 3.9% 
-## (mean count < 1)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471683
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2455 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 98, 4% 
-## LFC < 0 (down)   : 195, 7.9% 
-## outliers [1]     : 16, 0.65% 
-## low counts [2]   : 284, 12% 
-## (mean count < 3)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471793
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2167 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 76, 3.5% 
-## LFC < 0 (down)   : 137, 6.3% 
-## outliers [1]     : 14, 0.65% 
-## low counts [2]   : 294, 14% 
-## (mean count < 5)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471794
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 1871 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 88, 4.7% 
-## LFC < 0 (down)   : 202, 11% 
-## outliers [1]     : 9, 0.48% 
-## low counts [2]   : 72, 3.8% 
-## (mean count < 2)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471795
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2061 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 129, 6.3% 
-## LFC < 0 (down)   : 260, 13% 
-## outliers [1]     : 15, 0.73% 
-## low counts [2]   : 118, 5.7% 
-## (mean count < 2)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471797
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 1611 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 256, 16% 
-## LFC < 0 (down)   : 101, 6.3% 
-## outliers [1]     : 16, 0.99% 
-## low counts [2]   : 94, 5.8% 
-## (mean count < 1)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471799
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 804 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 39, 4.9% 
-## LFC < 0 (down)   : 63, 7.8% 
-## outliers [1]     : 9, 1.1% 
-## low counts [2]   : 78, 9.7% 
-## (mean count < 1)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471802
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2657 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 135, 5.1% 
-## LFC < 0 (down)   : 202, 7.6% 
-## outliers [1]     : 24, 0.9% 
-## low counts [2]   : 664, 25% 
-## (mean count < 4)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471804
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 1157 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 244, 21% 
-## LFC < 0 (down)   : 198, 17% 
-## outliers [1]     : 6, 0.52% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471805
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 1743 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 237, 14% 
-## LFC < 0 (down)   : 373, 21% 
-## outliers [1]     : 8, 0.46% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2737471806
-```
-
-```
-## converting counts to integer mode
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2334 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 319, 14% 
-## LFC < 0 (down)   : 202, 8.7% 
-## outliers [1]     : 18, 0.77% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
+## Error in expr_cov_bins[[i]]: subscript out of bounds
 ```
 
 ```r
@@ -2209,7 +1021,7 @@ blast_df_map <- read.table("./SEQs_discrete/merged_contig_list.tsv", header = FA
 colnames(blast_df_map) <- c("m_contig", "o_contig", "bin")
 
 # Round identity to integer
-blast_df$Identity <- round(blast_df$Identity, 0)
+blast_df$Identity <- round(blast_df$Identity, 1)
 blast_df$Identity <- factor(blast_df$Identity)
 blast_df <- left_join(blast_df, blast_df_map, by = c("Contig" = "m_contig"))
 
@@ -2240,7 +1052,8 @@ blast_df_sum$Sample <- gsub(".C", "", blast_df_sum$Sample, fixed = TRUE)
 blast_df_sum$Sample <- gsub(".", "_", blast_df_sum$Sample, fixed = TRUE)
 
 # Add metadata to dataframe
-blast_df_sum <- dplyr::left_join(blast_df_sum, meta, by = c("Sample" = "Sample_ID"))
+meta_blast <- meta[, -1] %>% distinct()
+blast_df_sum <- dplyr::left_join(blast_df_sum, meta_blast, by = c("Sample" = "Sample_ID"))
 
 # Reorder site factor
 blast_df_sum$Site <- as.character(blast_df_sum$Site)
@@ -2270,7 +1083,7 @@ blast_df_sum$new_bin_name <- factor(blast_df_sum$new_bin_name, levels =
                                         "MAG9.SU-M15-SN","MAG10.SU-M15-SN"))
 # plot for individual bins
 for(bin2plot in unique(blast_df_sum$new_bin_name)){
-  p_blast_sdisc <- blast_df_sum %>% filter(new_bin_name == bin2plot) %>% 
+  p_blast_sdisc <- blast_df_sum %>% dplyr::filter(new_bin_name == bin2plot) %>% 
      ggplot(aes(x = Identity, y = n_norm, color = season))+
       theme_bw()+
       scale_color_brewer(palette = "Accent")+
@@ -2321,7 +1134,7 @@ print(p_blast_sdisc_merged)
 
 ```r
 # Plot for most abundant bin (B63)
-p_blast_sdisc_B63 <- blast_df_sum %>% filter(bin == "B63_Su13.BD.MM110.DCMD_rebin1") %>% 
+p_blast_sdisc_B63 <- blast_df_sum %>% dplyr::filter(bin == "B63_Su13.BD.MM110.DCMD_rebin1") %>% 
   ggplot(aes(x = Identity, y = n_norm, fill = season, group = Sample,
              shape = Depth))+
   theme_bw()+
@@ -2352,9 +1165,6 @@ p_blast_sdisc_B63
 ```r
 blast_df_sum <- left_join(blast_df_sum, total_reads, by = c("Sample" = "sample"))
 
-# Function to specify decimals in ggplot
-scaleFUN <- function(x) sprintf("%.2f", x)
-
 # Divide normalized reads by 1M (fixed blast census)
 blast_df_sum <- blast_df_sum %>% mutate(n_norm_perc = 100*n_norm/1e6)
 
@@ -2364,9 +1174,9 @@ fill_palette <- c(rev(brewer.pal(11, "BrBG")[1:4]),
                   )
 # Plot % reads corrected for genome size over threshold of 0.95
 id_thresh <- 95
-map_disc_cum <- blast_df_sum  %>% filter(Identity > id_thresh) %>% group_by(Sample, bin) %>% 
+map_disc_cum <- blast_df_sum  %>% dplyr::filter(Identity > id_thresh) %>% group_by(Sample, bin) %>% 
   mutate(cum_rel_reads_mapped = cumsum(n_norm_perc))%>% 
-  filter(Identity == 100)
+  dplyr::filter(Identity == 100)
 sum_cum <- map_disc_cum %>% group_by(Sample, bin) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
 
 p_sdisc_cum3 <- ggplot(map_disc_cum, aes(x = new_bin_name, y = cum_rel_reads_mapped, 
@@ -2395,9 +1205,10 @@ print(p_sdisc_cum3)
 ```r
 # Plot % reads over threshold of 0.99
 id_thresh <- 99
-map_disc_cum <- blast_df_sum  %>% filter(Identity > id_thresh) %>% group_by(Sample, bin) %>% 
+map_disc_cum <- blast_df_sum  %>% distinct() %>% 
+  dplyr::filter(Identity > id_thresh) %>% group_by(Sample, bin) %>% 
   mutate(cum_rel_reads_mapped = cumsum(n_norm_perc))%>% 
-  filter(Identity == 100)
+  dplyr::filter(Identity == 100)
 sum_cum <- map_disc_cum %>% group_by(Sample, bin) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
 
 p_sdisc_cum4 <- ggplot(map_disc_cum, aes(x = new_bin_name, y = cum_rel_reads_mapped, 
@@ -2431,9 +1242,7 @@ print(p_sdisc_cum4)
 grid_arrange_shared_legend(p_abs2, p_sdisc_cum4, ncol = 2)
 ```
 
-```
-## Error in grid_arrange_shared_legend(p_abs2, p_sdisc_cum4, ncol = 2): object 'p_abs2' not found
-```
+<img src="Figures/cached/comparison-bwa-1-1.png" style="display: block; margin: auto;" />
 
 
 
@@ -2458,6 +1267,9 @@ abs_merged <- abs_merged[,c("Bin","Sample.x","rel_norm_abundance","cum_rel_reads
 colnames(abs_merged) <- c("Bin","Sample",
                           "bwa_norm_abundance","blastn_norm_abundance",
                           "Season", "Site")
+
+
+
 # Plot
 p_scat_abund <- ggplot(abs_merged, aes(x = bwa_norm_abundance, y = blastn_norm_abundance))+
   theme_bw()+
@@ -2482,6 +1294,128 @@ print(p_scat_abund)
 ```
 
 <img src="Figures/cached/comparison-bwa-2-1.png" style="display: block; margin: auto;" />
+
+### Calculate temporospatial diversity in Lhab
+
+
+```r
+abs_merged_div <- map_disc_cum[, c("Sample", "new_bin_name", "n_norm")]
+abs_merged_div$n_norm <- as.integer(abs_merged_div$n_norm )
+
+# Format long to wide format
+abs_table <- spread(abs_merged_div, Sample, n_norm)
+abs_table <- data.frame(abs_table)
+rownames(abs_table) <- abs_table[, 1]; abs_table <- abs_table[, -1]
+tax.table <- data.frame(MAGs = rownames(abs_table))
+rownames(tax.table) <- tax.table$MAGs
+
+# Make phyloseq object
+MAG_phy <- phyloseq(otu_table(abs_table, taxa_are_rows = TRUE), 
+         tax_table(as.matrix(tax.table)))
+
+# Run Diversity_16S()
+MAG_div <- Diversity_16S(MAG_phy, ncore = 3, parallel = TRUE,
+                         R = 100, brea = FALSE)
+```
+
+```
+## 	**WARNING** this functions assumes that rows are samples and columns
+##       	are taxa in your phyloseq object, please verify.
+## Tue Nov 28 09:16:21 2017 	Using 3 cores for calculations
+## Tue Nov 28 09:16:21 2017	Calculating diversity for sample 1/22 --- Fa13_BD_MLB_DN
+## Tue Nov 28 09:16:33 2017	Done with sample Fa13_BD_MLB_DN
+## Tue Nov 28 09:16:33 2017	Calculating diversity for sample 2/22 --- Fa13_BD_MLB_SN
+## Tue Nov 28 09:16:36 2017	Done with sample Fa13_BD_MLB_SN
+## Tue Nov 28 09:16:36 2017	Calculating diversity for sample 3/22 --- Fa13_BD_MM110_DN
+## Tue Nov 28 09:16:39 2017	Done with sample Fa13_BD_MM110_DN
+## Tue Nov 28 09:16:39 2017	Calculating diversity for sample 4/22 --- Fa13_BD_MM110_SD
+## Tue Nov 28 09:16:43 2017	Done with sample Fa13_BD_MM110_SD
+## Tue Nov 28 09:16:43 2017	Calculating diversity for sample 5/22 --- Fa13_BD_MM110_SN
+## Tue Nov 28 09:16:46 2017	Done with sample Fa13_BD_MM110_SN
+## Tue Nov 28 09:16:47 2017	Calculating diversity for sample 6/22 --- Fa13_BD_MM15_DN
+## Tue Nov 28 09:16:50 2017	Done with sample Fa13_BD_MM15_DN
+## Tue Nov 28 09:16:50 2017	Calculating diversity for sample 7/22 --- Fa13_BD_MM15_SD
+## Tue Nov 28 09:16:52 2017	Done with sample Fa13_BD_MM15_SD
+## Tue Nov 28 09:16:52 2017	Calculating diversity for sample 8/22 --- Fa13_BD_MM15_SN
+## Tue Nov 28 09:16:55 2017	Done with sample Fa13_BD_MM15_SN
+## Tue Nov 28 09:16:55 2017	Calculating diversity for sample 9/22 --- Sp13_BD_MLB_SN
+## Tue Nov 28 09:16:57 2017	Done with sample Sp13_BD_MLB_SN
+## Tue Nov 28 09:16:57 2017	Calculating diversity for sample 10/22 --- Sp13_BD_MM110_DD
+## Tue Nov 28 09:17:00 2017	Done with sample Sp13_BD_MM110_DD
+## Tue Nov 28 09:17:00 2017	Calculating diversity for sample 11/22 --- Sp13_BD_MM110_SD
+## Tue Nov 28 09:17:02 2017	Done with sample Sp13_BD_MM110_SD
+## Tue Nov 28 09:17:02 2017	Calculating diversity for sample 12/22 --- Sp13_BD_MM110_SN
+## Tue Nov 28 09:17:05 2017	Done with sample Sp13_BD_MM110_SN
+## Tue Nov 28 09:17:05 2017	Calculating diversity for sample 13/22 --- Sp13_BD_MM15_SD
+## Tue Nov 28 09:17:08 2017	Done with sample Sp13_BD_MM15_SD
+## Tue Nov 28 09:17:08 2017	Calculating diversity for sample 14/22 --- Sp13_BD_MM15_SN
+## Tue Nov 28 09:17:11 2017	Done with sample Sp13_BD_MM15_SN
+## Tue Nov 28 09:17:11 2017	Calculating diversity for sample 15/22 --- Su13_BD_MLB_DD
+## Tue Nov 28 09:17:13 2017	Done with sample Su13_BD_MLB_DD
+## Tue Nov 28 09:17:13 2017	Calculating diversity for sample 16/22 --- Su13_BD_MLB_SD
+## Tue Nov 28 09:17:16 2017	Done with sample Su13_BD_MLB_SD
+## Tue Nov 28 09:17:16 2017	Calculating diversity for sample 17/22 --- Su13_BD_MM110_DCMD
+## Tue Nov 28 09:17:18 2017	Done with sample Su13_BD_MM110_DCMD
+## Tue Nov 28 09:17:18 2017	Calculating diversity for sample 18/22 --- Su13_BD_MM110_SD
+## Tue Nov 28 09:17:21 2017	Done with sample Su13_BD_MM110_SD
+## Tue Nov 28 09:17:21 2017	Calculating diversity for sample 19/22 --- Su13_BD_MM110_SN
+## Tue Nov 28 09:17:23 2017	Done with sample Su13_BD_MM110_SN
+## Tue Nov 28 09:17:23 2017	Calculating diversity for sample 20/22 --- Su13_BD_MM15_DN
+## Tue Nov 28 09:17:26 2017	Done with sample Su13_BD_MM15_DN
+## Tue Nov 28 09:17:26 2017	Calculating diversity for sample 21/22 --- Su13_BD_MM15_SD
+## Tue Nov 28 09:17:28 2017	Done with sample Su13_BD_MM15_SD
+## Tue Nov 28 09:17:28 2017	Calculating diversity for sample 22/22 --- Su13_BD_MM15_SN
+## Tue Nov 28 09:17:30 2017	Done with sample Su13_BD_MM15_SN
+## Tue Nov 28 09:17:30 2017 	Closing workers
+## Tue Nov 28 09:17:30 2017 	Done with all 22 samples
+```
+
+```r
+MAG_div <- data.frame(Sample = rownames(MAG_div), MAG_div[,-c(3:6)])
+
+# Merge with metadata
+MAG_div <- left_join(MAG_div, meta_blast, by = c("Sample" = "Sample_ID"))
+
+# Annotate and order metavariables
+MAG_div$Site <- as.character(MAG_div$Site)
+MAG_div$Site <- gsub("Buoy","Muskegon Lake", MAG_div$Site)
+MAG_div$Site <- gsub("110","Lake Michigan\nsite M110", MAG_div$Site)
+MAG_div$Site <- gsub("15","Lake Michigan\nsite M15", MAG_div$Site)
+MAG_div$Site <- factor(MAG_div$Site, levels = c("Muskegon Lake",
+                                                          "Lake Michigan\nsite M15",
+                                                          "Lake Michigan\nsite M110"))
+MAG_div$Depth <- as.character(MAG_div$Depth)
+MAG_div$Depth <- factor(MAG_div$Depth, levels = c("Surface", "Mid", "Deep"))
+MAG_div$Season <- as.character(MAG_div$Season)
+MAG_div$Season <- factor(MAG_div$Season, levels = c("Spring", "Summer", "Fall"))
+
+# Plot results
+p_MAG_div <- ggplot(MAG_div, aes(x = Season, y = D2, 
+                                        fill = Season, shape = Depth))+
+  theme_bw()+
+  scale_fill_brewer(palette = "Accent")+
+  geom_point(size = 4, color = "black", alpha = 0.7)+
+  scale_shape_manual(values = c(21,24,23))+
+  # geom_boxplot(alpha = 0.4)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Limnohabitans population\n diversity (D2)"))+
+  guides(fill=FALSE)+
+  facet_grid(~Site, scales ="free")+
+  xlab("")+
+  geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+
+  scale_y_continuous(labels=scaleFUN, limits = c(0,6.5))
+  # coord_trans(y = "sqrt")
+
+
+print(p_MAG_div)
+```
+
+<img src="Figures/cached/diversity-Lhab-1.png" style="display: block; margin: auto;" />
 
 # Pangenome analysis  
 
