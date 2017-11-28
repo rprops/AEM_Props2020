@@ -1049,6 +1049,7 @@ blast_df_sum$season[grep("Sp", blast_df_sum$Sample)] <- "Spring"
 
 # Reformat sample names
 blast_df_sum$Sample <- gsub(".C", "", blast_df_sum$Sample, fixed = TRUE)
+blast_df_sum$Sample <- gsub(".A", "", blast_df_sum$Sample, fixed = TRUE)
 blast_df_sum$Sample <- gsub(".", "_", blast_df_sum$Sample, fixed = TRUE)
 
 # Add metadata to dataframe
@@ -1321,53 +1322,57 @@ MAG_div <- Diversity_16S(MAG_phy, ncore = 3, parallel = TRUE,
 ```
 ## 	**WARNING** this functions assumes that rows are samples and columns
 ##       	are taxa in your phyloseq object, please verify.
-## Tue Nov 28 09:16:21 2017 	Using 3 cores for calculations
-## Tue Nov 28 09:16:21 2017	Calculating diversity for sample 1/22 --- Fa13_BD_MLB_DN
-## Tue Nov 28 09:16:33 2017	Done with sample Fa13_BD_MLB_DN
-## Tue Nov 28 09:16:33 2017	Calculating diversity for sample 2/22 --- Fa13_BD_MLB_SN
-## Tue Nov 28 09:16:36 2017	Done with sample Fa13_BD_MLB_SN
-## Tue Nov 28 09:16:36 2017	Calculating diversity for sample 3/22 --- Fa13_BD_MM110_DN
-## Tue Nov 28 09:16:39 2017	Done with sample Fa13_BD_MM110_DN
-## Tue Nov 28 09:16:39 2017	Calculating diversity for sample 4/22 --- Fa13_BD_MM110_SD
-## Tue Nov 28 09:16:43 2017	Done with sample Fa13_BD_MM110_SD
-## Tue Nov 28 09:16:43 2017	Calculating diversity for sample 5/22 --- Fa13_BD_MM110_SN
-## Tue Nov 28 09:16:46 2017	Done with sample Fa13_BD_MM110_SN
-## Tue Nov 28 09:16:47 2017	Calculating diversity for sample 6/22 --- Fa13_BD_MM15_DN
-## Tue Nov 28 09:16:50 2017	Done with sample Fa13_BD_MM15_DN
-## Tue Nov 28 09:16:50 2017	Calculating diversity for sample 7/22 --- Fa13_BD_MM15_SD
-## Tue Nov 28 09:16:52 2017	Done with sample Fa13_BD_MM15_SD
-## Tue Nov 28 09:16:52 2017	Calculating diversity for sample 8/22 --- Fa13_BD_MM15_SN
-## Tue Nov 28 09:16:55 2017	Done with sample Fa13_BD_MM15_SN
-## Tue Nov 28 09:16:55 2017	Calculating diversity for sample 9/22 --- Sp13_BD_MLB_SN
-## Tue Nov 28 09:16:57 2017	Done with sample Sp13_BD_MLB_SN
-## Tue Nov 28 09:16:57 2017	Calculating diversity for sample 10/22 --- Sp13_BD_MM110_DD
-## Tue Nov 28 09:17:00 2017	Done with sample Sp13_BD_MM110_DD
-## Tue Nov 28 09:17:00 2017	Calculating diversity for sample 11/22 --- Sp13_BD_MM110_SD
-## Tue Nov 28 09:17:02 2017	Done with sample Sp13_BD_MM110_SD
-## Tue Nov 28 09:17:02 2017	Calculating diversity for sample 12/22 --- Sp13_BD_MM110_SN
-## Tue Nov 28 09:17:05 2017	Done with sample Sp13_BD_MM110_SN
-## Tue Nov 28 09:17:05 2017	Calculating diversity for sample 13/22 --- Sp13_BD_MM15_SD
-## Tue Nov 28 09:17:08 2017	Done with sample Sp13_BD_MM15_SD
-## Tue Nov 28 09:17:08 2017	Calculating diversity for sample 14/22 --- Sp13_BD_MM15_SN
-## Tue Nov 28 09:17:11 2017	Done with sample Sp13_BD_MM15_SN
-## Tue Nov 28 09:17:11 2017	Calculating diversity for sample 15/22 --- Su13_BD_MLB_DD
-## Tue Nov 28 09:17:13 2017	Done with sample Su13_BD_MLB_DD
-## Tue Nov 28 09:17:13 2017	Calculating diversity for sample 16/22 --- Su13_BD_MLB_SD
-## Tue Nov 28 09:17:16 2017	Done with sample Su13_BD_MLB_SD
-## Tue Nov 28 09:17:16 2017	Calculating diversity for sample 17/22 --- Su13_BD_MM110_DCMD
-## Tue Nov 28 09:17:18 2017	Done with sample Su13_BD_MM110_DCMD
-## Tue Nov 28 09:17:18 2017	Calculating diversity for sample 18/22 --- Su13_BD_MM110_SD
-## Tue Nov 28 09:17:21 2017	Done with sample Su13_BD_MM110_SD
-## Tue Nov 28 09:17:21 2017	Calculating diversity for sample 19/22 --- Su13_BD_MM110_SN
-## Tue Nov 28 09:17:23 2017	Done with sample Su13_BD_MM110_SN
-## Tue Nov 28 09:17:23 2017	Calculating diversity for sample 20/22 --- Su13_BD_MM15_DN
-## Tue Nov 28 09:17:26 2017	Done with sample Su13_BD_MM15_DN
-## Tue Nov 28 09:17:26 2017	Calculating diversity for sample 21/22 --- Su13_BD_MM15_SD
-## Tue Nov 28 09:17:28 2017	Done with sample Su13_BD_MM15_SD
-## Tue Nov 28 09:17:28 2017	Calculating diversity for sample 22/22 --- Su13_BD_MM15_SN
-## Tue Nov 28 09:17:30 2017	Done with sample Su13_BD_MM15_SN
-## Tue Nov 28 09:17:30 2017 	Closing workers
-## Tue Nov 28 09:17:30 2017 	Done with all 22 samples
+## Tue Nov 28 13:55:28 2017 	Using 3 cores for calculations
+## Tue Nov 28 13:55:28 2017	Calculating diversity for sample 1/24 --- Fa13_BD_MLB_DN
+## Tue Nov 28 13:55:39 2017	Done with sample Fa13_BD_MLB_DN
+## Tue Nov 28 13:55:39 2017	Calculating diversity for sample 2/24 --- Fa13_BD_MLB_SN
+## Tue Nov 28 13:55:42 2017	Done with sample Fa13_BD_MLB_SN
+## Tue Nov 28 13:55:42 2017	Calculating diversity for sample 3/24 --- Fa13_BD_MM110_DN
+## Tue Nov 28 13:55:44 2017	Done with sample Fa13_BD_MM110_DN
+## Tue Nov 28 13:55:44 2017	Calculating diversity for sample 4/24 --- Fa13_BD_MM110_SD
+## Tue Nov 28 13:55:46 2017	Done with sample Fa13_BD_MM110_SD
+## Tue Nov 28 13:55:46 2017	Calculating diversity for sample 5/24 --- Fa13_BD_MM110_SN
+## Tue Nov 28 13:55:48 2017	Done with sample Fa13_BD_MM110_SN
+## Tue Nov 28 13:55:48 2017	Calculating diversity for sample 6/24 --- Fa13_BD_MM15_DN
+## Tue Nov 28 13:55:50 2017	Done with sample Fa13_BD_MM15_DN
+## Tue Nov 28 13:55:50 2017	Calculating diversity for sample 7/24 --- Fa13_BD_MM15_SD
+## Tue Nov 28 13:55:53 2017	Done with sample Fa13_BD_MM15_SD
+## Tue Nov 28 13:55:53 2017	Calculating diversity for sample 8/24 --- Fa13_BD_MM15_SN
+## Tue Nov 28 13:55:55 2017	Done with sample Fa13_BD_MM15_SN
+## Tue Nov 28 13:55:55 2017	Calculating diversity for sample 9/24 --- Sp13_BD_MLB_SN
+## Tue Nov 28 13:55:57 2017	Done with sample Sp13_BD_MLB_SN
+## Tue Nov 28 13:55:57 2017	Calculating diversity for sample 10/24 --- Sp13_BD_MM110_DD
+## Tue Nov 28 13:55:59 2017	Done with sample Sp13_BD_MM110_DD
+## Tue Nov 28 13:55:59 2017	Calculating diversity for sample 11/24 --- Sp13_BD_MM110_SD
+## Tue Nov 28 13:56:01 2017	Done with sample Sp13_BD_MM110_SD
+## Tue Nov 28 13:56:01 2017	Calculating diversity for sample 12/24 --- Sp13_BD_MM110_SN
+## Tue Nov 28 13:56:04 2017	Done with sample Sp13_BD_MM110_SN
+## Tue Nov 28 13:56:04 2017	Calculating diversity for sample 13/24 --- Sp13_BD_MM15_DD
+## Tue Nov 28 13:56:06 2017	Done with sample Sp13_BD_MM15_DD
+## Tue Nov 28 13:56:06 2017	Calculating diversity for sample 14/24 --- Sp13_BD_MM15_SD
+## Tue Nov 28 13:56:09 2017	Done with sample Sp13_BD_MM15_SD
+## Tue Nov 28 13:56:09 2017	Calculating diversity for sample 15/24 --- Sp13_BD_MM15_SN
+## Tue Nov 28 13:56:11 2017	Done with sample Sp13_BD_MM15_SN
+## Tue Nov 28 13:56:11 2017	Calculating diversity for sample 16/24 --- Su13_BD_MLB_DD
+## Tue Nov 28 13:56:14 2017	Done with sample Su13_BD_MLB_DD
+## Tue Nov 28 13:56:14 2017	Calculating diversity for sample 17/24 --- Su13_BD_MLB_SD
+## Tue Nov 28 13:56:16 2017	Done with sample Su13_BD_MLB_SD
+## Tue Nov 28 13:56:16 2017	Calculating diversity for sample 18/24 --- Su13_BD_MM110_DCMD
+## Tue Nov 28 13:56:18 2017	Done with sample Su13_BD_MM110_DCMD
+## Tue Nov 28 13:56:19 2017	Calculating diversity for sample 19/24 --- Su13_BD_MM110_DN
+## Tue Nov 28 13:56:21 2017	Done with sample Su13_BD_MM110_DN
+## Tue Nov 28 13:56:21 2017	Calculating diversity for sample 20/24 --- Su13_BD_MM110_SD
+## Tue Nov 28 13:56:24 2017	Done with sample Su13_BD_MM110_SD
+## Tue Nov 28 13:56:24 2017	Calculating diversity for sample 21/24 --- Su13_BD_MM110_SN
+## Tue Nov 28 13:56:26 2017	Done with sample Su13_BD_MM110_SN
+## Tue Nov 28 13:56:26 2017	Calculating diversity for sample 22/24 --- Su13_BD_MM15_DN
+## Tue Nov 28 13:56:28 2017	Done with sample Su13_BD_MM15_DN
+## Tue Nov 28 13:56:28 2017	Calculating diversity for sample 23/24 --- Su13_BD_MM15_SD
+## Tue Nov 28 13:56:31 2017	Done with sample Su13_BD_MM15_SD
+## Tue Nov 28 13:56:31 2017	Calculating diversity for sample 24/24 --- Su13_BD_MM15_SN
+## Tue Nov 28 13:56:33 2017	Done with sample Su13_BD_MM15_SN
+## Tue Nov 28 13:56:33 2017 	Closing workers
+## Tue Nov 28 13:56:33 2017 	Done with all 24 samples
 ```
 
 ```r
