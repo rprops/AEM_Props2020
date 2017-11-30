@@ -27,6 +27,7 @@ knitr::opts_chunk$set(eval = TRUE,
                       echo = TRUE, 
                       cache = TRUE,
                       include = TRUE,
+                      
                       collapse = FALSE,
                       dependson = NULL,
                       engine = "R", # Chunks will always have R code, unless noted
@@ -46,7 +47,6 @@ library("scales")
 library("gridExtra")
 library("easyGgplot2")
 library("reshape2")
-library("edgeR")
 library("Phenoflow")
 library("phyloseq")
 library("ggrepel")
@@ -55,6 +55,12 @@ library("igraph")
 library("DESeq2")
 library("SpiecEasi")
 source("functions.R")
+
+
+fill_palette <- c(rev(brewer.pal(11, "BrBG")[1:4]),
+                  brewer.pal(11, "PiYG")[9:10],
+                  brewer.pal(9, "PuBu")[4:7]
+                  )
 ```
 
 ```{r read-format data, warning = FALSE}
@@ -524,6 +530,12 @@ Chosen way:
 
 ## Import and process data  
 
+The file needed to map `genome_ids` to `gene_ids` was generated with this code individually for each IMG `genes.fna` file and the concatenated with `cat`:  
+```
+grep ">" 2757320404.genes.fna | sed "s/>//g" | awk '{ print $1, $2 }' > 2757320404.genes.ids
+awk -F ' ' -v samname="2757320404" '{$(1)=samname FS $1;}1' OFS=" " 2757320404.genes.ids > 2757320404.genes.names
+```
+
 ```{r import and process data, dpi = 300, warning = FALSE, fig.width = 7, fig.height = 7}
 expr_cov <- read.delim("./metaT/metaT_pileup.tsv", header = TRUE,
                        stringsAsFactors = FALSE)
@@ -533,12 +545,22 @@ file_list <- list.files(path = "./IMG_annotation", recursive = FALSE,
                         pattern = "IMG", full.names = TRUE)
 merged_file <- merge_annotations(file_list[1:10], genoid_seqid = FALSE)
 
-# Annotate this expression table with Kegg Orthology and genome ids
-expr_cov <- dplyr::left_join(expr_cov, merged_file[, c(1,10)], by = c("gene_oid"))
+# Genes that were not annotated can be assigned a genome ID using another file
+# made from the genes.fna IMG generated files
+genome_gene_map <- read.table("IMG_annotation/genome_geneids.txt",
+                              header = FALSE)[, 1:2]
+colnames(genome_gene_map) <- c("Genome_ID", "gene_oid")
+genome_gene_map <- data.frame(apply(genome_gene_map, 2, as.character))
+
+# Add genome_ID to all genes
+expr_cov <- dplyr::left_join(expr_cov, genome_gene_map, by = "gene_oid")
+
+# Annotate this expression table with Kegg Orthology
+# expr_cov <- dplyr::left_join(expr_cov, merged_file[, c(1,9)], by = c("gene_oid"))
 expr_cov$Plus_reads <- as.integer(expr_cov$Plus_reads)
 expr_cov$Length <- as.integer(expr_cov$Length)
 expr_cov <- expr_cov[!is.na(expr_cov$Plus_reads),]
-sample_reads_metaT <- read.table("./metaT/sample_reads.tsv", header = TRUE)
+# sample_reads_metaT <- read.table("./metaT/sample_reads.tsv", header = TRUE)
 
 # Move to long format dataframe for visualization in ggplot2
 # expr_cov_long <- tidyr::gather(expr_cov, sample, Coverage, Fa13.BD.MLB.DN:Su13.BD.MM15.SN, 
@@ -551,7 +573,7 @@ sample_reads_metaT <- read.table("./metaT/sample_reads.tsv", header = TRUE)
 # gene_lengths_metaT$gene <- as.character(gene_lengths_metaT$gene)
 
 # Add this information to current long dataframe
-expr_cov_long <- dplyr::left_join(expr_cov, sample_reads_metaT, by = c("Sample" = "sample"))
+# expr_cov_long <- dplyr::left_join(expr_cov, sample_reads_metaT, by = c("Sample" = "sample"))
 
 # expr_cov_long <- dplyr::left_join(expr_cov_long, gene_lengths_metaT, by = c("gene_oid" = "gene"))
 
@@ -561,7 +583,7 @@ expr_cov_long <- dplyr::left_join(expr_cov, sample_reads_metaT, by = c("Sample" 
 # expr_cov_long <- dplyr::mutate(expr_cov_long, 
 #                                mapped_reads = round((coverage * length)/(150),0)
 #                                ) # Be aware that this average is already rounded here..
-expr_cov_long <- dplyr::mutate(expr_cov_long, 
+expr_cov_long <- dplyr::mutate(expr_cov, 
                                reads_per_kb = Plus_reads/Length/1000
                                )
 expr_cov_long <- expr_cov_long %>% group_by(Sample) %>% 
@@ -572,8 +594,12 @@ expr_cov_long <- expr_cov_long %>%
          )
 
 # Now add the metadata to this long dataframe
-expr_cov_long <- left_join(expr_cov_long, meta[, 1:11], by = c("Sample"))
-expr_cov_long$Genome_id <- as.factor(expr_cov_long$Genome_id)
+# Metadata file
+meta_metaT <- distinct(meta[, 2:nrow(meta)])
+rownames(meta_metaT) <- gsub(meta_metaT$Sample_ID, pattern="_", replacement = ".")
+
+expr_cov_long <- left_join(expr_cov_long, meta_metaT[, 1:11], by = c("Sample" = "Sample_ID"))
+expr_cov_long$Genome_ID <- as.factor(expr_cov_long$Genome_ID)
 
 # Remove duplicate rows
 expr_cov_long <- expr_cov_long %>% distinct()
@@ -581,14 +607,19 @@ expr_cov_long <- expr_cov_long %>% distinct()
 
 ## Run DESeq  
 
-```{r KO annotation expression analysis, dpi = 300, warning = FALSE, fig.width = 7, fig.height = 7}
+__Don't forget:__   
+__In order to benefit from the default settings of the package, you should put the variable of interest at the end of the formula and make sure the control level is the first level.__ 
+
+Manual can be found [here](file:///C:/Users/rprops/Desktop/metaG_lakeMI/Limno_lakeMI/Analysis.html#run_deseq)  
+
+```{r expression analysis, dpi = 500, warning = FALSE, fig.width = 14, fig.height = 10}
 # Format data for DESeq2
 ## Put count matrices in list including a count matrix for each bin 
 colnames(expr_cov_long)[colnames(expr_cov_long) == "Plus_reads"] <- "mapped_reads"
 expr_cov_bins <- list()
-for(i in 1:nlevels(expr_cov_long$Genome_id)){
+for(i in 1:nlevels(expr_cov_long$Genome_ID)){
   expr_cov_bins[[i]] <-  expr_cov_long %>% 
-  dplyr::filter(Genome_id == levels(expr_cov_long$Genome_id)[i]) %>% 
+  dplyr::filter(Genome_ID == levels(expr_cov_long$Genome_ID)[i]) %>% 
   dplyr::select(gene_oid, Sample, mapped_reads) %>% 
   tidyr::spread(Sample, mapped_reads)
   r.bin <- expr_cov_bins[[i]]$gene_oid
@@ -596,39 +627,71 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
   rownames(expr_cov_bins[[i]]) <- r.bin
 }
 
-# Metadata file
-meta_metaT <- distinct(meta[, 2:nrow(meta)])
-rownames(meta_metaT) <- gsub(meta_metaT$Sample_ID, pattern="_", replacement = ".")
-meta_metaT <- as.matrix(meta_metaT)
-
 # Check order of colnames in count and rownames in metadata matrix 
 # and make sure these are in the same order!
+meta_metaT <- as.matrix(meta_metaT)
 meta_metaT <- meta_metaT[match(colnames(expr_cov_bins[[1]]), rownames(meta_metaT)), ]
 all(rownames(meta_metaT) %in% colnames(expr_cov_bins[[1]]))
 
 # Perform DESeq2 for differential abundance testing for each genome separately
 ## Season effect
 General_deseq_results_season <- list()
-for(i in 1:nlevels(expr_cov_long$Genome_id)){
-  cat(" --- Running DESeq2 on Genome_id:",levels(expr_cov_long$Genome_id)[i], "\n",sep = " ")
-  dds <- DESeqDataSetFromMatrix(countData = expr_cov_bins[[i]],
+deseq_comparisons_season <- list()
+for(i in 1:nlevels(expr_cov_long$Genome_ID)){
+  cat(" --- Running DESeq2 on Genome_ID:",levels(expr_cov_long$Genome_ID)[i], "\n",sep = " ")
+
+  # Test for season but controlling for site
+  dds <- DESeq2::DESeqDataSetFromMatrix(countData = expr_cov_bins[[i]],
                               colData = meta_metaT,
-                              design= ~ Site + Season) # Test for season but controlling for site
-  dds <- DESeq(dds)
-  General_deseq_results_season[[i]] <- results(dds)[order(results(dds)$padj), ] # specify contrasts here if need to
-  summary(results(dds, alpha = 0.05))
+                              design= ~ Site + Season) 
+  # Run DESeq
+  dds <- DESeq2::DESeq(dds, quiet = TRUE)
+  
+  # Calculate contrasts for all comparisons
+  comp1 <- DESeq2::results(dds, contrast=c("Season","Fall","Summer"))[order(results(dds)$padj), ]
+  comp2 <- DESeq2::results(dds, contrast=c("Season","Fall","Spring"))[order(results(dds)$padj), ]
+  comp3 <- DESeq2::results(dds, contrast=c("Season","Spring","Summer"))[order(results(dds)$padj), ]
+  
+  # Store data in single list with dataframes
+  General_deseq_results_season[[i]] <- rbind(comp1, comp2, comp3)
+  deseq_comparisons_season[[i]] <- data.frame(comparison = 
+                                           c(rep("Fall-Summer", nrow(comp1)),
+                                           rep("Fall-Spring", nrow(comp2)),
+                                           rep("Spring-Summer", nrow(comp3))),
+                                         design = "~ Site + Season"
+                                         )
 }
+
 
 ## Site effect
 General_deseq_results_site <- list()
-for(i in 1:nlevels(expr_cov_long$Genome_id)){
-  cat(" --- Running DESeq2 on Genome_id:",levels(expr_cov_long$Genome_id)[i], "\n",sep = " ")
-  dds <- DESeqDataSetFromMatrix(countData = expr_cov_bins[[i]],
+deseq_comparisons_site <- list()
+for(i in 1:nlevels(expr_cov_long$Genome_ID)){
+  cat(" --- Running DESeq2 on Genome_ID:",levels(expr_cov_long$Genome_ID)[i], "\n",sep = " ")
+  dds <- DESeq2::DESeqDataSetFromMatrix(countData = expr_cov_bins[[i]],
                               colData = meta_metaT,
                               design= ~ Season + Site) # Test for site but controlling for season
-  dds <- DESeq(dds)
-  General_deseq_results_site[[i]] <- results(dds)[order(results(dds)$padj), ] # specify contrasts here if need to
-  summary(results(dds, alpha = 0.05))
+  dds <- DESeq2::DESeq(dds, quiet = TRUE)
+  
+    # Calculate contrasts for all comparisons
+  comp1 <- DESeq2::results(dds, 
+                   contrast=c("Site","Buoy","110"))[order(results(dds)$padj), ]
+  comp2 <- DESeq2::results(dds, 
+                   contrast=c("Site","Buoy","15"))[order(results(dds)$padj), ]
+  comp3 <- DESeq2::results(dds, 
+                   contrast=c("Site","15","110"))[order(results(dds)$padj), ]
+  
+  # Store data in single list with dataframes
+  General_deseq_results_site[[i]] <- rbind(comp1, comp2, comp3)
+  deseq_comparisons_site[[i]] <- data.frame(comparison = 
+                                           c(rep("Muskegon Lake\nVs\nM110",
+                                                 nrow(comp1)),
+                                           rep("Muskegon Lake\nVs\nM15", 
+                                               nrow(comp2)),
+                                           rep("M15\nVs\nM110", 
+                                               nrow(comp3))),
+                                         design = "~ Season + Site"
+  )
 }
 
 # Pool results for each genome into a single result dataframe
@@ -640,8 +703,9 @@ for(i in 1:length(General_deseq_results_season)){
                     log2FoldChange = General_deseq_results_season[[i]]@listData$log2FoldChange,
                     pvalue = General_deseq_results_season[[i]]@listData$pvalue,
                     padj = General_deseq_results_season[[i]]@listData$padj,
-                    Genome_ID = levels(expr_cov_long$Genome_id)[i],
-                    Comparison = "Season: Summer vs Fall")
+                    Genome_ID = levels(expr_cov_long$Genome_ID)[i],
+                    Comparison = deseq_comparisons_season[[i]]$comparison,
+                    Design = deseq_comparisons_season[[i]]$design)
   if(i == 1) res_deseq <- tmp else{
     res_deseq <- rbind(res_deseq, tmp)
   }
@@ -652,10 +716,12 @@ for(i in 1:length(General_deseq_results_site)){
                     log2FoldChange = General_deseq_results_site[[i]]@listData$log2FoldChange,
                     pvalue = General_deseq_results_site[[i]]@listData$pvalue,
                     padj = General_deseq_results_site[[i]]@listData$padj,
-                    Genome_ID = levels(expr_cov_long$Genome_id)[i],
-                    Comparison = "Site: MLB vs M110")
+                    Genome_ID = levels(expr_cov_long$Genome_ID)[i],
+                    Comparison = deseq_comparisons_site[[i]]$comparison,
+                    Design = deseq_comparisons_site[[i]]$design)
   res_deseq <- rbind(res_deseq, tmp)
 }
+
 # Only retain significantly differentially expressed genes
 res_deseq <- res_deseq %>% dplyr::filter(padj < 0.05)
 
@@ -668,22 +734,33 @@ res_deseq$new_bin_name <- factor(res_deseq$new_bin_name, levels =
                                         "MAG5.SP-M110-DD", "MAG6.SP-M15-SD",
                                         "MAG7.SU-MLB-SD", "MAG8.SU-M110-DCMD",
                                         "MAG9.SU-M15-SN", "MAG10.SU-M15-SN"))
+res_deseq$regulation <- res_deseq$log2FoldChange > 0
+res_deseq$regulation[res_deseq$regulation == "TRUE"] <- "upregulation"
+res_deseq$regulation[res_deseq$regulation == "FALSE"] <- "downregulation"
 
 # Report reads mapped for all genomes per sample
-metaT_reads_mapped <- expr_cov_long %>% group_by(Sample, Genome_id) %>% dplyr::summarise(sum_mapped_reads = sum(mapped_reads))
+metaT_reads_mapped <- expr_cov_long %>% group_by(Sample, Genome_ID) %>% dplyr::summarise(sum_mapped_reads = sum(mapped_reads))
+metaT_reads_mapped <- left_join(metaT_reads_mapped, new_bin_names2, by = c("Genome_ID" = "IMG_taxID"))
+metaT_reads_mapped$new_bin_name <- as.character(metaT_reads_mapped$new_bin_name)
+metaT_reads_mapped$new_bin_name <- factor(metaT_reads_mapped$new_bin_name, 
+                                          levels =
+                                      c("MAG1.FA-MLB-DN","MAG2.FA-MLB-SN",
+                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+                                        "MAG5.SP-M110-DD", "MAG6.SP-M15-SD",
+                                        "MAG7.SU-MLB-SD", "MAG8.SU-M110-DCMD",
+                                        "MAG9.SU-M15-SN", "MAG10.SU-M15-SN"))
 
-p_deseq_reads <- ggplot2::ggplot(metaT_reads_mapped, aes(x = Genome_id, y = sum_mapped_reads,
-                                                         fill = Genome_id))+
+p_deseq_reads <- ggplot2::ggplot(metaT_reads_mapped, aes(x = new_bin_name, y = sum_mapped_reads, fill = new_bin_name))+
   geom_bar(color = "black", stat = "identity")+
   theme_bw()+
   scale_fill_brewer(palette = "Paired")+
-  theme(axis.text.x = element_text(angle = 45, size = 14, hjust = 1),
+  theme(axis.text.x = element_blank(),
         axis.text.y = element_text(size = 14),
         legend.title = element_blank(),
         axis.title = element_text(size = 14),
-        strip.text = element_text(size = 14),
+        strip.text = element_text(size = 12),
         axis.title.x = element_blank())+
-  ylab("Counts")+
+  ylab("Number of mapped reads")+
   xlab("")+
   facet_wrap(~Sample, nrow = 4)
 
@@ -691,23 +768,41 @@ print(p_deseq_reads)
 ```
 
 
-```{r plot-deseq, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 7}
+```{r plot-deseq, dpi = 500, warning = FALSE, fig.width = 12, fig.height = 8}
 # Plot for each genome the number of differentially expressed genes according to:
 # season and site
 p_deseq_1 <- ggplot2::ggplot(res_deseq, aes(x = new_bin_name, fill = new_bin_name))+
   geom_bar(color = "black")+
   theme_bw()+
   scale_fill_brewer(palette = "Paired")+
-  theme(axis.text.x = element_text(angle = 45, size = 14, hjust = 1),
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_text(size = 14),
+        legend.title = element_blank(),
+        axis.title = element_text(size = 14),
+        strip.text = element_text(size = 14)) +
+  ylab("Number of mapped reads")+
+  xlab("")+
+  facet_grid(Design~Comparison)
+
+print(p_deseq_1)
+
+p_deseq_2 <- ggplot2::ggplot(res_deseq, aes(x = new_bin_name, shape = regulation,
+                                            y = log2FoldChange))+
+  # geom_jitter(size = 3, width = 0.25, shape = 21)+
+  geom_boxplot(alpha= 1, aes(fill = new_bin_name))+
+  theme_bw()+
+  scale_fill_brewer(palette = "Paired")+
+  theme(axis.text.x = element_blank(),
         axis.text.y = element_text(size = 14),
         legend.title = element_blank(),
         axis.title = element_text(size = 14),
         strip.text = element_text(size = 14))+
-  ylab("Counts")+
+  ylab("log2FoldChange")+
   xlab("")+
-  facet_grid(~Comparison)
+  facet_grid(Design~Comparison)+
+  guides(shape = FALSE)
 
-print(p_deseq_1)
+print(p_deseq_2)
 ```
 
 
@@ -850,7 +945,7 @@ blast_df$Identity <- round(blast_df$Identity, 1)
 blast_df$Identity <- factor(blast_df$Identity)
 blast_df <- left_join(blast_df, blast_df_map, by = c("Contig" = "m_contig"))
 
-blast_df_sum <- blast_df %>% group_by(Sample, bin) %>% count(Identity)
+blast_df_sum <- blast_df %>% group_by(Sample, bin) %>% dplyr::count(Identity)
 blast_df_sum$Sample <- gsub("_blast.tsv", "", blast_df_sum$Sample)
 blast_df_sum <- data.frame(blast_df_sum)
 blast_df_sum$Identity <- as.numeric(as.character(blast_df_sum$Identity))
@@ -984,10 +1079,6 @@ blast_df_sum <- left_join(blast_df_sum, total_reads, by = c("Sample" = "sample")
 # Divide normalized reads by 1M (fixed blast census)
 blast_df_sum <- blast_df_sum %>% mutate(n_norm_perc = 100*n_norm/1e6)
 
-fill_palette <- c(rev(brewer.pal(11, "BrBG")[1:4]),
-                  brewer.pal(11, "PiYG")[9:10],
-                  brewer.pal(9, "PuBu")[4:7]
-                  )
 # Plot % reads corrected for genome size over threshold of 0.95
 id_thresh <- 95
 map_disc_cum <- blast_df_sum  %>% dplyr::filter(Identity > id_thresh) %>% group_by(Sample, bin) %>% 

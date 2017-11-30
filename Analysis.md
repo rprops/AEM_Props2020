@@ -1,6 +1,24 @@
-# Metagenomic analysis of Limnohabitans population in Lake Michigan
-Ruben Props  
-Today  
+---
+title: "Metagenomic analysis of Limnohabitans population in Lake Michigan"
+author: "Ruben Props"
+date: "Today"
+output:
+  html_document:
+    code_folding: show
+    css: report_styles.css
+    highlight: haddock
+    keep_md: yes
+    theme: united
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+      toc_depth: 2
+  pdf_document:
+    toc: yes
+editor_options: 
+  chunk_output_type: console
+---
 
 
 
@@ -339,10 +357,6 @@ p_abs2 <- ggplot(data = df_map_merged, aes(x = new_bin_name, y = rel_norm_abunda
   coord_trans(y = "sqrt")
 
 p_abs2
-```
-
-```
-## Error in f(...): object 'fill_palette' not found
 ```
 
 <img src="Figures/cached/plot-abundances-2-1.png" style="display: block; margin: auto;" />
@@ -711,6 +725,12 @@ Chosen way:
 
 ## Import and process data  
 
+The file needed to map `genome_ids` to `gene_ids` was generated with this code individually for each IMG `genes.fna` file and the concatenated with `cat`:  
+```
+grep ">" 2757320404.genes.fna | sed "s/>//g" | awk '{ print $1, $2 }' > 2757320404.genes.ids
+awk -F ' ' -v samname="2757320404" '{$(1)=samname FS $1;}1' OFS=" " 2757320404.genes.ids > 2757320404.genes.names
+```
+
 
 ```r
 expr_cov <- read.delim("./metaT/metaT_pileup.tsv", header = TRUE,
@@ -745,16 +765,26 @@ merged_file <- merge_annotations(file_list[1:10], genoid_seqid = FALSE)
 ## [1] 17644
 ## [1] 19813
 ## [1] 21848
-## Wed Nov 29 12:07:07 2017  --- Sucessfully merged files
+## Thu Nov 30 09:56:43 2017  --- Sucessfully merged files
 ```
 
 ```r
-# Annotate this expression table with Kegg Orthology and genome ids
-expr_cov <- dplyr::left_join(expr_cov, merged_file[, c(1,10)], by = c("gene_oid"))
+# Genes that were not annotated can be assigned a genome ID using another file
+# made from the genes.fna IMG generated files
+genome_gene_map <- read.table("IMG_annotation/genome_geneids.txt",
+                              header = FALSE)[, 1:2]
+colnames(genome_gene_map) <- c("Genome_ID", "gene_oid")
+genome_gene_map <- data.frame(apply(genome_gene_map, 2, as.character))
+
+# Add genome_ID to all genes
+expr_cov <- dplyr::left_join(expr_cov, genome_gene_map, by = "gene_oid")
+
+# Annotate this expression table with Kegg Orthology
+# expr_cov <- dplyr::left_join(expr_cov, merged_file[, c(1,9)], by = c("gene_oid"))
 expr_cov$Plus_reads <- as.integer(expr_cov$Plus_reads)
 expr_cov$Length <- as.integer(expr_cov$Length)
 expr_cov <- expr_cov[!is.na(expr_cov$Plus_reads),]
-sample_reads_metaT <- read.table("./metaT/sample_reads.tsv", header = TRUE)
+# sample_reads_metaT <- read.table("./metaT/sample_reads.tsv", header = TRUE)
 
 # Move to long format dataframe for visualization in ggplot2
 # expr_cov_long <- tidyr::gather(expr_cov, sample, Coverage, Fa13.BD.MLB.DN:Su13.BD.MM15.SN, 
@@ -767,7 +797,7 @@ sample_reads_metaT <- read.table("./metaT/sample_reads.tsv", header = TRUE)
 # gene_lengths_metaT$gene <- as.character(gene_lengths_metaT$gene)
 
 # Add this information to current long dataframe
-expr_cov_long <- dplyr::left_join(expr_cov, sample_reads_metaT, by = c("Sample" = "sample"))
+# expr_cov_long <- dplyr::left_join(expr_cov, sample_reads_metaT, by = c("Sample" = "sample"))
 
 # expr_cov_long <- dplyr::left_join(expr_cov_long, gene_lengths_metaT, by = c("gene_oid" = "gene"))
 
@@ -777,7 +807,7 @@ expr_cov_long <- dplyr::left_join(expr_cov, sample_reads_metaT, by = c("Sample" 
 # expr_cov_long <- dplyr::mutate(expr_cov_long, 
 #                                mapped_reads = round((coverage * length)/(150),0)
 #                                ) # Be aware that this average is already rounded here..
-expr_cov_long <- dplyr::mutate(expr_cov_long, 
+expr_cov_long <- dplyr::mutate(expr_cov, 
                                reads_per_kb = Plus_reads/Length/1000
                                )
 expr_cov_long <- expr_cov_long %>% group_by(Sample) %>% 
@@ -788,8 +818,12 @@ expr_cov_long <- expr_cov_long %>%
          )
 
 # Now add the metadata to this long dataframe
-expr_cov_long <- left_join(expr_cov_long, meta[, 1:11], by = c("Sample"))
-expr_cov_long$Genome_id <- as.factor(expr_cov_long$Genome_id)
+# Metadata file
+meta_metaT <- distinct(meta[, 2:nrow(meta)])
+rownames(meta_metaT) <- gsub(meta_metaT$Sample_ID, pattern="_", replacement = ".")
+
+expr_cov_long <- left_join(expr_cov_long, meta_metaT[, 1:11], by = c("Sample" = "Sample_ID"))
+expr_cov_long$Genome_ID <- as.factor(expr_cov_long$Genome_ID)
 
 # Remove duplicate rows
 expr_cov_long <- expr_cov_long %>% distinct()
@@ -797,15 +831,20 @@ expr_cov_long <- expr_cov_long %>% distinct()
 
 ## Run DESeq  
 
+__Don't forget:__   
+__In order to benefit from the default settings of the package, you should put the variable of interest at the end of the formula and make sure the control level is the first level.__ 
+
+Manual can be found [here](file:///C:/Users/rprops/Desktop/metaG_lakeMI/Limno_lakeMI/Analysis.html#run_deseq)  
+
 
 ```r
 # Format data for DESeq2
 ## Put count matrices in list including a count matrix for each bin 
 colnames(expr_cov_long)[colnames(expr_cov_long) == "Plus_reads"] <- "mapped_reads"
 expr_cov_bins <- list()
-for(i in 1:nlevels(expr_cov_long$Genome_id)){
+for(i in 1:nlevels(expr_cov_long$Genome_ID)){
   expr_cov_bins[[i]] <-  expr_cov_long %>% 
-  dplyr::filter(Genome_id == levels(expr_cov_long$Genome_id)[i]) %>% 
+  dplyr::filter(Genome_ID == levels(expr_cov_long$Genome_ID)[i]) %>% 
   dplyr::select(gene_oid, Sample, mapped_reads) %>% 
   tidyr::spread(Sample, mapped_reads)
   r.bin <- expr_cov_bins[[i]]$gene_oid
@@ -813,13 +852,9 @@ for(i in 1:nlevels(expr_cov_long$Genome_id)){
   rownames(expr_cov_bins[[i]]) <- r.bin
 }
 
-# Metadata file
-meta_metaT <- distinct(meta[, 2:nrow(meta)])
-rownames(meta_metaT) <- gsub(meta_metaT$Sample_ID, pattern="_", replacement = ".")
-meta_metaT <- as.matrix(meta_metaT)
-
 # Check order of colnames in count and rownames in metadata matrix 
 # and make sure these are in the same order!
+meta_metaT <- as.matrix(meta_metaT)
 meta_metaT <- meta_metaT[match(colnames(expr_cov_bins[[1]]), rownames(meta_metaT)), ]
 all(rownames(meta_metaT) %in% colnames(expr_cov_bins[[1]]))
 ```
@@ -829,819 +864,93 @@ all(rownames(meta_metaT) %in% colnames(expr_cov_bins[[1]]))
 ```
 
 ```r
-# Report reads mapped for all genomes per sample
-
-
 # Perform DESeq2 for differential abundance testing for each genome separately
 ## Season effect
 General_deseq_results_season <- list()
-for(i in 1:nlevels(expr_cov_long$Genome_id)){
-  cat(" --- Running DESeq2 on Genome_id:",levels(expr_cov_long$Genome_id)[i], "\n",sep = " ")
-  dds <- DESeqDataSetFromMatrix(countData = expr_cov_bins[[i]],
+deseq_comparisons_season <- list()
+for(i in 1:nlevels(expr_cov_long$Genome_ID)){
+  cat(" --- Running DESeq2 on Genome_ID:",levels(expr_cov_long$Genome_ID)[i], "\n",sep = " ")
+
+  # Test for season but controlling for site
+  dds <- DESeq2::DESeqDataSetFromMatrix(countData = expr_cov_bins[[i]],
                               colData = meta_metaT,
-                              design= ~ Site + Season) # Test for season but controlling for site
-  dds <- DESeq(dds)
-  General_deseq_results_season[[i]] <- results(dds)[order(results(dds)$padj), ] # specify contrasts here if need to
-  summary(results(dds, alpha = 0.05))
+                              design= ~ Site + Season) 
+  # Run DESeq
+  dds <- DESeq2::DESeq(dds, quiet = TRUE)
+  
+  # Calculate contrasts for all comparisons
+  comp1 <- DESeq2::results(dds, contrast=c("Season","Fall","Summer"))[order(results(dds)$padj), ]
+  comp2 <- DESeq2::results(dds, contrast=c("Season","Fall","Spring"))[order(results(dds)$padj), ]
+  comp3 <- DESeq2::results(dds, contrast=c("Season","Spring","Summer"))[order(results(dds)$padj), ]
+  
+  # Store data in single list with dataframes
+  General_deseq_results_season[[i]] <- rbind(comp1, comp2, comp3)
+  deseq_comparisons_season[[i]] <- data.frame(comparison = 
+                                           c(rep("Fall-Summer", nrow(comp1)),
+                                           rep("Fall-Spring", nrow(comp2)),
+                                           rep("Spring-Summer", nrow(comp3))),
+                                         design = "~ Site + Season"
+                                         )
 }
 ```
 
 ```
-##  --- Running DESeq2 on Genome_id: 2757320395
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2322 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 6, 0.26% 
-## LFC < 0 (down)   : 11, 0.47% 
-## outliers [1]     : 14, 0.6% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320396
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 1398 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 6, 0.43% 
-## LFC < 0 (down)   : 13, 0.93% 
-## outliers [1]     : 10, 0.72% 
-## low counts [2]   : 484, 35% 
-## (mean count < 17)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320397
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 1539 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 6, 0.39% 
-## LFC < 0 (down)   : 7, 0.45% 
-## outliers [1]     : 7, 0.45% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320398
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 1949 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 6, 0.31% 
-## LFC < 0 (down)   : 0, 0% 
-## outliers [1]     : 7, 0.36% 
-## low counts [2]   : 0, 0% 
-## (mean count < 1)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320399
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2537 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 15, 0.59% 
-## LFC < 0 (down)   : 14, 0.55% 
-## outliers [1]     : 16, 0.63% 
-## low counts [2]   : 147, 5.8% 
-## (mean count < 5)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320400
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2660 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 5, 0.19% 
-## LFC < 0 (down)   : 4, 0.15% 
-## outliers [1]     : 17, 0.64% 
-## low counts [2]   : 0, 0% 
-## (mean count < 1)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320401
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2453 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 6, 0.24% 
-## LFC < 0 (down)   : 16, 0.65% 
-## outliers [1]     : 23, 0.94% 
-## low counts [2]   : 141, 5.7% 
-## (mean count < 4)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320402
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2786 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 20, 0.72% 
-## LFC < 0 (down)   : 46, 1.7% 
-## outliers [1]     : 26, 0.93% 
-## low counts [2]   : 968, 35% 
-## (mean count < 16)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320403
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2169 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 5, 0.23% 
-## LFC < 0 (down)   : 6, 0.28% 
-## outliers [1]     : 13, 0.6% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320404
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2035 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 2, 0.098% 
-## LFC < 0 (down)   : 1, 0.049% 
-## outliers [1]     : 10, 0.49% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
+##  --- Running DESeq2 on Genome_ID: 2757320395 
+##  --- Running DESeq2 on Genome_ID: 2757320396 
+##  --- Running DESeq2 on Genome_ID: 2757320397 
+##  --- Running DESeq2 on Genome_ID: 2757320398 
+##  --- Running DESeq2 on Genome_ID: 2757320399 
+##  --- Running DESeq2 on Genome_ID: 2757320400 
+##  --- Running DESeq2 on Genome_ID: 2757320401 
+##  --- Running DESeq2 on Genome_ID: 2757320402 
+##  --- Running DESeq2 on Genome_ID: 2757320403 
+##  --- Running DESeq2 on Genome_ID: 2757320404
 ```
 
 ```r
 ## Site effect
 General_deseq_results_site <- list()
-for(i in 1:nlevels(expr_cov_long$Genome_id)){
-  cat(" --- Running DESeq2 on Genome_id:",levels(expr_cov_long$Genome_id)[i], "\n",sep = " ")
-  dds <- DESeqDataSetFromMatrix(countData = expr_cov_bins[[i]],
+deseq_comparisons_site <- list()
+for(i in 1:nlevels(expr_cov_long$Genome_ID)){
+  cat(" --- Running DESeq2 on Genome_ID:",levels(expr_cov_long$Genome_ID)[i], "\n",sep = " ")
+  dds <- DESeq2::DESeqDataSetFromMatrix(countData = expr_cov_bins[[i]],
                               colData = meta_metaT,
                               design= ~ Season + Site) # Test for site but controlling for season
-  dds <- DESeq(dds)
-  General_deseq_results_site[[i]] <- results(dds)[order(results(dds)$padj), ] # specify contrasts here if need to
-  summary(results(dds, alpha = 0.05))
+  dds <- DESeq2::DESeq(dds, quiet = TRUE)
+  
+    # Calculate contrasts for all comparisons
+  comp1 <- DESeq2::results(dds, 
+                   contrast=c("Site","Buoy","110"))[order(results(dds)$padj), ]
+  comp2 <- DESeq2::results(dds, 
+                   contrast=c("Site","Buoy","15"))[order(results(dds)$padj), ]
+  comp3 <- DESeq2::results(dds, 
+                   contrast=c("Site","15","110"))[order(results(dds)$padj), ]
+  
+  # Store data in single list with dataframes
+  General_deseq_results_site[[i]] <- rbind(comp1, comp2, comp3)
+  deseq_comparisons_site[[i]] <- data.frame(comparison = 
+                                           c(rep("Muskegon Lake\nVs\nM110",
+                                                 nrow(comp1)),
+                                           rep("Muskegon Lake\nVs\nM15", 
+                                               nrow(comp2)),
+                                           rep("M15\nVs\nM110", 
+                                               nrow(comp3))),
+                                         design = "~ Season + Site"
+  )
 }
 ```
 
 ```
-##  --- Running DESeq2 on Genome_id: 2757320395
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2322 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 164, 7.1% 
-## LFC < 0 (down)   : 159, 6.8% 
-## outliers [1]     : 14, 0.6% 
-## low counts [2]   : 90, 3.9% 
-## (mean count < 4)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320396
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 1398 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 78, 5.6% 
-## LFC < 0 (down)   : 97, 6.9% 
-## outliers [1]     : 10, 0.72% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320397
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 1539 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 201, 13% 
-## LFC < 0 (down)   : 190, 12% 
-## outliers [1]     : 7, 0.45% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320398
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 1949 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 240, 12% 
-## LFC < 0 (down)   : 330, 17% 
-## outliers [1]     : 7, 0.36% 
-## low counts [2]   : 0, 0% 
-## (mean count < 1)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320399
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2537 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 164, 6.5% 
-## LFC < 0 (down)   : 248, 9.8% 
-## outliers [1]     : 16, 0.63% 
-## low counts [2]   : 49, 1.9% 
-## (mean count < 3)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320400
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2660 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 101, 3.8% 
-## LFC < 0 (down)   : 159, 6% 
-## outliers [1]     : 17, 0.64% 
-## low counts [2]   : 463, 17% 
-## (mean count < 10)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320401
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2453 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 160, 6.5% 
-## LFC < 0 (down)   : 182, 7.4% 
-## outliers [1]     : 23, 0.94% 
-## low counts [2]   : 48, 2% 
-## (mean count < 2)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320402
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2786 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 125, 4.5% 
-## LFC < 0 (down)   : 120, 4.3% 
-## outliers [1]     : 26, 0.93% 
-## low counts [2]   : 0, 0% 
-## (mean count < 0)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320403
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2169 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 113, 5.2% 
-## LFC < 0 (down)   : 172, 7.9% 
-## outliers [1]     : 13, 0.6% 
-## low counts [2]   : 85, 3.9% 
-## (mean count < 4)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
-## 
-##  --- Running DESeq2 on Genome_id: 2757320404
-```
-
-```
-## estimating size factors
-```
-
-```
-## estimating dispersions
-```
-
-```
-## gene-wise dispersion estimates
-```
-
-```
-## mean-dispersion relationship
-```
-
-```
-## final dispersion estimates
-```
-
-```
-## fitting model and testing
-```
-
-```
-## 
-## out of 2035 with nonzero total read count
-## adjusted p-value < 0.05
-## LFC > 0 (up)     : 105, 5.2% 
-## LFC < 0 (down)   : 158, 7.8% 
-## outliers [1]     : 10, 0.49% 
-## low counts [2]   : 40, 2% 
-## (mean count < 3)
-## [1] see 'cooksCutoff' argument of ?results
-## [2] see 'independentFiltering' argument of ?results
+##  --- Running DESeq2 on Genome_ID: 2757320395 
+##  --- Running DESeq2 on Genome_ID: 2757320396 
+##  --- Running DESeq2 on Genome_ID: 2757320397 
+##  --- Running DESeq2 on Genome_ID: 2757320398 
+##  --- Running DESeq2 on Genome_ID: 2757320399 
+##  --- Running DESeq2 on Genome_ID: 2757320400 
+##  --- Running DESeq2 on Genome_ID: 2757320401 
+##  --- Running DESeq2 on Genome_ID: 2757320402 
+##  --- Running DESeq2 on Genome_ID: 2757320403 
+##  --- Running DESeq2 on Genome_ID: 2757320404
 ```
 
 ```r
@@ -1654,8 +963,9 @@ for(i in 1:length(General_deseq_results_season)){
                     log2FoldChange = General_deseq_results_season[[i]]@listData$log2FoldChange,
                     pvalue = General_deseq_results_season[[i]]@listData$pvalue,
                     padj = General_deseq_results_season[[i]]@listData$padj,
-                    Genome_ID = levels(expr_cov_long$Genome_id)[i],
-                    Comparison = "Season: Summer vs Fall")
+                    Genome_ID = levels(expr_cov_long$Genome_ID)[i],
+                    Comparison = deseq_comparisons_season[[i]]$comparison,
+                    Design = deseq_comparisons_season[[i]]$design)
   if(i == 1) res_deseq <- tmp else{
     res_deseq <- rbind(res_deseq, tmp)
   }
@@ -1666,10 +976,12 @@ for(i in 1:length(General_deseq_results_site)){
                     log2FoldChange = General_deseq_results_site[[i]]@listData$log2FoldChange,
                     pvalue = General_deseq_results_site[[i]]@listData$pvalue,
                     padj = General_deseq_results_site[[i]]@listData$padj,
-                    Genome_ID = levels(expr_cov_long$Genome_id)[i],
-                    Comparison = "Site: MLB vs M110")
+                    Genome_ID = levels(expr_cov_long$Genome_ID)[i],
+                    Comparison = deseq_comparisons_site[[i]]$comparison,
+                    Design = deseq_comparisons_site[[i]]$design)
   res_deseq <- rbind(res_deseq, tmp)
 }
+
 # Only retain significantly differentially expressed genes
 res_deseq <- res_deseq %>% dplyr::filter(padj < 0.05)
 
@@ -1682,7 +994,40 @@ res_deseq$new_bin_name <- factor(res_deseq$new_bin_name, levels =
                                         "MAG5.SP-M110-DD", "MAG6.SP-M15-SD",
                                         "MAG7.SU-MLB-SD", "MAG8.SU-M110-DCMD",
                                         "MAG9.SU-M15-SN", "MAG10.SU-M15-SN"))
+res_deseq$regulation <- res_deseq$log2FoldChange > 0
+res_deseq$regulation[res_deseq$regulation == "TRUE"] <- "upregulation"
+res_deseq$regulation[res_deseq$regulation == "FALSE"] <- "downregulation"
+
+# Report reads mapped for all genomes per sample
+metaT_reads_mapped <- expr_cov_long %>% group_by(Sample, Genome_ID) %>% dplyr::summarise(sum_mapped_reads = sum(mapped_reads))
+metaT_reads_mapped <- left_join(metaT_reads_mapped, new_bin_names2, by = c("Genome_ID" = "IMG_taxID"))
+metaT_reads_mapped$new_bin_name <- as.character(metaT_reads_mapped$new_bin_name)
+metaT_reads_mapped$new_bin_name <- factor(metaT_reads_mapped$new_bin_name, 
+                                          levels =
+                                      c("MAG1.FA-MLB-DN","MAG2.FA-MLB-SN",
+                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+                                        "MAG5.SP-M110-DD", "MAG6.SP-M15-SD",
+                                        "MAG7.SU-MLB-SD", "MAG8.SU-M110-DCMD",
+                                        "MAG9.SU-M15-SN", "MAG10.SU-M15-SN"))
+
+p_deseq_reads <- ggplot2::ggplot(metaT_reads_mapped, aes(x = new_bin_name, y = sum_mapped_reads, fill = new_bin_name))+
+  geom_bar(color = "black", stat = "identity")+
+  theme_bw()+
+  scale_fill_brewer(palette = "Paired")+
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_text(size = 14),
+        legend.title = element_blank(),
+        axis.title = element_text(size = 14),
+        strip.text = element_text(size = 12),
+        axis.title.x = element_blank())+
+  ylab("Number of mapped reads")+
+  xlab("")+
+  facet_wrap(~Sample, nrow = 4)
+
+print(p_deseq_reads)
 ```
+
+<img src="Figures/cached/expression analysis-1.png" style="display: block; margin: auto;" />
 
 
 
@@ -1693,19 +1038,41 @@ p_deseq_1 <- ggplot2::ggplot(res_deseq, aes(x = new_bin_name, fill = new_bin_nam
   geom_bar(color = "black")+
   theme_bw()+
   scale_fill_brewer(palette = "Paired")+
-  theme(axis.text.x = element_text(angle = 45, size = 14, hjust = 1),
+  theme(axis.text.x = element_blank(),
         axis.text.y = element_text(size = 14),
         legend.title = element_blank(),
         axis.title = element_text(size = 14),
-        strip.text = element_text(size = 14))+
-  ylab("Counts")+
+        strip.text = element_text(size = 14)) +
+  ylab("Number of mapped reads")+
   xlab("")+
-  facet_grid(~Comparison)
+  facet_grid(Design~Comparison)
 
 print(p_deseq_1)
 ```
 
 <img src="Figures/cached/plot-deseq-1.png" style="display: block; margin: auto;" />
+
+```r
+p_deseq_2 <- ggplot2::ggplot(res_deseq, aes(x = new_bin_name, shape = regulation,
+                                            y = log2FoldChange))+
+  # geom_jitter(size = 3, width = 0.25, shape = 21)+
+  geom_boxplot(alpha= 1, aes(fill = new_bin_name))+
+  theme_bw()+
+  scale_fill_brewer(palette = "Paired")+
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_text(size = 14),
+        legend.title = element_blank(),
+        axis.title = element_text(size = 14),
+        strip.text = element_text(size = 14))+
+  ylab("log2FoldChange")+
+  xlab("")+
+  facet_grid(Design~Comparison)+
+  guides(shape = FALSE)
+
+print(p_deseq_2)
+```
+
+<img src="Figures/cached/plot-deseq-2.png" style="display: block; margin: auto;" />
 
 
 # 7. Sequence discrete populations
@@ -1848,7 +1215,7 @@ blast_df$Identity <- round(blast_df$Identity, 1)
 blast_df$Identity <- factor(blast_df$Identity)
 blast_df <- left_join(blast_df, blast_df_map, by = c("Contig" = "m_contig"))
 
-blast_df_sum <- blast_df %>% group_by(Sample, bin) %>% count(Identity)
+blast_df_sum <- blast_df %>% group_by(Sample, bin) %>% dplyr::count(Identity)
 blast_df_sum$Sample <- gsub("_blast.tsv", "", blast_df_sum$Sample)
 blast_df_sum <- data.frame(blast_df_sum)
 blast_df_sum$Identity <- as.numeric(as.character(blast_df_sum$Identity))
@@ -1992,10 +1359,6 @@ blast_df_sum <- left_join(blast_df_sum, total_reads, by = c("Sample" = "sample")
 # Divide normalized reads by 1M (fixed blast census)
 blast_df_sum <- blast_df_sum %>% mutate(n_norm_perc = 100*n_norm/1e6)
 
-fill_palette <- c(rev(brewer.pal(11, "BrBG")[1:4]),
-                  brewer.pal(11, "PiYG")[9:10],
-                  brewer.pal(9, "PuBu")[4:7]
-                  )
 # Plot % reads corrected for genome size over threshold of 0.95
 id_thresh <- 95
 map_disc_cum <- blast_df_sum  %>% dplyr::filter(Identity > id_thresh) %>% group_by(Sample, bin) %>% 
@@ -2058,7 +1421,7 @@ print(p_sdisc_cum4)
 
 <img src="Figures/cached/summary-blast-approach-2.png" style="display: block; margin: auto;" />
 
-## Compare blast to bwa results  
+### Compare blast to bwa results  
 
 
 ```r
@@ -2145,57 +1508,57 @@ MAG_div <- Diversity_16S(MAG_phy, ncore = 3, parallel = TRUE,
 ```
 ## 	**WARNING** this functions assumes that rows are samples and columns
 ##       	are taxa in your phyloseq object, please verify.
-## Wed Nov 29 12:12:41 2017 	Using 3 cores for calculations
-## Wed Nov 29 12:12:41 2017	Calculating diversity for sample 1/24 --- Fa13_BD_MLB_DN
-## Wed Nov 29 12:12:53 2017	Done with sample Fa13_BD_MLB_DN
-## Wed Nov 29 12:12:53 2017	Calculating diversity for sample 2/24 --- Fa13_BD_MLB_SN
-## Wed Nov 29 12:12:56 2017	Done with sample Fa13_BD_MLB_SN
-## Wed Nov 29 12:12:56 2017	Calculating diversity for sample 3/24 --- Fa13_BD_MM110_DN
-## Wed Nov 29 12:12:58 2017	Done with sample Fa13_BD_MM110_DN
-## Wed Nov 29 12:12:58 2017	Calculating diversity for sample 4/24 --- Fa13_BD_MM110_SD
-## Wed Nov 29 12:13:01 2017	Done with sample Fa13_BD_MM110_SD
-## Wed Nov 29 12:13:02 2017	Calculating diversity for sample 5/24 --- Fa13_BD_MM110_SN
-## Wed Nov 29 12:13:04 2017	Done with sample Fa13_BD_MM110_SN
-## Wed Nov 29 12:13:04 2017	Calculating diversity for sample 6/24 --- Fa13_BD_MM15_DN
-## Wed Nov 29 12:13:06 2017	Done with sample Fa13_BD_MM15_DN
-## Wed Nov 29 12:13:06 2017	Calculating diversity for sample 7/24 --- Fa13_BD_MM15_SD
-## Wed Nov 29 12:13:09 2017	Done with sample Fa13_BD_MM15_SD
-## Wed Nov 29 12:13:09 2017	Calculating diversity for sample 8/24 --- Fa13_BD_MM15_SN
-## Wed Nov 29 12:13:11 2017	Done with sample Fa13_BD_MM15_SN
-## Wed Nov 29 12:13:11 2017	Calculating diversity for sample 9/24 --- Sp13_BD_MLB_SN
-## Wed Nov 29 12:13:14 2017	Done with sample Sp13_BD_MLB_SN
-## Wed Nov 29 12:13:14 2017	Calculating diversity for sample 10/24 --- Sp13_BD_MM110_DD
-## Wed Nov 29 12:13:16 2017	Done with sample Sp13_BD_MM110_DD
-## Wed Nov 29 12:13:16 2017	Calculating diversity for sample 11/24 --- Sp13_BD_MM110_SD
-## Wed Nov 29 12:13:18 2017	Done with sample Sp13_BD_MM110_SD
-## Wed Nov 29 12:13:18 2017	Calculating diversity for sample 12/24 --- Sp13_BD_MM110_SN
-## Wed Nov 29 12:13:21 2017	Done with sample Sp13_BD_MM110_SN
-## Wed Nov 29 12:13:21 2017	Calculating diversity for sample 13/24 --- Sp13_BD_MM15_DD
-## Wed Nov 29 12:13:23 2017	Done with sample Sp13_BD_MM15_DD
-## Wed Nov 29 12:13:23 2017	Calculating diversity for sample 14/24 --- Sp13_BD_MM15_SD
-## Wed Nov 29 12:13:25 2017	Done with sample Sp13_BD_MM15_SD
-## Wed Nov 29 12:13:25 2017	Calculating diversity for sample 15/24 --- Sp13_BD_MM15_SN
-## Wed Nov 29 12:13:28 2017	Done with sample Sp13_BD_MM15_SN
-## Wed Nov 29 12:13:28 2017	Calculating diversity for sample 16/24 --- Su13_BD_MLB_DD
-## Wed Nov 29 12:13:30 2017	Done with sample Su13_BD_MLB_DD
-## Wed Nov 29 12:13:30 2017	Calculating diversity for sample 17/24 --- Su13_BD_MLB_SD
-## Wed Nov 29 12:13:32 2017	Done with sample Su13_BD_MLB_SD
-## Wed Nov 29 12:13:32 2017	Calculating diversity for sample 18/24 --- Su13_BD_MM110_DCMD
-## Wed Nov 29 12:13:34 2017	Done with sample Su13_BD_MM110_DCMD
-## Wed Nov 29 12:13:34 2017	Calculating diversity for sample 19/24 --- Su13_BD_MM110_DN
-## Wed Nov 29 12:13:37 2017	Done with sample Su13_BD_MM110_DN
-## Wed Nov 29 12:13:37 2017	Calculating diversity for sample 20/24 --- Su13_BD_MM110_SD
-## Wed Nov 29 12:13:39 2017	Done with sample Su13_BD_MM110_SD
-## Wed Nov 29 12:13:39 2017	Calculating diversity for sample 21/24 --- Su13_BD_MM110_SN
-## Wed Nov 29 12:13:41 2017	Done with sample Su13_BD_MM110_SN
-## Wed Nov 29 12:13:41 2017	Calculating diversity for sample 22/24 --- Su13_BD_MM15_DN
-## Wed Nov 29 12:13:43 2017	Done with sample Su13_BD_MM15_DN
-## Wed Nov 29 12:13:43 2017	Calculating diversity for sample 23/24 --- Su13_BD_MM15_SD
-## Wed Nov 29 12:13:45 2017	Done with sample Su13_BD_MM15_SD
-## Wed Nov 29 12:13:45 2017	Calculating diversity for sample 24/24 --- Su13_BD_MM15_SN
-## Wed Nov 29 12:13:47 2017	Done with sample Su13_BD_MM15_SN
-## Wed Nov 29 12:13:47 2017 	Closing workers
-## Wed Nov 29 12:13:47 2017 	Done with all 24 samples
+## Thu Nov 30 10:02:21 2017 	Using 3 cores for calculations
+## Thu Nov 30 10:02:21 2017	Calculating diversity for sample 1/24 --- Fa13_BD_MLB_DN
+## Thu Nov 30 10:02:32 2017	Done with sample Fa13_BD_MLB_DN
+## Thu Nov 30 10:02:32 2017	Calculating diversity for sample 2/24 --- Fa13_BD_MLB_SN
+## Thu Nov 30 10:02:35 2017	Done with sample Fa13_BD_MLB_SN
+## Thu Nov 30 10:02:35 2017	Calculating diversity for sample 3/24 --- Fa13_BD_MM110_DN
+## Thu Nov 30 10:02:38 2017	Done with sample Fa13_BD_MM110_DN
+## Thu Nov 30 10:02:38 2017	Calculating diversity for sample 4/24 --- Fa13_BD_MM110_SD
+## Thu Nov 30 10:02:40 2017	Done with sample Fa13_BD_MM110_SD
+## Thu Nov 30 10:02:40 2017	Calculating diversity for sample 5/24 --- Fa13_BD_MM110_SN
+## Thu Nov 30 10:02:43 2017	Done with sample Fa13_BD_MM110_SN
+## Thu Nov 30 10:02:43 2017	Calculating diversity for sample 6/24 --- Fa13_BD_MM15_DN
+## Thu Nov 30 10:02:46 2017	Done with sample Fa13_BD_MM15_DN
+## Thu Nov 30 10:02:46 2017	Calculating diversity for sample 7/24 --- Fa13_BD_MM15_SD
+## Thu Nov 30 10:02:50 2017	Done with sample Fa13_BD_MM15_SD
+## Thu Nov 30 10:02:50 2017	Calculating diversity for sample 8/24 --- Fa13_BD_MM15_SN
+## Thu Nov 30 10:02:53 2017	Done with sample Fa13_BD_MM15_SN
+## Thu Nov 30 10:02:53 2017	Calculating diversity for sample 9/24 --- Sp13_BD_MLB_SN
+## Thu Nov 30 10:02:56 2017	Done with sample Sp13_BD_MLB_SN
+## Thu Nov 30 10:02:56 2017	Calculating diversity for sample 10/24 --- Sp13_BD_MM110_DD
+## Thu Nov 30 10:02:59 2017	Done with sample Sp13_BD_MM110_DD
+## Thu Nov 30 10:02:59 2017	Calculating diversity for sample 11/24 --- Sp13_BD_MM110_SD
+## Thu Nov 30 10:03:02 2017	Done with sample Sp13_BD_MM110_SD
+## Thu Nov 30 10:03:02 2017	Calculating diversity for sample 12/24 --- Sp13_BD_MM110_SN
+## Thu Nov 30 10:03:06 2017	Done with sample Sp13_BD_MM110_SN
+## Thu Nov 30 10:03:06 2017	Calculating diversity for sample 13/24 --- Sp13_BD_MM15_DD
+## Thu Nov 30 10:03:08 2017	Done with sample Sp13_BD_MM15_DD
+## Thu Nov 30 10:03:08 2017	Calculating diversity for sample 14/24 --- Sp13_BD_MM15_SD
+## Thu Nov 30 10:03:11 2017	Done with sample Sp13_BD_MM15_SD
+## Thu Nov 30 10:03:11 2017	Calculating diversity for sample 15/24 --- Sp13_BD_MM15_SN
+## Thu Nov 30 10:03:14 2017	Done with sample Sp13_BD_MM15_SN
+## Thu Nov 30 10:03:14 2017	Calculating diversity for sample 16/24 --- Su13_BD_MLB_DD
+## Thu Nov 30 10:03:17 2017	Done with sample Su13_BD_MLB_DD
+## Thu Nov 30 10:03:17 2017	Calculating diversity for sample 17/24 --- Su13_BD_MLB_SD
+## Thu Nov 30 10:03:20 2017	Done with sample Su13_BD_MLB_SD
+## Thu Nov 30 10:03:20 2017	Calculating diversity for sample 18/24 --- Su13_BD_MM110_DCMD
+## Thu Nov 30 10:03:23 2017	Done with sample Su13_BD_MM110_DCMD
+## Thu Nov 30 10:03:23 2017	Calculating diversity for sample 19/24 --- Su13_BD_MM110_DN
+## Thu Nov 30 10:03:25 2017	Done with sample Su13_BD_MM110_DN
+## Thu Nov 30 10:03:25 2017	Calculating diversity for sample 20/24 --- Su13_BD_MM110_SD
+## Thu Nov 30 10:03:28 2017	Done with sample Su13_BD_MM110_SD
+## Thu Nov 30 10:03:28 2017	Calculating diversity for sample 21/24 --- Su13_BD_MM110_SN
+## Thu Nov 30 10:03:30 2017	Done with sample Su13_BD_MM110_SN
+## Thu Nov 30 10:03:30 2017	Calculating diversity for sample 22/24 --- Su13_BD_MM15_DN
+## Thu Nov 30 10:03:32 2017	Done with sample Su13_BD_MM15_DN
+## Thu Nov 30 10:03:32 2017	Calculating diversity for sample 23/24 --- Su13_BD_MM15_SD
+## Thu Nov 30 10:03:35 2017	Done with sample Su13_BD_MM15_SD
+## Thu Nov 30 10:03:35 2017	Calculating diversity for sample 24/24 --- Su13_BD_MM15_SN
+## Thu Nov 30 10:03:37 2017	Done with sample Su13_BD_MM15_SN
+## Thu Nov 30 10:03:37 2017 	Closing workers
+## Thu Nov 30 10:03:37 2017 	Done with all 24 samples
 ```
 
 ```r
