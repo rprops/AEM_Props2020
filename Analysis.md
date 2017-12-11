@@ -1211,20 +1211,27 @@ blast_df_map <- read.table("./SEQs_discrete/merged_contig_list.tsv", header = FA
 colnames(blast_df_map) <- c("m_contig", "o_contig", "bin")
 
 # Round identity to integer
-blast_df$Identity <- round(blast_df$Identity, 1)
-blast_df$Identity <- factor(blast_df$Identity)
+# blast_df$Identity <- round(blast_df$Identity, 1)
+# blast_df$Identity <- factor(blast_df$Identity)
 blast_df <- left_join(blast_df, blast_df_map, by = c("Contig" = "m_contig"))
 
-blast_df_sum <- blast_df %>% group_by(Sample, bin) %>% dplyr::count(Identity)
+# Bin the %Identity in intervals of 0.5%
+blast_df_sum <- transform(blast_df, bin_group=cut(Identity,  breaks=seq(0, 100, 0.5)))
+
+# Format sample names and convert to data.frame
 blast_df_sum$Sample <- gsub("_blast.tsv", "", blast_df_sum$Sample)
 blast_df_sum <- data.frame(blast_df_sum)
-blast_df_sum$Identity <- as.numeric(as.character(blast_df_sum$Identity))
+# blast_df_sum$Identity <- as.numeric(as.character(blast_df_sum$Identity))
 blast_df_sum$bin <- gsub(".fa","",blast_df_sum$bin)
 blast_df_sum <- dplyr::left_join(blast_df_sum, bin_size, by = c("bin" = "bins"))
 
-# Normalize mapped reads per sample based on genome size
-blast_df_sum <- blast_df_sum %>% group_by(bin) %>% 
-  mutate(n_norm = 1e6*n/bin_size)
+# Add extra column that converts the binning range to a numeric x-coordinate that
+# is positioned in the middle of the binning interval
+blast_df_sum$bin_group <- gsub("\\(|]", "", 
+                               as.character(blast_df_sum$bin_group))
+blast_df_sum$bin_xcoord <- as.numeric(do.call(rbind,
+                                              strsplit(blast_df_sum$bin_group,
+                                                       ","))[,1])+0.25
 
 # Normalize mapped reads per sample based on sample reads
 # blast_subs <- 1e6
@@ -1275,11 +1282,11 @@ blast_df_sum$new_bin_name <- factor(blast_df_sum$new_bin_name, levels =
 # plot for individual bins
 for(bin2plot in unique(blast_df_sum$new_bin_name)){
   p_blast_sdisc <- blast_df_sum %>% dplyr::filter(new_bin_name == bin2plot) %>% 
-     ggplot(aes(x = Identity, y = n_norm, color = season))+
+     ggplot(aes(x = bin_xcoord, ..density.., fill = season))+
       theme_bw()+
       scale_color_brewer(palette = "Accent")+
       facet_wrap(~Sample, nrow = 4)+
-      geom_line(size = 1.5)+
+      geom_density(color = "black")+
       guides(color = FALSE)+
       ggtitle(bin2plot)+
       theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
@@ -1287,7 +1294,7 @@ for(bin2plot in unique(blast_df_sum$new_bin_name)){
         legend.background = element_rect(fill="transparent"),
         axis.text.x = element_text(angle = 45, hjust = 1),
         strip.text.y=element_text(size=14))+
-      ylab("Reads per Mbp")+
+      ylab("Density")+
       xlab("Nucleotide identity (%)")+
     xlim(75,100)
      
@@ -1301,11 +1308,11 @@ print(p_blast_sdisc)
 ```r
 # Plot one combined figure with proportions normalized for genome size
 p_blast_sdisc_merged <- blast_df_sum %>% 
-     ggplot(aes(x = Identity, y = n_norm, color = new_bin_name))+
+     ggplot(aes(x = bin_xcoord, ..density.., color = bin))+
       theme_gray()+
       scale_color_brewer("", palette = "Paired")+
       facet_wrap(~Sample, nrow = 4)+
-      geom_line(size = 1.5, alpha = 0.7)+
+      geom_density()+
       ggtitle("Merged bins per sample")+
       theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
@@ -1326,12 +1333,12 @@ print(p_blast_sdisc_merged)
 ```r
 # Plot for most abundant bin (B63)
 p_blast_sdisc_B63 <- blast_df_sum %>% dplyr::filter(bin == "B63_Su13.BD.MM110.DCMD_rebin1") %>% 
-  ggplot(aes(x = Identity, y = n_norm, fill = season, group = Sample,
+  ggplot(aes(x = bin_xcoord, ..density.., fill = season, group = Sample,
              shape = Depth))+
   theme_bw()+
   facet_grid(season~Site)+
-  geom_line(size = 2, color = adjustcolor("black",0.5))+
-  geom_point(size = 3, alpha = 0.6)+
+  geom_density(alpha = 0.4, color = "black", size = 1)+
+  # geom_point(size = 3, alpha = 0.6)+
   scale_shape_manual("", values = c(21,22,24))+
   scale_fill_brewer(palette = "Accent")+
   guides(color = FALSE, fill = FALSE)+
@@ -1343,7 +1350,7 @@ p_blast_sdisc_B63 <- blast_df_sum %>% dplyr::filter(bin == "B63_Su13.BD.MM110.DC
         strip.text=element_text(size=16),
         panel.grid.minor = element_blank(),
         legend.position = "bottom")+
-  ylab("Reads per Mbp")+
+  ylab("Density")+
   xlab("Nucleotide identity (%)")+
   xlim(75,100)
 
@@ -1354,19 +1361,51 @@ p_blast_sdisc_B63
 
 
 ```r
-blast_df_sum <- left_join(blast_df_sum, total_reads, by = c("Sample" = "sample"))
+blast_df_sum_comp <- blast_df_sum %>% group_by(Sample, bin) %>% dplyr::count(bin_xcoord)
+blast_df_sum_comp <-  dplyr::left_join(blast_df_sum_comp, bin_size, by = c("bin" = "bins"))
+blast_df_sum_comp <- left_join(blast_df_sum_comp, new_bin_names, by = c("bin" = "bins"))
+blast_df_sum_comp$new_bin_name <- as.character(blast_df_sum_comp$new_bin_name)
+blast_df_sum_comp$new_bin_name <- factor(blast_df_sum_comp$new_bin_name, levels =
+                                      c("MAG1.FA-MLB-DN","MAG2.FA-MLB-SN",
+                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+                                        "MAG5.SP-M110-DD","MAG6.SP-M15-SD",
+                                        "MAG7.SU-MLB-SD","MAG8.SU-M110-DCMD",
+                                        "MAG9.SU-M15-SN","MAG10.SU-M15-SN"))
+blast_df_sum_comp <- dplyr::left_join(blast_df_sum_comp, meta_blast, by = c("Sample" = "Sample_ID"))
+
+# Reorder site factor
+blast_df_sum_comp$Site <- as.character(blast_df_sum_comp$Site)
+blast_df_sum_comp$Site <- gsub("Buoy","Muskegon Lake", blast_df_sum_comp$Site)
+blast_df_sum_comp$Site <- gsub("110","Lake Michigan\nsite M110", blast_df_sum_comp$Site)
+blast_df_sum_comp$Site <- gsub("15","Lake Michigan\nsite M15", blast_df_sum_comp$Site)
+blast_df_sum_comp$Site <- factor(blast_df_sum_comp$Site, 
+                                 levels = c("Muskegon Lake",
+                                            "Lake Michigan\nsite M15",
+                                            "Lake Michigan\nsite M110"))
+blast_df_sum_comp$Depth <- as.character(blast_df_sum_comp$Depth)
+blast_df_sum_comp$Depth <- factor(blast_df_sum_comp$Depth, 
+                                  levels = c("Surface", "Mid", "Deep"))
+blast_df_sum_comp$Season <- as.character(blast_df_sum_comp$Season)
+blast_df_sum_comp$Season <- factor(blast_df_sum_comp$Season, levels = c("Spring", "Summer", "Fall"))
+
+# Normalize mapped reads per sample based on genome size
+blast_df_sum_comp <- blast_df_sum_comp %>% group_by(bin) %>%
+mutate(n_norm = 1e6*n/bin_size)
+
+blast_df_sum_comp <- left_join(blast_df_sum_comp, total_reads, by = c("Sample" = "sample"))
 
 # Divide normalized reads by 1M (fixed blast census)
-blast_df_sum <- blast_df_sum %>% mutate(n_norm_perc = 100*n_norm/1e6)
+blast_df_sum_comp <- blast_df_sum_comp %>% mutate(n_norm_perc = 100*n_norm/1e6)
 
 # Plot % reads corrected for genome size over threshold of 0.95
-id_thresh <- 95
-map_disc_cum <- blast_df_sum  %>% dplyr::filter(Identity > id_thresh) %>% group_by(Sample, bin) %>% 
+id_thresh <- 95-0.25
+map_disc_cum <- blast_df_sum_comp  %>% dplyr::filter(bin_xcoord > id_thresh) %>% group_by(Sample, bin) %>% 
   mutate(cum_rel_reads_mapped = cumsum(n_norm_perc))%>% 
-  dplyr::filter(Identity == 100)
+  dplyr::filter(bin_xcoord == 100-0.25)
 sum_cum <- map_disc_cum %>% group_by(Sample, bin) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
 
-p_sdisc_cum3 <- ggplot(map_disc_cum, aes(x = new_bin_name, y = cum_rel_reads_mapped, 
+p_sdisc_cum3 <- ggplot(map_disc_cum, aes(x = new_bin_name, 
+                                         y = cum_rel_reads_mapped, 
                                         fill = new_bin_name))+
   theme_bw()+
   scale_fill_manual("", values = fill_palette)+
@@ -1380,7 +1419,7 @@ p_sdisc_cum3 <- ggplot(map_disc_cum, aes(x = new_bin_name, y = cum_rel_reads_map
   ylab(paste0("Norm. relative abundance ( > ", id_thresh, "% NI)"))+
   xlab("")+
   guides(fill=guide_legend(nrow = 3))+
-  facet_grid(season~Site, scales ="free")+
+  facet_grid(Season~Site, scales ="free")+
   scale_y_continuous(labels=scaleFUN, limits = c(0,3))+
   coord_trans(y = "sqrt")
 
@@ -1391,14 +1430,14 @@ print(p_sdisc_cum3)
 
 ```r
 # Plot % reads over threshold of 0.99
-id_thresh <- 99
-map_disc_cum <- blast_df_sum  %>% distinct() %>% 
-  dplyr::filter(Identity > id_thresh) %>% group_by(Sample, bin) %>% 
+id_thresh <- 99-0.25
+map_disc_cum <- blast_df_sum_comp  %>% dplyr::filter(bin_xcoord > id_thresh) %>% group_by(Sample, bin) %>% 
   mutate(cum_rel_reads_mapped = cumsum(n_norm_perc))%>% 
-  dplyr::filter(Identity == 100)
+  dplyr::filter(bin_xcoord == 100-0.25)
 sum_cum <- map_disc_cum %>% group_by(Sample, bin) %>% mutate(cum_bins_rel_reads_mapped = sum(cum_rel_reads_mapped))
 
-p_sdisc_cum4 <- ggplot(map_disc_cum, aes(x = new_bin_name, y = cum_rel_reads_mapped, 
+p_sdisc_cum4 <- ggplot(map_disc_cum, aes(x = new_bin_name, 
+                                         y = cum_rel_reads_mapped, 
                                         fill = new_bin_name))+
   theme_bw()+
   scale_fill_manual("", values = fill_palette)+
@@ -1412,7 +1451,7 @@ p_sdisc_cum4 <- ggplot(map_disc_cum, aes(x = new_bin_name, y = cum_rel_reads_map
   ylab(paste0("Norm. relative abundance ( > ", id_thresh, "% NI)"))+
   xlab("")+
   guides(fill=guide_legend(nrow = 3))+
-  facet_grid(season~Site, scales ="free")+
+  facet_grid(Season~Site, scales ="free")+
   scale_y_continuous(labels=scaleFUN, limits = c(0,1.25))+
   coord_trans(y = "sqrt")
 
