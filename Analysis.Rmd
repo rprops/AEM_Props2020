@@ -46,6 +46,7 @@ library("grid")
 library("scales")
 library("gridExtra")
 library("easyGgplot2")
+library("mclust")
 library("reshape2")
 library("Phenoflow")
 library("phyloseq")
@@ -1012,9 +1013,9 @@ blast_df_sum$new_bin_name <- factor(blast_df_sum$new_bin_name, levels =
 # plot for individual bins
 for(bin2plot in unique(blast_df_sum$new_bin_name)){
   p_blast_sdisc <- blast_df_sum %>% dplyr::filter(new_bin_name == bin2plot) %>% 
-     ggplot(aes(x = bin_xcoord, ..density.., fill = season))+
+     ggplot(aes(x = bin_xcoord, ..scaled.., fill = season))+
       theme_bw()+
-      scale_color_brewer(palette = "Accent")+
+      scale_fill_brewer(palette = "Accent")+
       facet_wrap(~Sample, nrow = 4)+
       geom_density(color = "black")+
       guides(color = FALSE)+
@@ -1032,7 +1033,7 @@ print(p_blast_sdisc)
 }
 ```
 
-```{r merged-blast-approach, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 10}
+```{r merged-blast-approach-1, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 10}
 # Plot one combined figure with proportions normalized for genome size
 p_blast_sdisc_merged <- blast_df_sum %>% 
      ggplot(aes(x = bin_xcoord, ..density.., color = bin))+
@@ -1061,11 +1062,9 @@ p_blast_sdisc_B63 <- blast_df_sum %>% dplyr::filter(bin == "B63_Su13.BD.MM110.DC
   theme_bw()+
   facet_grid(season~Site)+
   geom_density(alpha = 0.4, color = "black", size = 1)+
-  # geom_point(size = 3, alpha = 0.6)+
   scale_shape_manual("", values = c(21,22,24))+
   scale_fill_brewer(palette = "Accent")+
   guides(color = FALSE, fill = FALSE)+
-  # ggtitle(bin2plot)+
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
@@ -1080,7 +1079,34 @@ p_blast_sdisc_B63 <- blast_df_sum %>% dplyr::filter(bin == "B63_Su13.BD.MM110.DC
 p_blast_sdisc_B63
 ```
 
-```{r summary-blast-approach, dpi = 500, warning = FALSE, fig.width = 9, fig.height = 8}
+```{r merged-blast-approach-2, dpi = 300, warning = FALSE, fig.width = 10, fig.height = 20}
+# Plot for most Muskegon Lake for all bins
+p_blast_sdisc_ML <- blast_df_sum %>% dplyr::filter(Site == "Muskegon Lake") %>% 
+  ggplot(aes(x = bin_xcoord, ..scaled.., fill = new_bin_name, group = Sample,
+             shape = Depth))+
+  theme_bw()+
+  facet_grid(new_bin_name~season, scales = "free_y")+
+  geom_density(alpha = 0.3, color = "black", size = 1)+
+  # geom_point(size = 3, alpha = 0.6)+
+  scale_shape_manual("", values = c(21,22,24))+
+  scale_fill_manual(values = fill_palette)+
+  guides(color = FALSE, fill = FALSE)+
+  # ggtitle(bin2plot)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        strip.text=element_text(size=14),
+        panel.grid.minor = element_blank(),
+        legend.position = "bottom")+
+  ylab("Scaled density")+
+  xlab("Nucleotide identity (%)")+
+  xlim(75,100)
+
+p_blast_sdisc_ML
+```
+
+```{r summary-blast-approach-1, dpi = 500, warning = FALSE, fig.width = 9, fig.height = 8}
 blast_df_sum_comp <- blast_df_sum %>% group_by(Sample, bin) %>% dplyr::count(bin_xcoord)
 blast_df_sum_comp <-  dplyr::left_join(blast_df_sum_comp, bin_size, by = c("bin" = "bins"))
 blast_df_sum_comp <- left_join(blast_df_sum_comp, new_bin_names, by = c("bin" = "bins"))
@@ -1116,7 +1142,9 @@ blast_df_sum_comp <- left_join(blast_df_sum_comp, total_reads, by = c("Sample" =
 
 # Divide normalized reads by 1M (fixed blast census)
 blast_df_sum_comp <- blast_df_sum_comp %>% mutate(n_norm_perc = 100*n_norm/1e6)
+```
 
+```{r summary-blast-approach-2, dpi = 500, warning = FALSE, fig.width = 9, fig.height = 8}
 # Plot % reads corrected for genome size over threshold of 0.95
 id_thresh <- 95-0.25
 map_disc_cum <- blast_df_sum_comp  %>% dplyr::filter(bin_xcoord > id_thresh) %>% group_by(Sample, bin) %>% 
@@ -1172,6 +1200,54 @@ p_sdisc_cum4 <- ggplot(map_disc_cum, aes(x = new_bin_name,
   coord_trans(y = "sqrt")
 
 print(p_sdisc_cum4)
+```
+
+### Filter out bins using MClust  
+
+** Here we will use model-based clustering to determine whether there is a MAG present or not in a certain sample. ** 
+
+```{r filter-bins-1, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 20}
+# Perform gaussian mixture clustering on whole dataset.
+mod1 <- densityMclust(blast_df_sum$bin_xcoord)
+summary(mod1)
+plot(mod1, what = "diagnostic", type = "cdf")
+plot(mod1, what = "diagnostic", type = "qq")
+
+# Return cluster labels and plot the Sequence discrete populations again.
+blast_df_sum$cluster_label <- mod1$classification
+blast_df_sum$model_density <- mod1$density
+
+# Add cluster labels to blast_df_sum_comp
+tmp <- blast_df_sum[, c("bin_xcoord", "cluster_label", "model_density")] %>% distinct()
+tmp$bin_xcoord <- as.factor(tmp$bin_xcoord)
+blast_df_sum_comp$bin_xcoord <- as.factor(blast_df_sum_comp$bin_xcoord)
+blast_df_sum_comp <- left_join(blast_df_sum_comp, tmp, by = "bin_xcoord")
+blast_df_sum_comp$bin_xcoord <- 
+  as.numeric(as.character(blast_df_sum_comp$bin_xcoord))
+blast_df_sum_comp$cluster_label <- as.factor(blast_df_sum_comp$cluster_label)
+```
+
+```{r filter-bins-2, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 20}
+# Plot for most abundant bin (B63)
+p_blast_sdisc_B63_clust <- blast_df_sum_comp %>% dplyr::filter(bin == "B63_Su13.BD.MM110.DCMD_rebin1") %>% 
+  ggplot(aes(x = bin_xcoord, y = n, color = cluster_label, group = Sample))+
+  theme_bw()+
+  facet_grid(Season~Site)+
+  geom_line(alpha = 1, size = 1)+
+  scale_color_brewer(palette = "Accent")+
+  guides(color = FALSE, fill = FALSE)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        strip.text=element_text(size=16),
+        panel.grid.minor = element_blank(),
+        legend.position = "bottom")+
+  ylab("Density")+
+  xlab("Nucleotide identity (%)")+
+  xlim(75,100)
+
+print(p_blast_sdisc_B63_clust)
 ```
 
 ### Compare blast to bwa results  

@@ -1282,9 +1282,9 @@ blast_df_sum$new_bin_name <- factor(blast_df_sum$new_bin_name, levels =
 # plot for individual bins
 for(bin2plot in unique(blast_df_sum$new_bin_name)){
   p_blast_sdisc <- blast_df_sum %>% dplyr::filter(new_bin_name == bin2plot) %>% 
-     ggplot(aes(x = bin_xcoord, ..density.., fill = season))+
+     ggplot(aes(x = bin_xcoord, ..scaled.., fill = season))+
       theme_bw()+
-      scale_color_brewer(palette = "Accent")+
+      scale_fill_brewer(palette = "Accent")+
       facet_wrap(~Sample, nrow = 4)+
       geom_density(color = "black")+
       guides(color = FALSE)+
@@ -1328,7 +1328,7 @@ p_blast_sdisc_merged <- blast_df_sum %>%
 print(p_blast_sdisc_merged)
 ```
 
-<img src="Figures/cached/merged-blast-approach-1.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/merged-blast-approach-1-1.png" style="display: block; margin: auto;" />
 
 ```r
 # Plot for most abundant bin (B63)
@@ -1357,7 +1357,42 @@ p_blast_sdisc_B63 <- blast_df_sum %>% dplyr::filter(bin == "B63_Su13.BD.MM110.DC
 p_blast_sdisc_B63
 ```
 
-<img src="Figures/cached/merged-blast-approach-2.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/merged-blast-approach-1-2.png" style="display: block; margin: auto;" />
+
+
+```r
+# Plot for most Muskegon Lake for all bins
+p_blast_sdisc_ML <- blast_df_sum %>% dplyr::filter(Site == "Muskegon Lake") %>% 
+  ggplot(aes(x = bin_xcoord, ..scaled.., fill = new_bin_name, group = Sample,
+             shape = Depth))+
+  theme_bw()+
+  facet_grid(new_bin_name~season, scales = "free_y")+
+  geom_density(alpha = 0.3, color = "black", size = 1)+
+  # geom_point(size = 3, alpha = 0.6)+
+  scale_shape_manual("", values = c(21,22,24))+
+  scale_fill_manual(values = fill_palette)+
+  guides(color = FALSE, fill = FALSE)+
+  # ggtitle(bin2plot)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        strip.text=element_text(size=14),
+        panel.grid.minor = element_blank(),
+        legend.position = "bottom")+
+  ylab("Scaled density")+
+  xlab("Nucleotide identity (%)")+
+  xlim(75,100)
+
+p_blast_sdisc_ML
+```
+
+<img src="Figures/cached/merged-blast-approach-2-1.png" style="display: block; margin: auto;" />
+
+### Filter out bins using MClust
+
+
+
 
 
 ```r
