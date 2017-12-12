@@ -1,0 +1,267 @@
+TREE_COLORS
+#use this template to define branch colors and styles, colored ranges and label colors/font styles
+#lines starting with a hash are comments and ignored during parsing
+
+#=================================================================#
+#                    MANDATORY SETTINGS                           #
+#=================================================================#
+#select the separator which is used to delimit the data below (TAB,SPACE or COMMA).This separator must be used throughout this file (except in the SEPARATOR line, which uses space).
+
+#SEPARATOR TAB
+#SEPARATOR SPACE
+SEPARATOR COMMA
+
+#First 3 fields define the node, type and color
+#Possible types are:
+#'range': defines a colored range (colored background for labels/clade)
+#'clade': defines color/style for all branches in a clade
+#'branch': defines color/style for a single branch
+#'label': defines font color/style for the leaf label
+
+#The following additional fields are required:
+#for 'range', field 4 defines the colored range label (used in the legend)
+
+#The following additional fields are optional:
+#for 'label', field 4 defines the font style ('normal',''bold', 'italic' or 'bold-italic') and field 5 defines the numeric scale factor for the font size (eg. with value 2, font size for that label will be 2x the standard size)
+#for 'clade' and 'branch', field 4 defines the branch style ('normal' or 'dashed') and field 5 defines the branch width scale factor (eg. with value 0.5, branch width for that clade will be 0.5 the standard width)
+
+#Internal tree nodes can be specified using IDs directly, or using the 'last common ancestor' method described in iTOL help pages
+#=================================================================#
+#       Actual data follows after the "DATA" keyword              #
+#=================================================================#
+DATA
+#NODE_ID,TYPE,COLOR,LABEL_OR_STYLE,SIZE_FACTOR
+
+#Examples
+#internal node with solid branches colored blue and twice the standard width
+#9031|9606,clade,#0000ff,normal,2
+gi_281187216_gb_FJ8491471_,range,#33A02C,normal,2
+gi_353742089_emb_HE6006851_,range,#fc8b8a,normal,2
+gi_190706597_gb_EU8016721_,range,#1F78B4,normal,2
+gi_324096625_gb_HM5614312_,range,#b9b9b9,normal,2
+gi_350921985_emb_AJ9648922_,range,#b9b9b9,normal,2
+gi_353742096_emb_HE6006921_,range,#b9b9b9,normal,2
+gi_353742094_emb_HE6006901_,range,#b9b9b9,normal,2
+gi_353742085_emb_HE6006811_,range,#1F78B4,normal,2
+gi_190706032_gb_EU8011071_,range,#b9b9b9,normal,2
+gi_353742071_emb_HE6006671_,range,#b9b9b9,normal,2
+gi_37787067_gb_AY2126681_,range,#1F78B4,normal,2
+gi_353742081_emb_HE6006771_,range,#b9b9b9,normal,2
+gi_169659099_dbj_AB4265861_,range,#b9b9b9,normal,2
+gi_311335295_gb_HQ3271741_,range,#33A02C,normal,2
+gi_296171786_emb_FN6680132_,range,#1F78B4,normal,2
+gi_303831_dbj_D162111_RHYFR2D,range,#b9b9b9,normal,2
+gi_11544820_emb_AJ2899991_,range,#33A02C,normal,2
+gi_353742073_emb_HE6006691_,range,#fc8b8a,normal,2
+gi_190707104_gb_EU8021791_,range,#b9b9b9,normal,2
+gi_281187355_gb_FJ8492861_,range,#33A02C,normal,2
+gi_315190011_gb_HQ5952021_,range,#33A02C,normal,2
+gi_311335280_gb_HQ3271591_,range,#33A02C,normal,2
+gi_33328318_gb_AF5304761_,range,#b9b9b9,normal,2
+gi_254971472_gb_GQ3400781_,range,#33A02C,normal,2
+gi_255740072_gb_FJ6124351_,range,#1F78B4,normal,2
+gi_312190240_dbj_AB5998001_,range,#fc8b8a,normal,2
+gi_281187336_gb_FJ8492671_,range,#33A02C,normal,2
+gi_169659087_dbj_AB4265741_,range,#b9b9b9,normal,2
+gi_295880978_gb_HM1299121_,range,#b9b9b9,normal,2
+gi_190705513_gb_EU8005881_,range,#b9b9b9,normal,2
+gi_169659088_dbj_AB4265751_,range,#b9b9b9,normal,2
+gi_353742068_emb_HE6006641_,range,#1F78B4,normal,2
+gi_32292927_gb_AF4359482_,range,#b9b9b9,normal,2
+gi_62959354_gb_AY9479761_,range,#1F78B4,normal,2
+gi_311335351_gb_HQ3272301_,range,#33A02C,normal,2
+gi_78058273_gb_DQ2284031_,range,#33A02C,normal,2
+gi_353742066_emb_HE6006621_,range,#b9b9b9,normal,2
+gi_169659094_dbj_AB4265811_,range,#b9b9b9,normal,2
+gi_268308629_gb_FJ8204851_,range,#b9b9b9,normal,2
+gi_2584741_emb_Z960781_,range,#b9b9b9,normal,2
+gi_281187341_gb_FJ8492721_,range,#33A02C,normal,2
+gi_353742070_emb_HE6006661_,range,#b9b9b9,normal,2
+gi_95115263_gb_DQ5013051_,range,#33A02C,normal,2
+gi_353742087_emb_HE6006831_,range,#b9b9b9,normal,2
+gi_353742079_emb_HE6006751_,range,#b9b9b9,normal,2
+gi_312860463_gb_HM8565041_,range,#1F78B4,normal,2
+gi_157101045_emb_AM8494331_,range,#33A02C,normal,2
+gi_190708498_gb_EU8035731_,range,#33A02C,normal,2
+gi_353742080_emb_HE6006761_,range,#1F78B4,normal,2
+gi_83308025_emb_AJ8679221_,range,#1F78B4,normal,2
+gi_83308014_emb_AJ8679111_,range,#33A02C,normal,2
+gi_15054828_gb_AF2891611_,range,#fc8b8a,normal,2
+gi_353742084_emb_HE6006801_,range,#b9b9b9,normal,2
+gi_190706113_gb_EU8011881_,range,#b9b9b9,normal,2
+gi_350921983_emb_AJ9380262_,range,#fc8b8a,normal,2
+gi_295880716_gb_HM1296501_,range,#b9b9b9,normal,2
+gi_190706048_gb_EU8011231_,range,#33A02C,normal,2
+gi_312860423_gb_HM8564641_,range,#33A02C,normal,2
+gi_268308554_gb_FJ8204101_,range,#b9b9b9,normal,2
+gi_29692363_gb_AF5344291_,range,#33A02C,normal,2
+gi_190705953_gb_EU8010281_,range,#33A02C,normal,2
+gi_158259706_dbj_AB3005971_,range,#b9b9b9,normal,2
+gi_157101048_emb_AM8494361_,range,#33A02C,normal,2
+gi_353742064_emb_HE6006601_,range,#b9b9b9,normal,2
+gi_281187378_gb_FJ8493091_,range,#33A02C,normal,2
+gi_353742086_emb_HE6006821_,range,#b9b9b9,normal,2
+gi_304422274_gb_HQ0085781_,range,#b9b9b9,normal,2
+gi_3550691_emb_AJ2249871_,range,#33A02C,normal,2
+gi_353742069_emb_HE6006651_,range,#b9b9b9,normal,2
+gi_281187371_gb_FJ8493021_,range,#33A02C,normal,2
+gi_157101042_emb_AM8494301_,range,#33A02C,normal,2
+gi_102415988_gb_DQ5215471_,range,#33A02C,normal,2
+gi_353742076_emb_HE6006721_,range,#b9b9b9,normal,2
+gi_295880084_gb_HM1290181_,range,#b9b9b9,normal,2
+gi_353742067_emb_HE6006631_,range,#b9b9b9,normal,2
+gi_190706268_gb_EU8013431_,range,#b9b9b9,normal,2
+gi_311335335_gb_HQ3272141_,range,#33A02C,normal,2
+gi_169659097_dbj_AB4265841_,range,#b9b9b9,normal,2
+gi_350921988_emb_FM1782262_,range,#fc8b8a,normal,2
+gi_84322277_gb_DQ2341352_,range,#b9b9b9,normal,2
+gi_169659096_dbj_AB4265831_,range,#fc8b8a,normal,2
+gi_353742088_emb_HE6006841_,range,#b9b9b9,normal,2
+gi_353742092_emb_HE6006881_,range,#fc8b8a,normal,2
+gi_95115286_gb_DQ5013281_,range,#1F78B4,normal,2
+gi_255740061_gb_FJ6124241_,range,#b9b9b9,normal,2
+gi_295879500_gb_HM1284341_,range,#b9b9b9,normal,2
+gi_353742093_emb_HE6006891_,range,#b9b9b9,normal,2
+gi_83308022_emb_AJ8679191_,range,#33A02C,normal,2
+gi_350921986_emb_FM1655352_,range,#b9b9b9,normal,2
+gi_169659091_dbj_AB4265781_,range,#fc8b8a,normal,2
+gi_169659095_dbj_AB4265821_,range,#b9b9b9,normal,2
+gi_353742082_emb_HE6006781_,range,#b9b9b9,normal,2
+gi_353742072_emb_HE6006681_,range,#b9b9b9,normal,2
+gi_353742074_emb_HE6006701_,range,#b9b9b9,normal,2
+gi_169659086_dbj_AB4265731_,range,#fc8b8a,normal,2
+gi_353742083_emb_HE6006791_,range,#fc8b8a,normal,2
+gi_312190329_dbj_AB5998891_,range,#fc8b8a,normal,2
+gi_56713219_emb_AJ8677491_,range,#33A02C,normal,2
+gi_304422261_gb_HQ0085651_,range,#fc8b8a,normal,2
+gi_190705448_gb_EU8005231_,range,#fc8b8a,normal,2
+gi_15054822_gb_AF2891551_,range,#fc8b8a,normal,2
+gi_4165396_dbj_AB0213901_,range,#b9b9b9,normal,2
+gi_295879822_gb_HM1287561_,range,#b9b9b9,normal,2
+gi_190707162_gb_EU8022371_,range,#b9b9b9,normal,2
+gi_295879851_gb_HM1287851_,range,#b9b9b9,normal,2
+gi_332144605_dbj_AB6268121_,range,#b9b9b9,normal,2
+gi_190706752_gb_EU8018271_,range,#b9b9b9,normal,2
+gi_237637594_gb_FJ9160991_,range,#1F78B4,normal,2
+gi_315190505_gb_HQ6227451_,range,#33A02C,normal,2
+gi_268308592_gb_FJ8204481_,range,#b9b9b9,normal,2
+gi_281187310_gb_FJ8492411_,range,#33A02C,normal,2
+gi_353742090_emb_HE6006861_,range,#fc8b8a,normal,2
+gi_353742078_emb_HE6006741_,range,#b9b9b9,normal,2
+gi_3462592_gb_AF0787561_,range,#b9b9b9,normal,2
+gi_62959391_gb_AY9480131_,range,#1F78B4,normal,2
+gi_353742095_emb_HE6006911_,range,#b9b9b9,normal,2
+gi_295879552_gb_HM1284861_,range,#b9b9b9,normal,2
+gi_33392076_gb_AY3455421_,range,#33A02C,normal,2
+gi_190705491_gb_EU8005661_,range,#1F78B4,normal,2
+gi_268308512_gb_FJ8203681_,range,#fc8b8a,normal,2
+gi_190706770_gb_EU8018451_,range,#b9b9b9,normal,2
+gi_295879872_gb_HM1288061_,range,#b9b9b9,normal,2
+gi_154125367_gb_EF6679271_,range,#b9b9b9,normal,2
+gi_190706288_gb_EU8013631_,range,#b9b9b9,normal,2
+gi_190705773_gb_EU8008481_,range,#33A02C,normal,2
+gi_255739756_gb_FJ6121191_,range,#b9b9b9,normal,2
+gi_169659089_dbj_AB4265761_,range,#b9b9b9,normal,2
+gi_190705958_gb_EU8010331_,range,#fc8b8a,normal,2
+gi_157101046_emb_AM8494341_,range,#1F78B4,normal,2
+gi_39652273_dbj_AB1098891_,range,#b9b9b9,normal,2
+gi_190705895_gb_EU8009701_,range,#fc8b8a,normal,2
+gi_197359881_gb_EU7034361_,range,#b9b9b9,normal,2
+gi_353742091_emb_HE6006871_,range,#b9b9b9,normal,2
+gi_312190230_dbj_AB5997901_,range,#fc8b8a,normal,2
+gi_332144604_dbj_AB6268111_,range,#b9b9b9,normal,2
+gi_350921987_emb_FM1655362_,range,#b9b9b9,normal,2
+gi_353742065_emb_HE6006611_,range,#b9b9b9,normal,2
+gi_190706341_gb_EU8014161_,range,#b9b9b9,normal,2
+gi_324096632_gb_HM5614452_,range,#b9b9b9,normal,2
+gi_975738_gb_U145851_UAU14585,range,#33A02C,normal,2
+gi_311335336_gb_HQ3272151_,range,#33A02C,normal,2
+gi_353742075_emb_HE6006711_,range,#fc8b8a,normal,2
+gi_169659092_dbj_AB4265791_,range,#fc8b8a,normal,2
+gi_68051130_emb_AM0398301_,range,#33A02C,normal,2
+gi_148723883_gb_EF5204681_,range,#33A02C,normal,2
+gi_190706329_gb_EU8014041_,range,#b9b9b9,normal,2
+gi_353742077_emb_HE6006731_,range,#b9b9b9,normal,2
+gi_190705927_gb_EU8010021_,range,#fc8b8a,normal,2
+gi_85718564_gb_DQ3490981_,range,#b9b9b9,normal,2
+gi_40641615_emb_AJ6063331_,range,#b9b9b9,normal,2
+gi_5042115_emb_Y186161_,range,#b9b9b9,normal,2
+gi_134261779_gb_EF4696091_,range,#b9b9b9,normal,2
+gi_3462610_gb_AF0787741_,range,#b9b9b9,normal,2
+gi_17065974_emb_AJ4203251_,range,#b9b9b9,normal,2
+gi_4432993_dbj_D880061_,range,#b9b9b9,normal,2
+gi_74423019_gb_DQ1789781_,range,#b9b9b9,normal,2
+gi_14595114_dbj_AB0643171_,range,#b9b9b9,normal,2
+gi_5230420_gb_AF0849471_,range,#b9b9b9,normal,2
+gi_70610322_gb_DQ0941831_,range,#b9b9b9,normal,2
+gi_193876561_gb_EU8257001_,range,#b9b9b9,normal,2
+gi_90025013_gb_DQ4320531_,range,#b9b9b9,normal,2
+gi_60117039_gb_AY7809051_,range,#b9b9b9,normal,2
+gi_343206349_ref_NR_0449411_,range,#b9b9b9,normal,2
+gi_151536_gb_M112241_PSERGDA,range,#b9b9b9,normal,2
+AJ811014.1,range,#b9b9b9,normal,2
+NR_074689.1,range,#b9b9b9,normal,2
+MF872602.1,range,#b9b9b9,normal,2
+AB599823.1,range,#b9b9b9,normal,2
+NR_125545.1,range,#b9b9b9,normal,2
+515|HE600664.2.1467,range,#fc8b8a,normal,2
+472|EU801289.1.1497,range,#33a02c,normal,2
+64|HM856514.1.1453,range,#9400d3,normal,2
+10|JN626652.1.1352,range,#b9b9b9,normal,2
+6|JQ906014.1.1393,range,#fc8b8a,normal,2
+99|HE979801.1.1511,range,#fc8b8a,normal,2
+134|HM856497.1.1453,range,#9400d3,normal,2
+54|JN626652.1.1352,range,#fc8b8a,normal,2
+1949|JQ906014.1.1393,range,#b9b9b9,normal,2
+96|JQ906014.1.1393,range,#fc8b8a,normal,2
+269|JQ906014.1.1393,range,#fc8b8a,normal,2
+45|JN003052.1.1286,range,#1f78b4,normal,2
+237|HE600664.2.1467,range,#b9b9b9,normal,2
+351|HE600664.2.1467,range,#fc8b8a,normal,2
+23|HF968499.1.1413,range,#fc8b8a,normal,2
+658|AB753869.1.1453,range,#33a02c,normal,2
+84|HE600664.2.1467,range,#fc8b8a,normal,2
+183|HE600664.2.1467,range,#fc8b8a,normal,2
+1079|HM856514.1.1453,range,#b9b9b9,normal,2
+600|HM856497.1.1453,range,#b9b9b9,normal,2
+113|HM856514.1.1453,range,#9400d3,normal,2
+69|HE600664.2.1467,range,#fc8b8a,normal,2
+68|JN941783.1.1447,range,#b9b9b9,normal,2
+530|HM856497.1.1453,range,#9400d3,normal,2
+19|JN626652.1.1352,range,#b9b9b9,normal,2
+650|HE600664.2.1467,range,#fc8b8a,normal,2
+538|HM856514.1.1453,range,#9400d3,normal,2
+368|HM856514.1.1453,range,#b9b9b9,normal,2
+152|JQ906014.1.1393,range,#fc8b8a,normal,2
+1008|HM856497.1.1453,range,#33a02c,normal,2
+2508|FN668020.1.1490_m01,range,#33a02c,normal,2
+442|HM856514.1.1453,range,#9400d3,normal,2
+622|HM856514.1.1453,range,#9400d3,normal,2
+477|HM856514.1.1453,range,#9400d3,normal,2
+177|HE979801.1.1511,range,#fc8b8a,normal,2
+433|HM856514.1.1453,range,#9400d3,normal,2
+144|HE600664.2.1467,range,#fc8b8a,normal,2
+197|KF650383.1.1485,range,#33a02c,normal,2
+858|KF650383.1.1485,range,#33a02c,normal,2
+222|JQ906014.1.1393,range,#fc8b8a,normal,2
+766|EU801573.1.1497,range,#b9b9b9,normal,2
+266|EU801573.1.1497,range,#b9b9b9,normal,2
+133|EU801867.1.1488,range,#b9b9b9,normal,2
+262|EU801573.1.1497,range,#b9b9b9,normal,2
+672|EU801867.1.1488,range,#b9b9b9,normal,2
+
+1949|JQ906014.1.1393 rgb(0,159,0,1)
+gi_254971472_gb_GQ3400781_ rgb(0,159,0,1)
+gi_312860423_gb_HM8564641_ rgb(0,159,0,1)
+gi_190705773_gb_EU8008481_ rgb(0,159,0,1)
+gi_148723883_gb_EF5204681_ rgb(0,159,0,1)
+gi_190705953_gb_EU8010281_ rgb(0,159,0,1)
+gi_190708498_gb_EU8035731_ rgb(0,159,0,1)
+gi_190706048_gb_EU8011231_ rgb(0,159,0,1)
+gi_33392076_gb_AY3455421_ rgb(0,159,0,1)
+gi_11544820_emb_AJ2899991_ rgb(0,159,0,1)
+gi_95115263_gb_DQ5013051_ rgb(0,159,0,1)
+gi_83308014_emb_AJ8679111_ rgb(0,159,0,1)
+gi_29692363_gb_AF5344291_ rgb(0,159,0,1)
+gi_157101045_emb_AM8494331_ rgb(0,159,0,1)
+gi_157101048_emb_AM8494361_ rgb(0,159,0,1)

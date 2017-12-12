@@ -1,0 +1,57 @@
+LABELS
+#use this template to change the leaf labels, or define/change the internal node names (displayed in mouseover popups)
+
+#lines starting with a hash are comments and ignored during parsing
+
+#=================================================================#
+#                    MANDATORY SETTINGS                           #
+#=================================================================#
+#select the separator which is used to delimit the data below (TAB,SPACE or COMMA).This separator must be used throughout this file (except in the SEPARATOR line, which uses space).
+
+#SEPARATOR TAB
+#SEPARATOR SPACE
+SEPARATOR COMMA
+
+#Internal tree nodes can be specified using IDs directly, or using the 'last common ancestor' method described in iTOL help pages
+#=================================================================#
+#       Actual data follows after the "DATA" keyword              #
+#=================================================================#
+DATA
+#NODE_ID,LABEL
+
+#Examples
+#define a name for an internal node
+#9031|9606,Metazoa
+
+#change the label for leaf node 9606
+#9606,Homo sapiens
+gi_33328318_gb_AF5304761_,Escherichia vulneris (gb|AF530476.1)
+gi_2584741_emb_Z960781_,Enterobacter cancerogenus (emb|Z96078.1)
+gi_3462610_gb_AF0787741_,Delftia acidovorans (gb|AF078774.1)
+gi_151536_gb_M112241_PSERGDA,Pseudomonas testosteroni (gb|M11224.1)
+gi_60117039_gb_AY7809051_,Giesbergeria voronezhensis (gb|AY780905.1)
+gi_14595114_dbj_AB0643171_,Diaphorobacter nitroreducens (dbj|AB064317.1)
+gi_17065974_emb_AJ4203251_,Acidovorax konjaci (emb|AJ420325.1)
+gi_343206349_ref_NR_0449411_,Simplicispira metamorpha (ref|NR_044941.1)
+gi_5042115_emb_Y186161_,Acidovorax defluvii (emb|Y18616.1)
+gi_134261779_gb_EF4696091_,Pseudacidovorax intermedius (gb|EF469609.1)
+gi_74423019_gb_DQ1789781_,Variovorax dokdonensis (gb|DQ178978.1)
+gi_90025013_gb_DQ4320531_,Variovorax soli (gb|DQ432053.1)
+gi_4432993_dbj_D880061_,Variovorax paradoxus (dbj|D88006.1)
+gi_158259706_dbj_AB3005971_,Variovorax boronicumulans (dbj|AB300597.1)
+gi_193876561_gb_EU8257001_,Pseudorhodoferax soli (gb|EU825700.1)
+gi_40641615_emb_AJ6063331_,Pseudorhodoferax caeni (emb|AJ606333.1)
+gi_303831_dbj_D162111_RHYFR2D,Rhodoferax fermentans (dbj|D16211.1)
+gi_5230420_gb_AF0849471_,Rhodoferax antarcticus (gb|AF084947.1)
+gi_32292927_gb_AF4359482_,Rhodoferax ferrireducens (gb|AF435948.2)
+gi_3462592_gb_AF0787561_,Aquaspirillum delicatum (gb|AF078756.1)
+gi_4165396_dbj_AB0213901_,Curvibacter lanceolatus (dbj|AB021390.1)
+gi_39652273_dbj_AB1098891_,Curvibacter gracilis (dbj|AB109889.1)
+gi_85718564_gb_DQ3490981_,Caenimonas koreensis (gb|DQ349098.1)
+JX443550.1,Ramlibacter sp. SNGM03-03 (gb|JX443550.1)
+KX395636.1,Ramlibacter sp. J26 (gb|KX395636.1)
+NR_025203.1,Ramlibacter sp. TMB834 (ref|NR_025203.1)
+EU423304.1,Ramlibacter sp. BXN5-27 (gb|EU423304.1)
+NR_074643.1,Ramlibacter sp. TTB310 (ref|NR_074643.1)
+NR_133837.1,Ramlibacter sp. strain 5-10 (ref|NR_133837.1)
+5_Bctrm474_Prior=1.000000_Length=1481_NormPrior=1.000000,Ramlibacter sp. MAG (reconstructed 16S rRNA gene)

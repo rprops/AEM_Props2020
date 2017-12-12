@@ -60,8 +60,14 @@ data_total$upper_rel_abundance <- 100*((data_total$coverage+data_total$std_cover
 data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_coverage)*data_total$bin_size)/(read_length*data_total$Total_reads)
 ```
 
-# 1a. Phylogenetic tree & ANI annotation  
-![Annotated phylogenomic tree](./tree/tree_annotated.png)
+# 1a. Phylogeny
+
+## Phylogenomic tree  
+
+![Annotated phylogenomic tree](./Tree/tree_annotated.png)
+
+## 16S rRNA gene phylogenetic tree
+![Annotated 16S rRNA gene phylogenetic tree](./Tree/16S/tree_fig_fasttree.png)
 
 
 ```r
@@ -1338,11 +1344,9 @@ p_blast_sdisc_B63 <- blast_df_sum %>% dplyr::filter(bin == "B63_Su13.BD.MM110.DC
   theme_bw()+
   facet_grid(season~Site)+
   geom_density(alpha = 0.4, color = "black", size = 1)+
-  # geom_point(size = 3, alpha = 0.6)+
   scale_shape_manual("", values = c(21,22,24))+
   scale_fill_brewer(palette = "Accent")+
   guides(color = FALSE, fill = FALSE)+
-  # ggtitle(bin2plot)+
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
@@ -1389,11 +1393,6 @@ p_blast_sdisc_ML
 
 <img src="Figures/cached/merged-blast-approach-2-1.png" style="display: block; margin: auto;" />
 
-### Filter out bins using MClust
-
-
-
-
 
 ```r
 blast_df_sum_comp <- blast_df_sum %>% group_by(Sample, bin) %>% dplyr::count(bin_xcoord)
@@ -1431,7 +1430,10 @@ blast_df_sum_comp <- left_join(blast_df_sum_comp, total_reads, by = c("Sample" =
 
 # Divide normalized reads by 1M (fixed blast census)
 blast_df_sum_comp <- blast_df_sum_comp %>% mutate(n_norm_perc = 100*n_norm/1e6)
+```
 
+
+```r
 # Plot % reads corrected for genome size over threshold of 0.95
 id_thresh <- 95-0.25
 map_disc_cum <- blast_df_sum_comp  %>% dplyr::filter(bin_xcoord > id_thresh) %>% group_by(Sample, bin) %>% 
@@ -1461,7 +1463,7 @@ p_sdisc_cum3 <- ggplot(map_disc_cum, aes(x = new_bin_name,
 print(p_sdisc_cum3)
 ```
 
-<img src="Figures/cached/summary-blast-approach-1.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/summary-blast-approach-2-1.png" style="display: block; margin: auto;" />
 
 ```r
 # Plot % reads over threshold of 0.99
@@ -1493,7 +1495,109 @@ p_sdisc_cum4 <- ggplot(map_disc_cum, aes(x = new_bin_name,
 print(p_sdisc_cum4)
 ```
 
-<img src="Figures/cached/summary-blast-approach-2.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/summary-blast-approach-2-2.png" style="display: block; margin: auto;" />
+
+### Filter out bins using MClust  
+
+** Here we will use model-based clustering to determine whether there is a MAG present or not in a certain sample. ** 
+
+
+```r
+# Perform gaussian mixture clustering on whole dataset.
+mod1 <- densityMclust(blast_df_sum$bin_xcoord)
+summary(mod1)
+```
+
+```
+## -------------------------------------------------------
+## Density estimation via Gaussian finite mixture modeling 
+## -------------------------------------------------------
+## 
+## Mclust V (univariate, unequal variance) model with 3 components:
+## 
+##  log.likelihood      n df      BIC      ICL
+##        -2219532 946589  8 -4439175 -4675724
+## 
+## Clustering table:
+##      1      2      3 
+## 329524 251916 365149
+```
+
+```r
+par(mfrow=c(2,2))
+plot(mod1, what = "density", data = blast_df_sum$bin_xcoord, breaks = 15)
+plot(mod1, what = "BIC")
+plot(mod1, what = "diagnostic", type = "cdf")
+plot(mod1, what = "diagnostic", type = "qq")
+```
+
+<img src="Figures/cached/filter-bins-1-1.png" style="display: block; margin: auto;" />
+
+```r
+par(mfrow=c(1,1))
+
+# Return cluster labels and plot the Sequence discrete populations again.
+blast_df_sum$cluster_label <- mod1$classification
+blast_df_sum$model_density <- mod1$density
+
+# Add cluster labels to blast_df_sum_comp
+tmp <- blast_df_sum[, c("bin_xcoord", "cluster_label", "model_density")] %>% distinct()
+tmp$bin_xcoord <- as.factor(tmp$bin_xcoord)
+blast_df_sum_comp$bin_xcoord <- as.factor(blast_df_sum_comp$bin_xcoord)
+blast_df_sum_comp <- left_join(blast_df_sum_comp, tmp, by = "bin_xcoord")
+blast_df_sum_comp$bin_xcoord <- 
+  as.numeric(as.character(blast_df_sum_comp$bin_xcoord))
+blast_df_sum_comp$cluster_label <- as.factor(blast_df_sum_comp$cluster_label)
+
+# Plot for global analysis
+p_blast_sdisc_glob_clust <- blast_df_sum_comp %>% 
+  ggplot(aes(x = bin_xcoord, y = model_density, 
+             color = cluster_label, group = Sample))+
+  theme_bw()+
+  geom_line(alpha = 1, size = 1)+
+  scale_color_brewer(palette = "Dark2")+
+  guides(color = FALSE, fill = FALSE)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        strip.text=element_text(size=16),
+        panel.grid.minor = element_blank(),
+        legend.position = "bottom")+
+  ylab("Density")+
+  xlab("Nucleotide identity (%)")+
+  xlim(75,100)
+
+print(p_blast_sdisc_glob_clust)
+```
+
+<img src="Figures/cached/filter-bins-1-2.png" style="display: block; margin: auto;" />
+
+
+```r
+# Plot for most abundant bin (B63)
+p_blast_sdisc_B63_clust <- blast_df_sum_comp %>% dplyr::filter(bin == "B63_Su13.BD.MM110.DCMD_rebin1") %>% 
+  ggplot(aes(x = bin_xcoord, y = n, color = cluster_label, group = Sample))+
+  theme_bw()+
+  facet_grid(Season~Site)+
+  geom_line(alpha = 1, size = 1)+
+  scale_color_brewer(palette = "Dark2")+
+  guides(color = FALSE, fill = FALSE)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        strip.text=element_text(size=16),
+        panel.grid.minor = element_blank(),
+        legend.position = "bottom")+
+  ylab("Density")+
+  xlab("Nucleotide identity (%)")+
+  xlim(75,100)
+
+print(p_blast_sdisc_B63_clust)
+```
+
+<img src="Figures/cached/filter-bins-2-1.png" style="display: block; margin: auto;" />
 
 ### Compare blast to bwa results  
 

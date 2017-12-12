@@ -1,0 +1,227 @@
+DATASET_TEXT
+#In text datasets, each ID is associated to text label, which can be displayed directly on the node branch, or outside the tree
+#lines starting with a hash are comments and ignored during parsing
+#=================================================================#
+#                    MANDATORY SETTINGS                           #
+#=================================================================#
+#select the separator which is used to delimit the data below (TAB,SPACE or COMMA).This separator must be used throughout this file (except in the SEPARATOR line, which uses space).
+#SEPARATOR TAB
+#SEPARATOR SPACE
+SEPARATOR COMMA
+
+#label is used in the legend table (can be changed later)
+DATASET_LABEL,example text dataset
+
+#dataset color (can be changed later)
+COLOR,#ff0000
+
+#=================================================================#
+#                    OPTIONAL SETTINGS                            #
+#=================================================================#
+
+#=================================================================#
+#     all other optional settings can be set or changed later     #
+#           in the web interface (under 'Datasets' tab)           #
+#=================================================================#
+
+#left margin, used to increase/decrease the spacing to the next dataset. Can be negative, causing datasets to overlap. Used only for text labels which are displayed on the outside
+MARGIN,0
+
+#applies to external text labels only; if set, text labels associated to internal nodes will be displayed even if these nodes are not collapsed. It could cause overlapping in the dataset display.
+SHOW_INTERNAL,0
+
+#Rotate all labels by the specified angle
+LABEL_ROTATION,0
+
+#If set to 1, tree rotation will not influence the individual label rotation
+STRAIGHT_LABELS,0
+
+#applies to external text labels only; If set to 1, labels will be displayed in arcs aligned to the tree (in circular mode) or vertically (in normal mode). All rotation parameters (global or individual) will be ignored.
+ALIGN_TO_TREE,0
+
+#font size factor; For external text labels, default font size will be slightly less than the available space between leaves, but you can set a multiplication factor here to increase/decrease it (values from 0 to 1 will decrease it, values above 1 will increase it)
+SIZE_FACTOR,1
+
+#Internal tree nodes can be specified using IDs directly, or using the 'last common ancestor' method described in iTOL help pages
+#=================================================================#
+#       Actual data follows after the "DATA" keyword              #
+#=================================================================#
+#the following fields are possible for each node:
+#ID,label,position,color,style,size_factor,rotation
+
+#position defines the position of the text label on the tree:
+#  -1 = external label
+#  a number between 0 and 1 = internal label positioned at the specified value along the node branch (for example, position 0 is exactly at the start of node branch, position 0.5 is in the middle, and position 1 is at the end)
+#style can be 'normal',''bold','italic' or 'bold-italic'
+#size factor will be multiplied with the standard font size
+
+DATA
+#Examples
+
+#node 9606 will have an external label 'Homo sapiens' in bold red and twice the size of standard labels
+#9606,Homo sapiens,-1,#ff0000,bold,2,0
+
+gi_190707162_gb_EU8022371_,LimC,-1,#fc8b8a,bold,2,0
+gi_295879822_gb_HM1287561_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742086_emb_HE6006821_,LimC,-1,#fc8b8a,bold,2,0
+10|JN626652.1.1352,LimC,-1,#fc8b8a,bold,2,0
+gi_295880716_gb_HM1296501_,LimC,-1,#fc8b8a,bold,2,0
+gi_295879500_gb_HM1284341_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742071_emb_HE6006671_,LimC,-1,#fc8b8a,bold,2,0
+gi_84322277_gb_DQ2341352_,LimC,-1,#fc8b8a,bold,2,0
+gi_169659095_dbj_AB4265821_,LimC,-1,#fc8b8a,bold,2,0
+gi_255740061_gb_FJ6124241_,LimC,-1,#fc8b8a,bold,2,0
+gi_268308629_gb_FJ8204851_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742082_emb_HE6006781_,LimC,-1,#fc8b8a,bold,2,0
+gi_255739756_gb_FJ6121191_,LimC,-1,#fc8b8a,bold,2,0
+gi_268308592_gb_FJ8204481_,LimC,-1,#fc8b8a,bold,2,0
+gi_324096632_gb_HM5614452_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742067_emb_HE6006631_,LimC,-1,#fc8b8a,bold,2,0
+gi_295880084_gb_HM1290181_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742091_emb_HE6006871_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742065_emb_HE6006611_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742096_emb_HE6006921_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742078_emb_HE6006741_,LimC,-1,#fc8b8a,bold,2,0
+gi_190706329_gb_EU8014041_,LimC,-1,#fc8b8a,bold,2,0
+gi_190706268_gb_EU8013431_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742072_emb_HE6006681_,LimC,-1,#fc8b8a,bold,2,0
+gi_169659087_dbj_AB4265741_,LimC,-1,#fc8b8a,bold,2,0
+gi_169659099_dbj_AB4265861_,LimC,-1,#fc8b8a,bold,2,0
+gi_169659097_dbj_AB4265841_,LimC,-1,#fc8b8a,bold,2,0
+gi_190707104_gb_EU8021791_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742074_emb_HE6006701_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742079_emb_HE6006751_,LimC,-1,#fc8b8a,bold,2,0
+gi_190706288_gb_EU8013631_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742088_emb_HE6006841_,LimC,-1,#fc8b8a,bold,2,0
+gi_197359881_gb_EU7034361_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742081_emb_HE6006771_,LimC,-1,#fc8b8a,bold,2,0
+gi_304422274_gb_HQ0085781_,LimC,-1,#fc8b8a,bold,2,0
+gi_190706113_gb_EU8011881_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742077_emb_HE6006731_,LimC,-1,#fc8b8a,bold,2,0
+gi_190706032_gb_EU8011071_,LimC,-1,#fc8b8a,bold,2,0
+gi_190706770_gb_EU8018451_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742066_emb_HE6006621_,LimC,-1,#fc8b8a,bold,2,0
+gi_154125367_gb_EF6679271_,LimC,-1,#fc8b8a,bold,2,0
+gi_190706341_gb_EU8014161_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742095_emb_HE6006911_,LimC,-1,#fc8b8a,bold,2,0
+gi_350921987_emb_FM1655362_,LimC,-1,#fc8b8a,bold,2,0
+gi_350921985_emb_AJ9648922_,LimC,-1,#fc8b8a,bold,2,0
+gi_190705513_gb_EU8005881_,LimC,-1,#fc8b8a,bold,2,0
+gi_190706752_gb_EU8018271_,LimC,-1,#fc8b8a,bold,2,0
+gi_332144605_dbj_AB6268121_,LimC,-1,#fc8b8a,bold,2,0
+gi_332144604_dbj_AB6268111_,LimC,-1,#fc8b8a,bold,2,0
+gi_324096625_gb_HM5614312_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742087_emb_HE6006831_,LimC,-1,#fc8b8a,bold,2,0
+gi_350921986_emb_FM1655352_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742069_emb_HE6006651_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742084_emb_HE6006801_,LimC,-1,#fc8b8a,bold,2,0
+gi_169659088_dbj_AB4265751_,LimC,-1,#fc8b8a,bold,2,0
+gi_169659094_dbj_AB4265811_,LimC,-1,#fc8b8a,bold,2,0
+gi_169659089_dbj_AB4265761_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742064_emb_HE6006601_,LimC,-1,#fc8b8a,bold,2,0
+gi_268308554_gb_FJ8204101_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742094_emb_HE6006901_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742076_emb_HE6006721_,LimC,-1,#fc8b8a,bold,2,0
+gi_353742093_emb_HE6006891_,LimC,-1,#fc8b8a,bold,2,0
+
+237|HE600664.2.1467,LimB,-1,rgba(239,56,56,1),bold,2,0
+650|HE600664.2.1467,LimB,-1,rgba(239,56,56,1),bold,2,0
+99|HE979801.1.1511,LimB,-1,rgba(239,56,56,1),bold,2,0
+gi_353742073_emb_HE6006691_,LimB,-1,rgba(239,56,56,1),bold,2,0
+515|HE600664.2.1467,LimB,-1,rgba(239,56,56,1),bold,2,0
+6|JQ906014.1.1393,LimB,-1,rgba(239,56,56,1),bold,2,0
+54|JN626652.1.1352,LimB,-1,rgba(239,56,56,1),bold,2,0
+96|JQ906014.1.1393,LimB,-1,rgba(239,56,56,1),bold,2,0
+23|HF968499.1.1413,LimB,-1,rgba(239,56,56,1),bold,2,0
+177|HE979801.1.1511,LimB,-1,rgba(239,56,56,1),bold,2,0
+351|HE600664.2.1467,LimB,-1,rgba(239,56,56,1),bold,2,0
+144|HE600664.2.1467,LimB,-1,rgba(239,56,56,1),bold,2,0
+gi_62959391_gb_AY9480131_,LimB,-1,rgba(239,56,56,1),bold,2,0
+gi_237637594_gb_FJ9160991_,LimB,-1,rgba(239,56,56,1),bold,2,0
+gi_255740072_gb_FJ6124351_,LimB,-1,rgba(239,56,56,1),bold,2,0
+gi_190706597_gb_EU8016721_,LimB,-1,rgba(239,56,56,1),bold,2,0
+gi_353742080_emb_HE6006761_,LimB,-1,rgba(239,56,56,1),bold,2,0
+222|JQ906014.1.1393,LimB,-1,rgba(239,56,56,1),bold,2,0
+269|JQ906014.1.1393,LimB,-1,rgba(239,56,56,1),bold,2,0
+152|JQ906014.1.1393,LimB,-1,rgba(239,56,56,1),bold,2,0
+gi_157101046_emb_AM8494341_,LimB,-1,rgba(239,56,56,1),bold,2,0
+gi_190705491_gb_EU8005661_,LimB,-1,rgba(239,56,56,1),bold,2,0
+gi_37787067_gb_AY2126681_,LimB,-1,rgba(239,56,56,1),bold,2,0
+gi_353742085_emb_HE6006811_,LimB,-1,rgba(239,56,56,1),bold,2,0
+gi_312860463_gb_HM8565041_,LimB,-1,rgba(239,56,56,1),bold,2,0
+183|HE600664.2.1467,LimB,-1,rgba(239,56,56,1),bold,2,0
+gi_296171786_emb_FN6680132_,LimB,-1,rgba(239,56,56,1),bold,2,0
+gi_95115286_gb_DQ5013281_,LimB,-1,rgba(239,56,56,1),bold,2,0
+84|HE600664.2.1467,LimB,-1,rgba(239,56,56,1),bold,2,0
+gi_353742068_emb_HE6006641_,LimB,-1,rgba(239,56,56,1),bold,2,0
+gi_83308025_emb_AJ8679221_,LimB,-1,rgba(239,56,56,1),bold,2,0
+
+1949|JQ906014.1.1393,LimD,-1,rgba(0,159,0,1),bold,2,0
+gi_254971472_gb_GQ3400781_,LimD,-1,rgba(0,159,0,1),bold,2,0
+gi_312860423_gb_HM8564641_,LimD,-1,rgba(0,159,0,1),bold,2,0
+gi_190705773_gb_EU8008481_,LimD,-1,rgba(0,159,0,1),bold,2,0
+gi_148723883_gb_EF5204681_,LimD,-1,rgba(0,159,0,1),bold,2,0
+gi_190705953_gb_EU8010281_,LimD,-1,rgba(0,159,0,1),bold,2,0
+gi_190708498_gb_EU8035731_,LimD,-1,rgba(0,159,0,1),bold,2,0
+gi_190706048_gb_EU8011231_,LimD,-1,rgba(0,159,0,1),bold,2,0
+gi_33392076_gb_AY3455421_,LimD,-1,rgba(0,159,0,1),bold,2,0
+gi_11544820_emb_AJ2899991_,LimD,-1,rgba(0,159,0,1),bold,2,0
+gi_95115263_gb_DQ5013051_,LimD,-1,rgba(0,159,0,1),bold,2,0
+gi_83308014_emb_AJ8679111_,LimD,-1,rgba(0,159,0,1),bold,2,0
+gi_29692363_gb_AF5344291_,LimD,-1,rgba(0,159,0,1),bold,2,0
+gi_157101045_emb_AM8494331_,LimD,-1,rgba(0,159,0,1),bold,2,0
+gi_157101048_emb_AM8494361_,LimD,-1,rgba(0,159,0,1),bold,2,0
+
+gi_62959354_gb_AY9479761_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_353742092_emb_HE6006881_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_169659092_dbj_AB4265791_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_190705448_gb_EU8005231_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_190705958_gb_EU8010331_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_169659086_dbj_AB4265731_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_350921983_emb_AJ9380262_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_353742083_emb_HE6006791_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_353742090_emb_HE6006861_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_304422261_gb_HQ0085651_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_169659096_dbj_AB4265831_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_312190240_dbj_AB5998001_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_15054828_gb_AF2891611_,LimA,-1,rgba(200,200,255,1),bold,2,0
+45|JN003052.1.1286,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_268308512_gb_FJ8203681_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_190705895_gb_EU8009701_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_353742089_emb_HE6006851_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_15054822_gb_AF2891551_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_312190230_dbj_AB5997901_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_312190329_dbj_AB5998891_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_190705927_gb_EU8010021_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_350921988_emb_FM1782262_,LimA,-1,rgba(200,200,255,1),bold,2,0
+gi_169659091_dbj_AB4265781_,LimA,-1,rgba(200,200,255,1),bold,2,0
+19|JN626652.1.1352,LimA,-1,rgba(200,200,255,1),bold,2,0
+
+gi_4165396_dbj_AB0213901_,Lhab-A4-I,-1,#FDBF6F,bold,2,0
+gi_39652273_dbj_AB1098891_,Lhab-A4-I,-1,#FDBF6F,bold,2,0
+68|JN941783.1.1447,Lhab-A4-I,-1,#FDBF6F,bold,2,0
+538|HM856514.1.1453,Lhab-A4-I,-1,#FDBF6F,bold,2,0
+622|HM856514.1.1453,Lhab-A4-I,-1,#FDBF6F,bold,2,0
+1008|HM856497.1.1453,Lhab-A4-I,-1,#FDBF6F,bold,2,0
+1079|HM856514.1.1453,Lhab-A4-I,-1,#FDBF6F,bold,2,0
+600|HM856497.1.1453,Lhab-A4-I,-1,#FDBF6F,bold,2,0
+134|HM856497.1.1453,Lhab-A4-I,-1,#FDBF6F,bold,2,0
+530|HM856497.1.1453,Lhab-A4-I,-1,#FDBF6F,bold,2,0
+64|HM856514.1.1453,Lhab-A4-I,-1,#FDBF6F,bold,2,0
+442|HM856514.1.1453,Lhab-A4-I,-1,#FDBF6F,bold,2,0
+113|HM856514.1.1453,Lhab-A4-I,-1,#FDBF6F,bold,2,0
+368|HM856514.1.1453,Lhab-A4-I,-1,#FDBF6F,bold,2,0
+477|HM856514.1.1453,Lhab-A4-I,-1,#FDBF6F,bold,2,0
+433|HM856514.1.1453,Lhab-A4-I,-1,#FDBF6F,bold,2,0
+
+
+gi_74423019_gb_DQ1789781_,Lhab-A4-II,-1,#FF7F00,bold,2,0
+gi_90025013_gb_DQ4320531_,Lhab-A4-II,-1,#FF7F00,bold,2,0
+gi_4432993_dbj_D880061_,Lhab-A4-II,-1,#FF7F00,bold,2,0
+gi_158259706_dbj_AB3005971_,Lhab-A4-II,-1,#FF7F00,bold,2,0
+gi_32292927_gb_AF4359482_,Lhab-A4-II,-1,#FF7F00,bold,2,0
+gi_5230420_gb_AF0849471_,Lhab-A4-II,-1,#FF7F00,bold,2,0
+gi_303831_dbj_D162111_RHYFR2D,Lhab-A4-II,-1,#FF7F00,bold,2,0
+gi_353742075_emb_HE6006711_,Lhab-A4-II,-1,#FF7F00,bold,2,0
+gi_193876561_gb_EU8257001_,Lhab-A4-II,-1,#FF7F00,bold,2,0
+gi_40641615_emb_AJ6063331_,Lhab-A4-II,-1,#FF7F00,bold,2,0

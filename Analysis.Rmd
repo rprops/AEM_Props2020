@@ -100,8 +100,14 @@ data_total$upper_rel_abundance <- 100*((data_total$coverage+data_total$std_cover
 data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_coverage)*data_total$bin_size)/(read_length*data_total$Total_reads)
 ```
 
-# 1a. Phylogenetic tree & ANI annotation  
-![Annotated phylogenomic tree](./tree/tree_annotated.png)
+# 1a. Phylogeny
+
+## Phylogenomic tree  
+
+![Annotated phylogenomic tree](./Tree/tree_annotated.png)
+
+## 16S rRNA gene phylogenetic tree
+![Annotated 16S rRNA gene phylogenetic tree](./Tree/16S/tree_fig_fasttree.png)
 
 ```{r ANI-analysis, warning = FALSE, fig.width = 9, fig.height = 9, dpi = 500}
 # read file
@@ -1206,12 +1212,16 @@ print(p_sdisc_cum4)
 
 ** Here we will use model-based clustering to determine whether there is a MAG present or not in a certain sample. ** 
 
-```{r filter-bins-1, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 20}
+```{r filter-bins-1, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 6}
 # Perform gaussian mixture clustering on whole dataset.
 mod1 <- densityMclust(blast_df_sum$bin_xcoord)
 summary(mod1)
+par(mfrow=c(2,2))
+plot(mod1, what = "density", data = blast_df_sum$bin_xcoord, breaks = 15)
+plot(mod1, what = "BIC")
 plot(mod1, what = "diagnostic", type = "cdf")
 plot(mod1, what = "diagnostic", type = "qq")
+par(mfrow=c(1,1))
 
 # Return cluster labels and plot the Sequence discrete populations again.
 blast_df_sum$cluster_label <- mod1$classification
@@ -1225,6 +1235,28 @@ blast_df_sum_comp <- left_join(blast_df_sum_comp, tmp, by = "bin_xcoord")
 blast_df_sum_comp$bin_xcoord <- 
   as.numeric(as.character(blast_df_sum_comp$bin_xcoord))
 blast_df_sum_comp$cluster_label <- as.factor(blast_df_sum_comp$cluster_label)
+
+# Plot for global analysis
+p_blast_sdisc_glob_clust <- blast_df_sum_comp %>% 
+  ggplot(aes(x = bin_xcoord, y = model_density, 
+             color = cluster_label, group = Sample))+
+  theme_bw()+
+  geom_line(alpha = 1, size = 1)+
+  scale_color_brewer(palette = "Dark2")+
+  guides(color = FALSE, fill = FALSE)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        strip.text=element_text(size=16),
+        panel.grid.minor = element_blank(),
+        legend.position = "bottom")+
+  ylab("Density")+
+  xlab("Nucleotide identity (%)")+
+  xlim(75,100)
+
+print(p_blast_sdisc_glob_clust)
+
 ```
 
 ```{r filter-bins-2, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 20}
@@ -1234,7 +1266,7 @@ p_blast_sdisc_B63_clust <- blast_df_sum_comp %>% dplyr::filter(bin == "B63_Su13.
   theme_bw()+
   facet_grid(Season~Site)+
   geom_line(alpha = 1, size = 1)+
-  scale_color_brewer(palette = "Accent")+
+  scale_color_brewer(palette = "Dark2")+
   guides(color = FALSE, fill = FALSE)+
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
