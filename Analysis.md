@@ -67,7 +67,16 @@ data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_cover
 ![Annotated phylogenomic tree](./Tree/tree_annotated.png)
 
 ## 16S rRNA gene phylogenetic tree
-![Annotated 16S rRNA gene phylogenetic tree](./Tree/16S/tree_fig_fasttree.png)
+![Annotated 16S rRNA gene phylogenetic tree](./Tree/16S/fasttree.png)
+
+### Microdiversity in MAG8  
+
+**At each iteration, SSU sequences were merged into one sequence if the identity of non-gapped positions in a global alignment was greater than 97%. A single SSU sequence (and its prior probability) was divided into two sequences if the second most probable base in more than 4% of all positions had a probability greater than 10%. In this way, sequences that evolved over iterations to be the same were merged, and sequences with evidence from the reads for multiple OTUs were duplicated and allowed to evolve as separate OTUs in future iterations.** [Reference](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2011-12-5-r44)  
+
+The workflow for postprocessing the `EMIRGE` reconstructed 16S rRNA gene sequences:  
+
+
+
 
 
 ```r
@@ -1784,6 +1793,7 @@ print(p_MAG_div)
 ```
 
 <img src="Figures/cached/diversity-Lhab-1.png" style="display: block; margin: auto;" />
+
 
 # Pangenome analysis  
 

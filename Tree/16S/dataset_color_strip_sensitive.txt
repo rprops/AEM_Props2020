@@ -1,0 +1,243 @@
+DATASET_COLORSTRIP
+#In colored strip datasets, each ID is associated to a color box/strip and can have an optional label. Color can be specified in hexadecimal, RGB or RGBA notation. When using RGB or RGBA notation, you cannot use COMMA as the dataset separator
+
+#lines starting with a hash are comments and ignored during parsing
+
+#=================================================================#
+#                    MANDATORY SETTINGS                           #
+#=================================================================#
+#select the separator which is used to delimit the data below (TAB,SPACE or COMMA).This separator must be used throughout this file (except in the SEPARATOR line, which uses space).
+
+#SEPARATOR TAB
+#SEPARATOR COMMA
+SEPARATOR SPACE
+
+#label is used in the legend table (can be changed later)
+DATASET_LABEL Taxonomy
+
+#dataset color (can be changed later)
+COLOR #ff0000
+
+#=================================================================#
+#                    OPTIONAL SETTINGS                            #
+#=================================================================#
+
+#If COLOR_BRANCHES is set to 1, branches of the tree will be colored according to the colors of the strips above the leaves.
+#When all children of a node have the same color, it will be colored the same, ie. the color will propagate inwards towards the root.
+COLOR_BRANCHES 0
+
+#each dataset can have a legend, which is defined below
+#for each row in the legend, there should be one shape, color and label
+#shape should be a number between 1 and 6:
+#1: square
+#2: circle
+#3: star
+#4: right pointing triangle
+#5: left pointing triangle
+#6: checkmark
+
+#LEGEND_TITLE Dataset_legend
+#LEGEND_SHAPES 1 1 2 2
+#LEGEND_COLORS #ff0000 #00ff00 rgba(0,255,0,0.5) #0000ff
+#LEGEND_LABELS value1 value2 value3 value4
+
+#=================================================================#
+#     all other optional settings can be set or changed later     #
+#           in the web interface (under 'Datasets' tab)           #
+#=================================================================#
+
+#width of the colored strip
+#STRIP_WIDTH 25
+
+#left margin, used to increase/decrease the spacing to the next dataset. Can be negative, causing datasets to overlap.
+#MARGIN 0
+
+#border width; if set above 0, a border of specified width (in pixels) will be drawn around the color strip 
+#BORDER_WIDTH 0
+
+#border color; used when BORDER_WIDTH is above 0
+#BORDER_COLOR #0000ff
+
+#always show internal values; if set, values associated to internal nodes will be displayed even if these nodes are not collapsed. It could cause overlapping in the dataset display.
+#SHOW_INTERNAL 0
+
+
+#Internal tree nodes can be specified using IDs directly, or using the 'last common ancestor' method described in iTOL help pages
+
+#=================================================================#
+#       Actual data follows after the "DATA" keyword              #
+#=================================================================#
+DATA
+
+#Examples:
+#assign a red colored strip to leaf 9606, with label 'Human' (label is displayed in the mouseover popups)
+#9606 #ff0000 Human
+
+#assign a green, semi-transparent (alpha 0.5) strip to an internal node, without any label. If 'Show internal values' is set to 'No', this will only be displayed if the node is collapsed. 
+#9606|5664 rgba(0,255,0,0.5)
+
+gi_190707162_gb_EU8022371_ #FB9A99
+gi_295879822_gb_HM1287561_ #FB9A99
+gi_353742086_emb_HE6006821_ #FB9A99
+10|JN626652.1.1352 #FB9A99
+gi_295880716_gb_HM1296501_ #FB9A99
+gi_295879500_gb_HM1284341_ #FB9A99
+gi_353742071_emb_HE6006671_ #FB9A99
+gi_84322277_gb_DQ2341352_ #FB9A99
+gi_169659095_dbj_AB4265821_ #FB9A99
+gi_255740061_gb_FJ6124241_ #FB9A99
+gi_268308629_gb_FJ8204851_ #FB9A99
+gi_353742082_emb_HE6006781_ #FB9A99
+gi_255739756_gb_FJ6121191_ #FB9A99
+gi_268308592_gb_FJ8204481_ #FB9A99
+gi_324096632_gb_HM5614452_ #FB9A99
+gi_353742067_emb_HE6006631_ #FB9A99
+gi_295880084_gb_HM1290181_ #FB9A99
+gi_353742091_emb_HE6006871_ #FB9A99
+gi_353742065_emb_HE6006611_ #FB9A99
+gi_353742096_emb_HE6006921_ #FB9A99
+gi_353742078_emb_HE6006741_ #FB9A99
+gi_190706329_gb_EU8014041_ #FB9A99
+gi_190706268_gb_EU8013431_ #FB9A99
+gi_353742072_emb_HE6006681_ #FB9A99
+gi_169659087_dbj_AB4265741_ #FB9A99
+gi_169659099_dbj_AB4265861_ #FB9A99
+gi_169659097_dbj_AB4265841_ #FB9A99
+gi_190707104_gb_EU8021791_ #FB9A99
+gi_353742074_emb_HE6006701_ #FB9A99
+gi_353742079_emb_HE6006751_ #FB9A99
+gi_190706288_gb_EU8013631_ #FB9A99
+gi_353742088_emb_HE6006841_ #FB9A99
+gi_197359881_gb_EU7034361_ #FB9A99
+gi_353742081_emb_HE6006771_ #FB9A99
+gi_304422274_gb_HQ0085781_ #FB9A99
+gi_190706113_gb_EU8011881_ #FB9A99
+gi_353742077_emb_HE6006731_ #FB9A99
+gi_190706032_gb_EU8011071_ #FB9A99
+gi_190706770_gb_EU8018451_ #FB9A99
+gi_353742066_emb_HE6006621_ #FB9A99
+gi_154125367_gb_EF6679271_ #FB9A99
+gi_190706341_gb_EU8014161_ #FB9A99
+gi_353742095_emb_HE6006911_ #FB9A99
+gi_350921987_emb_FM1655362_ #FB9A99
+gi_350921985_emb_AJ9648922_ #FB9A99
+gi_190705513_gb_EU8005881_ #FB9A99
+gi_190706752_gb_EU8018271_ #FB9A99
+gi_332144605_dbj_AB6268121_ #FB9A99
+gi_332144604_dbj_AB6268111_ #FB9A99
+gi_324096625_gb_HM5614312_ #FB9A99
+gi_353742087_emb_HE6006831_ #FB9A99
+gi_350921986_emb_FM1655352_ #FB9A99
+gi_353742069_emb_HE6006651_ #FB9A99
+gi_353742084_emb_HE6006801_ #FB9A99
+gi_169659088_dbj_AB4265751_ #FB9A99
+gi_169659094_dbj_AB4265811_ #FB9A99
+gi_169659089_dbj_AB4265761_ #FB9A99
+gi_353742064_emb_HE6006601_ #FB9A99
+gi_268308554_gb_FJ8204101_ #FB9A99
+gi_353742094_emb_HE6006901_ #FB9A99
+gi_353742076_emb_HE6006721_ #FB9A99
+gi_353742093_emb_HE6006891_ #FB9A99
+
+237|HE600664.2.1467 #E31A1C
+650|HE600664.2.1467 #E31A1C
+99|HE979801.1.1511 #E31A1C
+gi_353742073_emb_HE6006691_ #E31A1C
+515|HE600664.2.1467 #E31A1C
+6|JQ906014.1.1393 #E31A1C
+54|JN626652.1.1352 #E31A1C
+96|JQ906014.1.1393 #E31A1C
+23|HF968499.1.1413 #E31A1C
+177|HE979801.1.1511 #E31A1C
+351|HE600664.2.1467 #E31A1C
+144|HE600664.2.1467 #E31A1C
+gi_62959391_gb_AY9480131_ #E31A1C
+gi_237637594_gb_FJ9160991_ #E31A1C
+gi_255740072_gb_FJ6124351_ #E31A1C
+gi_190706597_gb_EU8016721_ #E31A1C
+gi_353742080_emb_HE6006761_ #E31A1C
+222|JQ906014.1.1393 #E31A1C
+269|JQ906014.1.1393 #E31A1C
+152|JQ906014.1.1393 #E31A1C
+gi_157101046_emb_AM8494341_ #E31A1C
+gi_190705491_gb_EU8005661_ #E31A1C
+gi_37787067_gb_AY2126681_ #E31A1C
+gi_353742085_emb_HE6006811_ #E31A1C
+gi_312860463_gb_HM8565041_ #E31A1C
+183|HE600664.2.1467 #E31A1C
+gi_296171786_emb_FN6680132_ #E31A1C
+gi_95115286_gb_DQ5013281_ #E31A1C
+84|HE600664.2.1467 #E31A1C
+gi_353742068_emb_HE6006641_ #E31A1C
+gi_83308025_emb_AJ8679221_ #E31A1C
+
+1949|JQ906014.1.1393 #1F78B4
+gi_254971472_gb_GQ3400781_ #1F78B4
+gi_312860423_gb_HM8564641_ #1F78B4
+gi_190705773_gb_EU8008481_ #1F78B4
+gi_148723883_gb_EF5204681_ #1F78B4
+gi_190705953_gb_EU8010281_ #1F78B4
+gi_190708498_gb_EU8035731_ #1F78B4
+gi_190706048_gb_EU8011231_ #1F78B4
+gi_33392076_gb_AY3455421_ #1F78B4
+gi_11544820_emb_AJ2899991_ #1F78B4
+gi_95115263_gb_DQ5013051_ #1F78B4
+gi_83308014_emb_AJ8679111_ #1F78B4
+gi_29692363_gb_AF5344291_ #1F78B4
+gi_157101045_emb_AM8494331_ #1F78B4
+gi_157101048_emb_AM8494361_ #1F78B4
+19|JN626652.1.1352 #1F78B4
+
+gi_62959354_gb_AY9479761_ #A6CEE3
+gi_353742092_emb_HE6006881_ #A6CEE3
+gi_169659092_dbj_AB4265791_ #A6CEE3
+gi_190705448_gb_EU8005231_ #A6CEE3
+gi_190705958_gb_EU8010331_ #A6CEE3
+gi_169659086_dbj_AB4265731_ #A6CEE3
+gi_350921983_emb_AJ9380262_ #A6CEE3
+gi_353742083_emb_HE6006791_ #A6CEE3
+gi_353742090_emb_HE6006861_ #A6CEE3
+gi_304422261_gb_HQ0085651_ #A6CEE3
+gi_169659096_dbj_AB4265831_ #A6CEE3
+gi_312190240_dbj_AB5998001_ #A6CEE3
+gi_15054828_gb_AF2891611_ #A6CEE3
+45|JN003052.1.1286 #A6CEE3
+gi_268308512_gb_FJ8203681_ #A6CEE3
+gi_190705895_gb_EU8009701_ #A6CEE3
+gi_353742089_emb_HE6006851_ #A6CEE3
+gi_15054822_gb_AF2891551_ #A6CEE3
+gi_312190230_dbj_AB5997901_ #A6CEE3
+gi_312190329_dbj_AB5998891_ #A6CEE3
+gi_190705927_gb_EU8010021_ #A6CEE3
+gi_350921988_emb_FM1782262_ #A6CEE3
+gi_169659091_dbj_AB4265781_ #A6CEE3
+
+
+gi_4165396_dbj_AB0213901_ #FDBF6F
+gi_39652273_dbj_AB1098891_ #FDBF6F
+68|JN941783.1.1447 #FDBF6F
+538|HM856514.1.1453 #FDBF6F
+622|HM856514.1.1453 #FDBF6F
+1008|HM856497.1.1453 #FDBF6F
+1079|HM856514.1.1453 #FDBF6F
+600|HM856497.1.1453 #FDBF6F
+134|HM856497.1.1453 #FDBF6F
+530|HM856497.1.1453 #FDBF6F
+64|HM856514.1.1453 #FDBF6F
+442|HM856514.1.1453 #FDBF6F
+113|HM856514.1.1453 #FDBF6F
+368|HM856514.1.1453 #FDBF6F
+477|HM856514.1.1453 #FDBF6F
+433|HM856514.1.1453 #FDBF6F
+
+
+gi_74423019_gb_DQ1789781_ #FDBF6F
+gi_90025013_gb_DQ4320531_ #FDBF6F
+gi_4432993_dbj_D880061_ #FDBF6F
+gi_158259706_dbj_AB3005971_ #FDBF6F
+gi_32292927_gb_AF4359482_ #FDBF6F
+gi_5230420_gb_AF0849471_ #FDBF6F
+gi_303831_dbj_D162111_RHYFR2D #FDBF6F
+gi_353742075_emb_HE6006711_ #FDBF6F
+gi_193876561_gb_EU8257001_ #FDBF6F
+gi_40641615_emb_AJ6063331_ #FDBF6F
