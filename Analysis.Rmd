@@ -73,12 +73,12 @@ total_reads <- read.table("./anvio_output/sample_reads.tsv", header = TRUE)
 read_length <- 150
 
 # From wide to long format
-mean_coverage_long <- gather(mean_coverage, Sample_ID, coverage, 
+mean_coverage_long <- tidyr::gather(mean_coverage, Sample_ID, coverage, 
                              Fa13_BD_MLB_DN:Su13_BD_MM15_SN_C, factor_key=TRUE)
 mean_coverage_long[,2] <- gsub(mean_coverage_long[,2], pattern = "_C", 
                                replacement = "")
 
-std_coverage_long <- gather(std_coverage, Sample_ID, std_coverage, 
+std_coverage_long <- tidyr::gather(std_coverage, Sample_ID, std_coverage, 
                             Fa13_BD_MLB_DN:Su13_BD_MM15_SN_C, 
                             factor_key=TRUE)
 std_coverage_long[,2] <- gsub(std_coverage_long[,2], pattern = "_C", 
@@ -115,10 +115,102 @@ data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_cover
 
 The workflow for postprocessing the `EMIRGE` reconstructed 16S rRNA gene sequences:  
 
-```{r EMIRGE-analysis_1, warning = FALSE, fig.width = 9, fig.height = 9, dpi = 500}
+```{r EMIRGE-analysis-1, warning = FALSE, fig.width = 9, fig.height = 9, dpi = 500}
+# Import seq-table that was generated after EMIRGE post-processing
+EMIRGE_OTU <- read.table("./Tree/EMIRGE/read.info.txt")
+colnames(EMIRGE_OTU) <- c("Sample",  "Sequence", "Prior", "Length", "Prior_norm")
+EMIRGE_names <- read.table("./Tree/EMIRGE/EMIRGE_Limno.names")
+EMIRGE_OTU_97 <- read.table("./Tree/EMIRGE/final.otu.emirge.pick.an.0.03.rep.names",
+                            stringsAsFactors = FALSE)
+EMIRGE_OTU_99 <- read.table("./Tree/EMIRGE/final.otu.emirge.pick.an.0.01.rep.names",
+                            stringsAsFactors = FALSE)
+
+# Filter out putative Limnohabitans OTUs
+EMIRGE_OTU <- EMIRGE_OTU[EMIRGE_OTU$Sequence %in% EMIRGE_names$V1, ]
+
+# Formate sample names
+EMIRGE_OTU$Sample <- gsub(".A","", EMIRGE_OTU$Sample, fixed = TRUE)
+EMIRGE_OTU$Sample <- gsub(".C","", EMIRGE_OTU$Sample, fixed = TRUE)
+
+# Add OTU cluster results as new columns (0.97 level and 0.99 level)
+EMIRGE_OTU$OTU_97 <- EMIRGE_OTU$Sequence
+
+for(i in 1:nrow(EMIRGE_OTU_97)){
+   EMIRGE_OTU$OTU_97[EMIRGE_OTU$Sequence %in% 
+                            do.call(rbind, strsplit(EMIRGE_OTU_97$V2[i], ","))] <-
+     EMIRGE_OTU_97$V1[i]
+}
+
+EMIRGE_OTU$OTU_99 <- EMIRGE_OTU$Sequence
+
+for(i in 1:nrow(EMIRGE_OTU_99)){
+  EMIRGE_OTU$OTU_99[EMIRGE_OTU$Sequence %in% 
+                            do.call(rbind, strsplit(EMIRGE_OTU_99$V2[i], ","))] <-
+     EMIRGE_OTU_99$V1[i]
+}
+
+
+# Calculate new abundance for the relative abundance of each OTU (0.97 and 0.99 level)
+EMIRGE_OTU <- EMIRGE_OTU %>% dplyr::group_by(OTU_97, Sample) %>% 
+  dplyr::mutate(Prior_norm_OTU97 = sum(Prior_norm))
+
+EMIRGE_OTU <- EMIRGE_OTU %>% dplyr::group_by(OTU_99, Sample) %>% 
+  dplyr::mutate(Prior_norm_OTU99 = sum(Prior_norm))
+
+# Add metadata variables as new column
+EMIRGE_OTU <- dplyr::left_join(EMIRGE_OTU, meta, by = "Sample")
 
 ```
 
+```{r EMIRGE-analysis-2, warning = FALSE, fig.width = 9, fig.height = 9, dpi = 500}
+# Plot
+p_emirge_abund_otu97 <- ggplot(EMIRGE_OTU, aes(x = OTU_97, y = 100*Prior_norm_OTU97, fill = OTU_97))+
+  theme_bw()+
+  geom_point(size = 4, shape = 21, color = "black", alpha = 0.7)+
+  scale_fill_manual("", values = fill_palette)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  guides(fill=guide_legend(nrow = 3))+
+  facet_grid(Season~Site)
+  # coord_trans(x = "atanh", y = "atanh")
+
+print(p_emirge_abund_otu97)
+
+# Plot
+p_emirge_abund_otu99 <- ggplot(EMIRGE_OTU, aes(x = OTU_97, y = 100*Prior_norm_OTU97, fill = OTU_97))+
+  theme_bw()+
+  geom_point(size = 4, shape = 21, color = "black", alpha = 0.7)+
+  scale_fill_manual("", values = fill_palette)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  guides(fill=guide_legend(nrow = 3))+
+  facet_grid(Season~Site)
+  # coord_trans(x = "atanh", y = "atanh")
+
+print(p_emirge_abund_otu99)
+
+# Plot
+p_emirge_abund_seq <- ggplot(EMIRGE_OTU, aes(x = OTU_97, y = 100*Prior_norm_OTU97, fill = OTU_97))+
+  theme_bw()+
+  geom_point(size = 4, shape = 21, color = "black", alpha = 0.7)+
+  scale_fill_manual("", values = fill_palette)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  guides(fill=guide_legend(nrow = 3))+
+  facet_grid(Season~Site)
+  # coord_trans(x = "atanh", y = "atanh")
+
+print(p_emirge_abund_seq)
+```
 
 ```{r ANI-analysis, warning = FALSE, fig.width = 9, fig.height = 9, dpi = 500}
 # read file
