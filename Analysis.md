@@ -270,6 +270,7 @@ MGT_df <- read.table("./Growthpred/GP_results.tsv", header = TRUE,
 MGT_df$Genome_ID <- factor(MGT_df$Genome_ID, levels = ord_list_bin)
 MGT_df$Lineage <- factor(MGT_df$Lineage, levels = c("LimDEA_1", "LimDEA_2",
                                                     "LimB", "LimC"))
+
 # Make barplot with st.dev to visualize MGT and optimal temperature
 selected_points <- data.frame(Genome_ID = MGT_df$Genome_ID, 
                               ypos = c(rep(18, 10), rep(NA,9)))
@@ -280,7 +281,7 @@ p_MGT <- ggplot(MGT_df, aes(x = Genome_ID, y = MGT, fill = Lineage, group = Geno
   scale_fill_manual("Minimal generation time (h)",
                     values = c("#deebf7ff", "#c6dbefff","#9ecae1ff",
                                "#6baed6ff"))+
-  theme(axis.text=element_text(size=13), axis.title=element_text(size=20),
+  theme(axis.text=element_text(size=15, face = "bold"), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
         # axis.text.x = element_text(angle = 65, hjust = 1),
@@ -297,8 +298,6 @@ p_MGT <- ggplot(MGT_df, aes(x = Genome_ID, y = MGT, fill = Lineage, group = Geno
   ggtitle("Minimal Generation Time (h)")+
   geom_point(data = selected_points, aes(x = Genome_ID, y = ypos),
              shape = 25, fill = "black", col = "black", size = 3)
-  # scale_y_continuous(labels = function(x) sprintf("%.2f", x), breaks = seq(0.20,0.90,0.10),
-  #                    limits = c(0.2,0.9))
 
 # svg(filename = "MGT_figure.svg", width = 9.5, height = 4)
 print(p_MGT)
@@ -308,7 +307,38 @@ print(p_MGT)
 
 ```r
 # dev.off()
+
+# Make the same plot for optimal growth temperature
+selected_points <- data.frame(Genome_ID = MGT_df$Genome_ID, 
+                              ypos = c(rep(30, 10), rep(NA,9)))
+
+p_Topt <- ggplot(MGT_df, aes(x = Genome_ID, y = Topt, fill = Lineage, group = Genome_ID))+
+  theme_bw()+
+  geom_bar(alpha = 0.4, stat = "identity", color = "black",
+           position = position_dodge(width = 1), width = 0.7)+
+  scale_fill_manual("Optimal growth temperature (°C)",
+                    values = c("#deebf7ff", "#c6dbefff","#9ecae1ff",
+                               "#6baed6ff"))+
+  theme(axis.text=element_text(size=15, face = "bold"), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        # axis.text.x = element_text(angle = 65, hjust = 1),
+        strip.text.x=element_text(size = 18),
+        legend.position="bottom",
+        axis.text.x=element_text(size = 13, angle =45, hjust= 1),
+        axis.title.x=element_blank(),
+        plot.title = element_text(hjust = 0, size=18))+
+  guides(fill=FALSE)+
+  ylab("")+
+  xlab("")+
+  ggtitle("Optimal growth temperature (°C)")+
+  geom_point(data = selected_points, aes(x = Genome_ID, y = ypos),
+             shape = 25, fill = "black", col = "black", size = 3)
+
+print(p_Topt)
 ```
+
+<img src="Figures/cached/MGT-1-2.png" style="display: block; margin: auto;" />
 
 
 # 1c. Network analysis based on 16S data
