@@ -33,12 +33,12 @@ total_reads <- read.table("./anvio_output/sample_reads.tsv", header = TRUE)
 read_length <- 150
 
 # From wide to long format
-mean_coverage_long <- gather(mean_coverage, Sample_ID, coverage, 
+mean_coverage_long <- tidyr::gather(mean_coverage, Sample_ID, coverage, 
                              Fa13_BD_MLB_DN:Su13_BD_MM15_SN_C, factor_key=TRUE)
 mean_coverage_long[,2] <- gsub(mean_coverage_long[,2], pattern = "_C", 
                                replacement = "")
 
-std_coverage_long <- gather(std_coverage, Sample_ID, std_coverage, 
+std_coverage_long <- tidyr::gather(std_coverage, Sample_ID, std_coverage, 
                             Fa13_BD_MLB_DN:Su13_BD_MM15_SN_C, 
                             factor_key=TRUE)
 std_coverage_long[,2] <- gsub(std_coverage_long[,2], pattern = "_C", 
@@ -76,7 +76,115 @@ data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_cover
 The workflow for postprocessing the `EMIRGE` reconstructed 16S rRNA gene sequences:  
 
 
+```r
+# Import seq-table that was generated after EMIRGE post-processing
+EMIRGE_OTU <- read.table("./Tree/EMIRGE/read.info.txt", 
+                         stringsAsFactors = FALSE)
+colnames(EMIRGE_OTU) <- c("Sample",  "Sequence", "Prior", "Length", "Prior_norm")
+EMIRGE_names <- read.table("./Tree/EMIRGE/EMIRGE_Limno.names")
+EMIRGE_OTU_97 <- read.table("./Tree/EMIRGE/final.otu.emirge.pick.an.0.03.rep.names",
+                            stringsAsFactors = FALSE)
+EMIRGE_OTU_99 <- read.table("./Tree/EMIRGE/final.otu.emirge.pick.an.0.01.rep.names",
+                            stringsAsFactors = FALSE)
 
+# Filter out putative Limnohabitans OTUs
+EMIRGE_OTU <- EMIRGE_OTU[EMIRGE_OTU$Sequence %in% EMIRGE_names$V1, ]
+
+# Formate sample names
+EMIRGE_OTU$Sample <- gsub(".A","", EMIRGE_OTU$Sample, fixed = TRUE)
+EMIRGE_OTU$Sample <- gsub(".C","", EMIRGE_OTU$Sample, fixed = TRUE)
+
+# Add OTU cluster results as new columns (0.97 level and 0.99 level)
+EMIRGE_OTU$OTU_97 <- EMIRGE_OTU$Sequence
+
+for(i in 1:nrow(EMIRGE_OTU_97)){
+   EMIRGE_OTU$OTU_97[EMIRGE_OTU$Sequence %in% 
+                            do.call(rbind, strsplit(EMIRGE_OTU_97$V2[i], ","))] <-
+     EMIRGE_OTU_97$V3[i]
+}
+
+EMIRGE_OTU$OTU_99 <- EMIRGE_OTU$Sequence
+
+for(i in 1:nrow(EMIRGE_OTU_99)){
+  EMIRGE_OTU$OTU_99[EMIRGE_OTU$Sequence %in% 
+                            do.call(rbind, strsplit(EMIRGE_OTU_99$V2[i], ","))] <-
+     EMIRGE_OTU_99$V3[i]
+}
+
+
+# Calculate new abundance for the relative abundance of each OTU (0.97 and 0.99 level)
+EMIRGE_OTU <- EMIRGE_OTU %>% dplyr::group_by(OTU_97, Sample) %>% 
+  dplyr::mutate(Prior_norm_OTU97 = sum(Prior_norm))
+
+EMIRGE_OTU <- EMIRGE_OTU %>% dplyr::group_by(OTU_99, Sample) %>% 
+  dplyr::mutate(Prior_norm_OTU99 = sum(Prior_norm))
+
+# Add metadata variables as new column
+EMIRGE_OTU <- dplyr::left_join(EMIRGE_OTU, meta, by = "Sample")
+```
+
+
+```r
+# Plot
+p_emirge_abund_otu97 <- ggplot(EMIRGE_OTU, aes(x = Sample, y = 100*Prior_norm, fill = OTU_97))+
+  theme_bw()+
+  geom_bar(stat = "identity", size = 1, color = "black", alpha = 0.7)+
+  scale_fill_brewer(palette = "Accent")+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      strip.text=element_text(size=14), legend.position = "right",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  guides(fill=guide_legend(nrow = 3))+
+  facet_grid(.~Site, scales = "free_x")+
+  ylab("Length-normalized prior (%)")+
+  xlab("")+
+  ggtitle("97% clustered OTUs")
+  # coord_trans(x = "atanh", y = "atanh")
+
+# Plot
+p_emirge_abund_otu99 <- ggplot(EMIRGE_OTU, aes(x = Sample, y = 100*Prior_norm, fill = OTU_99))+
+  theme_bw()+
+  geom_bar(stat = "identity", size = 1, color = "black", alpha = 0.7)+
+  # geom_point(size = 4, shape = 21, color = "black", alpha = 0.7)+
+  scale_fill_brewer(palette = "Accent")+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      strip.text=element_text(size=14), legend.position = "right",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  guides(fill=guide_legend(nrow = 3))+
+  facet_grid(.~Site, scales = "free_x")+
+  ylab("Length-normalized prior (%)")+
+  xlab("")+
+  ggtitle("99% clustered OTUs")
+  # coord_trans(x = "atanh", y = "atanh")
+
+# Plot
+p_emirge_abund_seq <- ggplot(EMIRGE_OTU, aes(x = Sample, y = 100*Prior_norm, fill = OTU_97))+
+  theme_bw()+
+  # geom_point(size = 4, shape = 21, color = "black", alpha = 0.7)+
+  geom_bar(stat = "identity", size = 1, color = "black", alpha = 0.7)+
+  scale_fill_brewer(palette = "Accent")+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      strip.text=element_text(size=14), legend.position = "right",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  guides(fill=guide_legend(nrow = 3))+
+  facet_grid(.~Site, scales = "free_x")+
+  ylab("Length-normalized prior (%)")+
+  xlab("")+
+  ggtitle("Unique sequences")
+  # coord_trans(x = "atanh", y = "atanh")
+
+grid.arrange(p_emirge_abund_otu97, p_emirge_abund_otu99, p_emirge_abund_seq ,nrow = 3)
+```
+
+<img src="Figures/cached/EMIRGE-analysis-2-1.png" style="display: block; margin: auto;" />
 
 
 ```r
@@ -152,7 +260,58 @@ print(p_ani)
 # dev.off()
 ```
 
-# 1b. Network analysis based on 16S data
+# 1b. Investigate predicted generation time (MGT)
+
+```r
+MGT_df <- read.table("./Growthpred/GP_results.tsv", header = TRUE,
+                     stringsAsFactors = FALSE, sep = "\t")
+
+# Order genome_ids according to the phylogenetic clustering
+MGT_df$Genome_ID <- factor(MGT_df$Genome_ID, levels = ord_list_bin)
+MGT_df$Lineage <- factor(MGT_df$Lineage, levels = c("LimDEA_1", "LimDEA_2",
+                                                    "LimB", "LimC"))
+# Make barplot with st.dev to visualize MGT and optimal temperature
+selected_points <- data.frame(Genome_ID = MGT_df$Genome_ID, 
+                              ypos = c(rep(18, 10), rep(NA,9)))
+p_MGT <- ggplot(MGT_df, aes(x = Genome_ID, y = MGT, fill = Lineage, group = Genome_ID))+
+  theme_bw()+
+  geom_bar(alpha = 0.4, stat = "identity", color = "black",
+           position = position_dodge(width = 1), width = 0.7)+
+  scale_fill_manual("Minimal generation time (h)",
+                    values = c("#deebf7ff", "#c6dbefff","#9ecae1ff",
+                               "#6baed6ff"))+
+  theme(axis.text=element_text(size=13), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        # axis.text.x = element_text(angle = 65, hjust = 1),
+        strip.text.x=element_text(size = 18),
+        legend.position="bottom",
+        axis.text.x=element_text(size = 13, angle =45, hjust= 1),
+        axis.title.x=element_blank(),
+        plot.title = element_text(hjust = 0, size=18))+
+  guides(fill=FALSE)+
+  geom_errorbar(aes(ymin = MGT - sd.MGT, ymax = MGT + sd.MGT), width = 0.15,
+                position = position_dodge(width = 1))+
+  ylab("")+
+  xlab("")+
+  ggtitle("Minimal Generation Time (h)")+
+  geom_point(data = selected_points, aes(x = Genome_ID, y = ypos),
+             shape = 25, fill = "black", col = "black", size = 3)
+  # scale_y_continuous(labels = function(x) sprintf("%.2f", x), breaks = seq(0.20,0.90,0.10),
+  #                    limits = c(0.2,0.9))
+
+# svg(filename = "MGT_figure.svg", width = 9.5, height = 4)
+print(p_MGT)
+```
+
+<img src="Figures/cached/MGT-1-1.png" style="display: block; margin: auto;" />
+
+```r
+# dev.off()
+```
+
+
+# 1c. Network analysis based on 16S data
 
 
 
@@ -780,7 +939,7 @@ merged_file <- merge_annotations(file_list[1:10], genoid_seqid = FALSE)
 ## [1] 17644
 ## [1] 19813
 ## [1] 21848
-## Thu Nov 30 09:56:43 2017  --- Sucessfully merged files
+## Thu Dec 21 08:17:50 2017  --- Sucessfully merged files
 ```
 
 ```r
@@ -1525,7 +1684,7 @@ summary(mod1)
 ## Mclust V (univariate, unequal variance) model with 3 components:
 ## 
 ##  log.likelihood      n df      BIC      ICL
-##        -2219532 946589  8 -4439175 -4675724
+##        -2219527 946589  8 -4439164 -4675585
 ## 
 ## Clustering table:
 ##      1      2      3 
@@ -1695,57 +1854,57 @@ MAG_div <- Diversity_16S(MAG_phy, ncore = 3, parallel = TRUE,
 ```
 ## 	**WARNING** this functions assumes that rows are samples and columns
 ##       	are taxa in your phyloseq object, please verify.
-## Thu Nov 30 10:02:21 2017 	Using 3 cores for calculations
-## Thu Nov 30 10:02:21 2017	Calculating diversity for sample 1/24 --- Fa13_BD_MLB_DN
-## Thu Nov 30 10:02:32 2017	Done with sample Fa13_BD_MLB_DN
-## Thu Nov 30 10:02:32 2017	Calculating diversity for sample 2/24 --- Fa13_BD_MLB_SN
-## Thu Nov 30 10:02:35 2017	Done with sample Fa13_BD_MLB_SN
-## Thu Nov 30 10:02:35 2017	Calculating diversity for sample 3/24 --- Fa13_BD_MM110_DN
-## Thu Nov 30 10:02:38 2017	Done with sample Fa13_BD_MM110_DN
-## Thu Nov 30 10:02:38 2017	Calculating diversity for sample 4/24 --- Fa13_BD_MM110_SD
-## Thu Nov 30 10:02:40 2017	Done with sample Fa13_BD_MM110_SD
-## Thu Nov 30 10:02:40 2017	Calculating diversity for sample 5/24 --- Fa13_BD_MM110_SN
-## Thu Nov 30 10:02:43 2017	Done with sample Fa13_BD_MM110_SN
-## Thu Nov 30 10:02:43 2017	Calculating diversity for sample 6/24 --- Fa13_BD_MM15_DN
-## Thu Nov 30 10:02:46 2017	Done with sample Fa13_BD_MM15_DN
-## Thu Nov 30 10:02:46 2017	Calculating diversity for sample 7/24 --- Fa13_BD_MM15_SD
-## Thu Nov 30 10:02:50 2017	Done with sample Fa13_BD_MM15_SD
-## Thu Nov 30 10:02:50 2017	Calculating diversity for sample 8/24 --- Fa13_BD_MM15_SN
-## Thu Nov 30 10:02:53 2017	Done with sample Fa13_BD_MM15_SN
-## Thu Nov 30 10:02:53 2017	Calculating diversity for sample 9/24 --- Sp13_BD_MLB_SN
-## Thu Nov 30 10:02:56 2017	Done with sample Sp13_BD_MLB_SN
-## Thu Nov 30 10:02:56 2017	Calculating diversity for sample 10/24 --- Sp13_BD_MM110_DD
-## Thu Nov 30 10:02:59 2017	Done with sample Sp13_BD_MM110_DD
-## Thu Nov 30 10:02:59 2017	Calculating diversity for sample 11/24 --- Sp13_BD_MM110_SD
-## Thu Nov 30 10:03:02 2017	Done with sample Sp13_BD_MM110_SD
-## Thu Nov 30 10:03:02 2017	Calculating diversity for sample 12/24 --- Sp13_BD_MM110_SN
-## Thu Nov 30 10:03:06 2017	Done with sample Sp13_BD_MM110_SN
-## Thu Nov 30 10:03:06 2017	Calculating diversity for sample 13/24 --- Sp13_BD_MM15_DD
-## Thu Nov 30 10:03:08 2017	Done with sample Sp13_BD_MM15_DD
-## Thu Nov 30 10:03:08 2017	Calculating diversity for sample 14/24 --- Sp13_BD_MM15_SD
-## Thu Nov 30 10:03:11 2017	Done with sample Sp13_BD_MM15_SD
-## Thu Nov 30 10:03:11 2017	Calculating diversity for sample 15/24 --- Sp13_BD_MM15_SN
-## Thu Nov 30 10:03:14 2017	Done with sample Sp13_BD_MM15_SN
-## Thu Nov 30 10:03:14 2017	Calculating diversity for sample 16/24 --- Su13_BD_MLB_DD
-## Thu Nov 30 10:03:17 2017	Done with sample Su13_BD_MLB_DD
-## Thu Nov 30 10:03:17 2017	Calculating diversity for sample 17/24 --- Su13_BD_MLB_SD
-## Thu Nov 30 10:03:20 2017	Done with sample Su13_BD_MLB_SD
-## Thu Nov 30 10:03:20 2017	Calculating diversity for sample 18/24 --- Su13_BD_MM110_DCMD
-## Thu Nov 30 10:03:23 2017	Done with sample Su13_BD_MM110_DCMD
-## Thu Nov 30 10:03:23 2017	Calculating diversity for sample 19/24 --- Su13_BD_MM110_DN
-## Thu Nov 30 10:03:25 2017	Done with sample Su13_BD_MM110_DN
-## Thu Nov 30 10:03:25 2017	Calculating diversity for sample 20/24 --- Su13_BD_MM110_SD
-## Thu Nov 30 10:03:28 2017	Done with sample Su13_BD_MM110_SD
-## Thu Nov 30 10:03:28 2017	Calculating diversity for sample 21/24 --- Su13_BD_MM110_SN
-## Thu Nov 30 10:03:30 2017	Done with sample Su13_BD_MM110_SN
-## Thu Nov 30 10:03:30 2017	Calculating diversity for sample 22/24 --- Su13_BD_MM15_DN
-## Thu Nov 30 10:03:32 2017	Done with sample Su13_BD_MM15_DN
-## Thu Nov 30 10:03:32 2017	Calculating diversity for sample 23/24 --- Su13_BD_MM15_SD
-## Thu Nov 30 10:03:35 2017	Done with sample Su13_BD_MM15_SD
-## Thu Nov 30 10:03:35 2017	Calculating diversity for sample 24/24 --- Su13_BD_MM15_SN
-## Thu Nov 30 10:03:37 2017	Done with sample Su13_BD_MM15_SN
-## Thu Nov 30 10:03:37 2017 	Closing workers
-## Thu Nov 30 10:03:37 2017 	Done with all 24 samples
+## Thu Dec 21 08:56:59 2017 	Using 3 cores for calculations
+## Thu Dec 21 08:56:59 2017	Calculating diversity for sample 1/24 --- Fa13_BD_MLB_DN
+## Thu Dec 21 08:57:13 2017	Done with sample Fa13_BD_MLB_DN
+## Thu Dec 21 08:57:13 2017	Calculating diversity for sample 2/24 --- Fa13_BD_MLB_SN
+## Thu Dec 21 08:57:16 2017	Done with sample Fa13_BD_MLB_SN
+## Thu Dec 21 08:57:16 2017	Calculating diversity for sample 3/24 --- Fa13_BD_MM110_DN
+## Thu Dec 21 08:57:19 2017	Done with sample Fa13_BD_MM110_DN
+## Thu Dec 21 08:57:19 2017	Calculating diversity for sample 4/24 --- Fa13_BD_MM110_SD
+## Thu Dec 21 08:57:22 2017	Done with sample Fa13_BD_MM110_SD
+## Thu Dec 21 08:57:22 2017	Calculating diversity for sample 5/24 --- Fa13_BD_MM110_SN
+## Thu Dec 21 08:57:25 2017	Done with sample Fa13_BD_MM110_SN
+## Thu Dec 21 08:57:25 2017	Calculating diversity for sample 6/24 --- Fa13_BD_MM15_DN
+## Thu Dec 21 08:57:27 2017	Done with sample Fa13_BD_MM15_DN
+## Thu Dec 21 08:57:27 2017	Calculating diversity for sample 7/24 --- Fa13_BD_MM15_SD
+## Thu Dec 21 08:57:30 2017	Done with sample Fa13_BD_MM15_SD
+## Thu Dec 21 08:57:30 2017	Calculating diversity for sample 8/24 --- Fa13_BD_MM15_SN
+## Thu Dec 21 08:57:32 2017	Done with sample Fa13_BD_MM15_SN
+## Thu Dec 21 08:57:32 2017	Calculating diversity for sample 9/24 --- Sp13_BD_MLB_SN
+## Thu Dec 21 08:57:35 2017	Done with sample Sp13_BD_MLB_SN
+## Thu Dec 21 08:57:35 2017	Calculating diversity for sample 10/24 --- Sp13_BD_MM110_DD
+## Thu Dec 21 08:57:38 2017	Done with sample Sp13_BD_MM110_DD
+## Thu Dec 21 08:57:38 2017	Calculating diversity for sample 11/24 --- Sp13_BD_MM110_SD
+## Thu Dec 21 08:57:40 2017	Done with sample Sp13_BD_MM110_SD
+## Thu Dec 21 08:57:40 2017	Calculating diversity for sample 12/24 --- Sp13_BD_MM110_SN
+## Thu Dec 21 08:57:43 2017	Done with sample Sp13_BD_MM110_SN
+## Thu Dec 21 08:57:43 2017	Calculating diversity for sample 13/24 --- Sp13_BD_MM15_DD
+## Thu Dec 21 08:57:46 2017	Done with sample Sp13_BD_MM15_DD
+## Thu Dec 21 08:57:46 2017	Calculating diversity for sample 14/24 --- Sp13_BD_MM15_SD
+## Thu Dec 21 08:57:49 2017	Done with sample Sp13_BD_MM15_SD
+## Thu Dec 21 08:57:49 2017	Calculating diversity for sample 15/24 --- Sp13_BD_MM15_SN
+## Thu Dec 21 08:57:52 2017	Done with sample Sp13_BD_MM15_SN
+## Thu Dec 21 08:57:52 2017	Calculating diversity for sample 16/24 --- Su13_BD_MLB_DD
+## Thu Dec 21 08:57:54 2017	Done with sample Su13_BD_MLB_DD
+## Thu Dec 21 08:57:54 2017	Calculating diversity for sample 17/24 --- Su13_BD_MLB_SD
+## Thu Dec 21 08:57:57 2017	Done with sample Su13_BD_MLB_SD
+## Thu Dec 21 08:57:57 2017	Calculating diversity for sample 18/24 --- Su13_BD_MM110_DCMD
+## Thu Dec 21 08:57:59 2017	Done with sample Su13_BD_MM110_DCMD
+## Thu Dec 21 08:57:59 2017	Calculating diversity for sample 19/24 --- Su13_BD_MM110_DN
+## Thu Dec 21 08:58:02 2017	Done with sample Su13_BD_MM110_DN
+## Thu Dec 21 08:58:02 2017	Calculating diversity for sample 20/24 --- Su13_BD_MM110_SD
+## Thu Dec 21 08:58:04 2017	Done with sample Su13_BD_MM110_SD
+## Thu Dec 21 08:58:04 2017	Calculating diversity for sample 21/24 --- Su13_BD_MM110_SN
+## Thu Dec 21 08:58:07 2017	Done with sample Su13_BD_MM110_SN
+## Thu Dec 21 08:58:07 2017	Calculating diversity for sample 22/24 --- Su13_BD_MM15_DN
+## Thu Dec 21 08:58:10 2017	Done with sample Su13_BD_MM15_DN
+## Thu Dec 21 08:58:10 2017	Calculating diversity for sample 23/24 --- Su13_BD_MM15_SD
+## Thu Dec 21 08:58:12 2017	Done with sample Su13_BD_MM15_SD
+## Thu Dec 21 08:58:12 2017	Calculating diversity for sample 24/24 --- Su13_BD_MM15_SN
+## Thu Dec 21 08:58:15 2017	Done with sample Su13_BD_MM15_SN
+## Thu Dec 21 08:58:15 2017 	Closing workers
+## Thu Dec 21 08:58:15 2017 	Done with all 24 samples
 ```
 
 ```r

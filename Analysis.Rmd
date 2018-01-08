@@ -117,7 +117,8 @@ The workflow for postprocessing the `EMIRGE` reconstructed 16S rRNA gene sequenc
 
 ```{r EMIRGE-analysis-1, warning = FALSE, fig.width = 9, fig.height = 9, dpi = 500}
 # Import seq-table that was generated after EMIRGE post-processing
-EMIRGE_OTU <- read.table("./Tree/EMIRGE/read.info.txt")
+EMIRGE_OTU <- read.table("./Tree/EMIRGE/read.info.txt", 
+                         stringsAsFactors = FALSE)
 colnames(EMIRGE_OTU) <- c("Sample",  "Sequence", "Prior", "Length", "Prior_norm")
 EMIRGE_names <- read.table("./Tree/EMIRGE/EMIRGE_Limno.names")
 EMIRGE_OTU_97 <- read.table("./Tree/EMIRGE/final.otu.emirge.pick.an.0.03.rep.names",
@@ -138,7 +139,7 @@ EMIRGE_OTU$OTU_97 <- EMIRGE_OTU$Sequence
 for(i in 1:nrow(EMIRGE_OTU_97)){
    EMIRGE_OTU$OTU_97[EMIRGE_OTU$Sequence %in% 
                             do.call(rbind, strsplit(EMIRGE_OTU_97$V2[i], ","))] <-
-     EMIRGE_OTU_97$V1[i]
+     EMIRGE_OTU_97$V3[i]
 }
 
 EMIRGE_OTU$OTU_99 <- EMIRGE_OTU$Sequence
@@ -146,7 +147,7 @@ EMIRGE_OTU$OTU_99 <- EMIRGE_OTU$Sequence
 for(i in 1:nrow(EMIRGE_OTU_99)){
   EMIRGE_OTU$OTU_99[EMIRGE_OTU$Sequence %in% 
                             do.call(rbind, strsplit(EMIRGE_OTU_99$V2[i], ","))] <-
-     EMIRGE_OTU_99$V1[i]
+     EMIRGE_OTU_99$V3[i]
 }
 
 
@@ -162,54 +163,64 @@ EMIRGE_OTU <- dplyr::left_join(EMIRGE_OTU, meta, by = "Sample")
 
 ```
 
-```{r EMIRGE-analysis-2, warning = FALSE, fig.width = 9, fig.height = 9, dpi = 500}
+```{r EMIRGE-analysis-2, warning = FALSE, fig.width = 9, fig.height = 15, dpi = 500}
 # Plot
-p_emirge_abund_otu97 <- ggplot(EMIRGE_OTU, aes(x = OTU_97, y = 100*Prior_norm_OTU97, fill = OTU_97))+
+p_emirge_abund_otu97 <- ggplot(EMIRGE_OTU, aes(x = Sample, y = 100*Prior_norm, fill = OTU_97))+
   theme_bw()+
-  geom_point(size = 4, shape = 21, color = "black", alpha = 0.7)+
-  scale_fill_manual("", values = fill_palette)+
+  geom_bar(stat = "identity", size = 1, color = "black", alpha = 0.7)+
+  scale_fill_brewer(palette = "Accent")+
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
       title=element_text(size=20), legend.text=element_text(size=12),
       legend.background = element_rect(fill="transparent"),
-      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.text=element_text(size=14), legend.position = "right",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
   guides(fill=guide_legend(nrow = 3))+
-  facet_grid(Season~Site)
+  facet_grid(.~Site, scales = "free_x")+
+  ylab("Length-normalized prior (%)")+
+  xlab("")+
+  ggtitle("97% clustered OTUs")
   # coord_trans(x = "atanh", y = "atanh")
-
-print(p_emirge_abund_otu97)
 
 # Plot
-p_emirge_abund_otu99 <- ggplot(EMIRGE_OTU, aes(x = OTU_97, y = 100*Prior_norm_OTU97, fill = OTU_97))+
+p_emirge_abund_otu99 <- ggplot(EMIRGE_OTU, aes(x = Sample, y = 100*Prior_norm, fill = OTU_99))+
   theme_bw()+
-  geom_point(size = 4, shape = 21, color = "black", alpha = 0.7)+
-  scale_fill_manual("", values = fill_palette)+
+  geom_bar(stat = "identity", size = 1, color = "black", alpha = 0.7)+
+  # geom_point(size = 4, shape = 21, color = "black", alpha = 0.7)+
+  scale_fill_brewer(palette = "Accent")+
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
       title=element_text(size=20), legend.text=element_text(size=12),
       legend.background = element_rect(fill="transparent"),
-      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.text=element_text(size=14), legend.position = "right",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
   guides(fill=guide_legend(nrow = 3))+
-  facet_grid(Season~Site)
+  facet_grid(.~Site, scales = "free_x")+
+  ylab("Length-normalized prior (%)")+
+  xlab("")+
+  ggtitle("99% clustered OTUs")
   # coord_trans(x = "atanh", y = "atanh")
-
-print(p_emirge_abund_otu99)
 
 # Plot
-p_emirge_abund_seq <- ggplot(EMIRGE_OTU, aes(x = OTU_97, y = 100*Prior_norm_OTU97, fill = OTU_97))+
+p_emirge_abund_seq <- ggplot(EMIRGE_OTU, aes(x = Sample, y = 100*Prior_norm, fill = OTU_97))+
   theme_bw()+
-  geom_point(size = 4, shape = 21, color = "black", alpha = 0.7)+
-  scale_fill_manual("", values = fill_palette)+
+  # geom_point(size = 4, shape = 21, color = "black", alpha = 0.7)+
+  geom_bar(stat = "identity", size = 1, color = "black", alpha = 0.7)+
+  scale_fill_brewer(palette = "Accent")+
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
       title=element_text(size=20), legend.text=element_text(size=12),
       legend.background = element_rect(fill="transparent"),
-      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.text=element_text(size=14), legend.position = "right",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
   guides(fill=guide_legend(nrow = 3))+
-  facet_grid(Season~Site)
+  facet_grid(.~Site, scales = "free_x")+
+  ylab("Length-normalized prior (%)")+
+  xlab("")+
+  ggtitle("Unique sequences")
   # coord_trans(x = "atanh", y = "atanh")
 
-print(p_emirge_abund_seq)
+grid.arrange(p_emirge_abund_otu97, p_emirge_abund_otu99, p_emirge_abund_seq ,nrow = 3)
 ```
 
 ```{r ANI-analysis, warning = FALSE, fig.width = 9, fig.height = 9, dpi = 500}
@@ -280,7 +291,51 @@ print(p_ani)
 # dev.off()
 ```
 
-# 1b. Network analysis based on 16S data
+# 1b. Investigate predicted generation time (MGT)
+```{r MGT-1, warning = FALSE, fig.width = 9, fig.height = 4, dpi = 500}
+MGT_df <- read.table("./Growthpred/GP_results.tsv", header = TRUE,
+                     stringsAsFactors = FALSE, sep = "\t")
+
+# Order genome_ids according to the phylogenetic clustering
+MGT_df$Genome_ID <- factor(MGT_df$Genome_ID, levels = ord_list_bin)
+MGT_df$Lineage <- factor(MGT_df$Lineage, levels = c("LimDEA_1", "LimDEA_2",
+                                                    "LimB", "LimC"))
+
+# Make barplot with st.dev to visualize MGT and optimal temperature
+selected_points <- data.frame(Genome_ID = MGT_df$Genome_ID, 
+                              ypos = c(rep(18, 10), rep(NA,9)))
+p_MGT <- ggplot(MGT_df, aes(x = Genome_ID, y = MGT, fill = Lineage, group = Genome_ID))+
+  theme_bw()+
+  geom_bar(alpha = 0.4, stat = "identity", color = "black",
+           position = position_dodge(width = 1), width = 0.7)+
+  scale_fill_manual("Minimal generation time (h)",
+                    values = c("#deebf7ff", "#c6dbefff","#9ecae1ff",
+                               "#6baed6ff"))+
+  theme(axis.text=element_text(size=13), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        # axis.text.x = element_text(angle = 65, hjust = 1),
+        strip.text.x=element_text(size = 18),
+        legend.position="bottom",
+        axis.text.x=element_text(size = 13, angle =45, hjust= 1),
+        axis.title.x=element_blank(),
+        plot.title = element_text(hjust = 0, size=18))+
+  guides(fill=FALSE)+
+  geom_errorbar(aes(ymin = MGT - sd.MGT, ymax = MGT + sd.MGT), width = 0.15,
+                position = position_dodge(width = 1))+
+  ylab("")+
+  xlab("")+
+  ggtitle("Minimal Generation Time (h)")+
+  geom_point(data = selected_points, aes(x = Genome_ID, y = ypos),
+             shape = 25, fill = "black", col = "black", size = 3)
+
+# svg(filename = "MGT_figure.svg", width = 9.5, height = 4)
+print(p_MGT)
+# dev.off()
+```
+
+
+# 1c. Network analysis based on 16S data
 
 
 ```{r network_16S, warning = FALSE, fig.width = 9, fig.height = 8}
