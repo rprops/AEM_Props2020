@@ -239,6 +239,7 @@ get_upper_tri <- function(cormat){
   return(cormat)
 }
 
+# Function to calculate the bootstrapped diversity estimate of MAG abundances
 Diversity_MAG <- function (x, R = 999, brea = TRUE, thresh = 200, parallel = FALSE, 
                            ncores = 2) 
 {
@@ -373,3 +374,59 @@ Diversity_MAG <- function (x, R = 999, brea = TRUE, thresh = 200, parallel = FAL
 
 # Function to specify decimals in ggplot
 scaleFUN <- function(x) sprintf("%.2f", x)
+
+# This function formats the KEGG orthology mapping file (ko_id to hierarchical 
+# functional annotation)
+format_ko <- function(path = "./Mapping_files/ko00000.keg"){
+  # Import data
+  ko_path_df <- read.table(path, header = FALSE, sep = ";",
+                           skip = 3, quote = "", fill = TRUE, 
+                           col.names = c("Level", "KO", "Function_abbrev", "Function_spec"))
+  ko_path_df <- ko_path_df[1:(nrow(ko_path_df)-1), ] # remove tailing "!" at the end of file
+  
+  # Remove empty rows
+  ko_path_df$KO <- as.character(ko_path_df$KO);  ko_path_df$Level <- as.character( ko_path_df$Level)
+  ko_path_df$KO[grep("A",ko_path_df$Level)] <- ko_path_df$Level[grep("A",ko_path_df$Level)]
+  ko_path_df$Level[grep("A",ko_path_df$Level)] <- "A"
+  ko_path_df <- ko_path_df[!ko_path_df$KO == "", ]
+  
+  ko_path_df <- data.frame(ko_path_df, level_A = "A", level_B = "B", level_C = "C",
+                           stringsAsFactors = FALSE)
+  ko_path_df$KO <- as.character(ko_path_df$KO)
+  
+  # Get positions where to replicate higher hierarichcal level
+  pos_A <- c(c(1:nrow(ko_path_df))[ko_path_df$Level %in% "A"], nrow(ko_path_df)+1)
+  pos_B <- c(c(1:nrow(ko_path_df))[ko_path_df$Level %in% "B"], nrow(ko_path_df)+1)
+  pos_C <- c(c(1:nrow(ko_path_df))[ko_path_df$Level %in% "C"], nrow(ko_path_df)+1)
+  
+  
+  for(i in 1:(length(pos_A)-1)){
+    ko_path_df$level_A[pos_A[i]:(pos_A[i+1]-1)] <- ko_path_df$KO[pos_A[i]]
+  }
+  
+  for(i in 1:(length(pos_B)-1)){
+    ko_path_df$level_B[pos_B[i]:(pos_B[i+1]-1)] <- ko_path_df$KO[pos_B[i]]
+  }
+  
+  for(i in 1:(length(pos_C)-1)){
+    ko_path_df$level_C[pos_C[i]:(pos_C[i+1]-1)] <- ko_path_df$KO[pos_C[i]]
+  }
+  
+  # Remove all rows with level A, B, C - and level column
+  ko_path_df <- ko_path_df[!ko_path_df$Level %in% c("A", "B", "C"), ]
+  ko_path_df$level_A <- gsub(ko_path_df$level_A, pattern = "<b>|</b>", replacement = "")
+  ko_path_df$level_B <- gsub(ko_path_df$level_B, pattern = "<b>|</b>", replacement = "")
+  ko_path_df <- ko_path_df[, -1]
+  
+  # Remove redundant ID before first space
+  ko_path_df$level_A <- gsub("^[^ ]* ", "", ko_path_df$level_A)
+  ko_path_df$level_B <- gsub("^[^ ]* ", "", ko_path_df$level_B)
+  ko_path_df$level_C <- gsub("^[^ ]* ", "", ko_path_df$level_C)
+  # remove [PATH**] pattern
+  ko_path_df$level_C <- gsub("\\[[^\\]]*\\]", "", ko_path_df$level_C, perl = TRUE)
+    
+  colnames(ko_path_df) <- c("ko_id", "ko_function_abbrev", "ko_function_spec",
+                            "ko_level_A", "ko_level_B", "ko_level_C")
+  return(ko_path_df)
+  
+}

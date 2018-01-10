@@ -120,7 +120,9 @@ EMIRGE_OTU <- EMIRGE_OTU %>% dplyr::group_by(OTU_99, Sample) %>%
   dplyr::mutate(Prior_norm_OTU99 = sum(Prior_norm))
 
 # Add metadata variables as new column
-EMIRGE_OTU <- dplyr::left_join(EMIRGE_OTU, meta, by = "Sample")
+meta_em <- meta[-1]; meta_em$Sample_ID <- gsub("_",".", meta_em$Sample_ID)
+meta_em <- meta_em %>% dplyr::distinct()
+EMIRGE_OTU <- dplyr::left_join(EMIRGE_OTU, meta_em, by = c("Sample" = "Sample_ID"))
 ```
 
 
@@ -279,8 +281,11 @@ p_MGT <- ggplot(MGT_df, aes(x = Genome_ID, y = MGT, fill = Lineage, group = Geno
   geom_bar(alpha = 0.4, stat = "identity", color = "black",
            position = position_dodge(width = 1), width = 0.7)+
   scale_fill_manual("Minimal generation time (h)",
-                    values = c("#deebf7ff", "#c6dbefff","#9ecae1ff",
-                               "#6baed6ff"))+
+                    values = c(rgb(red=t(col2rgb("#deebf7ff")), maxColorValue  = 255), 
+                               rgb(red=t(col2rgb("#c6dbefff")), maxColorValue  = 255),
+                               rgb(red=t(col2rgb("#9ecae1ff")), maxColorValue  = 255),
+                               rgb(red=t(col2rgb("#6baed6ff")), maxColorValue  = 255)
+                              ))+
   theme(axis.text=element_text(size=15, face = "bold"), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
@@ -943,6 +948,8 @@ expr_cov <- read.delim("./metaT/metaT_pileup.tsv", header = TRUE,
 # Merge gene annotations from all genomes in one file
 file_list <- list.files(path = "./IMG_annotation", recursive = FALSE, 
                         pattern = "IMG", full.names = TRUE)
+
+# Import annotations of all MAG genes
 merged_file <- merge_annotations(file_list[1:10], genoid_seqid = FALSE)
 ```
 
@@ -969,10 +976,18 @@ merged_file <- merge_annotations(file_list[1:10], genoid_seqid = FALSE)
 ## [1] 17644
 ## [1] 19813
 ## [1] 21848
-## Thu Dec 21 08:17:50 2017  --- Sucessfully merged files
+## Wed Jan 10 14:58:06 2018  --- Sucessfully merged files
 ```
 
 ```r
+merged_file$ko_id <- gsub(merged_file$ko_id, pattern = "KO:", replacement = "")
+
+# import KO annotation hierarchy 
+ko_df <- format_ko(path = "./Mapping_files/ko00000.keg")
+
+# Annotated merged_file
+merged_file_annot <- dplyr::left_join(merged_file, ko_df, by = "ko_id")
+
 # Genes that were not annotated can be assigned a genome ID using another file
 # made from the genes.fna IMG generated files
 genome_gene_map <- read.table("IMG_annotation/genome_geneids.txt",
@@ -988,29 +1003,7 @@ expr_cov <- dplyr::left_join(expr_cov, genome_gene_map, by = "gene_oid")
 expr_cov$Plus_reads <- as.integer(expr_cov$Plus_reads)
 expr_cov$Length <- as.integer(expr_cov$Length)
 expr_cov <- expr_cov[!is.na(expr_cov$Plus_reads),]
-# sample_reads_metaT <- read.table("./metaT/sample_reads.tsv", header = TRUE)
 
-# Move to long format dataframe for visualization in ggplot2
-# expr_cov_long <- tidyr::gather(expr_cov, sample, Coverage, Fa13.BD.MLB.DN:Su13.BD.MM15.SN, 
-              # factor_key = TRUE)
-
-# Calculate average read recruitment to genes (for edgeR/DESeq) and also normalize to transcripts per million (TPM) just in case
-# First read in gene lengths and total sample reads
-
-# gene_lengths_metaT <- read.table("./metaT/genes_concat.len", header = TRUE)
-# gene_lengths_metaT$gene <- as.character(gene_lengths_metaT$gene)
-
-# Add this information to current long dataframe
-# expr_cov_long <- dplyr::left_join(expr_cov, sample_reads_metaT, by = c("Sample" = "sample"))
-
-# expr_cov_long <- dplyr::left_join(expr_cov_long, gene_lengths_metaT, by = c("gene_oid" = "gene"))
-
-# Now calculate average read recruitment and TPM (relative to the recruitment to these
-# genomes in this dataset)
-# 150 = read length
-# expr_cov_long <- dplyr::mutate(expr_cov_long, 
-#                                mapped_reads = round((coverage * length)/(150),0)
-#                                ) # Be aware that this average is already rounded here..
 expr_cov_long <- dplyr::mutate(expr_cov, 
                                reads_per_kb = Plus_reads/Length/1000
                                )
@@ -1036,7 +1029,9 @@ expr_cov_long <- expr_cov_long %>% distinct()
 ## Run DESeq  
 
 __Don't forget:__   
-__In order to benefit from the default settings of the package, you should put the variable of interest at the end of the formula and make sure the control level is the first level.__ 
+__In order to benefit from the default settings of the package, you should put__ 
+__the variable of interest at the end of the formula and make sure the control__ 
+__level is the first level.__ 
 
 Manual can be found [here](file:///C:/Users/rprops/Desktop/metaG_lakeMI/Limno_lakeMI/Analysis.html#run_deseq)  
 
@@ -1044,6 +1039,7 @@ Manual can be found [here](file:///C:/Users/rprops/Desktop/metaG_lakeMI/Limno_la
 ```r
 # Format data for DESeq2
 ## Put count matrices in list including a count matrix for each bin 
+
 colnames(expr_cov_long)[colnames(expr_cov_long) == "Plus_reads"] <- "mapped_reads"
 expr_cov_bins <- list()
 for(i in 1:nlevels(expr_cov_long$Genome_ID)){
@@ -1187,7 +1183,7 @@ for(i in 1:length(General_deseq_results_site)){
 }
 
 # Only retain significantly differentially expressed genes
-res_deseq <- res_deseq %>% dplyr::filter(padj < 0.05)
+res_deseq <- res_deseq %>% dplyr::filter(padj < 0.01)
 
 new_bin_names2 <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(3,8:10)]; new_bin_names2$IMG_taxID <- as.character(new_bin_names2$IMG_taxID)
 res_deseq <- left_join(res_deseq, new_bin_names2, by = c("Genome_ID" = "IMG_taxID"))
@@ -1202,8 +1198,13 @@ res_deseq$regulation <- res_deseq$log2FoldChange > 0
 res_deseq$regulation[res_deseq$regulation == "TRUE"] <- "upregulation"
 res_deseq$regulation[res_deseq$regulation == "FALSE"] <- "downregulation"
 
-# Report reads mapped for all genomes per sample
-metaT_reads_mapped <- expr_cov_long %>% group_by(Sample, Genome_ID) %>% dplyr::summarise(sum_mapped_reads = sum(mapped_reads))
+# Add KO/COG/pfam/tigrfam gene annotations to DeSEQ2 results
+res_deseq_anott <- dplyr::left_join(res_deseq, merged_file_annot, by = c("gene_oid"))
+
+metaT_reads_mapped <- expr_cov_long %>% 
+  group_by(Sample, Genome_ID) %>% 
+  dplyr::summarise(sum_mapped_reads = sum(mapped_reads))
+
 metaT_reads_mapped <- left_join(metaT_reads_mapped, new_bin_names2, by = c("Genome_ID" = "IMG_taxID"))
 metaT_reads_mapped$new_bin_name <- as.character(metaT_reads_mapped$new_bin_name)
 metaT_reads_mapped$new_bin_name <- factor(metaT_reads_mapped$new_bin_name, 
@@ -1236,20 +1237,26 @@ print(p_deseq_reads)
 
 
 ```r
-# Plot for each genome the number of differentially expressed genes according to:
-# season and site
-p_deseq_1 <- ggplot2::ggplot(res_deseq, aes(x = new_bin_name, fill = new_bin_name))+
+selected_ko <- c("Carbohydrate metabolism", "Energy metabolism",
+                 "Amino acid metabolism", "Membrane transport",
+                 "Replication and repair", "Translation",
+                 "Energy metabolism")
+# for(genome in levels(unique(res_deseq_anott$new_bin_name))){
+p_deseq_1 <- res_deseq_anott %>% dplyr::filter(!is.na(ko_id) & ko_level_B %in% selected_ko & Design == "~ Season + Site") %>% 
+  ggplot2::ggplot(aes(x = ko_level_C, fill = ko_level_B))+
   geom_bar(color = "black")+
   theme_bw()+
-  scale_fill_brewer(palette = "Paired")+
-  theme(axis.text.x = element_blank(),
+  scale_fill_brewer("", palette = "Paired")+
+  theme(axis.text.x =  element_text(size = 10.5, angle = 45, hjust =1),
         axis.text.y = element_text(size = 14),
         legend.title = element_blank(),
         axis.title = element_text(size = 14),
         strip.text = element_text(size = 14)) +
-  ylab("Number of mapped reads")+
+  ylab("Number of genes")+
   xlab("")+
-  facet_grid(Design~Comparison)
+  facet_wrap(~new_bin_name, ncol = 2)+
+  guides(fill = FALSE)+
+  ggtitle("Muskegon lake vs. M110")
 
 print(p_deseq_1)
 ```
@@ -1257,26 +1264,43 @@ print(p_deseq_1)
 <img src="Figures/cached/plot-deseq-1.png" style="display: block; margin: auto;" />
 
 ```r
-p_deseq_2 <- ggplot2::ggplot(res_deseq, aes(x = new_bin_name, shape = regulation,
-                                            y = log2FoldChange))+
-  # geom_jitter(size = 3, width = 0.25, shape = 21)+
-  geom_boxplot(alpha= 1, aes(fill = new_bin_name))+
-  theme_bw()+
-  scale_fill_brewer(palette = "Paired")+
-  theme(axis.text.x = element_blank(),
-        axis.text.y = element_text(size = 14),
-        legend.title = element_blank(),
-        axis.title = element_text(size = 14),
-        strip.text = element_text(size = 14))+
-  ylab("log2FoldChange")+
-  xlab("")+
-  facet_grid(Design~Comparison)+
-  guides(shape = FALSE)
+# }
 
-print(p_deseq_2)
+# Plot for each genome the number of differentially expressed genes according to:
+# season and site
+# p_deseq_1 <- ggplot2::ggplot(res_deseq, aes(x = new_bin_name, fill = new_bin_name))+
+#   geom_bar(color = "black")+
+#   theme_bw()+
+#   scale_fill_brewer(palette = "Paired")+
+#   theme(axis.text.x = element_blank(),
+#         axis.text.y = element_text(size = 14),
+#         legend.title = element_blank(),
+#         axis.title = element_text(size = 14),
+#         strip.text = element_text(size = 14)) +
+#   ylab("Number of mapped reads")+
+#   xlab("")+
+#   facet_grid(Design~Comparison)
+# 
+# print(p_deseq_1)
+
+# p_deseq_2 <- ggplot2::ggplot(res_deseq, aes(x = new_bin_name, shape = regulation,
+#                                             y = log2FoldChange))+
+#   # geom_jitter(size = 3, width = 0.25, shape = 21)+
+#   geom_boxplot(alpha= 1, aes(fill = new_bin_name))+
+#   theme_bw()+
+#   scale_fill_brewer(palette = "Paired")+
+#   theme(axis.text.x = element_blank(),
+#         axis.text.y = element_text(size = 14),
+#         legend.title = element_blank(),
+#         axis.title = element_text(size = 14),
+#         strip.text = element_text(size = 14))+
+#   ylab("log2FoldChange")+
+#   xlab("")+
+#   facet_grid(Design~Comparison)+
+#   guides(shape = FALSE)
+# 
+# print(p_deseq_2)
 ```
-
-<img src="Figures/cached/plot-deseq-2.png" style="display: block; margin: auto;" />
 
 
 # 7. Sequence discrete populations
@@ -1714,7 +1738,7 @@ summary(mod1)
 ## Mclust V (univariate, unequal variance) model with 3 components:
 ## 
 ##  log.likelihood      n df      BIC      ICL
-##        -2219527 946589  8 -4439164 -4675585
+##        -2219527 946589  8 -4439165 -4675656
 ## 
 ## Clustering table:
 ##      1      2      3 
@@ -1884,57 +1908,57 @@ MAG_div <- Diversity_16S(MAG_phy, ncore = 3, parallel = TRUE,
 ```
 ## 	**WARNING** this functions assumes that rows are samples and columns
 ##       	are taxa in your phyloseq object, please verify.
-## Thu Dec 21 08:56:59 2017 	Using 3 cores for calculations
-## Thu Dec 21 08:56:59 2017	Calculating diversity for sample 1/24 --- Fa13_BD_MLB_DN
-## Thu Dec 21 08:57:13 2017	Done with sample Fa13_BD_MLB_DN
-## Thu Dec 21 08:57:13 2017	Calculating diversity for sample 2/24 --- Fa13_BD_MLB_SN
-## Thu Dec 21 08:57:16 2017	Done with sample Fa13_BD_MLB_SN
-## Thu Dec 21 08:57:16 2017	Calculating diversity for sample 3/24 --- Fa13_BD_MM110_DN
-## Thu Dec 21 08:57:19 2017	Done with sample Fa13_BD_MM110_DN
-## Thu Dec 21 08:57:19 2017	Calculating diversity for sample 4/24 --- Fa13_BD_MM110_SD
-## Thu Dec 21 08:57:22 2017	Done with sample Fa13_BD_MM110_SD
-## Thu Dec 21 08:57:22 2017	Calculating diversity for sample 5/24 --- Fa13_BD_MM110_SN
-## Thu Dec 21 08:57:25 2017	Done with sample Fa13_BD_MM110_SN
-## Thu Dec 21 08:57:25 2017	Calculating diversity for sample 6/24 --- Fa13_BD_MM15_DN
-## Thu Dec 21 08:57:27 2017	Done with sample Fa13_BD_MM15_DN
-## Thu Dec 21 08:57:27 2017	Calculating diversity for sample 7/24 --- Fa13_BD_MM15_SD
-## Thu Dec 21 08:57:30 2017	Done with sample Fa13_BD_MM15_SD
-## Thu Dec 21 08:57:30 2017	Calculating diversity for sample 8/24 --- Fa13_BD_MM15_SN
-## Thu Dec 21 08:57:32 2017	Done with sample Fa13_BD_MM15_SN
-## Thu Dec 21 08:57:32 2017	Calculating diversity for sample 9/24 --- Sp13_BD_MLB_SN
-## Thu Dec 21 08:57:35 2017	Done with sample Sp13_BD_MLB_SN
-## Thu Dec 21 08:57:35 2017	Calculating diversity for sample 10/24 --- Sp13_BD_MM110_DD
-## Thu Dec 21 08:57:38 2017	Done with sample Sp13_BD_MM110_DD
-## Thu Dec 21 08:57:38 2017	Calculating diversity for sample 11/24 --- Sp13_BD_MM110_SD
-## Thu Dec 21 08:57:40 2017	Done with sample Sp13_BD_MM110_SD
-## Thu Dec 21 08:57:40 2017	Calculating diversity for sample 12/24 --- Sp13_BD_MM110_SN
-## Thu Dec 21 08:57:43 2017	Done with sample Sp13_BD_MM110_SN
-## Thu Dec 21 08:57:43 2017	Calculating diversity for sample 13/24 --- Sp13_BD_MM15_DD
-## Thu Dec 21 08:57:46 2017	Done with sample Sp13_BD_MM15_DD
-## Thu Dec 21 08:57:46 2017	Calculating diversity for sample 14/24 --- Sp13_BD_MM15_SD
-## Thu Dec 21 08:57:49 2017	Done with sample Sp13_BD_MM15_SD
-## Thu Dec 21 08:57:49 2017	Calculating diversity for sample 15/24 --- Sp13_BD_MM15_SN
-## Thu Dec 21 08:57:52 2017	Done with sample Sp13_BD_MM15_SN
-## Thu Dec 21 08:57:52 2017	Calculating diversity for sample 16/24 --- Su13_BD_MLB_DD
-## Thu Dec 21 08:57:54 2017	Done with sample Su13_BD_MLB_DD
-## Thu Dec 21 08:57:54 2017	Calculating diversity for sample 17/24 --- Su13_BD_MLB_SD
-## Thu Dec 21 08:57:57 2017	Done with sample Su13_BD_MLB_SD
-## Thu Dec 21 08:57:57 2017	Calculating diversity for sample 18/24 --- Su13_BD_MM110_DCMD
-## Thu Dec 21 08:57:59 2017	Done with sample Su13_BD_MM110_DCMD
-## Thu Dec 21 08:57:59 2017	Calculating diversity for sample 19/24 --- Su13_BD_MM110_DN
-## Thu Dec 21 08:58:02 2017	Done with sample Su13_BD_MM110_DN
-## Thu Dec 21 08:58:02 2017	Calculating diversity for sample 20/24 --- Su13_BD_MM110_SD
-## Thu Dec 21 08:58:04 2017	Done with sample Su13_BD_MM110_SD
-## Thu Dec 21 08:58:04 2017	Calculating diversity for sample 21/24 --- Su13_BD_MM110_SN
-## Thu Dec 21 08:58:07 2017	Done with sample Su13_BD_MM110_SN
-## Thu Dec 21 08:58:07 2017	Calculating diversity for sample 22/24 --- Su13_BD_MM15_DN
-## Thu Dec 21 08:58:10 2017	Done with sample Su13_BD_MM15_DN
-## Thu Dec 21 08:58:10 2017	Calculating diversity for sample 23/24 --- Su13_BD_MM15_SD
-## Thu Dec 21 08:58:12 2017	Done with sample Su13_BD_MM15_SD
-## Thu Dec 21 08:58:12 2017	Calculating diversity for sample 24/24 --- Su13_BD_MM15_SN
-## Thu Dec 21 08:58:15 2017	Done with sample Su13_BD_MM15_SN
-## Thu Dec 21 08:58:15 2017 	Closing workers
-## Thu Dec 21 08:58:15 2017 	Done with all 24 samples
+## Wed Jan 10 15:10:42 2018 	Using 3 cores for calculations
+## Wed Jan 10 15:10:42 2018	Calculating diversity for sample 1/24 --- Fa13_BD_MLB_DN
+## Wed Jan 10 15:10:56 2018	Done with sample Fa13_BD_MLB_DN
+## Wed Jan 10 15:10:56 2018	Calculating diversity for sample 2/24 --- Fa13_BD_MLB_SN
+## Wed Jan 10 15:10:59 2018	Done with sample Fa13_BD_MLB_SN
+## Wed Jan 10 15:10:59 2018	Calculating diversity for sample 3/24 --- Fa13_BD_MM110_DN
+## Wed Jan 10 15:11:02 2018	Done with sample Fa13_BD_MM110_DN
+## Wed Jan 10 15:11:02 2018	Calculating diversity for sample 4/24 --- Fa13_BD_MM110_SD
+## Wed Jan 10 15:11:06 2018	Done with sample Fa13_BD_MM110_SD
+## Wed Jan 10 15:11:06 2018	Calculating diversity for sample 5/24 --- Fa13_BD_MM110_SN
+## Wed Jan 10 15:11:10 2018	Done with sample Fa13_BD_MM110_SN
+## Wed Jan 10 15:11:10 2018	Calculating diversity for sample 6/24 --- Fa13_BD_MM15_DN
+## Wed Jan 10 15:11:13 2018	Done with sample Fa13_BD_MM15_DN
+## Wed Jan 10 15:11:13 2018	Calculating diversity for sample 7/24 --- Fa13_BD_MM15_SD
+## Wed Jan 10 15:11:17 2018	Done with sample Fa13_BD_MM15_SD
+## Wed Jan 10 15:11:17 2018	Calculating diversity for sample 8/24 --- Fa13_BD_MM15_SN
+## Wed Jan 10 15:11:20 2018	Done with sample Fa13_BD_MM15_SN
+## Wed Jan 10 15:11:20 2018	Calculating diversity for sample 9/24 --- Sp13_BD_MLB_SN
+## Wed Jan 10 15:11:23 2018	Done with sample Sp13_BD_MLB_SN
+## Wed Jan 10 15:11:23 2018	Calculating diversity for sample 10/24 --- Sp13_BD_MM110_DD
+## Wed Jan 10 15:11:26 2018	Done with sample Sp13_BD_MM110_DD
+## Wed Jan 10 15:11:26 2018	Calculating diversity for sample 11/24 --- Sp13_BD_MM110_SD
+## Wed Jan 10 15:11:30 2018	Done with sample Sp13_BD_MM110_SD
+## Wed Jan 10 15:11:30 2018	Calculating diversity for sample 12/24 --- Sp13_BD_MM110_SN
+## Wed Jan 10 15:11:33 2018	Done with sample Sp13_BD_MM110_SN
+## Wed Jan 10 15:11:33 2018	Calculating diversity for sample 13/24 --- Sp13_BD_MM15_DD
+## Wed Jan 10 15:11:36 2018	Done with sample Sp13_BD_MM15_DD
+## Wed Jan 10 15:11:36 2018	Calculating diversity for sample 14/24 --- Sp13_BD_MM15_SD
+## Wed Jan 10 15:11:39 2018	Done with sample Sp13_BD_MM15_SD
+## Wed Jan 10 15:11:39 2018	Calculating diversity for sample 15/24 --- Sp13_BD_MM15_SN
+## Wed Jan 10 15:11:43 2018	Done with sample Sp13_BD_MM15_SN
+## Wed Jan 10 15:11:43 2018	Calculating diversity for sample 16/24 --- Su13_BD_MLB_DD
+## Wed Jan 10 15:11:46 2018	Done with sample Su13_BD_MLB_DD
+## Wed Jan 10 15:11:46 2018	Calculating diversity for sample 17/24 --- Su13_BD_MLB_SD
+## Wed Jan 10 15:11:50 2018	Done with sample Su13_BD_MLB_SD
+## Wed Jan 10 15:11:50 2018	Calculating diversity for sample 18/24 --- Su13_BD_MM110_DCMD
+## Wed Jan 10 15:11:53 2018	Done with sample Su13_BD_MM110_DCMD
+## Wed Jan 10 15:11:53 2018	Calculating diversity for sample 19/24 --- Su13_BD_MM110_DN
+## Wed Jan 10 15:11:57 2018	Done with sample Su13_BD_MM110_DN
+## Wed Jan 10 15:11:57 2018	Calculating diversity for sample 20/24 --- Su13_BD_MM110_SD
+## Wed Jan 10 15:12:00 2018	Done with sample Su13_BD_MM110_SD
+## Wed Jan 10 15:12:00 2018	Calculating diversity for sample 21/24 --- Su13_BD_MM110_SN
+## Wed Jan 10 15:12:04 2018	Done with sample Su13_BD_MM110_SN
+## Wed Jan 10 15:12:04 2018	Calculating diversity for sample 22/24 --- Su13_BD_MM15_DN
+## Wed Jan 10 15:12:07 2018	Done with sample Su13_BD_MM15_DN
+## Wed Jan 10 15:12:07 2018	Calculating diversity for sample 23/24 --- Su13_BD_MM15_SD
+## Wed Jan 10 15:12:11 2018	Done with sample Su13_BD_MM15_SD
+## Wed Jan 10 15:12:11 2018	Calculating diversity for sample 24/24 --- Su13_BD_MM15_SN
+## Wed Jan 10 15:12:14 2018	Done with sample Su13_BD_MM15_SN
+## Wed Jan 10 15:12:14 2018 	Closing workers
+## Wed Jan 10 15:12:14 2018 	Done with all 24 samples
 ```
 
 ```r

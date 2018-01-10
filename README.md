@@ -32,3 +32,8 @@ Extracting target taxonomy and format into compatible output for `Vizbin`.
 
 
 
+## 5. Growthpred
+Ran `Growthpred` on the gene fastas from IMG annotation pipeline for the MAGs and on the CDS extracted from the NCBI/Refseq submissions:
+```
+python growthpred-v1.07.py -S -c 0 -o input_results -b -t -r -g input.genes.fna
+```
