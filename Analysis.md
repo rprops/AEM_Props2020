@@ -976,7 +976,7 @@ merged_file <- merge_annotations(file_list[1:10], genoid_seqid = FALSE)
 ## [1] 17644
 ## [1] 19813
 ## [1] 21848
-## Wed Jan 10 14:58:06 2018  --- Sucessfully merged files
+## Thu Jan 25 11:39:18 2018  --- Sucessfully merged files
 ```
 
 ```r
@@ -1738,7 +1738,7 @@ summary(mod1)
 ## Mclust V (univariate, unequal variance) model with 3 components:
 ## 
 ##  log.likelihood      n df      BIC      ICL
-##        -2219527 946589  8 -4439165 -4675656
+##        -2219531 946589  8 -4439173 -4675471
 ## 
 ## Clustering table:
 ##      1      2      3 
@@ -1908,57 +1908,57 @@ MAG_div <- Diversity_16S(MAG_phy, ncore = 3, parallel = TRUE,
 ```
 ## 	**WARNING** this functions assumes that rows are samples and columns
 ##       	are taxa in your phyloseq object, please verify.
-## Wed Jan 10 15:10:42 2018 	Using 3 cores for calculations
-## Wed Jan 10 15:10:42 2018	Calculating diversity for sample 1/24 --- Fa13_BD_MLB_DN
-## Wed Jan 10 15:10:56 2018	Done with sample Fa13_BD_MLB_DN
-## Wed Jan 10 15:10:56 2018	Calculating diversity for sample 2/24 --- Fa13_BD_MLB_SN
-## Wed Jan 10 15:10:59 2018	Done with sample Fa13_BD_MLB_SN
-## Wed Jan 10 15:10:59 2018	Calculating diversity for sample 3/24 --- Fa13_BD_MM110_DN
-## Wed Jan 10 15:11:02 2018	Done with sample Fa13_BD_MM110_DN
-## Wed Jan 10 15:11:02 2018	Calculating diversity for sample 4/24 --- Fa13_BD_MM110_SD
-## Wed Jan 10 15:11:06 2018	Done with sample Fa13_BD_MM110_SD
-## Wed Jan 10 15:11:06 2018	Calculating diversity for sample 5/24 --- Fa13_BD_MM110_SN
-## Wed Jan 10 15:11:10 2018	Done with sample Fa13_BD_MM110_SN
-## Wed Jan 10 15:11:10 2018	Calculating diversity for sample 6/24 --- Fa13_BD_MM15_DN
-## Wed Jan 10 15:11:13 2018	Done with sample Fa13_BD_MM15_DN
-## Wed Jan 10 15:11:13 2018	Calculating diversity for sample 7/24 --- Fa13_BD_MM15_SD
-## Wed Jan 10 15:11:17 2018	Done with sample Fa13_BD_MM15_SD
-## Wed Jan 10 15:11:17 2018	Calculating diversity for sample 8/24 --- Fa13_BD_MM15_SN
-## Wed Jan 10 15:11:20 2018	Done with sample Fa13_BD_MM15_SN
-## Wed Jan 10 15:11:20 2018	Calculating diversity for sample 9/24 --- Sp13_BD_MLB_SN
-## Wed Jan 10 15:11:23 2018	Done with sample Sp13_BD_MLB_SN
-## Wed Jan 10 15:11:23 2018	Calculating diversity for sample 10/24 --- Sp13_BD_MM110_DD
-## Wed Jan 10 15:11:26 2018	Done with sample Sp13_BD_MM110_DD
-## Wed Jan 10 15:11:26 2018	Calculating diversity for sample 11/24 --- Sp13_BD_MM110_SD
-## Wed Jan 10 15:11:30 2018	Done with sample Sp13_BD_MM110_SD
-## Wed Jan 10 15:11:30 2018	Calculating diversity for sample 12/24 --- Sp13_BD_MM110_SN
-## Wed Jan 10 15:11:33 2018	Done with sample Sp13_BD_MM110_SN
-## Wed Jan 10 15:11:33 2018	Calculating diversity for sample 13/24 --- Sp13_BD_MM15_DD
-## Wed Jan 10 15:11:36 2018	Done with sample Sp13_BD_MM15_DD
-## Wed Jan 10 15:11:36 2018	Calculating diversity for sample 14/24 --- Sp13_BD_MM15_SD
-## Wed Jan 10 15:11:39 2018	Done with sample Sp13_BD_MM15_SD
-## Wed Jan 10 15:11:39 2018	Calculating diversity for sample 15/24 --- Sp13_BD_MM15_SN
-## Wed Jan 10 15:11:43 2018	Done with sample Sp13_BD_MM15_SN
-## Wed Jan 10 15:11:43 2018	Calculating diversity for sample 16/24 --- Su13_BD_MLB_DD
-## Wed Jan 10 15:11:46 2018	Done with sample Su13_BD_MLB_DD
-## Wed Jan 10 15:11:46 2018	Calculating diversity for sample 17/24 --- Su13_BD_MLB_SD
-## Wed Jan 10 15:11:50 2018	Done with sample Su13_BD_MLB_SD
-## Wed Jan 10 15:11:50 2018	Calculating diversity for sample 18/24 --- Su13_BD_MM110_DCMD
-## Wed Jan 10 15:11:53 2018	Done with sample Su13_BD_MM110_DCMD
-## Wed Jan 10 15:11:53 2018	Calculating diversity for sample 19/24 --- Su13_BD_MM110_DN
-## Wed Jan 10 15:11:57 2018	Done with sample Su13_BD_MM110_DN
-## Wed Jan 10 15:11:57 2018	Calculating diversity for sample 20/24 --- Su13_BD_MM110_SD
-## Wed Jan 10 15:12:00 2018	Done with sample Su13_BD_MM110_SD
-## Wed Jan 10 15:12:00 2018	Calculating diversity for sample 21/24 --- Su13_BD_MM110_SN
-## Wed Jan 10 15:12:04 2018	Done with sample Su13_BD_MM110_SN
-## Wed Jan 10 15:12:04 2018	Calculating diversity for sample 22/24 --- Su13_BD_MM15_DN
-## Wed Jan 10 15:12:07 2018	Done with sample Su13_BD_MM15_DN
-## Wed Jan 10 15:12:07 2018	Calculating diversity for sample 23/24 --- Su13_BD_MM15_SD
-## Wed Jan 10 15:12:11 2018	Done with sample Su13_BD_MM15_SD
-## Wed Jan 10 15:12:11 2018	Calculating diversity for sample 24/24 --- Su13_BD_MM15_SN
-## Wed Jan 10 15:12:14 2018	Done with sample Su13_BD_MM15_SN
-## Wed Jan 10 15:12:14 2018 	Closing workers
-## Wed Jan 10 15:12:14 2018 	Done with all 24 samples
+## Thu Jan 25 11:52:47 2018 	Using 3 cores for calculations
+## Thu Jan 25 11:52:47 2018	Calculating diversity for sample 1/24 --- Fa13_BD_MLB_DN
+## Thu Jan 25 11:53:01 2018	Done with sample Fa13_BD_MLB_DN
+## Thu Jan 25 11:53:01 2018	Calculating diversity for sample 2/24 --- Fa13_BD_MLB_SN
+## Thu Jan 25 11:53:04 2018	Done with sample Fa13_BD_MLB_SN
+## Thu Jan 25 11:53:04 2018	Calculating diversity for sample 3/24 --- Fa13_BD_MM110_DN
+## Thu Jan 25 11:53:07 2018	Done with sample Fa13_BD_MM110_DN
+## Thu Jan 25 11:53:07 2018	Calculating diversity for sample 4/24 --- Fa13_BD_MM110_SD
+## Thu Jan 25 11:53:11 2018	Done with sample Fa13_BD_MM110_SD
+## Thu Jan 25 11:53:11 2018	Calculating diversity for sample 5/24 --- Fa13_BD_MM110_SN
+## Thu Jan 25 11:53:14 2018	Done with sample Fa13_BD_MM110_SN
+## Thu Jan 25 11:53:14 2018	Calculating diversity for sample 6/24 --- Fa13_BD_MM15_DN
+## Thu Jan 25 11:53:17 2018	Done with sample Fa13_BD_MM15_DN
+## Thu Jan 25 11:53:17 2018	Calculating diversity for sample 7/24 --- Fa13_BD_MM15_SD
+## Thu Jan 25 11:53:20 2018	Done with sample Fa13_BD_MM15_SD
+## Thu Jan 25 11:53:20 2018	Calculating diversity for sample 8/24 --- Fa13_BD_MM15_SN
+## Thu Jan 25 11:53:23 2018	Done with sample Fa13_BD_MM15_SN
+## Thu Jan 25 11:53:23 2018	Calculating diversity for sample 9/24 --- Sp13_BD_MLB_SN
+## Thu Jan 25 11:53:26 2018	Done with sample Sp13_BD_MLB_SN
+## Thu Jan 25 11:53:26 2018	Calculating diversity for sample 10/24 --- Sp13_BD_MM110_DD
+## Thu Jan 25 11:53:31 2018	Done with sample Sp13_BD_MM110_DD
+## Thu Jan 25 11:53:31 2018	Calculating diversity for sample 11/24 --- Sp13_BD_MM110_SD
+## Thu Jan 25 11:53:35 2018	Done with sample Sp13_BD_MM110_SD
+## Thu Jan 25 11:53:35 2018	Calculating diversity for sample 12/24 --- Sp13_BD_MM110_SN
+## Thu Jan 25 11:53:38 2018	Done with sample Sp13_BD_MM110_SN
+## Thu Jan 25 11:53:38 2018	Calculating diversity for sample 13/24 --- Sp13_BD_MM15_DD
+## Thu Jan 25 11:53:42 2018	Done with sample Sp13_BD_MM15_DD
+## Thu Jan 25 11:53:42 2018	Calculating diversity for sample 14/24 --- Sp13_BD_MM15_SD
+## Thu Jan 25 11:53:45 2018	Done with sample Sp13_BD_MM15_SD
+## Thu Jan 25 11:53:45 2018	Calculating diversity for sample 15/24 --- Sp13_BD_MM15_SN
+## Thu Jan 25 11:53:48 2018	Done with sample Sp13_BD_MM15_SN
+## Thu Jan 25 11:53:48 2018	Calculating diversity for sample 16/24 --- Su13_BD_MLB_DD
+## Thu Jan 25 11:53:51 2018	Done with sample Su13_BD_MLB_DD
+## Thu Jan 25 11:53:51 2018	Calculating diversity for sample 17/24 --- Su13_BD_MLB_SD
+## Thu Jan 25 11:53:54 2018	Done with sample Su13_BD_MLB_SD
+## Thu Jan 25 11:53:54 2018	Calculating diversity for sample 18/24 --- Su13_BD_MM110_DCMD
+## Thu Jan 25 11:53:58 2018	Done with sample Su13_BD_MM110_DCMD
+## Thu Jan 25 11:53:58 2018	Calculating diversity for sample 19/24 --- Su13_BD_MM110_DN
+## Thu Jan 25 11:54:02 2018	Done with sample Su13_BD_MM110_DN
+## Thu Jan 25 11:54:02 2018	Calculating diversity for sample 20/24 --- Su13_BD_MM110_SD
+## Thu Jan 25 11:54:05 2018	Done with sample Su13_BD_MM110_SD
+## Thu Jan 25 11:54:05 2018	Calculating diversity for sample 21/24 --- Su13_BD_MM110_SN
+## Thu Jan 25 11:54:08 2018	Done with sample Su13_BD_MM110_SN
+## Thu Jan 25 11:54:08 2018	Calculating diversity for sample 22/24 --- Su13_BD_MM15_DN
+## Thu Jan 25 11:54:11 2018	Done with sample Su13_BD_MM15_DN
+## Thu Jan 25 11:54:11 2018	Calculating diversity for sample 23/24 --- Su13_BD_MM15_SD
+## Thu Jan 25 11:54:14 2018	Done with sample Su13_BD_MM15_SD
+## Thu Jan 25 11:54:14 2018	Calculating diversity for sample 24/24 --- Su13_BD_MM15_SN
+## Thu Jan 25 11:54:17 2018	Done with sample Su13_BD_MM15_SN
+## Thu Jan 25 11:54:17 2018 	Closing workers
+## Thu Jan 25 11:54:17 2018 	Done with all 24 samples
 ```
 
 ```r
@@ -2012,3 +2012,68 @@ print(p_MAG_div)
 
 
 
+
+
+# Phenotypic diversity
+
+
+
+
+
+```r
+# Plot results
+p_MAG_Pdiv <- ggplot(results_pd, aes(x = new_bin_name, y = D2))+
+  theme_bw()+
+  scale_fill_brewer(palette = "Accent")+
+  geom_point(size = 4, color = "black", alpha = 0.7, aes(fill = Season, 
+                                                         shape = Depth))+
+  scale_shape_manual(values = c(21,24,23))+
+  geom_boxplot(alpha = 0.4, width = 0.2, fill = "lightgray")+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Limnohabitans population\n phenotypic diversity (D2)"))+
+  guides(shape=FALSE, 
+         fill = guide_legend(override.aes=list(colour=brewer.pal(3,"Accent"))))+
+  facet_grid(Site~., scales ="free")+
+  xlab("")+
+  geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+
+  scale_y_continuous(labels=scaleFUN)
+  # coord_trans(y = "sqrt")
+
+print(p_MAG_Pdiv)
+```
+
+<img src="Figures/cached/PhenoD-2-1.png" style="display: block; margin: auto;" />
+
+```r
+# Plot results
+p_MAG_Pdiv2 <- ggplot(results_pd, aes(x = new_bin_name, y = D2))+
+  theme_bw()+
+  scale_fill_brewer(palette = "Accent")+
+  geom_point(size = 4, color = "black", alpha = 0.7, aes(fill = Season, 
+                                                         shape = Depth))+
+  scale_shape_manual(values = c(21,24,23))+
+  geom_boxplot(alpha = 0.4, width = 0.2, fill = "lightgray")+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Limnohabitans population\n phenotypic diversity (D2)"))+
+  guides(shape=FALSE, 
+         fill = guide_legend(override.aes=list(colour=brewer.pal(3,"Accent"))))+
+  # facet_grid(Site~Time, scales ="free")+
+  xlab("")+
+  geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+
+  scale_y_continuous(labels=scaleFUN)
+  # coord_trans(y = "sqrt")
+
+print(p_MAG_Pdiv2)
+```
+
+<img src="Figures/cached/PhenoD-2-2.png" style="display: block; margin: auto;" />
