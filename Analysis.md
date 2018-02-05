@@ -360,7 +360,61 @@ df_phy <- prune_samples(grep(pattern = ".", sample_names(df_phy), fixed = TRUE,
      value = TRUE), df_phy)
 df_phy <- prune_samples(grep(pattern = "cD", sample_names(df_phy), fixed = TRUE,
      value = TRUE, invert = TRUE), df_phy)
+df_phy <- prune_samples(grep(pattern = "ED", sample_names(df_phy), fixed = TRUE,
+     value = TRUE, invert = TRUE), df_phy)
 
+# Calculate diversity
+diversity_df_phy <- Diversity_16S(df_phy, brea = FALSE, R = 100)
+```
+
+```
+## 	**WARNING** this functions assumes that rows are samples and columns
+##       	are taxa in your phyloseq object, please verify.
+## Fri Jan 26 10:41:45 2018	Calculating diversity for sample 1/41 --- Fa13.BD.MLB.DN.1.renamed
+## Fri Jan 26 10:42:18 2018	Calculating diversity for sample 2/41 --- Fa13.BD.MLB.SN.1.renamed
+## Fri Jan 26 10:42:47 2018	Calculating diversity for sample 3/41 --- Fa13.BD.MM110.DN.1.renamed
+## Fri Jan 26 10:43:16 2018	Calculating diversity for sample 4/41 --- Fa13.BD.MM110.DN.2.renamed
+## Fri Jan 26 10:43:44 2018	Calculating diversity for sample 5/41 --- Fa13.BD.MM110.SD.1.renamed
+## Fri Jan 26 10:44:12 2018	Calculating diversity for sample 6/41 --- Fa13.BD.MM110.SD.2.renamed
+## Fri Jan 26 10:44:41 2018	Calculating diversity for sample 7/41 --- Fa13.BD.MM110.SN.1.renamed
+## Fri Jan 26 10:45:08 2018	Calculating diversity for sample 8/41 --- Fa13.BD.MM110.SN.2.renamed
+## Fri Jan 26 10:45:35 2018	Calculating diversity for sample 9/41 --- Fa13.BD.MM15.DN.1.renamed
+## Fri Jan 26 10:46:04 2018	Calculating diversity for sample 10/41 --- Fa13.BD.MM15.DN.2.renamed
+## Fri Jan 26 10:46:32 2018	Calculating diversity for sample 11/41 --- Fa13.BD.MM15.SD.1.renamed
+## Fri Jan 26 10:47:00 2018	Calculating diversity for sample 12/41 --- Fa13.BD.MM15.SD.2.renamed
+## Fri Jan 26 10:47:28 2018	Calculating diversity for sample 13/41 --- Fa13.BD.MM15.SN.1.renamed
+## Fri Jan 26 10:48:03 2018	Calculating diversity for sample 14/41 --- Fa13.BD.MM15.SN.2.renamed
+## Fri Jan 26 10:48:46 2018	Calculating diversity for sample 15/41 --- Sp13.BD.MLB.SN.1.renamed
+## Fri Jan 26 10:49:34 2018	Calculating diversity for sample 16/41 --- Sp13.BD.MLB.SN.2.renamed
+## Fri Jan 26 10:50:09 2018	Calculating diversity for sample 17/41 --- Sp13.BD.MM110.DD.1.renamed
+## Fri Jan 26 10:50:46 2018	Calculating diversity for sample 18/41 --- Sp13.BD.MM110.SD.1.renamed
+## Fri Jan 26 10:51:20 2018	Calculating diversity for sample 19/41 --- Sp13.BD.MM110.SD.2.renamed
+## Fri Jan 26 10:51:54 2018	Calculating diversity for sample 20/41 --- Sp13.BD.MM110.SN.1.renamed
+## Fri Jan 26 10:52:27 2018	Calculating diversity for sample 21/41 --- Sp13.BD.MM110.SN.2.renamed
+## Fri Jan 26 10:52:59 2018	Calculating diversity for sample 22/41 --- Sp13.BD.MM15.DD.1.renamed
+## Fri Jan 26 10:53:34 2018	Calculating diversity for sample 23/41 --- Sp13.BD.MM15.SD.1.renamed
+## Fri Jan 26 10:54:08 2018	Calculating diversity for sample 24/41 --- Sp13.BD.MM15.SN.1.renamed
+## Fri Jan 26 10:54:54 2018	Calculating diversity for sample 25/41 --- Sp13.BD.MM15.SN.2.renamed
+## Fri Jan 26 10:55:29 2018	Calculating diversity for sample 26/41 --- Su13.BD.MLB.DD.1.renamed
+## Fri Jan 26 10:56:05 2018	Calculating diversity for sample 27/41 --- Su13.BD.MLB.SD.1.renamed
+## Fri Jan 26 10:56:38 2018	Calculating diversity for sample 28/41 --- Su13.BD.MM110.DCMD.1.renamed
+## Fri Jan 26 10:57:13 2018	Calculating diversity for sample 29/41 --- Su13.BD.MM110.DCMD.2.renamed
+## Fri Jan 26 10:57:46 2018	Calculating diversity for sample 30/41 --- Su13.BD.MM110.DN.1.renamed
+## Fri Jan 26 10:58:20 2018	Calculating diversity for sample 31/41 --- Su13.BD.MM110.DN.2.renamed
+## Fri Jan 26 10:58:54 2018	Calculating diversity for sample 32/41 --- Su13.BD.MM110.SD.1.renamed
+## Fri Jan 26 10:59:28 2018	Calculating diversity for sample 33/41 --- Su13.BD.MM110.SD.2.renamed
+## Fri Jan 26 11:00:01 2018	Calculating diversity for sample 34/41 --- Su13.BD.MM110.SN.1.renamed
+## Fri Jan 26 11:00:35 2018	Calculating diversity for sample 35/41 --- Su13.BD.MM110.SN.2.renamed
+## Fri Jan 26 11:01:10 2018	Calculating diversity for sample 36/41 --- Su13.BD.MM15.DN.1.renamed
+## Fri Jan 26 11:01:44 2018	Calculating diversity for sample 37/41 --- Su13.BD.MM15.DN.2.renamed
+## Fri Jan 26 11:02:17 2018	Calculating diversity for sample 38/41 --- Su13.BD.MM15.SD.1.renamed
+## Fri Jan 26 11:02:51 2018	Calculating diversity for sample 39/41 --- Su13.BD.MM15.SD.2.renamed
+## Fri Jan 26 11:03:26 2018	Calculating diversity for sample 40/41 --- Su13.BD.MM15.SN.1.renamed
+## Fri Jan 26 11:04:01 2018	Calculating diversity for sample 41/41 --- Su13.BD.MM15.SN.2.renamed
+## Fri Jan 26 11:04:37 2018 	Done with all 41 samples
+```
+
+```r
 # Perform prevalence filtering
 df_phy <- filter_taxa(df_phy, function(x) sum(x > 30) > (0.25*length(x)), TRUE)
 
@@ -2007,8 +2061,148 @@ print(p_MAG_div)
 
 <img src="Figures/cached/diversity-Lhab-1.png" style="display: block; margin: auto;" />
 
+# DESMAN
 
-# Pangenome analysis  
+
+```r
+# Import data
+results_desm <- read.csv("./DESMAN/MAG8_scg_10_9/Gamma_meanR.csv", header = TRUE)
+colnames(results_desm)[1] <- "Samples"
+colnames(results_desm) <- gsub("X", "Variant", colnames(results_desm))
+results_desm$Samples <- gsub(".sorted.MAG8","",results_desm$Samples, fixed = TRUE)
+# Import library prep data
+library_prep <- read.table("./mapping_files/Libraries.tsv",header = TRUE)
+
+# Wide to long format
+results_desm_long <- tidyr::gather(results_desm, Variant, Freq, 
+                             2:(ncol(results_desm)), factor_key=TRUE)
+# Merge with metadata
+results_desm_long <- dplyr::left_join(results_desm_long, library_prep, by = "Samples")
+results_desm_long$Samples <- gsub(".A", "", results_desm_long$Samples, fixed = TRUE)
+results_desm_long$Samples <- gsub(".C", "", results_desm_long$Samples, fixed = TRUE)
+results_desm_long <- dplyr::left_join(results_desm_long, meta_em, by = c("Samples" = "Sample_ID"))
+
+results_desm_long$Site <- as.character(results_desm_long$Site)
+results_desm_long$Site <- gsub("110", "Lake Michigan\nsite M110", results_desm_long$Site)
+results_desm_long$Site <- gsub("15", "Lake Michigan\nsite M15", results_desm_long$Site)
+results_desm_long$Site <- gsub("Buoy", "Muskegon Lake", results_desm_long$Site)
+results_desm_long$Site <- factor(results_desm_long$Site, levels = c("Muskegon Lake",
+                                                            "Lake Michigan\nsite M15",
+                                                            "Lake Michigan\nsite M110"))
+results_desm_long$Season <- as.character(results_desm_long$Season)
+results_desm_long$Season <- factor(results_desm_long$Season, levels = c("Spring", "Summer","Fall"))
+```
+
+
+```r
+# Make plots
+desm_p1 <- ggplot(results_desm_long, aes(x = Samples, y = Freq, fill = Variant))+
+  geom_bar(stat = "identity", color = "black")+
+  scale_fill_brewer(palette = "Accent")+
+  theme_bw()+
+  # geom_point(size = 4, color = "black", alpha = 0.7)+
+  # scale_shape_manual(values = c(21,24,23))+
+  # geom_boxplot(alpha = 0.4)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Variant frequency MAG8"))+
+  guides(fill=FALSE)+
+  facet_grid(Season~Site, scales ="free")+
+  xlab("")+
+  scale_y_continuous(labels=scaleFUN, limits = c(0,1))
+  # coord_trans(y = "sqrt")
+
+print(desm_p1)
+```
+
+<img src="Figures/cached/desman-2-1.png" style="display: block; margin: auto;" />
+
+## Ordination plots 
+
+
+```r
+# Make PCoA
+variants <- results_desm[,2:ncol(results_desm)]
+rownames(variants) <- results_desm[, 1]
+taxa <- as.matrix(data.frame(variant_name = colnames(results_desm)[2:ncol(results_desm)]))
+rownames(taxa) <- colnames(results_desm)[2:ncol(results_desm)]
+
+# Store as phyloseq object
+physeq_desm <- phyloseq(otu_table(variants, taxa_are_rows = FALSE),
+         tax_table(taxa)
+)
+
+# Run beta diversity analysis on 16s data
+pcoa <- ordinate(
+  physeq = physeq_desm, 
+  method = "PCoA", 
+  distance = "bray",
+  correction = "lingoes",
+  k=2
+)
+pcoa.df <- data.frame(Samples = sample_names(physeq_desm), pcoa$vectors)
+var <- round(pcoa$values$Eigenvalues/sum(pcoa$values$Eigenvalues)*100,1)
+
+# Add metadata
+pcoa.df$Samples <- gsub(".A", "", pcoa.df$Samples, fixed = TRUE)
+pcoa.df$Samples <- gsub(".C", "", pcoa.df$Samples, fixed = TRUE)
+pcoa.df <- dplyr::left_join(pcoa.df, meta_em, by = c("Samples" = "Sample_ID"))
+
+# Run permanova
+x <- results_desm[,2:ncol(results_desm)]
+rownames(x) <- results_desm[, 1]
+dist_desm <- vegan::vegdist(x)
+perm <- permute::how(nperm = 999)
+permanova_desm <- vegan::adonis(dist_desm ~ Season * Site, 
+                        data = meta_em, 
+                        permutations = perm)
+
+# Plot PCoA
+my_grob = grobTree(textGrob(bquote(paste(r[Season]^2 == 
+    .(round(100 * permanova_desm$aov.tab[1, 5], 1)), 
+    "%")), x = 0.7, y = 0.95, hjust = 0, gp = gpar(col = "black", 
+    fontsize = 14, fontface = "italic")))
+my_grob2 = grobTree(textGrob(bquote(paste(r[Site]^2 == 
+    .(format(round(100 * permanova_desm$aov.tab[2, 5], 
+        1), nsmall = 1)), "%")), x = 0.7, y = 0.87, 
+    hjust = 0, gp = gpar(col = "black", fontsize = 14, 
+        fontface = "italic")))
+my_grob3 = grobTree(textGrob(bquote(paste(r[Season:Site]^2 == 
+    .(round(100 * permanova_desm$aov.tab[3, 5], 1)), 
+    "%")), x = 0.7, y = 0.79, hjust = 0, gp = gpar(col = "black", 
+    fontsize = 14, fontface = "italic")))
+
+pcoa.ord <- ggplot(data=pcoa.df, aes(x=Axis.1, y=Axis.2, shape = Site))+
+  scale_shape_manual(values=c(21,23, 24))+
+  geom_point(size=7, alpha=0.7, aes(fill = Season))+
+  theme_bw()+
+  scale_fill_brewer(palette = "Accent")+
+  labs(x = paste0("PCoA axis 1 (",var[1], "%)"),
+       y = paste0("PCoA axis 2 (",var[2], "%)"), fill="", shape = "", colour="")+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=16),
+        title=element_text(size=16), legend.text=element_text(size=16))+ 
+  guides(fill = guide_legend(override.aes = list(shape = 22)))+
+  annotation_custom(my_grob)+
+  annotation_custom(my_grob2)+
+  annotation_custom(my_grob3)+
+  ggtitle("PCoA of resolved MAG8 variant distribution")
+
+print(pcoa.ord)
+```
+
+<img src="Figures/cached/desman-3-1.png" style="display: block; margin: auto;" />
+
+
+## Check correlation with environmental variables 
+
+
+
+
+## Pangenome analysis  
 
 
 
@@ -2018,6 +2212,7 @@ print(p_MAG_div)
 
 
 
+### Plot phenoD
 
 
 ```r
@@ -2067,7 +2262,7 @@ p_MAG_Pdiv2 <- ggplot(results_pd, aes(x = new_bin_name, y = D2))+
   ylab(paste0("Limnohabitans population\n phenotypic diversity (D2)"))+
   guides(shape=FALSE, 
          fill = guide_legend(override.aes=list(colour=brewer.pal(3,"Accent"))))+
-  # facet_grid(Site~Time, scales ="free")+
+  facet_grid(Site~Time, scales ="free")+
   xlab("")+
   geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+
   scale_y_continuous(labels=scaleFUN)
@@ -2077,3 +2272,75 @@ print(p_MAG_Pdiv2)
 ```
 
 <img src="Figures/cached/PhenoD-2-2.png" style="display: block; margin: auto;" />
+
+### Example expression profiles
+
+```r
+new_bin_names2 <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(3,8:10)]; new_bin_names2$IMG_taxID <- as.character(new_bin_names2$IMG_taxID)
+expr_cov_long_sb <- left_join(expr_cov_long, new_bin_names2, by = c("Genome_ID" = "IMG_taxID"))
+
+p_Pdist <- expr_cov_long_sb %>% dplyr::filter(new_bin_name %in% c("MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
+                                                       "MAG4.FA-M110-DN") & 
+                                   Sample == "Fa13.BD.MM15.SD") %>% 
+  group_by(new_bin_name) %>% dplyr::mutate(rank = rank(-mapped_reads/sum(mapped_reads))) %>% 
+  dplyr::mutate(mapped_reads_norm = mapped_reads/sum(mapped_reads)) %>% 
+  ggplot(aes(x = rank, y = mapped_reads_norm, color = new_bin_name))+
+  geom_line(size = 2, linetype = 2)+
+  theme_bw()+
+  scale_color_brewer("", palette = "Accent")+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=12),
+      title=element_text(size=12), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab("Relative number of mapped reads")+
+  xlab("Genes ranked by mapped reads")+
+  scale_y_continuous(labels=scaleFUN)+
+  xlim(0,300)
+  # coord_trans(y = "sqrt")
+
+print(p_Pdist)
+```
+
+<img src="Figures/cached/PhenoD-3-1.png" style="display: block; margin: auto;" />
+
+```r
+# Add 16S-estimated taxonomic diversity
+diversity_df_phy <- data.frame(Sample = rownames(diversity_df_phy), diversity_df_phy)
+diversity16S_df_phy <- diversity_df_phy[grep(".1", diversity_df_phy$Sample, 
+                                             fixed = TRUE), ]
+diversity16S_df_phy$Sample <- gsub(".1.renamed", "", diversity16S_df_phy$Sample)
+colnames(diversity16S_df_phy)[2:ncol(diversity16S_df_phy)] <- paste("16S", colnames(diversity16S_df_phy)[2:ncol(diversity16S_df_phy)], sep = "_")
+results_pd_16S <- left_join(results_pd, diversity16S_df_phy, by = "Sample")
+
+# Plot taxonomic vs. phenotypic diversity
+p_MAG_Pdiv3 <- ggplot(results_pd_16S, aes(x = `16S_D2`, y = D2, fill = new_bin_name.x))+
+  theme_bw()+
+  scale_fill_brewer(palette = "Paired")+
+  scale_color_brewer(palette = "Paired")+
+  geom_point(size = 4, color = "black", alpha = 0.7, shape = 21)+
+  scale_shape_manual(values = c(21,24,23))+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Limnohabitans population\n phenotypic diversity (D2)"))+
+  guides(shape=FALSE)+
+  xlab("")+
+  facet_grid(Site~new_bin_name.x)+
+  geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+
+  scale_y_continuous(labels=scaleFUN)+
+  geom_smooth(method = "loess", aes(color = new_bin_name.x))
+  # coord_trans(y = "sqrt")
+
+print(p_MAG_Pdiv3)
+```
+
+```
+## Error in combine_vars(data, params$plot_env, cols, drop = params$drop): At least one layer must contain all variables used for facetting
+```
+
+<img src="Figures/cached/PhenoD-3-2.png" style="display: block; margin: auto;" />
