@@ -2091,22 +2091,31 @@ results_desm_long$Site <- factor(results_desm_long$Site, levels = c("Muskegon La
                                                             "Lake Michigan\nsite M110"))
 results_desm_long$Season <- as.character(results_desm_long$Season)
 results_desm_long$Season <- factor(results_desm_long$Season, levels = c("Spring", "Summer","Fall"))
+
+# Factor to numeric
+results_desm_long$Temperature..C. <- as.numeric(as.character(results_desm_long$Temperature..C.))
+results_desm_long$PAR <- as.numeric(as.character(results_desm_long$PAR))
+results_desm_long$Chl.Lab..ug.L. <- as.numeric(as.character(results_desm_long$Chl.Lab..ug.L.))
+results_desm_long$DO.Probe..mg.L. <- as.numeric(as.character(results_desm_long$DO.Probe..mg.L.))
+results_desm_long$TP.ug.L <- as.numeric(as.character(results_desm_long$TP.ug.L))
 ```
+
+## Check correlation with environmental variables 
 
 
 ```r
 # Make plots
 desm_p1 <- ggplot(results_desm_long, aes(x = Samples, y = Freq, fill = Variant))+
-  geom_bar(stat = "identity", color = "black")+
+  geom_bar(stat = "identity", color = "black", alpha = 0.7)+
   scale_fill_brewer(palette = "Accent")+
   theme_bw()+
   # geom_point(size = 4, color = "black", alpha = 0.7)+
   # scale_shape_manual(values = c(21,24,23))+
   # geom_boxplot(alpha = 0.4)+
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-      title=element_text(size=20), legend.text=element_text(size=12),
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
       legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
       strip.text=element_text(size=14), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
   ylab(paste0("Variant frequency MAG8"))+
@@ -2120,6 +2129,120 @@ print(desm_p1)
 ```
 
 <img src="Figures/cached/desman-2-1.png" style="display: block; margin: auto;" />
+
+```r
+desm_p2 <- ggplot(results_desm_long, aes(x = Temperature..C., y = Freq, 
+                                         fill = Variant, 
+                                         col = Variant))+
+  geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
+  scale_fill_brewer("", palette = "Accent")+
+  scale_color_brewer("", palette = "Accent")+
+  theme_bw()+
+  # geom_point(size = 4, color = "black", alpha = 0.7)+
+  # scale_shape_manual(values = c(21,24,23))+
+  # geom_boxplot(alpha = 0.4)+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Variant frequency MAG8"))+
+  guides(fill=FALSE)+
+  # facet_grid(Season~Site, scales ="free")+
+  xlab("Temperature (°C)")+
+  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
+  geom_smooth(se = FALSE)+
+  guides(fill=guide_legend(nrow=2))
+  # coord_trans(y = "sqrt")
+
+desm_p3 <- ggplot(results_desm_long, aes(x = PAR , y = Freq, 
+                                         fill = Variant, 
+                                         col = Variant))+
+  geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
+  scale_fill_brewer("", palette = "Accent")+
+  scale_color_brewer("", palette = "Accent")+
+  theme_bw()+
+  # geom_point(size = 4, color = "black", alpha = 0.7)+
+  # scale_shape_manual(values = c(21,24,23))+
+  # geom_boxplot(alpha = 0.4)+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Variant frequency MAG8"))+
+  guides(fill=FALSE)+
+  # facet_grid(Season~Site, scales ="free")+
+  xlab("PAR")+
+  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
+  geom_smooth(se = FALSE)+
+  guides(fill=guide_legend(nrow=2))
+  # coord_trans(y = "sqrt")
+
+desm_p4 <- ggplot(results_desm_long, aes(x = DO.Probe..mg.L. , y = Freq, 
+                                         fill = Variant, 
+                                         col = Variant))+
+  geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
+  scale_fill_brewer("", palette = "Accent")+
+  scale_color_brewer("",palette = "Accent")+
+  theme_bw()+
+  # geom_point(size = 4, color = "black", alpha = 0.7)+
+  # scale_shape_manual(values = c(21,24,23))+
+  # geom_boxplot(alpha = 0.4)+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Variant frequency MAG8"))+
+  guides(fill=FALSE)+
+  # facet_grid(Season~Site, scales ="free")+
+  xlab("DO concentration (mg/L)")+
+  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
+  geom_smooth(se = FALSE)+
+  guides(fill=guide_legend(nrow=2))
+  # coord_trans(y = "sqrt")
+
+desm_p5 <- ggplot(results_desm_long, aes(x =TP.ug.L, y = Freq, 
+                                         fill = Variant, 
+                                         col = Variant))+
+  geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
+  scale_fill_brewer("", palette = "Accent")+
+  scale_color_brewer("",palette = "Accent")+
+  theme_bw()+
+  # geom_point(size = 4, color = "black", alpha = 0.7)+
+  # scale_shape_manual(values = c(21,24,23))+
+  # geom_boxplot(alpha = 0.4)+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Variant frequency MAG8"))+
+  guides(fill=FALSE)+
+  # facet_grid(Season~Site, scales ="free")+
+  xlab("Total Phosphorous (µg/L)")+
+  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
+  geom_smooth(se = FALSE)+
+  guides(fill=guide_legend(nrow=2))
+  # coord_trans(y = "sqrt")
+
+# Combine all exploratory plots
+cowplot::plot_grid(desm_p2, desm_p3, desm_p4, desm_p5, ncol = 2, align = 'hv')
+```
+
+```
+## `geom_smooth()` using method = 'loess'
+## `geom_smooth()` using method = 'loess'
+## `geom_smooth()` using method = 'loess'
+## `geom_smooth()` using method = 'loess'
+```
+
+<img src="Figures/cached/desman-2-2.png" style="display: block; margin: auto;" />
 
 ## Ordination plots 
 
@@ -2189,20 +2312,19 @@ pcoa.ord <- ggplot(data=pcoa.df, aes(x=Axis.1, y=Axis.2, shape = Site))+
   annotation_custom(my_grob)+
   annotation_custom(my_grob2)+
   annotation_custom(my_grob3)+
-  ggtitle("PCoA of resolved MAG8 variant distribution")
+  ggtitle("PCoA of resolved MAG8 variant composition")
 
 print(pcoa.ord)
 ```
 
 <img src="Figures/cached/desman-3-1.png" style="display: block; margin: auto;" />
 
+## MVabund
 
-## Check correlation with environmental variables 
+Whip out multivariate abundance testing for hypopthesis test on environmental variables?
 
 
-
-
-## Pangenome analysis  
+# Pangenome analysis  
 
 
 
