@@ -2061,7 +2061,7 @@ print(p_MAG_div)
 
 <img src="Figures/cached/diversity-Lhab-1.png" style="display: block; margin: auto;" />
 
-# DESMAN
+# 8. DESMAN
 
 
 ```r
@@ -2098,16 +2098,43 @@ results_desm_long$PAR <- as.numeric(as.character(results_desm_long$PAR))
 results_desm_long$Chl.Lab..ug.L. <- as.numeric(as.character(results_desm_long$Chl.Lab..ug.L.))
 results_desm_long$DO.Probe..mg.L. <- as.numeric(as.character(results_desm_long$DO.Probe..mg.L.))
 results_desm_long$TP.ug.L <- as.numeric(as.character(results_desm_long$TP.ug.L))
+results_desm_long$DOC.mg.L <- as.numeric(as.character(results_desm_long$DOC.mg.L))
 ```
 
 ## Check correlation with environmental variables 
 
 
 ```r
-# Make plots
-desm_p1 <- ggplot(results_desm_long, aes(x = Samples, y = Freq, fill = Variant))+
-  geom_bar(stat = "identity", color = "black", alpha = 0.7)+
-  scale_fill_brewer(palette = "Accent")+
+# # Make plots
+# desm_p1 <- ggplot(results_desm_long, aes(x = Samples, y = Freq, fill = Variant))+
+#   geom_bar(stat = "identity", color = "black", alpha = 0.7)+
+#   scale_fill_brewer(palette = "Accent")+
+#   theme_bw()+
+#   # geom_point(size = 4, color = "black", alpha = 0.7)+
+#   # scale_shape_manual(values = c(21,24,23))+
+#   # geom_boxplot(alpha = 0.4)+
+#   theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+#       title=element_text(size=16), legend.text=element_text(size=10),
+#       legend.background = element_rect(fill="transparent"),
+#       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+#       strip.text=element_text(size=14), legend.position = "bottom",
+#       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+#   ylab(paste0("Variant frequency MAG8"))+
+#   guides(fill=FALSE)+
+#   facet_grid(Season~Site, scales ="free")+
+#   xlab("")+
+#   scale_y_continuous(labels=scaleFUN, limits = c(0,1))
+#   # coord_trans(y = "sqrt")
+# 
+# print(desm_p1)
+
+desm_p1b <- ggplot(results_desm_long, aes(x = Season, y = Freq, 
+                                         fill = Variant, 
+                                         col = Variant))+
+  geom_point(color = "black", alpha = 0.7, shape = 21, size = 3, col = "black")+
+  geom_boxplot(alpha = 0.3, col = "black", outlier.shape = NA, size = 0.3)+
+  scale_fill_brewer("", palette = "Accent")+
+  scale_color_brewer("",palette = "Accent")+
   theme_bw()+
   # geom_point(size = 4, color = "black", alpha = 0.7)+
   # scale_shape_manual(values = c(21,24,23))+
@@ -2116,19 +2143,22 @@ desm_p1 <- ggplot(results_desm_long, aes(x = Samples, y = Freq, fill = Variant))
       title=element_text(size=16), legend.text=element_text(size=10),
       legend.background = element_rect(fill="transparent"),
       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
-      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Variant frequency MAG8"))+
+  ylab(paste0("Variant frequency"))+
   guides(fill=FALSE)+
-  facet_grid(Season~Site, scales ="free")+
+  facet_grid(Site~Variant, scales ="free")+
   xlab("")+
-  scale_y_continuous(labels=scaleFUN, limits = c(0,1))
+  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
+  # geom_smooth(se = FALSE)+
+  guides(fill=FALSE)
   # coord_trans(y = "sqrt")
 
-print(desm_p1)
+print(desm_p1b)
 ```
 
-<img src="Figures/cached/desman-2-1.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/desman-2a-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 desm_p2 <- ggplot(results_desm_long, aes(x = Temperature..C., y = Freq, 
@@ -2147,7 +2177,7 @@ desm_p2 <- ggplot(results_desm_long, aes(x = Temperature..C., y = Freq,
       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Variant frequency MAG8"))+
+  ylab(paste0("Variant frequency"))+
   guides(fill=FALSE)+
   # facet_grid(Season~Site, scales ="free")+
   xlab("Temperature (°C)")+
@@ -2172,7 +2202,7 @@ desm_p3 <- ggplot(results_desm_long, aes(x = PAR , y = Freq,
       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Variant frequency MAG8"))+
+  ylab(paste0("Variant frequency"))+
   guides(fill=FALSE)+
   # facet_grid(Season~Site, scales ="free")+
   xlab("PAR")+
@@ -2197,7 +2227,7 @@ desm_p4 <- ggplot(results_desm_long, aes(x = DO.Probe..mg.L. , y = Freq,
       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Variant frequency MAG8"))+
+  ylab(paste0("Variant frequency"))+
   guides(fill=FALSE)+
   # facet_grid(Season~Site, scales ="free")+
   xlab("DO concentration (mg/L)")+
@@ -2222,10 +2252,35 @@ desm_p5 <- ggplot(results_desm_long, aes(x =TP.ug.L, y = Freq,
       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Variant frequency MAG8"))+
+  ylab(paste0("Variant frequency"))+
   guides(fill=FALSE)+
   # facet_grid(Season~Site, scales ="free")+
   xlab("Total Phosphorous (µg/L)")+
+  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
+  geom_smooth(se = FALSE)+
+  guides(fill=guide_legend(nrow=2))
+  # coord_trans(y = "sqrt")
+
+desm_p6 <- ggplot(results_desm_long, aes(x =DOC.mg.L, y = Freq, 
+                                         fill = Variant, 
+                                         col = Variant))+
+  geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
+  scale_fill_brewer("", palette = "Accent")+
+  scale_color_brewer("",palette = "Accent")+
+  theme_bw()+
+  # geom_point(size = 4, color = "black", alpha = 0.7)+
+  # scale_shape_manual(values = c(21,24,23))+
+  # geom_boxplot(alpha = 0.4)+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Variant frequency"))+
+  guides(fill=FALSE)+
+  # facet_grid(Season~Site, scales ="free")+
+  xlab("DOC (mg/L)")+
   scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
   geom_smooth(se = FALSE)+
   guides(fill=guide_legend(nrow=2))
@@ -2242,7 +2297,9 @@ cowplot::plot_grid(desm_p2, desm_p3, desm_p4, desm_p5, ncol = 2, align = 'hv')
 ## `geom_smooth()` using method = 'loess'
 ```
 
-<img src="Figures/cached/desman-2-2.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/desman-2-1.png" style="display: block; margin: auto;" />
+
+
 
 ## Ordination plots 
 
@@ -2330,139 +2387,153 @@ Whip out multivariate abundance testing for hypopthesis test on environmental va
 
 
 
-# Phenotypic diversity
+<!-- # Phenotypic diversity -->
+
+<!-- ```{r PhenoD-1, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 10, include = FALSE} -->
+<!-- expr_cov_pd <- expr_cov_long %>% dplyr::select(c("gene_oid", "Sample", -->
+<!--                                                  "mapped_reads", "Genome_ID")) -->
+<!-- expr_cov_pd <- tidyr::spread(expr_cov_pd, Genome_ID, mapped_reads) -->
+
+<!-- # Loop through all samples and calculate diversity for each sample -->
+<!-- for(i in 1:length(unique(expr_cov_pd$Sample))){ -->
+<!--   phy_tmp <- expr_cov_pd %>% dplyr::filter(Sample == unique(expr_cov_pd$Sample)[i]) -->
+<!--   phy_tmp[is.na(phy_tmp)] <- 0   -->
+<!--   phylo_expr_cov_pd <- phyloseq::phyloseq(phyloseq::otu_table(phy_tmp[ ,-c(1,2)], taxa_are_rows = TRUE),  -->
+<!--                                          as.matrix(phyloseq::tax_table(phy_tmp[,1]))) -->
+<!--   pd_tmp <- Phenoflow::Diversity_16S(phylo_expr_cov_pd, R = 10, brea = FALSE) -->
+<!--   pd_tmp <- data.frame(Sample = unique(expr_cov_pd$Sample)[i], Genome_ID = sample_names(phylo_expr_cov_pd), -->
+<!--                        pd_tmp) -->
+<!--   if(i == 1) results_pd <- pd_tmp else results_pd <- rbind(results_pd, pd_tmp) -->
+<!-- } -->
+
+<!-- # Merge with metadata -->
+<!-- meta_metaT2 <- distinct(meta[, 2:nrow(meta)]) -->
+<!-- meta_metaT2$Sample_ID <- gsub("_",".", meta_metaT2$Sample_ID) -->
+<!-- results_pd <- left_join(results_pd, meta_metaT2, by = c("Sample" = "Sample_ID")) -->
+
+<!-- new_bin_names2 <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(3,8:10)]; new_bin_names2$IMG_taxID <- as.character(new_bin_names2$IMG_taxID) -->
+<!-- results_pd <- left_join(results_pd, new_bin_names2, by = c("Genome_ID" = "IMG_taxID")) -->
+<!-- results_pd$new_bin_name <- as.character(results_pd$new_bin_name) -->
+<!-- results_pd$new_bin_name <- factor(results_pd$new_bin_name, levels = -->
+<!--                                       c("MAG1.FA-MLB-DN","MAG2.FA-MLB-SN", -->
+<!--                                         "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN", -->
+<!--                                         "MAG5.SP-M110-DD", "MAG6.SP-M15-SD", -->
+<!--                                         "MAG7.SU-MLB-SD", "MAG8.SU-M110-DCMD", -->
+<!--                                         "MAG9.SU-M15-SN", "MAG10.SU-M15-SN")) -->
+<!-- ``` -->
+
+<!-- ### Plot phenoD -->
+
+<!-- ```{r PhenoD-2, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 10} -->
+<!-- # Plot results -->
+<!-- p_MAG_Pdiv <- ggplot(results_pd, aes(x = new_bin_name, y = D2))+ -->
+<!--   theme_bw()+ -->
+<!--   scale_fill_brewer(palette = "Accent")+ -->
+<!--   geom_point(size = 4, color = "black", alpha = 0.7, aes(fill = Season,  -->
+<!--                                                          shape = Depth))+ -->
+<!--   scale_shape_manual(values = c(21,24,23))+ -->
+<!--   geom_boxplot(alpha = 0.4, width = 0.2, fill = "lightgray")+ -->
+<!--   theme(axis.text=element_text(size=14), axis.title=element_text(size=20), -->
+<!--       title=element_text(size=20), legend.text=element_text(size=12), -->
+<!--       legend.background = element_rect(fill="transparent"), -->
+<!--       axis.text.x = element_text(size = 14, angle = 45, hjust = 1), -->
+<!--       strip.text=element_text(size=14), legend.position = "bottom", -->
+<!--       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+ -->
+<!--   ylab(paste0("Limnohabitans population\n phenotypic diversity (D2)"))+ -->
+<!--   guides(shape=FALSE,  -->
+<!--          fill = guide_legend(override.aes=list(colour=brewer.pal(3,"Accent"))))+ -->
+<!--   facet_grid(Site~., scales ="free")+ -->
+<!--   xlab("")+ -->
+<!--   geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+ -->
+<!--   scale_y_continuous(labels=scaleFUN) -->
+<!--   # coord_trans(y = "sqrt") -->
+
+<!-- print(p_MAG_Pdiv) -->
 
 
+<!-- # Plot results -->
+<!-- p_MAG_Pdiv2 <- ggplot(results_pd, aes(x = new_bin_name, y = D2))+ -->
+<!--   theme_bw()+ -->
+<!--   scale_fill_brewer(palette = "Accent")+ -->
+<!--   geom_point(size = 4, color = "black", alpha = 0.7, aes(fill = Season,  -->
+<!--                                                          shape = Depth))+ -->
+<!--   scale_shape_manual(values = c(21,24,23))+ -->
+<!--   geom_boxplot(alpha = 0.4, width = 0.2, fill = "lightgray")+ -->
+<!--   theme(axis.text=element_text(size=14), axis.title=element_text(size=20), -->
+<!--       title=element_text(size=20), legend.text=element_text(size=12), -->
+<!--       legend.background = element_rect(fill="transparent"), -->
+<!--       axis.text.x = element_text(size = 14, angle = 45, hjust = 1), -->
+<!--       strip.text=element_text(size=14), legend.position = "bottom", -->
+<!--       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+ -->
+<!--   ylab(paste0("Limnohabitans population\n phenotypic diversity (D2)"))+ -->
+<!--   guides(shape=FALSE,  -->
+<!--          fill = guide_legend(override.aes=list(colour=brewer.pal(3,"Accent"))))+ -->
+<!--   facet_grid(Site~Time, scales ="free")+ -->
+<!--   xlab("")+ -->
+<!--   geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+ -->
+<!--   scale_y_continuous(labels=scaleFUN) -->
+<!--   # coord_trans(y = "sqrt") -->
 
-### Plot phenoD
+<!-- print(p_MAG_Pdiv2) -->
+<!-- ``` -->
 
+<!-- ### Example expression profiles -->
+<!-- ```{r PhenoD-3, dpi = 500, warning = FALSE, fig.width = 12, fig.height = 12} -->
+<!-- new_bin_names2 <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(3,8:10)]; new_bin_names2$IMG_taxID <- as.character(new_bin_names2$IMG_taxID) -->
+<!-- expr_cov_long_sb <- left_join(expr_cov_long, new_bin_names2, by = c("Genome_ID" = "IMG_taxID")) -->
 
-```r
-# Plot results
-p_MAG_Pdiv <- ggplot(results_pd, aes(x = new_bin_name, y = D2))+
-  theme_bw()+
-  scale_fill_brewer(palette = "Accent")+
-  geom_point(size = 4, color = "black", alpha = 0.7, aes(fill = Season, 
-                                                         shape = Depth))+
-  scale_shape_manual(values = c(21,24,23))+
-  geom_boxplot(alpha = 0.4, width = 0.2, fill = "lightgray")+
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-      title=element_text(size=20), legend.text=element_text(size=12),
-      legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
-      strip.text=element_text(size=14), legend.position = "bottom",
-      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Limnohabitans population\n phenotypic diversity (D2)"))+
-  guides(shape=FALSE, 
-         fill = guide_legend(override.aes=list(colour=brewer.pal(3,"Accent"))))+
-  facet_grid(Site~., scales ="free")+
-  xlab("")+
-  geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+
-  scale_y_continuous(labels=scaleFUN)
-  # coord_trans(y = "sqrt")
+<!-- p_Pdist <- expr_cov_long_sb %>% dplyr::filter(new_bin_name %in% c("MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD", -->
+<!--                                                        "MAG4.FA-M110-DN") &  -->
+<!--                                    Sample == "Fa13.BD.MM15.SD") %>%  -->
+<!--   group_by(new_bin_name) %>% dplyr::mutate(rank = rank(-mapped_reads/sum(mapped_reads))) %>%  -->
+<!--   dplyr::mutate(mapped_reads_norm = mapped_reads/sum(mapped_reads)) %>%  -->
+<!--   ggplot(aes(x = rank, y = mapped_reads_norm, color = new_bin_name))+ -->
+<!--   geom_line(size = 2, linetype = 2)+ -->
+<!--   theme_bw()+ -->
+<!--   scale_color_brewer("", palette = "Accent")+ -->
+<!--   theme(axis.text=element_text(size=12), axis.title=element_text(size=12), -->
+<!--       title=element_text(size=12), legend.text=element_text(size=12), -->
+<!--       legend.background = element_rect(fill="transparent"), -->
+<!--       axis.text.x = element_text(size = 12, angle = 45, hjust = 1), -->
+<!--       strip.text=element_text(size=12), legend.position = "bottom", -->
+<!--       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+ -->
+<!--   ylab("Relative number of mapped reads")+ -->
+<!--   xlab("Genes ranked by mapped reads")+ -->
+<!--   scale_y_continuous(labels=scaleFUN)+ -->
+<!--   xlim(0,300) -->
+<!--   # coord_trans(y = "sqrt") -->
 
-print(p_MAG_Pdiv)
-```
+<!-- print(p_Pdist) -->
 
-<img src="Figures/cached/PhenoD-2-1.png" style="display: block; margin: auto;" />
+<!-- # Add 16S-estimated taxonomic diversity -->
+<!-- diversity_df_phy <- data.frame(Sample = rownames(diversity_df_phy), diversity_df_phy) -->
+<!-- diversity16S_df_phy <- diversity_df_phy[grep(".1", diversity_df_phy$Sample,  -->
+<!--                                              fixed = TRUE), ] -->
+<!-- diversity16S_df_phy$Sample <- gsub(".1.renamed", "", diversity16S_df_phy$Sample) -->
+<!-- colnames(diversity16S_df_phy)[2:ncol(diversity16S_df_phy)] <- paste("16S", colnames(diversity16S_df_phy)[2:ncol(diversity16S_df_phy)], sep = "_") -->
+<!-- results_pd_16S <- left_join(results_pd, diversity16S_df_phy, by = "Sample") -->
 
-```r
-# Plot results
-p_MAG_Pdiv2 <- ggplot(results_pd, aes(x = new_bin_name, y = D2))+
-  theme_bw()+
-  scale_fill_brewer(palette = "Accent")+
-  geom_point(size = 4, color = "black", alpha = 0.7, aes(fill = Season, 
-                                                         shape = Depth))+
-  scale_shape_manual(values = c(21,24,23))+
-  geom_boxplot(alpha = 0.4, width = 0.2, fill = "lightgray")+
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-      title=element_text(size=20), legend.text=element_text(size=12),
-      legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
-      strip.text=element_text(size=14), legend.position = "bottom",
-      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Limnohabitans population\n phenotypic diversity (D2)"))+
-  guides(shape=FALSE, 
-         fill = guide_legend(override.aes=list(colour=brewer.pal(3,"Accent"))))+
-  facet_grid(Site~Time, scales ="free")+
-  xlab("")+
-  geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+
-  scale_y_continuous(labels=scaleFUN)
-  # coord_trans(y = "sqrt")
+<!-- # Plot taxonomic vs. phenotypic diversity -->
+<!-- p_MAG_Pdiv3 <- ggplot(results_pd_16S, aes(x = `16S_D2`, y = D2, fill = new_bin_name.x))+ -->
+<!--   theme_bw()+ -->
+<!--   scale_fill_brewer(palette = "Paired")+ -->
+<!--   scale_color_brewer(palette = "Paired")+ -->
+<!--   geom_point(size = 4, color = "black", alpha = 0.7, shape = 21)+ -->
+<!--   scale_shape_manual(values = c(21,24,23))+ -->
+<!--   theme(axis.text=element_text(size=14), axis.title=element_text(size=20), -->
+<!--       title=element_text(size=20), legend.text=element_text(size=12), -->
+<!--       legend.background = element_rect(fill="transparent"), -->
+<!--       axis.text.x = element_text(size = 14, angle = 45, hjust = 1), -->
+<!--       strip.text=element_text(size=14), legend.position = "bottom", -->
+<!--       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+ -->
+<!--   ylab(paste0("Limnohabitans population\n phenotypic diversity (D2)"))+ -->
+<!--   guides(shape=FALSE)+ -->
+<!--   xlab("")+ -->
+<!--   facet_grid(Site~new_bin_name.x)+ -->
+<!--   geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+ -->
+<!--   scale_y_continuous(labels=scaleFUN)+ -->
+<!--   geom_smooth(method = "loess", aes(color = new_bin_name.x)) -->
+<!--   # coord_trans(y = "sqrt") -->
 
-print(p_MAG_Pdiv2)
-```
-
-<img src="Figures/cached/PhenoD-2-2.png" style="display: block; margin: auto;" />
-
-### Example expression profiles
-
-```r
-new_bin_names2 <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(3,8:10)]; new_bin_names2$IMG_taxID <- as.character(new_bin_names2$IMG_taxID)
-expr_cov_long_sb <- left_join(expr_cov_long, new_bin_names2, by = c("Genome_ID" = "IMG_taxID"))
-
-p_Pdist <- expr_cov_long_sb %>% dplyr::filter(new_bin_name %in% c("MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
-                                                       "MAG4.FA-M110-DN") & 
-                                   Sample == "Fa13.BD.MM15.SD") %>% 
-  group_by(new_bin_name) %>% dplyr::mutate(rank = rank(-mapped_reads/sum(mapped_reads))) %>% 
-  dplyr::mutate(mapped_reads_norm = mapped_reads/sum(mapped_reads)) %>% 
-  ggplot(aes(x = rank, y = mapped_reads_norm, color = new_bin_name))+
-  geom_line(size = 2, linetype = 2)+
-  theme_bw()+
-  scale_color_brewer("", palette = "Accent")+
-  theme(axis.text=element_text(size=12), axis.title=element_text(size=12),
-      title=element_text(size=12), legend.text=element_text(size=12),
-      legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
-      strip.text=element_text(size=12), legend.position = "bottom",
-      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab("Relative number of mapped reads")+
-  xlab("Genes ranked by mapped reads")+
-  scale_y_continuous(labels=scaleFUN)+
-  xlim(0,300)
-  # coord_trans(y = "sqrt")
-
-print(p_Pdist)
-```
-
-<img src="Figures/cached/PhenoD-3-1.png" style="display: block; margin: auto;" />
-
-```r
-# Add 16S-estimated taxonomic diversity
-diversity_df_phy <- data.frame(Sample = rownames(diversity_df_phy), diversity_df_phy)
-diversity16S_df_phy <- diversity_df_phy[grep(".1", diversity_df_phy$Sample, 
-                                             fixed = TRUE), ]
-diversity16S_df_phy$Sample <- gsub(".1.renamed", "", diversity16S_df_phy$Sample)
-colnames(diversity16S_df_phy)[2:ncol(diversity16S_df_phy)] <- paste("16S", colnames(diversity16S_df_phy)[2:ncol(diversity16S_df_phy)], sep = "_")
-results_pd_16S <- left_join(results_pd, diversity16S_df_phy, by = "Sample")
-
-# Plot taxonomic vs. phenotypic diversity
-p_MAG_Pdiv3 <- ggplot(results_pd_16S, aes(x = `16S_D2`, y = D2, fill = new_bin_name.x))+
-  theme_bw()+
-  scale_fill_brewer(palette = "Paired")+
-  scale_color_brewer(palette = "Paired")+
-  geom_point(size = 4, color = "black", alpha = 0.7, shape = 21)+
-  scale_shape_manual(values = c(21,24,23))+
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-      title=element_text(size=20), legend.text=element_text(size=12),
-      legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
-      strip.text=element_text(size=14), legend.position = "bottom",
-      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Limnohabitans population\n phenotypic diversity (D2)"))+
-  guides(shape=FALSE)+
-  xlab("")+
-  facet_grid(Site~new_bin_name.x)+
-  geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+
-  scale_y_continuous(labels=scaleFUN)+
-  geom_smooth(method = "loess", aes(color = new_bin_name.x))
-  # coord_trans(y = "sqrt")
-
-print(p_MAG_Pdiv3)
-```
-
-```
-## Error in combine_vars(data, params$plot_env, cols, drop = params$drop): At least one layer must contain all variables used for facetting
-```
-
-<img src="Figures/cached/PhenoD-3-2.png" style="display: block; margin: auto;" />
+<!-- print(p_MAG_Pdiv3) -->
+<!-- ``` -->
