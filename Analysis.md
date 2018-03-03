@@ -370,48 +370,48 @@ diversity_df_phy <- Diversity_16S(df_phy, brea = FALSE, R = 100)
 ```
 ## 	**WARNING** this functions assumes that rows are samples and columns
 ##       	are taxa in your phyloseq object, please verify.
-## Fri Jan 26 10:41:45 2018	Calculating diversity for sample 1/41 --- Fa13.BD.MLB.DN.1.renamed
-## Fri Jan 26 10:42:18 2018	Calculating diversity for sample 2/41 --- Fa13.BD.MLB.SN.1.renamed
-## Fri Jan 26 10:42:47 2018	Calculating diversity for sample 3/41 --- Fa13.BD.MM110.DN.1.renamed
-## Fri Jan 26 10:43:16 2018	Calculating diversity for sample 4/41 --- Fa13.BD.MM110.DN.2.renamed
-## Fri Jan 26 10:43:44 2018	Calculating diversity for sample 5/41 --- Fa13.BD.MM110.SD.1.renamed
-## Fri Jan 26 10:44:12 2018	Calculating diversity for sample 6/41 --- Fa13.BD.MM110.SD.2.renamed
-## Fri Jan 26 10:44:41 2018	Calculating diversity for sample 7/41 --- Fa13.BD.MM110.SN.1.renamed
-## Fri Jan 26 10:45:08 2018	Calculating diversity for sample 8/41 --- Fa13.BD.MM110.SN.2.renamed
-## Fri Jan 26 10:45:35 2018	Calculating diversity for sample 9/41 --- Fa13.BD.MM15.DN.1.renamed
-## Fri Jan 26 10:46:04 2018	Calculating diversity for sample 10/41 --- Fa13.BD.MM15.DN.2.renamed
-## Fri Jan 26 10:46:32 2018	Calculating diversity for sample 11/41 --- Fa13.BD.MM15.SD.1.renamed
-## Fri Jan 26 10:47:00 2018	Calculating diversity for sample 12/41 --- Fa13.BD.MM15.SD.2.renamed
-## Fri Jan 26 10:47:28 2018	Calculating diversity for sample 13/41 --- Fa13.BD.MM15.SN.1.renamed
-## Fri Jan 26 10:48:03 2018	Calculating diversity for sample 14/41 --- Fa13.BD.MM15.SN.2.renamed
-## Fri Jan 26 10:48:46 2018	Calculating diversity for sample 15/41 --- Sp13.BD.MLB.SN.1.renamed
-## Fri Jan 26 10:49:34 2018	Calculating diversity for sample 16/41 --- Sp13.BD.MLB.SN.2.renamed
-## Fri Jan 26 10:50:09 2018	Calculating diversity for sample 17/41 --- Sp13.BD.MM110.DD.1.renamed
-## Fri Jan 26 10:50:46 2018	Calculating diversity for sample 18/41 --- Sp13.BD.MM110.SD.1.renamed
-## Fri Jan 26 10:51:20 2018	Calculating diversity for sample 19/41 --- Sp13.BD.MM110.SD.2.renamed
-## Fri Jan 26 10:51:54 2018	Calculating diversity for sample 20/41 --- Sp13.BD.MM110.SN.1.renamed
-## Fri Jan 26 10:52:27 2018	Calculating diversity for sample 21/41 --- Sp13.BD.MM110.SN.2.renamed
-## Fri Jan 26 10:52:59 2018	Calculating diversity for sample 22/41 --- Sp13.BD.MM15.DD.1.renamed
-## Fri Jan 26 10:53:34 2018	Calculating diversity for sample 23/41 --- Sp13.BD.MM15.SD.1.renamed
-## Fri Jan 26 10:54:08 2018	Calculating diversity for sample 24/41 --- Sp13.BD.MM15.SN.1.renamed
-## Fri Jan 26 10:54:54 2018	Calculating diversity for sample 25/41 --- Sp13.BD.MM15.SN.2.renamed
-## Fri Jan 26 10:55:29 2018	Calculating diversity for sample 26/41 --- Su13.BD.MLB.DD.1.renamed
-## Fri Jan 26 10:56:05 2018	Calculating diversity for sample 27/41 --- Su13.BD.MLB.SD.1.renamed
-## Fri Jan 26 10:56:38 2018	Calculating diversity for sample 28/41 --- Su13.BD.MM110.DCMD.1.renamed
-## Fri Jan 26 10:57:13 2018	Calculating diversity for sample 29/41 --- Su13.BD.MM110.DCMD.2.renamed
-## Fri Jan 26 10:57:46 2018	Calculating diversity for sample 30/41 --- Su13.BD.MM110.DN.1.renamed
-## Fri Jan 26 10:58:20 2018	Calculating diversity for sample 31/41 --- Su13.BD.MM110.DN.2.renamed
-## Fri Jan 26 10:58:54 2018	Calculating diversity for sample 32/41 --- Su13.BD.MM110.SD.1.renamed
-## Fri Jan 26 10:59:28 2018	Calculating diversity for sample 33/41 --- Su13.BD.MM110.SD.2.renamed
-## Fri Jan 26 11:00:01 2018	Calculating diversity for sample 34/41 --- Su13.BD.MM110.SN.1.renamed
-## Fri Jan 26 11:00:35 2018	Calculating diversity for sample 35/41 --- Su13.BD.MM110.SN.2.renamed
-## Fri Jan 26 11:01:10 2018	Calculating diversity for sample 36/41 --- Su13.BD.MM15.DN.1.renamed
-## Fri Jan 26 11:01:44 2018	Calculating diversity for sample 37/41 --- Su13.BD.MM15.DN.2.renamed
-## Fri Jan 26 11:02:17 2018	Calculating diversity for sample 38/41 --- Su13.BD.MM15.SD.1.renamed
-## Fri Jan 26 11:02:51 2018	Calculating diversity for sample 39/41 --- Su13.BD.MM15.SD.2.renamed
-## Fri Jan 26 11:03:26 2018	Calculating diversity for sample 40/41 --- Su13.BD.MM15.SN.1.renamed
-## Fri Jan 26 11:04:01 2018	Calculating diversity for sample 41/41 --- Su13.BD.MM15.SN.2.renamed
-## Fri Jan 26 11:04:37 2018 	Done with all 41 samples
+## Sat Mar 03 16:11:48 2018	Calculating diversity for sample 1/41 --- Fa13.BD.MLB.DN.1.renamed
+## Sat Mar 03 16:12:18 2018	Calculating diversity for sample 2/41 --- Fa13.BD.MLB.SN.1.renamed
+## Sat Mar 03 16:12:49 2018	Calculating diversity for sample 3/41 --- Fa13.BD.MM110.DN.1.renamed
+## Sat Mar 03 16:13:18 2018	Calculating diversity for sample 4/41 --- Fa13.BD.MM110.DN.2.renamed
+## Sat Mar 03 16:13:49 2018	Calculating diversity for sample 5/41 --- Fa13.BD.MM110.SD.1.renamed
+## Sat Mar 03 16:14:24 2018	Calculating diversity for sample 6/41 --- Fa13.BD.MM110.SD.2.renamed
+## Sat Mar 03 16:15:02 2018	Calculating diversity for sample 7/41 --- Fa13.BD.MM110.SN.1.renamed
+## Sat Mar 03 16:15:36 2018	Calculating diversity for sample 8/41 --- Fa13.BD.MM110.SN.2.renamed
+## Sat Mar 03 16:16:07 2018	Calculating diversity for sample 9/41 --- Fa13.BD.MM15.DN.1.renamed
+## Sat Mar 03 16:16:36 2018	Calculating diversity for sample 10/41 --- Fa13.BD.MM15.DN.2.renamed
+## Sat Mar 03 16:17:07 2018	Calculating diversity for sample 11/41 --- Fa13.BD.MM15.SD.1.renamed
+## Sat Mar 03 16:17:45 2018	Calculating diversity for sample 12/41 --- Fa13.BD.MM15.SD.2.renamed
+## Sat Mar 03 16:18:13 2018	Calculating diversity for sample 13/41 --- Fa13.BD.MM15.SN.1.renamed
+## Sat Mar 03 16:18:45 2018	Calculating diversity for sample 14/41 --- Fa13.BD.MM15.SN.2.renamed
+## Sat Mar 03 16:19:12 2018	Calculating diversity for sample 15/41 --- Sp13.BD.MLB.SN.1.renamed
+## Sat Mar 03 16:19:47 2018	Calculating diversity for sample 16/41 --- Sp13.BD.MLB.SN.2.renamed
+## Sat Mar 03 16:20:18 2018	Calculating diversity for sample 17/41 --- Sp13.BD.MM110.DD.1.renamed
+## Sat Mar 03 16:20:45 2018	Calculating diversity for sample 18/41 --- Sp13.BD.MM110.SD.1.renamed
+## Sat Mar 03 16:21:16 2018	Calculating diversity for sample 19/41 --- Sp13.BD.MM110.SD.2.renamed
+## Sat Mar 03 16:21:47 2018	Calculating diversity for sample 20/41 --- Sp13.BD.MM110.SN.1.renamed
+## Sat Mar 03 16:22:22 2018	Calculating diversity for sample 21/41 --- Sp13.BD.MM110.SN.2.renamed
+## Sat Mar 03 16:22:56 2018	Calculating diversity for sample 22/41 --- Sp13.BD.MM15.DD.1.renamed
+## Sat Mar 03 16:23:32 2018	Calculating diversity for sample 23/41 --- Sp13.BD.MM15.SD.1.renamed
+## Sat Mar 03 16:24:08 2018	Calculating diversity for sample 24/41 --- Sp13.BD.MM15.SN.1.renamed
+## Sat Mar 03 16:24:43 2018	Calculating diversity for sample 25/41 --- Sp13.BD.MM15.SN.2.renamed
+## Sat Mar 03 16:25:18 2018	Calculating diversity for sample 26/41 --- Su13.BD.MLB.DD.1.renamed
+## Sat Mar 03 16:25:51 2018	Calculating diversity for sample 27/41 --- Su13.BD.MLB.SD.1.renamed
+## Sat Mar 03 16:26:25 2018	Calculating diversity for sample 28/41 --- Su13.BD.MM110.DCMD.1.renamed
+## Sat Mar 03 16:26:59 2018	Calculating diversity for sample 29/41 --- Su13.BD.MM110.DCMD.2.renamed
+## Sat Mar 03 16:27:33 2018	Calculating diversity for sample 30/41 --- Su13.BD.MM110.DN.1.renamed
+## Sat Mar 03 16:28:09 2018	Calculating diversity for sample 31/41 --- Su13.BD.MM110.DN.2.renamed
+## Sat Mar 03 16:28:44 2018	Calculating diversity for sample 32/41 --- Su13.BD.MM110.SD.1.renamed
+## Sat Mar 03 16:29:18 2018	Calculating diversity for sample 33/41 --- Su13.BD.MM110.SD.2.renamed
+## Sat Mar 03 16:29:54 2018	Calculating diversity for sample 34/41 --- Su13.BD.MM110.SN.1.renamed
+## Sat Mar 03 16:30:28 2018	Calculating diversity for sample 35/41 --- Su13.BD.MM110.SN.2.renamed
+## Sat Mar 03 16:31:02 2018	Calculating diversity for sample 36/41 --- Su13.BD.MM15.DN.1.renamed
+## Sat Mar 03 16:31:36 2018	Calculating diversity for sample 37/41 --- Su13.BD.MM15.DN.2.renamed
+## Sat Mar 03 16:32:11 2018	Calculating diversity for sample 38/41 --- Su13.BD.MM15.SD.1.renamed
+## Sat Mar 03 16:32:45 2018	Calculating diversity for sample 39/41 --- Su13.BD.MM15.SD.2.renamed
+## Sat Mar 03 16:33:20 2018	Calculating diversity for sample 40/41 --- Su13.BD.MM15.SN.1.renamed
+## Sat Mar 03 16:34:07 2018	Calculating diversity for sample 41/41 --- Su13.BD.MM15.SN.2.renamed
+## Sat Mar 03 16:34:45 2018 	Done with all 41 samples
 ```
 
 ```r
@@ -1030,7 +1030,7 @@ merged_file <- merge_annotations(file_list[1:10], genoid_seqid = FALSE)
 ## [1] 17644
 ## [1] 19813
 ## [1] 21848
-## Thu Jan 25 11:39:18 2018  --- Sucessfully merged files
+## Sat Mar 03 16:36:41 2018  --- Sucessfully merged files
 ```
 
 ```r
@@ -1792,7 +1792,7 @@ summary(mod1)
 ## Mclust V (univariate, unequal variance) model with 3 components:
 ## 
 ##  log.likelihood      n df      BIC      ICL
-##        -2219531 946589  8 -4439173 -4675471
+##        -2219404 946589  8 -4438919 -4672195
 ## 
 ## Clustering table:
 ##      1      2      3 
@@ -1962,57 +1962,57 @@ MAG_div <- Diversity_16S(MAG_phy, ncore = 3, parallel = TRUE,
 ```
 ## 	**WARNING** this functions assumes that rows are samples and columns
 ##       	are taxa in your phyloseq object, please verify.
-## Thu Jan 25 11:52:47 2018 	Using 3 cores for calculations
-## Thu Jan 25 11:52:47 2018	Calculating diversity for sample 1/24 --- Fa13_BD_MLB_DN
-## Thu Jan 25 11:53:01 2018	Done with sample Fa13_BD_MLB_DN
-## Thu Jan 25 11:53:01 2018	Calculating diversity for sample 2/24 --- Fa13_BD_MLB_SN
-## Thu Jan 25 11:53:04 2018	Done with sample Fa13_BD_MLB_SN
-## Thu Jan 25 11:53:04 2018	Calculating diversity for sample 3/24 --- Fa13_BD_MM110_DN
-## Thu Jan 25 11:53:07 2018	Done with sample Fa13_BD_MM110_DN
-## Thu Jan 25 11:53:07 2018	Calculating diversity for sample 4/24 --- Fa13_BD_MM110_SD
-## Thu Jan 25 11:53:11 2018	Done with sample Fa13_BD_MM110_SD
-## Thu Jan 25 11:53:11 2018	Calculating diversity for sample 5/24 --- Fa13_BD_MM110_SN
-## Thu Jan 25 11:53:14 2018	Done with sample Fa13_BD_MM110_SN
-## Thu Jan 25 11:53:14 2018	Calculating diversity for sample 6/24 --- Fa13_BD_MM15_DN
-## Thu Jan 25 11:53:17 2018	Done with sample Fa13_BD_MM15_DN
-## Thu Jan 25 11:53:17 2018	Calculating diversity for sample 7/24 --- Fa13_BD_MM15_SD
-## Thu Jan 25 11:53:20 2018	Done with sample Fa13_BD_MM15_SD
-## Thu Jan 25 11:53:20 2018	Calculating diversity for sample 8/24 --- Fa13_BD_MM15_SN
-## Thu Jan 25 11:53:23 2018	Done with sample Fa13_BD_MM15_SN
-## Thu Jan 25 11:53:23 2018	Calculating diversity for sample 9/24 --- Sp13_BD_MLB_SN
-## Thu Jan 25 11:53:26 2018	Done with sample Sp13_BD_MLB_SN
-## Thu Jan 25 11:53:26 2018	Calculating diversity for sample 10/24 --- Sp13_BD_MM110_DD
-## Thu Jan 25 11:53:31 2018	Done with sample Sp13_BD_MM110_DD
-## Thu Jan 25 11:53:31 2018	Calculating diversity for sample 11/24 --- Sp13_BD_MM110_SD
-## Thu Jan 25 11:53:35 2018	Done with sample Sp13_BD_MM110_SD
-## Thu Jan 25 11:53:35 2018	Calculating diversity for sample 12/24 --- Sp13_BD_MM110_SN
-## Thu Jan 25 11:53:38 2018	Done with sample Sp13_BD_MM110_SN
-## Thu Jan 25 11:53:38 2018	Calculating diversity for sample 13/24 --- Sp13_BD_MM15_DD
-## Thu Jan 25 11:53:42 2018	Done with sample Sp13_BD_MM15_DD
-## Thu Jan 25 11:53:42 2018	Calculating diversity for sample 14/24 --- Sp13_BD_MM15_SD
-## Thu Jan 25 11:53:45 2018	Done with sample Sp13_BD_MM15_SD
-## Thu Jan 25 11:53:45 2018	Calculating diversity for sample 15/24 --- Sp13_BD_MM15_SN
-## Thu Jan 25 11:53:48 2018	Done with sample Sp13_BD_MM15_SN
-## Thu Jan 25 11:53:48 2018	Calculating diversity for sample 16/24 --- Su13_BD_MLB_DD
-## Thu Jan 25 11:53:51 2018	Done with sample Su13_BD_MLB_DD
-## Thu Jan 25 11:53:51 2018	Calculating diversity for sample 17/24 --- Su13_BD_MLB_SD
-## Thu Jan 25 11:53:54 2018	Done with sample Su13_BD_MLB_SD
-## Thu Jan 25 11:53:54 2018	Calculating diversity for sample 18/24 --- Su13_BD_MM110_DCMD
-## Thu Jan 25 11:53:58 2018	Done with sample Su13_BD_MM110_DCMD
-## Thu Jan 25 11:53:58 2018	Calculating diversity for sample 19/24 --- Su13_BD_MM110_DN
-## Thu Jan 25 11:54:02 2018	Done with sample Su13_BD_MM110_DN
-## Thu Jan 25 11:54:02 2018	Calculating diversity for sample 20/24 --- Su13_BD_MM110_SD
-## Thu Jan 25 11:54:05 2018	Done with sample Su13_BD_MM110_SD
-## Thu Jan 25 11:54:05 2018	Calculating diversity for sample 21/24 --- Su13_BD_MM110_SN
-## Thu Jan 25 11:54:08 2018	Done with sample Su13_BD_MM110_SN
-## Thu Jan 25 11:54:08 2018	Calculating diversity for sample 22/24 --- Su13_BD_MM15_DN
-## Thu Jan 25 11:54:11 2018	Done with sample Su13_BD_MM15_DN
-## Thu Jan 25 11:54:11 2018	Calculating diversity for sample 23/24 --- Su13_BD_MM15_SD
-## Thu Jan 25 11:54:14 2018	Done with sample Su13_BD_MM15_SD
-## Thu Jan 25 11:54:14 2018	Calculating diversity for sample 24/24 --- Su13_BD_MM15_SN
-## Thu Jan 25 11:54:17 2018	Done with sample Su13_BD_MM15_SN
-## Thu Jan 25 11:54:17 2018 	Closing workers
-## Thu Jan 25 11:54:17 2018 	Done with all 24 samples
+## Sat Mar 03 16:50:18 2018 	Using 3 cores for calculations
+## Sat Mar 03 16:50:18 2018	Calculating diversity for sample 1/24 --- Fa13_BD_MLB_DN
+## Sat Mar 03 16:50:33 2018	Done with sample Fa13_BD_MLB_DN
+## Sat Mar 03 16:50:33 2018	Calculating diversity for sample 2/24 --- Fa13_BD_MLB_SN
+## Sat Mar 03 16:50:36 2018	Done with sample Fa13_BD_MLB_SN
+## Sat Mar 03 16:50:36 2018	Calculating diversity for sample 3/24 --- Fa13_BD_MM110_DN
+## Sat Mar 03 16:50:39 2018	Done with sample Fa13_BD_MM110_DN
+## Sat Mar 03 16:50:39 2018	Calculating diversity for sample 4/24 --- Fa13_BD_MM110_SD
+## Sat Mar 03 16:50:42 2018	Done with sample Fa13_BD_MM110_SD
+## Sat Mar 03 16:50:42 2018	Calculating diversity for sample 5/24 --- Fa13_BD_MM110_SN
+## Sat Mar 03 16:50:45 2018	Done with sample Fa13_BD_MM110_SN
+## Sat Mar 03 16:50:45 2018	Calculating diversity for sample 6/24 --- Fa13_BD_MM15_DN
+## Sat Mar 03 16:50:47 2018	Done with sample Fa13_BD_MM15_DN
+## Sat Mar 03 16:50:47 2018	Calculating diversity for sample 7/24 --- Fa13_BD_MM15_SD
+## Sat Mar 03 16:50:50 2018	Done with sample Fa13_BD_MM15_SD
+## Sat Mar 03 16:50:50 2018	Calculating diversity for sample 8/24 --- Fa13_BD_MM15_SN
+## Sat Mar 03 16:50:53 2018	Done with sample Fa13_BD_MM15_SN
+## Sat Mar 03 16:50:53 2018	Calculating diversity for sample 9/24 --- Sp13_BD_MLB_SN
+## Sat Mar 03 16:50:56 2018	Done with sample Sp13_BD_MLB_SN
+## Sat Mar 03 16:50:56 2018	Calculating diversity for sample 10/24 --- Sp13_BD_MM110_DD
+## Sat Mar 03 16:50:58 2018	Done with sample Sp13_BD_MM110_DD
+## Sat Mar 03 16:50:58 2018	Calculating diversity for sample 11/24 --- Sp13_BD_MM110_SD
+## Sat Mar 03 16:51:01 2018	Done with sample Sp13_BD_MM110_SD
+## Sat Mar 03 16:51:01 2018	Calculating diversity for sample 12/24 --- Sp13_BD_MM110_SN
+## Sat Mar 03 16:51:04 2018	Done with sample Sp13_BD_MM110_SN
+## Sat Mar 03 16:51:04 2018	Calculating diversity for sample 13/24 --- Sp13_BD_MM15_DD
+## Sat Mar 03 16:51:08 2018	Done with sample Sp13_BD_MM15_DD
+## Sat Mar 03 16:51:08 2018	Calculating diversity for sample 14/24 --- Sp13_BD_MM15_SD
+## Sat Mar 03 16:51:10 2018	Done with sample Sp13_BD_MM15_SD
+## Sat Mar 03 16:51:10 2018	Calculating diversity for sample 15/24 --- Sp13_BD_MM15_SN
+## Sat Mar 03 16:51:14 2018	Done with sample Sp13_BD_MM15_SN
+## Sat Mar 03 16:51:14 2018	Calculating diversity for sample 16/24 --- Su13_BD_MLB_DD
+## Sat Mar 03 16:51:17 2018	Done with sample Su13_BD_MLB_DD
+## Sat Mar 03 16:51:17 2018	Calculating diversity for sample 17/24 --- Su13_BD_MLB_SD
+## Sat Mar 03 16:51:19 2018	Done with sample Su13_BD_MLB_SD
+## Sat Mar 03 16:51:19 2018	Calculating diversity for sample 18/24 --- Su13_BD_MM110_DCMD
+## Sat Mar 03 16:51:22 2018	Done with sample Su13_BD_MM110_DCMD
+## Sat Mar 03 16:51:22 2018	Calculating diversity for sample 19/24 --- Su13_BD_MM110_DN
+## Sat Mar 03 16:51:25 2018	Done with sample Su13_BD_MM110_DN
+## Sat Mar 03 16:51:25 2018	Calculating diversity for sample 20/24 --- Su13_BD_MM110_SD
+## Sat Mar 03 16:51:28 2018	Done with sample Su13_BD_MM110_SD
+## Sat Mar 03 16:51:28 2018	Calculating diversity for sample 21/24 --- Su13_BD_MM110_SN
+## Sat Mar 03 16:51:31 2018	Done with sample Su13_BD_MM110_SN
+## Sat Mar 03 16:51:31 2018	Calculating diversity for sample 22/24 --- Su13_BD_MM15_DN
+## Sat Mar 03 16:51:34 2018	Done with sample Su13_BD_MM15_DN
+## Sat Mar 03 16:51:34 2018	Calculating diversity for sample 23/24 --- Su13_BD_MM15_SD
+## Sat Mar 03 16:51:37 2018	Done with sample Su13_BD_MM15_SD
+## Sat Mar 03 16:51:37 2018	Calculating diversity for sample 24/24 --- Su13_BD_MM15_SN
+## Sat Mar 03 16:51:40 2018	Done with sample Su13_BD_MM15_SN
+## Sat Mar 03 16:51:40 2018 	Closing workers
+## Sat Mar 03 16:51:40 2018 	Done with all 24 samples
 ```
 
 ```r
@@ -2130,8 +2130,10 @@ results_desm_long$DOC.mg.L <- as.numeric(as.character(results_desm_long$DOC.mg.L
 
 desm_p1b <- ggplot(results_desm_long, aes(x = Season, y = Freq, 
                                          fill = Variant, 
-                                         col = Variant))+
-  geom_point(color = "black", alpha = 0.7, shape = 21, size = 3, col = "black")+
+                                         col = Variant,
+                                         shape = Depth))+
+  geom_point(color = "black", alpha = 0.7, size = 3, col = "black")+
+  scale_shape_manual(values = c(21,22,23))+
   geom_boxplot(alpha = 0.3, col = "black", outlier.shape = NA, size = 0.3)+
   scale_fill_brewer("", palette = "Accent")+
   scale_color_brewer("",palette = "Accent")+
@@ -2380,6 +2382,131 @@ print(pcoa.ord)
 
 Whip out multivariate abundance testing for hypopthesis test on environmental variables?
 
+
+# 9. iRep analysis
+
+```r
+# Import data
+irep_files <- list.files("./iRep/results", pattern = "irep_")
+irep_sample_order <- read.table("./iRep/results/sample_order.tsv")
+for(file in irep_files){
+  # print(file)
+  file_tmp <- read.table(paste("./iRep/results/", file, sep = ""),
+                         stringsAsFactors = FALSE)
+  bin_name <- gsub("irep_results_|.tsv", "", file)
+  # print(bin_name)
+  file_tmp <- data.frame(Genome_bin = bin_name, iRep_value = file_tmp[,2],
+                         iRep_type = rep(c("iRep_filtered","iRep_unfiltered"), 24),
+                         Sample = rep(irep_sample_order$V1, each = 2))
+  if(file == irep_files[1]) results_irep <- file_tmp else{
+    results_irep <- rbind(results_irep, file_tmp)
+  }
+}
+
+# Rename sample names
+results_irep$Sample <- gsub(".A", "", results_irep$Sample, fixed = TRUE)
+results_irep$Sample <- gsub(".C", "", results_irep$Sample, fixed = TRUE)
+
+# Rename genome bins
+results_irep <- dplyr::left_join(results_irep, new_bin_names, by = c("Genome_bin" = "bins"))
+results_irep$new_bin_name <- as.character(results_irep$new_bin_name)
+results_irep$new_bin_name <- factor(results_irep$new_bin_name, levels =
+                                      c("MAG1.FA-MLB-DN","MAG2.FA-MLB-SN",
+                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+                                        "MAG5.SP-M110-DD","MAG6.SP-M15-SD",
+                                        "MAG7.SU-MLB-SD","MAG8.SU-M110-DCMD",
+                                        "MAG9.SU-M15-SN","MAG10.SU-M15-SN"))
+
+# Merge with metadata
+results_irep <- dplyr::left_join(results_irep, meta, by = "Sample")
+results_irep$iRep_value <- as.numeric(as.character(results_irep$iRep_value))
+
+# Format metadata
+results_irep$Site <- as.character(results_irep$Site)
+results_irep$Site <- gsub("110", "Lake Michigan\nsite M110", results_irep$Site)
+results_irep$Site <- gsub("15", "Lake Michigan\nsite M15", results_irep$Site)
+results_irep$Site <- gsub("Buoy", "Muskegon Lake", results_irep$Site)
+results_irep$Site <- factor(results_irep$Site, levels = c("Muskegon Lake",
+                                                            "Lake Michigan\nsite M15",
+                                                            "Lake Michigan\nsite M110"))
+results_irep$Season <- as.character(results_irep$Season)
+results_irep$Season <- factor(results_irep$Season, levels = c("Spring", "Summer","Fall"))
+```
+
+## Plot results  
+
+
+```r
+# Plot unfiltered iRep
+irep_p1 <- results_irep %>% 
+  dplyr::filter(iRep_type == "iRep_unfiltered") %>% 
+  ggplot(aes(x = new_bin_name, y = iRep_value, fill = new_bin_name, col = new_bin_name))+
+  geom_point(color = "black", alpha = 0.7, size = 4, shape = 21)+
+  # scale_shape_manual(values = c(21,22,23))+
+  geom_boxplot(alpha = 0.3, col = "black", outlier.shape = NA, size = 0.3)+
+  scale_fill_manual("", values = fill_palette)+
+  scale_color_brewer("",palette = "Accent")+
+  theme_bw()+
+  # geom_point(size = 4, color = "black", alpha = 0.7)+
+  # scale_shape_manual(values = c(21,24,23))+
+  # geom_boxplot(alpha = 0.4)+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("iRep"))+
+  guides(fill=FALSE)+
+  facet_grid(Season~Site, scales ="free")+
+  xlab("")+
+  scale_y_continuous(labels=scaleFUN, limits = c(1,4.5))+
+  # geom_smooth(se = FALSE)+
+  guides(fill=FALSE)
+  # coord_trans(y = "sqrt")
+
+print(irep_p1)
+```
+
+<img src="Figures/cached/irep-2-1.png" style="display: block; margin: auto;" />
+
+```r
+# Plot filtered irep
+irep_p2 <- results_irep %>% 
+  dplyr::filter(iRep_type == "iRep_filtered") %>% 
+  ggplot(aes(x = new_bin_name, y = iRep_value, fill = new_bin_name, col = new_bin_name))+
+  geom_point(color = "black", alpha = 0.7, size = 4, shape = 21)+
+  # scale_shape_manual(values = c(21,22,23))+
+  geom_boxplot(alpha = 0.3, col = "black", outlier.shape = NA, size = 0.3)+
+  scale_fill_manual("", values = fill_palette)+
+  scale_color_brewer("",palette = "Accent")+
+  theme_bw()+
+  # geom_point(size = 4, color = "black", alpha = 0.7)+
+  # scale_shape_manual(values = c(21,24,23))+
+  # geom_boxplot(alpha = 0.4)+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("iRep"))+
+  guides(fill=FALSE)+
+  facet_grid(Season~Site, scales ="free")+
+  xlab("")+
+  scale_y_continuous(labels=scaleFUN, limits = c(1,4.5))+
+  # geom_smooth(se = FALSE)+
+  guides(fill=FALSE)
+  # coord_trans(y = "sqrt")
+
+print(irep_p2)
+```
+
+<img src="Figures/cached/irep-2-2.png" style="display: block; margin: auto;" />
+
+```r
+#Y change
+```
 
 # Pangenome analysis  
 

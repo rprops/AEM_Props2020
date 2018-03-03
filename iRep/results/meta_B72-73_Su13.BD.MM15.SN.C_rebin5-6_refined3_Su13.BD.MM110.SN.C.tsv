@@ -1,0 +1,36 @@
+## index of replication (iRep) - thresholds: min cov. = 5, min wins. = 0.98, min r^2 = 0.9, max fragments/Mbp = 175, GC correction min r^2 = 0.0
+# genome	./splitBam/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3/Su13.BD.MM110.SN.C.filtered.sam
+rebinned_bins/final-refined_bins_anvi_headers/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3-contigs.fa	n/a
+#
+## un-filtered index of replication (iRep)
+# genome	./splitBam/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3/Su13.BD.MM110.SN.C.filtered.sam
+rebinned_bins/final-refined_bins_anvi_headers/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3-contigs.fa	4.53813292509
+#
+## raw index of replication (no GC bias correction)
+# genome	./splitBam/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3/Su13.BD.MM110.SN.C.filtered.sam
+rebinned_bins/final-refined_bins_anvi_headers/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3-contigs.fa	4.71890815692
+#
+## r^2
+# genome	./splitBam/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3/Su13.BD.MM110.SN.C.filtered.sam
+rebinned_bins/final-refined_bins_anvi_headers/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3-contigs.fa	0.885180682928
+#
+## coverage
+# genome	./splitBam/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3/Su13.BD.MM110.SN.C.filtered.sam
+rebinned_bins/final-refined_bins_anvi_headers/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3-contigs.fa	9.04478241828
+#
+## % windows passing filter
+# genome	./splitBam/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3/Su13.BD.MM110.SN.C.filtered.sam
+rebinned_bins/final-refined_bins_anvi_headers/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3-contigs.fa	100.00
+#
+## fragments/Mbp
+# genome	./splitBam/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3/Su13.BD.MM110.SN.C.filtered.sam
+rebinned_bins/final-refined_bins_anvi_headers/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3-contigs.fa	327
+#
+## GC bias
+# genome	./splitBam/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3/Su13.BD.MM110.SN.C.filtered.sam
+rebinned_bins/final-refined_bins_anvi_headers/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3-contigs.fa	0.436754976048
+#
+## GC r^2
+# genome	./splitBam/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3/Su13.BD.MM110.SN.C.filtered.sam
+rebinned_bins/final-refined_bins_anvi_headers/B72-73_Su13.BD.MM15.SN.C_rebin5-6_refined3-contigs.fa	0.01231444682
+#
