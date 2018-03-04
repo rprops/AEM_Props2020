@@ -2574,6 +2574,54 @@ print(irep_p4)
 ```
 
 <img src="Figures/cached/irep-4-1.png" style="display: block; margin: auto;" />
+
+
+```r
+# Focus on all MAGs
+irep_p5 <- results_irep %>% 
+  dplyr::filter(iRep_type == "iRep_unfiltered") %>% 
+  dplyr::filter(!is.na(iRep_value)) %>% 
+  ggplot(aes(x = new_bin_name, y = iRep_value, fill = Site, col = Site))+
+  # geom_point(color = "black", alpha = 0.7, size = 4, shape = 21)+
+  # scale_shape_manual(values = c(21,22,23))+
+  geom_boxplot(alpha = 0.3, col = "black", outlier.shape = NA, size = 0.3)+
+  scale_fill_brewer("", palette = "Accent")+
+  scale_color_brewer("",palette = "Accent")+
+  theme_bw()+
+  # geom_point(size = 4, color = "black", alpha = 0.7)+
+  # scale_shape_manual(values = c(21,24,23))+
+  # geom_boxplot(alpha = 0.4)+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("iRep"))+
+  # facet_grid(new_bin_name~Site, scales ="free")+
+  xlab("")+
+  scale_y_continuous(labels=scaleFUN, limits = c(1,4.5))
+  # geom_smooth(se = FALSE)+
+  # guides(fill=FALSE)
+  # coord_trans(y = "sqrt")
+
+print(irep_p5)
+```
+
+<img src="Figures/cached/irep-5-1.png" style="display: block; margin: auto;" />
+
+## Abundances  
+
+
+```r
+# Merge irep results with abundance estimates
+
+# Correlate abundances with iRep estimates
+
+# Plot
+```
+
+
 # Pangenome analysis  
 
 
