@@ -2130,10 +2130,9 @@ results_desm_long$DOC.mg.L <- as.numeric(as.character(results_desm_long$DOC.mg.L
 
 desm_p1b <- ggplot(results_desm_long, aes(x = Season, y = Freq, 
                                          fill = Variant, 
-                                         col = Variant,
-                                         shape = Depth))+
-  geom_point(color = "black", alpha = 0.7, size = 3, col = "black")+
-  scale_shape_manual(values = c(21,22,23))+
+                                         col = Variant))+
+  geom_point(color = "black", alpha = 0.7, size = 3, shape = 21)+
+  # scale_shape_manual(values = c(21,22,23))+
   geom_boxplot(alpha = 0.3, col = "black", outlier.shape = NA, size = 0.3)+
   scale_fill_brewer("", palette = "Accent")+
   scale_color_brewer("",palette = "Accent")+
