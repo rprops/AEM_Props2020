@@ -1916,10 +1916,73 @@ pcoa.ord <- ggplot(data=pcoa.df, aes(x=Axis.1, y=Axis.2, shape = Site))+
 print(pcoa.ord)
 ```
 
-## MVabund
+## Gene assignment  
 
-Whip out multivariate abundance testing for hypopthesis test on environmental variables?
+Whip out multivariate abundance testing for hypopthesis test on environmental variables?  
 
+```{r desman-4, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10}
+# Import etaS.csv which contains gene assignment
+geneAssign_df <- read.csv("./DESMAN/MAG8_scg_10_9/MAG8.SU-M110-DCMDetaS_df.csv",
+                         header = TRUE)
+colnames(geneAssign_df)[1] <- "Gene"
+colnames(geneAssign_df) <- gsub("X", "Variant", colnames(geneAssign_df))
+
+# Wide to long format
+geneAssign_df <- tidyr::gather(geneAssign_df, Variant, Presence, 
+                             Variant0:Variant9, factor_key=TRUE)
+
+# Import blast results
+blast_desman <- read.delim("./DESMAN/MAG8_scg_10_9/desman2img_genes.blast", 
+                         header = FALSE)
+colnames(blast_desman) <- c("qseqid", "sseqid", "pident", "length", "mismatch",
+                          "gapopen", "qstart", "qend", "sstart", "send", 
+                          "evalue", "bitscore")
+blast_desman_sb <- blast_desman %>% dplyr::select("qseqid", "sseqid") %>%  distinct()
+
+# Merge IMG gene IDs with 
+geneAssign_df <- left_join(geneAssign_df, blast_desman_sb, by = c("Gene" = "qseqid"))
+geneAssign_df$sseqid <- as.character(geneAssign_df$sseqid)
+
+# Merge with functional annotation (KO & COG)
+geneAssign_df <- left_join(geneAssign_df, merged_file_annot, 
+                           by = c("sseqid" = "gene_oid"))
+
+# Merge with metaT data
+geneAssign_df <- left_join(geneAssign_df, expr_cov_long, 
+                           by = c("sseqid" = "gene_oid"))
+
+```
+
+```{r desman-5, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10}
+library("VennDiagram")
+list_venn <- list()
+list_venn[[1]] <- (geneAssign_df %>% dplyr::filter(Variant == "Variant4" & Presence == 1))$sseqid
+list_venn[[2]] <- (geneAssign_df %>% dplyr::filter(Variant == "Variant6" & Presence == 1))$sseqid
+list_venn[[3]] <- (geneAssign_df %>% dplyr::filter(Variant == "Variant7" & Presence == 1))$sseqid
+list_venn[[4]] <- (geneAssign_df %>% dplyr::filter(Variant == "Variant8" & Presence == 1))$sseqid
+list_venn[[5]] <- (geneAssign_df %>% dplyr::filter(Variant == "Variant9" & Presence == 1))$sseqid
+
+# # Venn diagram
+# venn.diagram(list_venn,
+#              category.names = c("Variant4", "Variant6", 
+#                                 "Variant7", "Variant8",
+#                                 "Variant9"), 
+#              filename = './Figures/VennVariants.png', output = TRUE,
+#              imagetype ="png",
+#         lwd = 1,
+#         fill = brewer.pal(5,"Accent"),
+#         height = 4800, 
+#         width = 4800, 
+#         cex = 1,
+#         fontface = "bold",
+#         fontfamily = "sans",
+#         cat.cex = 0.6,
+#         cat.fontface = "bold",
+#         cat.default.pos = "outer",
+#         # cat.pos = c(-27, 27, 135),
+#         # cat.dist = c(0.055, 0.055, 0.085),
+#         cat.fontfamily = "sans")
+```
 
 # 9. iRep analysis
 ```{r irep-1, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10}
