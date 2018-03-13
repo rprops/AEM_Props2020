@@ -1208,6 +1208,49 @@ for(i in 1:nlevels(expr_cov_long$Genome_ID)){
 ```
 
 ```r
+## Season effect
+General_deseq_results_depth <- list()
+deseq_comparisons_depth <- list()
+for(i in 1:nlevels(expr_cov_long$Genome_ID)){
+  cat(" --- Running DESeq2 on Genome_ID:",levels(expr_cov_long$Genome_ID)[i], "\n",sep = " ")
+
+  # Test for Depth but controlling for site
+  dds <- DESeq2::DESeqDataSetFromMatrix(countData = expr_cov_bins[[i]],
+                              colData = meta_metaT,
+                              design= ~ Site + Depth) 
+  # Run DESeq
+  dds <- DESeq2::DESeq(dds, quiet = TRUE)
+  
+  # Calculate contrasts for all comparisons
+  comp1 <- DESeq2::results(dds, contrast=c("Depth","Surface","Deep"))[order(results(dds)$padj), ]
+  comp2 <- DESeq2::results(dds, contrast=c("Depth","Mid","Deep"))[order(results(dds)$padj), ]
+  comp3 <- DESeq2::results(dds, contrast=c("Depth","Surface","Mid"))[order(results(dds)$padj), ]
+  
+  # Store data in single list with dataframes
+  General_deseq_results_depth[[i]] <- rbind(comp1, comp2, comp3)
+  deseq_comparisons_depth[[i]] <- data.frame(comparison = 
+                                           c(rep("Surface-Deep", nrow(comp1)),
+                                           rep("Mid-Deep", nrow(comp2)),
+                                           rep("Surface-Mid", nrow(comp3))),
+                                         design = "~ Site + Depth"
+                                         )
+}
+```
+
+```
+##  --- Running DESeq2 on Genome_ID: 2757320395 
+##  --- Running DESeq2 on Genome_ID: 2757320396 
+##  --- Running DESeq2 on Genome_ID: 2757320397 
+##  --- Running DESeq2 on Genome_ID: 2757320398 
+##  --- Running DESeq2 on Genome_ID: 2757320399 
+##  --- Running DESeq2 on Genome_ID: 2757320400 
+##  --- Running DESeq2 on Genome_ID: 2757320401 
+##  --- Running DESeq2 on Genome_ID: 2757320402 
+##  --- Running DESeq2 on Genome_ID: 2757320403 
+##  --- Running DESeq2 on Genome_ID: 2757320404
+```
+
+```r
 # Pool results for each genome into a single result dataframe
 res_deseq <- data.frame()
 
@@ -1233,6 +1276,18 @@ for(i in 1:length(General_deseq_results_site)){
                     Genome_ID = levels(expr_cov_long$Genome_ID)[i],
                     Comparison = deseq_comparisons_site[[i]]$comparison,
                     Design = deseq_comparisons_site[[i]]$design)
+  res_deseq <- rbind(res_deseq, tmp)
+}
+
+for(i in 1:length(General_deseq_results_depth)){
+  tmp <- data.frame(gene_oid = General_deseq_results_depth[[i]]@rownames,
+                    baseMean = General_deseq_results_depth[[i]]@listData$baseMean,
+                    log2FoldChange = General_deseq_results_depth[[i]]@listData$log2FoldChange,
+                    pvalue = General_deseq_results_depth[[i]]@listData$pvalue,
+                    padj = General_deseq_results_depth[[i]]@listData$padj,
+                    Genome_ID = levels(expr_cov_long$Genome_ID)[i],
+                    Comparison = deseq_comparisons_depth[[i]]$comparison,
+                    Design = deseq_comparisons_depth[[i]]$design)
   res_deseq <- rbind(res_deseq, tmp)
 }
 
@@ -2440,10 +2495,11 @@ geneAssign_df_wide <- left_join(geneAssign_df_wide, res_deseq,
                                 by = c("sseqid" = "gene_oid"))
 ```
 
+#### Site downregulation
+
 
 ```r
-# Make upset plot for site-specific downregulation (no upregulation observed) 
-# controlled for seasons
+# Make upset plot for site-specific downregulation controlled for seasons
 geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
                                      Design == "~ Season + Site") %>% 
   upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
@@ -2457,12 +2513,33 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
       boxplot.summary = "log2FoldChange")
 ```
 
-<img src="Figures/cached/desman-7-1.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/desman-site-downreg-1.png" style="display: block; margin: auto;" />
+
+#### Site upregulation
 
 
 ```r
-# Make upset plot for seasonal downregulation (no upregulation observed) 
-# controlled for site
+# Make upset plot for site-specific upregulation controlled for seasons
+geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation",
+                                     Design == "~ Season + Site") %>% 
+  upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
+                                   "Variant9"), mb.ratio = c(0.55, 0.45), 
+      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+      show.numbers = FALSE,
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      boxplot.summary = "log2FoldChange")
+```
+
+<img src="Figures/cached/desman-site-upreg-1.png" style="display: block; margin: auto;" />
+
+#### Seasonal downregulation
+
+
+```r
+# Make upset plot for seasonal downregulation controlled for site
 geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
                                      Design == "~ Site + Season") %>% 
   upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
@@ -2476,7 +2553,48 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
       boxplot.summary = "log2FoldChange")
 ```
 
-<img src="Figures/cached/desman-8-1.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/desman-season-downreg-1.png" style="display: block; margin: auto;" />
+
+#### Depth downregulation  
+
+
+```r
+# Make upset plot for depth-specific downregulation controlled for seasons
+geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
+                                     Design == "~ Site + Depth") %>% 
+  upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
+                                   "Variant9"), mb.ratio = c(0.55, 0.45), 
+      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+      show.numbers = FALSE,
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      boxplot.summary = "log2FoldChange")
+```
+
+<img src="Figures/cached/desman-depth-downreg-1.png" style="display: block; margin: auto;" />
+
+#### Depth upregulation  
+
+
+```r
+# Make upset plot for depth-specific upregulation controlled for sites
+geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation",
+                                     Design == "~ Site + Depth") %>% 
+  upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
+                                   "Variant9"), mb.ratio = c(0.55, 0.45), 
+      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+      show.numbers = FALSE,
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      boxplot.summary = "log2FoldChange")
+```
+
+<img src="Figures/cached/desman-depth-upreg-1.png" style="display: block; margin: auto;" />
+
 
 # 9. iRep analysis
 

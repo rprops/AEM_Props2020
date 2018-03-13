@@ -1106,11 +1106,7 @@
        id="g782" /><g
        id="g784"><g
          id="g786"
-         clip-path="url(#clipPath788)"><path
-           d="m 115.2,16 460.8,0 0,96 -460.8,0 0,-96 z"
-           style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:1.07000005;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-           id="path792"
-           inkscape:connector-curvature="0" /></g></g><g
+         clip-path="url(#clipPath788)" /></g><g
        id="g794" /><g
        id="g796"
        transform="translate(0,-8)"><g
@@ -1476,7 +1472,7 @@
        id="g1036" /><g
        id="g1038" /><g
        id="g1040"
-       transform="translate(0,-8)"><text
+       transform="translate(25.6,-8)"><text
          transform="matrix(0,1,1,0,133.73,35.1)"
          style="font-variant:normal;font-weight:normal;font-size:11px;font-family:Helvetica;-inkscape-font-specification:Helvetica;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
          id="text1042"><tspan
