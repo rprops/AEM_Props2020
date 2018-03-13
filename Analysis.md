@@ -2406,56 +2406,33 @@ geneAssign_df <- left_join(geneAssign_df, blast_desman_sb, by = c("Gene" = "qseq
 geneAssign_df$sseqid <- as.character(geneAssign_df$sseqid)
 
 # Merge with functional annotation (KO & COG)
-geneAssign_df <- left_join(geneAssign_df, merged_file_annot, 
+geneAssign_df_annot <- left_join(geneAssign_df, merged_file_annot, 
                            by = c("sseqid" = "gene_oid"))
 
 # Merge with metaT data
-geneAssign_df <- left_join(geneAssign_df, expr_cov_long, 
+geneAssign_df_annot <- left_join(geneAssign_df, expr_cov_long, 
                            by = c("sseqid" = "gene_oid"))
 ```
 
+### upset diagram  
+
 
 ```r
-library("VennDiagram")
+# Long to wide
+geneAssign_df_wide <- tidyr::spread(geneAssign_df, Variant, Presence)
+
+# Plot
+upset(geneAssign_df_wide, sets = c("Variant4", "Variant6", "Variant7", "Variant8",
+                                   "Variant9"), mb.ratio = c(0.55, 0.45), 
+      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+      show.numbers = FALSE,
+      scale.intersections = "log2",
+      keep.order = FALSE)
 ```
 
-```
-## Loading required package: futile.logger
-```
-
-```r
-list_venn <- list()
-list_venn[[1]] <- (geneAssign_df %>% dplyr::filter(Variant == "Variant4" & Presence == 1))$sseqid
-list_venn[[2]] <- (geneAssign_df %>% dplyr::filter(Variant == "Variant6" & Presence == 1))$sseqid
-list_venn[[3]] <- (geneAssign_df %>% dplyr::filter(Variant == "Variant7" & Presence == 1))$sseqid
-list_venn[[4]] <- (geneAssign_df %>% dplyr::filter(Variant == "Variant8" & Presence == 1))$sseqid
-list_venn[[5]] <- (geneAssign_df %>% dplyr::filter(Variant == "Variant9" & Presence == 1))$sseqid
-
-# Venn diagram
-venn.diagram(list_venn,
-             category.names = c("Variant4", "Variant6", 
-                                "Variant7", "Variant8",
-                                "Variant9"), 
-             filename = './Figures/VennVariants.png', output = TRUE,
-             imagetype ="png",
-        lwd = 1,
-        fill = brewer.pal(5,"Accent"),
-        height = 4800, 
-        width = 4800, 
-        cex = 1,
-        fontface = "bold",
-        fontfamily = "sans",
-        cat.cex = 0.6,
-        cat.fontface = "bold",
-        cat.default.pos = "outer",
-        # cat.pos = c(-27, 27, 135),
-        # cat.dist = c(0.055, 0.055, 0.085),
-        cat.fontfamily = "sans")
-```
-
-```
-## [1] 1
-```
+<img src="Figures/cached/desman-5-1.png" style="display: block; margin: auto;" />
 
 # 9. iRep analysis
 
