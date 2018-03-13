@@ -2469,7 +2469,7 @@ geneAssign_df_annot <- left_join(geneAssign_df, expr_cov_long,
                            by = c("sseqid" = "gene_oid"))
 ```
 
-### upset diagram  
+### **upset diagram**  
 
 
 ```r
@@ -2479,12 +2479,13 @@ geneAssign_df_wide <- tidyr::spread(geneAssign_df, Variant, Presence)
 # Plot
 upset(geneAssign_df_wide, sets = c("Variant4", "Variant6", "Variant7", "Variant8",
                                    "Variant9"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      order.by = "freq", number.angles = 30, point.size = 3.5,
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
       show.numbers = FALSE,
       scale.intersections = "log2",
-      keep.order = FALSE)
+      keep.order = FALSE,
+      line.size = NA)
 ```
 
 <img src="Figures/cached/desman-5-1.png" style="display: block; margin: auto;" />
@@ -2495,7 +2496,7 @@ geneAssign_df_wide <- left_join(geneAssign_df_wide, res_deseq,
                                 by = c("sseqid" = "gene_oid"))
 ```
 
-#### Site downregulation
+#### **Site downregulation**
 
 
 ```r
@@ -2504,18 +2505,19 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
                                      Design == "~ Season + Site") %>% 
   upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
                                    "Variant9"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      order.by = "freq", number.angles = 30, point.size = 3.5,
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
       show.numbers = FALSE,
       scale.intersections = "log2",
       keep.order = FALSE,
-      boxplot.summary = "log2FoldChange")
+      boxplot.summary = "log2FoldChange",
+      line.size = NA)
 ```
 
 <img src="Figures/cached/desman-site-downreg-1.png" style="display: block; margin: auto;" />
 
-#### Site upregulation
+#### **Site upregulation**
 
 
 ```r
@@ -2524,18 +2526,19 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation",
                                      Design == "~ Season + Site") %>% 
   upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
                                    "Variant9"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      order.by = "freq", number.angles = 30, point.size = 3.5, 
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
       show.numbers = FALSE,
       scale.intersections = "log2",
       keep.order = FALSE,
-      boxplot.summary = "log2FoldChange")
+      boxplot.summary = "log2FoldChange",
+      line.size = NA)
 ```
 
 <img src="Figures/cached/desman-site-upreg-1.png" style="display: block; margin: auto;" />
 
-#### Seasonal downregulation
+#### **Seasonal downregulation**
 
 
 ```r
@@ -2544,18 +2547,19 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
                                      Design == "~ Site + Season") %>% 
   upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
                                    "Variant9"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      order.by = "freq", number.angles = 30, point.size = 3.5, 
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
       show.numbers = FALSE,
       scale.intersections = "log2",
       keep.order = FALSE,
-      boxplot.summary = "log2FoldChange")
+      boxplot.summary = "log2FoldChange",
+      line.size = NA)
 ```
 
 <img src="Figures/cached/desman-season-downreg-1.png" style="display: block; margin: auto;" />
 
-#### Depth downregulation  
+#### **Depth downregulation**  
 
 
 ```r
@@ -2564,18 +2568,19 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
                                      Design == "~ Site + Depth") %>% 
   upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
                                    "Variant9"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      order.by = "freq", number.angles = 30, point.size = 3.5,
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
       show.numbers = FALSE,
       scale.intersections = "log2",
       keep.order = FALSE,
-      boxplot.summary = "log2FoldChange")
+      boxplot.summary = "log2FoldChange",
+      line.size = NA)
 ```
 
 <img src="Figures/cached/desman-depth-downreg-1.png" style="display: block; margin: auto;" />
 
-#### Depth upregulation  
+#### **Depth upregulation** 
 
 
 ```r
@@ -2584,13 +2589,14 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation",
                                      Design == "~ Site + Depth") %>% 
   upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
                                    "Variant9"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      order.by = "freq", number.angles = 30, point.size = 3.5, 
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
       show.numbers = FALSE,
       scale.intersections = "log2",
       keep.order = FALSE,
-      boxplot.summary = "log2FoldChange")
+      boxplot.summary = "log2FoldChange",
+      line.size = NA)
 ```
 
 <img src="Figures/cached/desman-depth-upreg-1.png" style="display: block; margin: auto;" />

@@ -1994,7 +1994,7 @@ geneAssign_df_annot <- left_join(geneAssign_df, expr_cov_long,
 
 ```
 
-### upset diagram  
+### **upset diagram**  
 
 ```{r desman-5, dpi = 500, warning = FALSE, fig.width = 7.5, fig.height = 6, dev = c("png","pdf")}
 # Long to wide
@@ -2003,19 +2003,20 @@ geneAssign_df_wide <- tidyr::spread(geneAssign_df, Variant, Presence)
 # Plot
 upset(geneAssign_df_wide, sets = c("Variant4", "Variant6", "Variant7", "Variant8",
                                    "Variant9"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      order.by = "freq", number.angles = 30, point.size = 3.5,
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
       show.numbers = FALSE,
       scale.intersections = "log2",
-      keep.order = FALSE)
+      keep.order = FALSE,
+      line.size = NA)
 
 # Indicate site and season-specific differential abundant genes
 geneAssign_df_wide <- left_join(geneAssign_df_wide, res_deseq, 
                                 by = c("sseqid" = "gene_oid"))
 ```
 
-#### Site downregulation
+#### **Site downregulation**
 
 ```{r desman-site-downreg, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 6, dev = c("png","pdf")}
 # Make upset plot for site-specific downregulation controlled for seasons
@@ -2023,17 +2024,18 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
                                      Design == "~ Season + Site") %>% 
   upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
                                    "Variant9"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      order.by = "freq", number.angles = 30, point.size = 3.5,
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
       show.numbers = FALSE,
       scale.intersections = "log2",
       keep.order = FALSE,
-      boxplot.summary = "log2FoldChange")
+      boxplot.summary = "log2FoldChange",
+      line.size = NA)
 
 ```
 
-#### Site upregulation
+#### **Site upregulation**
 
 ```{r desman-site-upreg, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 6, dev = c("png","pdf")}
 # Make upset plot for site-specific upregulation controlled for seasons
@@ -2041,18 +2043,19 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation",
                                      Design == "~ Season + Site") %>% 
   upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
                                    "Variant9"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      order.by = "freq", number.angles = 30, point.size = 3.5, 
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
       show.numbers = FALSE,
       scale.intersections = "log2",
       keep.order = FALSE,
-      boxplot.summary = "log2FoldChange")
+      boxplot.summary = "log2FoldChange",
+      line.size = NA)
 
 
 ```
 
-#### Seasonal downregulation
+#### **Seasonal downregulation**
 
 ```{r desman-season-downreg, dpi = 500, warning = FALSE, fig.width = 5, fig.height = 6, dev = c("png","pdf")}
 # Make upset plot for seasonal downregulation controlled for site
@@ -2060,18 +2063,19 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
                                      Design == "~ Site + Season") %>% 
   upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
                                    "Variant9"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      order.by = "freq", number.angles = 30, point.size = 3.5, 
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
       show.numbers = FALSE,
       scale.intersections = "log2",
       keep.order = FALSE,
-      boxplot.summary = "log2FoldChange")
+      boxplot.summary = "log2FoldChange",
+      line.size = NA)
 
 
 ```
 
-#### Depth downregulation  
+#### **Depth downregulation**  
 
 ```{r desman-depth-downreg, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 6, dev = c("png","pdf")}
 # Make upset plot for depth-specific downregulation controlled for seasons
@@ -2079,17 +2083,18 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
                                      Design == "~ Site + Depth") %>% 
   upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
                                    "Variant9"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      order.by = "freq", number.angles = 30, point.size = 3.5,
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
       show.numbers = FALSE,
       scale.intersections = "log2",
       keep.order = FALSE,
-      boxplot.summary = "log2FoldChange")
+      boxplot.summary = "log2FoldChange",
+      line.size = NA)
 
 ```
 
-#### Depth upregulation  
+#### **Depth upregulation** 
 
 ```{r desman-depth-upreg, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 6, dev = c("png","pdf")}
 # Make upset plot for depth-specific upregulation controlled for sites
@@ -2097,13 +2102,14 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation",
                                      Design == "~ Site + Depth") %>% 
   upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
                                    "Variant9"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      order.by = "freq", number.angles = 30, point.size = 3.5, 
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
       show.numbers = FALSE,
       scale.intersections = "log2",
       keep.order = FALSE,
-      boxplot.summary = "log2FoldChange")
+      boxplot.summary = "log2FoldChange",
+      line.size = NA)
 
 ```
 
