@@ -2434,6 +2434,50 @@ upset(geneAssign_df_wide, sets = c("Variant4", "Variant6", "Variant7", "Variant8
 
 <img src="Figures/cached/desman-5-1.png" style="display: block; margin: auto;" />
 
+```r
+# Indicate site and season-specific differential abundant genes
+geneAssign_df_wide <- left_join(geneAssign_df_wide, res_deseq, 
+                                by = c("sseqid" = "gene_oid"))
+```
+
+
+```r
+# Make upset plot for site-specific downregulation (no upregulation observed) 
+# controlled for seasons
+geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
+                                     Design == "~ Season + Site") %>% 
+  upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
+                                   "Variant9"), mb.ratio = c(0.55, 0.45), 
+      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+      show.numbers = FALSE,
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      boxplot.summary = "log2FoldChange")
+```
+
+<img src="Figures/cached/desman-7-1.png" style="display: block; margin: auto;" />
+
+
+```r
+# Make upset plot for seasonal downregulation (no upregulation observed) 
+# controlled for site
+geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
+                                     Design == "~ Site + Season") %>% 
+  upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
+                                   "Variant9"), mb.ratio = c(0.55, 0.45), 
+      order.by = "freq", number.angles = 30, point.size = 3.5, line.size = 2,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+      show.numbers = FALSE,
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      boxplot.summary = "log2FoldChange")
+```
+
+<img src="Figures/cached/desman-8-1.png" style="display: block; margin: auto;" />
+
 # 9. iRep analysis
 
 ```r
