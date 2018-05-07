@@ -295,7 +295,7 @@ print(p_ani)
 ```
 
 # 1b. Investigate predicted generation time (MGT)
-```{r MGT-1, warning = FALSE, fig.width = 9, fig.height = 4, dpi = 500}
+```{r MGT-1, warning = FALSE, fig.width = 9, fig.height = 4, dpi = 500, dev = c("png","pdf")}
 MGT_df <- read.table("./Growthpred/GP_results.tsv", header = TRUE,
                      stringsAsFactors = FALSE, sep = "\t")
 
@@ -306,12 +306,12 @@ MGT_df$Lineage <- factor(MGT_df$Lineage, levels = c("LimDEA_1", "LimDEA_2",
 
 # Make barplot with st.dev to visualize MGT and optimal temperature
 selected_points <- data.frame(Genome_ID = MGT_df$Genome_ID, 
-                              ypos = c(rep(18, 10), rep(NA,9)))
-p_MGT <- ggplot(MGT_df, aes(x = Genome_ID, y = MGT, fill = Lineage, group = Genome_ID))+
+                              ypos = c(rep(0.25, 10), rep(NA,9)))
+p_MGT <- ggplot(MGT_df, aes(x = Genome_ID, y = log(2)/MGT, fill = Lineage, group = Genome_ID))+
   theme_bw()+
   geom_bar(alpha = 0.4, stat = "identity", color = "black",
            position = position_dodge(width = 1), width = 0.7)+
-  scale_fill_manual("Minimal generation time (h)",
+  scale_fill_manual(expression("Growth rate - "~"h"^-1),
                     values = c(rgb(red=t(col2rgb("#deebf7ff")), maxColorValue  = 255), 
                                rgb(red=t(col2rgb("#c6dbefff")), maxColorValue  = 255),
                                rgb(red=t(col2rgb("#9ecae1ff")), maxColorValue  = 255),
@@ -327,11 +327,11 @@ p_MGT <- ggplot(MGT_df, aes(x = Genome_ID, y = MGT, fill = Lineage, group = Geno
         axis.title.x=element_blank(),
         plot.title = element_text(hjust = 0, size=18))+
   guides(fill=FALSE)+
-  geom_errorbar(aes(ymin = MGT - sd.MGT, ymax = MGT + sd.MGT), width = 0.15,
+  geom_errorbar(aes(ymin = log(2)/(MGT - sd.MGT), ymax = log(2)/(MGT + sd.MGT)), width = 0.15,
                 position = position_dodge(width = 1))+
   ylab("")+
   xlab("")+
-  ggtitle("Minimal Generation Time (h)")+
+  ggtitle(expression("Growth rate - h"^-1))+
   geom_point(data = selected_points, aes(x = Genome_ID, y = ypos),
              shape = 25, fill = "black", col = "black", size = 3)
 
