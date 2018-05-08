@@ -278,7 +278,7 @@ selected_points <- data.frame(Genome_ID = MGT_df$Genome_ID,
                               ypos = c(rep(0.25, 10), rep(NA,9)))
 p_MGT <- ggplot(MGT_df, aes(x = Genome_ID, y = log(2)/MGT, fill = Lineage, group = Genome_ID))+
   theme_bw()+
-  geom_bar(alpha = 0.4, stat = "identity", color = "black",
+  geom_bar(alpha = 1, stat = "identity", color = "black",
            position = position_dodge(width = 1), width = 0.7)+
   scale_fill_manual(expression("Growth rate - "~"h"^-1),
                     values = c(rgb(red=t(col2rgb("#deebf7ff")), maxColorValue  = 255), 
