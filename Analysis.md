@@ -64,7 +64,6 @@ data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_cover
 
 ## Phylogenomic tree  
 
-![Annotated phylogenomic tree](./Tree/tree_annotated.png)
 
 ## 16S rRNA gene phylogenetic tree
 ![Annotated 16S rRNA gene phylogenetic tree](./Tree/16S/fasttree.png)
@@ -276,6 +275,7 @@ MGT_df$Lineage <- factor(MGT_df$Lineage, levels = c("LimDEA_1", "LimDEA_2",
 # Make barplot with st.dev to visualize MGT and optimal temperature
 selected_points <- data.frame(Genome_ID = MGT_df$Genome_ID, 
                               ypos = c(rep(0.25, 10), rep(NA,9)))
+
 p_MGT <- ggplot(MGT_df, aes(x = Genome_ID, y = log(2)/MGT, fill = Lineage, group = Genome_ID))+
   theme_bw()+
   geom_bar(alpha = 1, stat = "identity", color = "black",
@@ -370,48 +370,48 @@ diversity_df_phy <- Diversity_16S(df_phy, brea = FALSE, R = 100)
 ```
 ## 	**WARNING** this functions assumes that rows are samples and columns
 ##       	are taxa in your phyloseq object, please verify.
-## Sat Mar 03 16:11:48 2018	Calculating diversity for sample 1/41 --- Fa13.BD.MLB.DN.1.renamed
-## Sat Mar 03 16:12:18 2018	Calculating diversity for sample 2/41 --- Fa13.BD.MLB.SN.1.renamed
-## Sat Mar 03 16:12:49 2018	Calculating diversity for sample 3/41 --- Fa13.BD.MM110.DN.1.renamed
-## Sat Mar 03 16:13:18 2018	Calculating diversity for sample 4/41 --- Fa13.BD.MM110.DN.2.renamed
-## Sat Mar 03 16:13:49 2018	Calculating diversity for sample 5/41 --- Fa13.BD.MM110.SD.1.renamed
-## Sat Mar 03 16:14:24 2018	Calculating diversity for sample 6/41 --- Fa13.BD.MM110.SD.2.renamed
-## Sat Mar 03 16:15:02 2018	Calculating diversity for sample 7/41 --- Fa13.BD.MM110.SN.1.renamed
-## Sat Mar 03 16:15:36 2018	Calculating diversity for sample 8/41 --- Fa13.BD.MM110.SN.2.renamed
-## Sat Mar 03 16:16:07 2018	Calculating diversity for sample 9/41 --- Fa13.BD.MM15.DN.1.renamed
-## Sat Mar 03 16:16:36 2018	Calculating diversity for sample 10/41 --- Fa13.BD.MM15.DN.2.renamed
-## Sat Mar 03 16:17:07 2018	Calculating diversity for sample 11/41 --- Fa13.BD.MM15.SD.1.renamed
-## Sat Mar 03 16:17:45 2018	Calculating diversity for sample 12/41 --- Fa13.BD.MM15.SD.2.renamed
-## Sat Mar 03 16:18:13 2018	Calculating diversity for sample 13/41 --- Fa13.BD.MM15.SN.1.renamed
-## Sat Mar 03 16:18:45 2018	Calculating diversity for sample 14/41 --- Fa13.BD.MM15.SN.2.renamed
-## Sat Mar 03 16:19:12 2018	Calculating diversity for sample 15/41 --- Sp13.BD.MLB.SN.1.renamed
-## Sat Mar 03 16:19:47 2018	Calculating diversity for sample 16/41 --- Sp13.BD.MLB.SN.2.renamed
-## Sat Mar 03 16:20:18 2018	Calculating diversity for sample 17/41 --- Sp13.BD.MM110.DD.1.renamed
-## Sat Mar 03 16:20:45 2018	Calculating diversity for sample 18/41 --- Sp13.BD.MM110.SD.1.renamed
-## Sat Mar 03 16:21:16 2018	Calculating diversity for sample 19/41 --- Sp13.BD.MM110.SD.2.renamed
-## Sat Mar 03 16:21:47 2018	Calculating diversity for sample 20/41 --- Sp13.BD.MM110.SN.1.renamed
-## Sat Mar 03 16:22:22 2018	Calculating diversity for sample 21/41 --- Sp13.BD.MM110.SN.2.renamed
-## Sat Mar 03 16:22:56 2018	Calculating diversity for sample 22/41 --- Sp13.BD.MM15.DD.1.renamed
-## Sat Mar 03 16:23:32 2018	Calculating diversity for sample 23/41 --- Sp13.BD.MM15.SD.1.renamed
-## Sat Mar 03 16:24:08 2018	Calculating diversity for sample 24/41 --- Sp13.BD.MM15.SN.1.renamed
-## Sat Mar 03 16:24:43 2018	Calculating diversity for sample 25/41 --- Sp13.BD.MM15.SN.2.renamed
-## Sat Mar 03 16:25:18 2018	Calculating diversity for sample 26/41 --- Su13.BD.MLB.DD.1.renamed
-## Sat Mar 03 16:25:51 2018	Calculating diversity for sample 27/41 --- Su13.BD.MLB.SD.1.renamed
-## Sat Mar 03 16:26:25 2018	Calculating diversity for sample 28/41 --- Su13.BD.MM110.DCMD.1.renamed
-## Sat Mar 03 16:26:59 2018	Calculating diversity for sample 29/41 --- Su13.BD.MM110.DCMD.2.renamed
-## Sat Mar 03 16:27:33 2018	Calculating diversity for sample 30/41 --- Su13.BD.MM110.DN.1.renamed
-## Sat Mar 03 16:28:09 2018	Calculating diversity for sample 31/41 --- Su13.BD.MM110.DN.2.renamed
-## Sat Mar 03 16:28:44 2018	Calculating diversity for sample 32/41 --- Su13.BD.MM110.SD.1.renamed
-## Sat Mar 03 16:29:18 2018	Calculating diversity for sample 33/41 --- Su13.BD.MM110.SD.2.renamed
-## Sat Mar 03 16:29:54 2018	Calculating diversity for sample 34/41 --- Su13.BD.MM110.SN.1.renamed
-## Sat Mar 03 16:30:28 2018	Calculating diversity for sample 35/41 --- Su13.BD.MM110.SN.2.renamed
-## Sat Mar 03 16:31:02 2018	Calculating diversity for sample 36/41 --- Su13.BD.MM15.DN.1.renamed
-## Sat Mar 03 16:31:36 2018	Calculating diversity for sample 37/41 --- Su13.BD.MM15.DN.2.renamed
-## Sat Mar 03 16:32:11 2018	Calculating diversity for sample 38/41 --- Su13.BD.MM15.SD.1.renamed
-## Sat Mar 03 16:32:45 2018	Calculating diversity for sample 39/41 --- Su13.BD.MM15.SD.2.renamed
-## Sat Mar 03 16:33:20 2018	Calculating diversity for sample 40/41 --- Su13.BD.MM15.SN.1.renamed
-## Sat Mar 03 16:34:07 2018	Calculating diversity for sample 41/41 --- Su13.BD.MM15.SN.2.renamed
-## Sat Mar 03 16:34:45 2018 	Done with all 41 samples
+## Thu May 10 16:22:06 2018	Calculating diversity for sample 1/41 --- Fa13.BD.MLB.DN.1.renamed
+## Thu May 10 16:22:39 2018	Calculating diversity for sample 2/41 --- Fa13.BD.MLB.SN.1.renamed
+## Thu May 10 16:23:10 2018	Calculating diversity for sample 3/41 --- Fa13.BD.MM110.DN.1.renamed
+## Thu May 10 16:23:41 2018	Calculating diversity for sample 4/41 --- Fa13.BD.MM110.DN.2.renamed
+## Thu May 10 16:24:07 2018	Calculating diversity for sample 5/41 --- Fa13.BD.MM110.SD.1.renamed
+## Thu May 10 16:24:33 2018	Calculating diversity for sample 6/41 --- Fa13.BD.MM110.SD.2.renamed
+## Thu May 10 16:24:59 2018	Calculating diversity for sample 7/41 --- Fa13.BD.MM110.SN.1.renamed
+## Thu May 10 16:25:25 2018	Calculating diversity for sample 8/41 --- Fa13.BD.MM110.SN.2.renamed
+## Thu May 10 16:25:51 2018	Calculating diversity for sample 9/41 --- Fa13.BD.MM15.DN.1.renamed
+## Thu May 10 16:26:17 2018	Calculating diversity for sample 10/41 --- Fa13.BD.MM15.DN.2.renamed
+## Thu May 10 16:26:43 2018	Calculating diversity for sample 11/41 --- Fa13.BD.MM15.SD.1.renamed
+## Thu May 10 16:27:10 2018	Calculating diversity for sample 12/41 --- Fa13.BD.MM15.SD.2.renamed
+## Thu May 10 16:27:37 2018	Calculating diversity for sample 13/41 --- Fa13.BD.MM15.SN.1.renamed
+## Thu May 10 16:28:07 2018	Calculating diversity for sample 14/41 --- Fa13.BD.MM15.SN.2.renamed
+## Thu May 10 16:28:38 2018	Calculating diversity for sample 15/41 --- Sp13.BD.MLB.SN.1.renamed
+## Thu May 10 16:29:17 2018	Calculating diversity for sample 16/41 --- Sp13.BD.MLB.SN.2.renamed
+## Thu May 10 16:29:56 2018	Calculating diversity for sample 17/41 --- Sp13.BD.MM110.DD.1.renamed
+## Thu May 10 16:30:35 2018	Calculating diversity for sample 18/41 --- Sp13.BD.MM110.SD.1.renamed
+## Thu May 10 16:31:18 2018	Calculating diversity for sample 19/41 --- Sp13.BD.MM110.SD.2.renamed
+## Thu May 10 16:31:58 2018	Calculating diversity for sample 20/41 --- Sp13.BD.MM110.SN.1.renamed
+## Thu May 10 16:32:35 2018	Calculating diversity for sample 21/41 --- Sp13.BD.MM110.SN.2.renamed
+## Thu May 10 16:33:09 2018	Calculating diversity for sample 22/41 --- Sp13.BD.MM15.DD.1.renamed
+## Thu May 10 16:33:42 2018	Calculating diversity for sample 23/41 --- Sp13.BD.MM15.SD.1.renamed
+## Thu May 10 16:34:22 2018	Calculating diversity for sample 24/41 --- Sp13.BD.MM15.SN.1.renamed
+## Thu May 10 16:34:55 2018	Calculating diversity for sample 25/41 --- Sp13.BD.MM15.SN.2.renamed
+## Thu May 10 16:35:32 2018	Calculating diversity for sample 26/41 --- Su13.BD.MLB.DD.1.renamed
+## Thu May 10 16:36:07 2018	Calculating diversity for sample 27/41 --- Su13.BD.MLB.SD.1.renamed
+## Thu May 10 16:36:42 2018	Calculating diversity for sample 28/41 --- Su13.BD.MM110.DCMD.1.renamed
+## Thu May 10 16:37:16 2018	Calculating diversity for sample 29/41 --- Su13.BD.MM110.DCMD.2.renamed
+## Thu May 10 16:37:53 2018	Calculating diversity for sample 30/41 --- Su13.BD.MM110.DN.1.renamed
+## Thu May 10 16:38:32 2018	Calculating diversity for sample 31/41 --- Su13.BD.MM110.DN.2.renamed
+## Thu May 10 16:39:06 2018	Calculating diversity for sample 32/41 --- Su13.BD.MM110.SD.1.renamed
+## Thu May 10 16:39:41 2018	Calculating diversity for sample 33/41 --- Su13.BD.MM110.SD.2.renamed
+## Thu May 10 16:40:17 2018	Calculating diversity for sample 34/41 --- Su13.BD.MM110.SN.1.renamed
+## Thu May 10 16:40:53 2018	Calculating diversity for sample 35/41 --- Su13.BD.MM110.SN.2.renamed
+## Thu May 10 16:41:26 2018	Calculating diversity for sample 36/41 --- Su13.BD.MM15.DN.1.renamed
+## Thu May 10 16:42:01 2018	Calculating diversity for sample 37/41 --- Su13.BD.MM15.DN.2.renamed
+## Thu May 10 16:42:31 2018	Calculating diversity for sample 38/41 --- Su13.BD.MM15.SD.1.renamed
+## Thu May 10 16:43:01 2018	Calculating diversity for sample 39/41 --- Su13.BD.MM15.SD.2.renamed
+## Thu May 10 16:43:30 2018	Calculating diversity for sample 40/41 --- Su13.BD.MM15.SN.1.renamed
+## Thu May 10 16:44:00 2018	Calculating diversity for sample 41/41 --- Su13.BD.MM15.SN.2.renamed
+## Thu May 10 16:44:30 2018 	Done with all 41 samples
 ```
 
 ```r
@@ -470,7 +470,8 @@ p_16S_network <- plot_network_custom(ig.mb, df_phy, type='taxa',
         text = element_text(size = 12),
         plot.margin = unit(c(1,1,1,1), "cm"))+
   scale_size(range = c(5, 15))+
-  geom_label_repel(aes(label = limno_labs), fontface = 'bold', color = 'black',
+  geom_label_repel(aes(label = limno_labs), 
+                   fontface = 'bold', color = 'black',
                    box.padding = 0.35, point.padding = 0.5,
                    segment.color = 'black',
                    size = 4,
@@ -497,29 +498,69 @@ $$Relative\ abundance =100*(\frac{mean\ coverage * bin\ size}{read\ length*total
 
 ```r
 # Normalize for bin sizes
-data_total <- data_total %>% group_by(bins) %>% 
+data_total_abund <- data_total %>% group_by(bins) %>% 
   mutate(norm_mean_rel_abundance = mean_rel_abundance/(bin_size/1e6),
          norm_upper_rel_abundance = upper_rel_abundance/(bin_size/1e6),
          norm_lower_rel_abundance = lower_rel_abundance/(bin_size/1e6)
          )
 
+# Import bin name file used in manuscript
+new_bin_names <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(2,3)]
+data_total_abund <- left_join(data_total_abund,
+                              new_bin_names, by = c("bins" = "bins"))
+
+# Remove non-Limno bin
+data_total_abund <- data_total_abund %>% 
+  dplyr::filter(new_bin_name != "MAG.noLIM")
+
+# Add putative limnohabitans lineage ID
+data_total_abund <- dplyr::left_join(data_total_abund, MGT_df,
+                                     by = c("new_bin_name" = "Genome_ID"))
+
+# Order names for phylogenomic tree
+data_total_abund$new_bin_name <- as.character(data_total_abund$new_bin_name)
+data_total_abund$new_bin_name <- factor(data_total_abund$new_bin_name,
+                                        levels = c(
+                                          "MAG5.SP-M110-DD",
+                                          "MAG2.FA-MLB-SN",
+                                          "MAG3.FA-MLB-SN",
+                                          "MAG4.FA-M110-DN",
+                                          "MAG1.FA-MLB-DN",
+                                          "MAG10.SU-M15-SN",
+                                          "MAG6.SP-M15-SD",
+                                          "MAG8.SU-M110-DCMD",
+                                          "MAG7.SU-MLB-SD", 
+                                          "MAG9.SU-M15-SN"
+                                          )
+)
+
 # Plot abundance distributions of all bins
-p_season1 <- ggplot(data = data_total, aes(x = bins, y = norm_mean_rel_abundance, fill = bins))+
+p_season1 <- ggplot(data = data_total_abund, 
+                    aes(x = new_bin_name, y = norm_mean_rel_abundance,
+                        fill = Lineage))+
   geom_point(size = 4, shape = 21, alpha = 0.7)+
-  geom_boxplot(alpha = 0.3)+
-  scale_fill_brewer(palette = "Paired")+
+  geom_boxplot(alpha = 0.7, outlier.shape = NA)+
   theme_bw()+
-  geom_errorbar(aes(ymin=norm_lower_rel_abundance, 
-                    ymax=norm_upper_rel_abundance, 
-                    width=.1))+
-  facet_grid(Season~Site)+
+    scale_fill_manual(values = c(rgb(red=t(col2rgb("#deebf7ff")),
+                                   maxColorValue  = 255), 
+                               rgb(red=t(col2rgb("#c6dbefff")), 
+                                   maxColorValue  = 255),
+                               rgb(red=t(col2rgb("#9ecae1ff")), 
+                                   maxColorValue  = 255),
+                               rgb(red=t(col2rgb("#6baed6ff")), 
+                                   maxColorValue  = 255)
+                              ))+
   # ylim(0,1)+ 
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
         axis.text.x = element_text(angle = 90, hjust = 1),
-        strip.text=element_text(size=18))+
-  ylab("Normalized relative abundance (%)")
+        strip.text=element_text(size=18),
+        axis.line = element_line(size = 1, colour = "grey80"),
+        panel.border = element_blank())+
+  ylab("Normalized relative abundance (%)")+
+  scale_y_sqrt()+
+  xlab("")
 
 p_season1
 ```
