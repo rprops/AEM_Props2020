@@ -2164,13 +2164,13 @@ print(p_MAG_div)
 # Import data
 results_desm <- read.csv("./DESMAN/MAG8_scg_10_9/Gamma_meanR.csv", header = TRUE)
 colnames(results_desm)[1] <- "Samples"
-colnames(results_desm) <- gsub("X", "Variant", colnames(results_desm))
+colnames(results_desm) <- gsub("X", "Strain", colnames(results_desm))
 results_desm$Samples <- gsub(".sorted.MAG8","",results_desm$Samples, fixed = TRUE)
 # Import library prep data
 library_prep <- read.table("./mapping_files/Libraries.tsv",header = TRUE)
 
 # Wide to long format
-results_desm_long <- tidyr::gather(results_desm, Variant, Freq, 
+results_desm_long <- tidyr::gather(results_desm, Strain, Freq, 
                              2:(ncol(results_desm)), factor_key=TRUE)
 # Merge with metadata
 results_desm_long <- dplyr::left_join(results_desm_long, library_prep, by = "Samples")
@@ -2225,8 +2225,8 @@ results_desm_long$DOC.mg.L <- as.numeric(as.character(results_desm_long$DOC.mg.L
 # print(desm_p1)
 
 desm_p1b <- ggplot(results_desm_long, aes(x = Season, y = Freq, 
-                                         fill = Variant, 
-                                         col = Variant))+
+                                         fill = Strain, 
+                                         col = Strain))+
   geom_point(color = "black", alpha = 0.7, size = 3, shape = 21)+
   # scale_shape_manual(values = c(21,22,23))+
   geom_boxplot(alpha = 0.3, col = "black", outlier.shape = NA, size = 0.3)+
@@ -2244,7 +2244,7 @@ desm_p1b <- ggplot(results_desm_long, aes(x = Season, y = Freq,
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
   ylab(paste0("Variant frequency"))+
   guides(fill=FALSE)+
-  facet_grid(Site~Variant, scales ="free")+
+  facet_grid(Site~Strain, scales ="free")+
   xlab("")+
   scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
   # geom_smooth(se = FALSE)+
@@ -2259,8 +2259,8 @@ print(desm_p1b)
 
 ```r
 desm_p2 <- ggplot(results_desm_long, aes(x = Temperature..C., y = Freq, 
-                                         fill = Variant, 
-                                         col = Variant))+
+                                         fill = Strain, 
+                                         col = Strain))+
   geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
   scale_fill_brewer("", palette = "Accent")+
   scale_color_brewer("", palette = "Accent")+
@@ -2284,8 +2284,8 @@ desm_p2 <- ggplot(results_desm_long, aes(x = Temperature..C., y = Freq,
   # coord_trans(y = "sqrt")
 
 desm_p3 <- ggplot(results_desm_long, aes(x = PAR , y = Freq, 
-                                         fill = Variant, 
-                                         col = Variant))+
+                                         fill = Strain, 
+                                         col = Strain))+
   geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
   scale_fill_brewer("", palette = "Accent")+
   scale_color_brewer("", palette = "Accent")+
@@ -2309,8 +2309,8 @@ desm_p3 <- ggplot(results_desm_long, aes(x = PAR , y = Freq,
   # coord_trans(y = "sqrt")
 
 desm_p4 <- ggplot(results_desm_long, aes(x = DO.Probe..mg.L. , y = Freq, 
-                                         fill = Variant, 
-                                         col = Variant))+
+                                         fill = Strain, 
+                                         col = Strain))+
   geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
   scale_fill_brewer("", palette = "Accent")+
   scale_color_brewer("",palette = "Accent")+
@@ -2334,8 +2334,8 @@ desm_p4 <- ggplot(results_desm_long, aes(x = DO.Probe..mg.L. , y = Freq,
   # coord_trans(y = "sqrt")
 
 desm_p5 <- ggplot(results_desm_long, aes(x =TP.ug.L, y = Freq, 
-                                         fill = Variant, 
-                                         col = Variant))+
+                                         fill = Strain, 
+                                         col = Strain))+
   geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
   scale_fill_brewer("", palette = "Accent")+
   scale_color_brewer("",palette = "Accent")+
@@ -2359,8 +2359,8 @@ desm_p5 <- ggplot(results_desm_long, aes(x =TP.ug.L, y = Freq,
   # coord_trans(y = "sqrt")
 
 desm_p6 <- ggplot(results_desm_long, aes(x =DOC.mg.L, y = Freq, 
-                                         fill = Variant, 
-                                         col = Variant))+
+                                         fill = Strain, 
+                                         col = Strain))+
   geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
   scale_fill_brewer("", palette = "Accent")+
   scale_color_brewer("",palette = "Accent")+

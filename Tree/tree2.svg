@@ -26,7 +26,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -43,13 +43,13 @@
      inkscape:window-height="1027"
      id="namedview163"
      showgrid="false"
-     inkscape:zoom="0.45"
-     inkscape:cx="661.10044"
-     inkscape:cy="644.40395"
+     inkscape:zoom="3.6"
+     inkscape:cx="1450.3919"
+     inkscape:cy="719.70503"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g24267" />
+     inkscape:current-layer="g23464" />
   <defs
      id="defs4">
     <linearGradient
@@ -4925,6 +4925,7 @@
                      y="0"><tspan
    style="font-style:italic"
    id="tspan12888">Limnohabitans</tspan>
+
  sp. Rim11 (GCA_001269365.1)</tspan>
                 </text>
                 <path
@@ -5007,6 +5008,7 @@
                    style="font-style:italic;font-size:20px;font-family:Georgia;fill:#000000">Limnohabitans <tspan
    style="font-style:normal"
    id="tspan12904">sp</tspan>
+
 . <tspan
    style="font-style:normal"
    id="tspan11349">II-D5 (GCA_001270065.1)</tspan>
@@ -5122,6 +5124,7 @@
                    style="font-style:italic;font-size:20px;font-family:Georgia;fill:#000000">Limnohabitans <tspan
    style="font-style:normal"
    id="tspan12894">sp</tspan>
+
 . <tspan
    style="font-style:normal"
    id="tspan8780">Rim28 (GCA_000293865.1)</tspan>
@@ -5176,6 +5179,7 @@
                    style="font-style:italic;font-size:20px;font-family:Georgia;fill:#000000">Limnohabitans <tspan
    style="font-style:normal"
    id="tspan12890">sp</tspan>
+
 . <tspan
    style="font-style:normal"
    id="tspan8792">103DPR2(NZ_CP011834.1)</tspan>
@@ -5226,6 +5230,7 @@
                    style="font-style:italic;font-size:20px;font-family:Georgia;fill:#000000">Limnohabitans <tspan
    style="font-style:normal"
    id="tspan12892">sp</tspan>
+
 . <tspan
    style="font-style:normal"
    id="tspan8794">Rim47 (2684622883)</tspan>
@@ -5289,6 +5294,7 @@
                    style="font-style:italic;font-size:20px;font-family:Georgia;fill:#000000">Limnohabitans <tspan
    style="font-style:normal"
    id="tspan12898">sp</tspan>
+
 . <tspan
    style="font-style:normal"
    id="tspan8782">2KL-27 (GCA_001269345.1)</tspan>
@@ -5399,6 +5405,7 @@
                    style="font-style:italic;font-size:20px;font-family:Georgia;fill:#000000">Limnohabitans <tspan
    style="font-style:normal"
    id="tspan12902">sp</tspan>
+
 . <tspan
    style="font-style:normal"
    id="tspan8786">DM1 (GCA_001269385.1)</tspan>
@@ -5490,6 +5497,7 @@
                    y="1094.7456">Limnohabitans <tspan
    style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Georgia;-inkscape-font-specification:Georgia"
    id="tspan5677">sp</tspan>
+
 . <tspan
    id="tspan6126"
    style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Georgia;-inkscape-font-specification:Georgia">63ED37-2 (NZ.CP011774.1)</tspan>
@@ -8440,15 +8448,15 @@
                    inkscape:export-filename="C:\Users\rprops\Documents\Limno_lakeMI\Figures\Figure2C.png"
                    xml:space="preserve"
                    style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;overflow:hidden;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-                   x="1424.6072"
+                   x="1430.5673"
                    y="548.20038"
                    id="text19530-1-1"
                    sodipodi:linespacing="125%"><tspan
                      sodipodi:role="line"
                      id="tspan19532-3-43"
-                     x="1424.6072"
+                     x="1430.5673"
                      y="548.20038"
-                     style="font-size:18.75px">0.20</tspan></text>
+                     style="font-size:18.75px">0.2</tspan></text>
                 <text
                    inkscape:export-ydpi="350"
                    inkscape:export-xdpi="350"
