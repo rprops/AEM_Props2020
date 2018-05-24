@@ -665,359 +665,8 @@ p_abs2
 
 <img src="Figures/cached/plot-abundances-2-1.png" style="display: block; margin: auto;" />
 
-# 3. Investigate sequence characteristics within coding DNA sequences (CDS)
 
-```r
-# First we need the files that map the gene ID to the sequence ID (linux cmd: https://github.com/rprops/MetaG_lakeMI/wiki/11.-Genome-annotation)
-# These are stored in the IMG_annotation data for each genome bin
-
-# Next, extract the %GC of each gene from the gff file
-Bin_2737471681 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471681/IMG_Data/133052.assembled.gff", 
-                                      outputFolder = "GC_analysis")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471682 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471682/IMG_Data/133053.assembled.gff", 
-                                      outputFolder = "GC_analysis")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471683 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471683/IMG_Data/133054.assembled.gff", 
-                                      outputFolder = "GC_analysis")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471793 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471793/IMG_Data/133647.assembled.gff", 
-                                      outputFolder = "GC_analysis")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471794 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471794/IMG_Data/133648.assembled.gff", 
-                                      outputFolder = "GC_analysis")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471795 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471795/IMG_Data/133649.assembled.gff", 
-                                      outputFolder = "GC_analysis")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471797 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471797/IMG_Data/133651.assembled.gff", 
-                                      outputFolder = "GC_analysis")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471799 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471799/IMG_Data/133653.assembled.gff", 
-                                      outputFolder = "GC_analysis")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471802 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471802/IMG_Data/133656.assembled.gff", 
-                                      outputFolder = "GC_analysis")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471804 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471804/IMG_Data/133658.assembled.gff", 
-                                      outputFolder = "GC_analysis")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471805 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471805/IMG_Data/133659.assembled.gff", 
-                                      outputFolder = "GC_analysis")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471806 <- extract_gc_from_gff("./IMG_annotation/IMG_2737471806/IMG_Data/133660.assembled.gff", 
-                                      outputFolder = "GC_analysis")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-# Use these files to make dataframes mapping function (COGs) and %GC
-Bin_2737471681_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133052.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471681/IMG_Data/2737471681/2737471681.gene_oid_2_seq_id.txt", 
-                             functions = "./IMG_annotation/IMG_2737471681/IMG_Data/2737471681/2737471681.cog.tab.txt", 
-                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471681")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471682_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133053.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471682/IMG_Data/2737471682/2737471682.gene_oid_2_seq_id.txt", 
-                             functions = "./IMG_annotation/IMG_2737471682/IMG_Data/2737471682/2737471682.cog.tab.txt", 
-                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471682")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471683_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133054.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471683/IMG_Data/2737471683/2737471683.gene_oid_2_seq_id.txt", 
-                             functions = "./IMG_annotation/IMG_2737471683/IMG_Data/2737471683/2737471683.cog.tab.txt", 
-                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471683")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471793_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133647.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471793/IMG_Data/2737471793/2737471793.gene_oid_2_seq_id.txt", 
-                             functions = "./IMG_annotation/IMG_2737471793/IMG_Data/2737471793/2737471793.cog.tab.txt", 
-                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471793")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471794_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133648.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471794/IMG_Data/2737471794/2737471794.gene_oid_2_seq_id.txt", 
-                             functions = "./IMG_annotation/IMG_2737471794/IMG_Data/2737471794/2737471794.cog.tab.txt", 
-                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471794")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471795_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133649.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471795/IMG_Data/2737471795/2737471795.gene_oid_2_seq_id.txt", 
-                             functions = "./IMG_annotation/IMG_2737471795/IMG_Data/2737471795/2737471795.cog.tab.txt", 
-                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471795")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471797_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133651.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471797/IMG_Data/2737471797/2737471797.gene_oid_2_seq_id.txt", 
-                             functions = "./IMG_annotation/IMG_2737471797/IMG_Data/2737471797/2737471797.cog.tab.txt", 
-                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471797")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471799_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133653.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471799/IMG_Data/2737471799/2737471799.gene_oid_2_seq_id.txt", 
-                             functions = "./IMG_annotation/IMG_2737471799/IMG_Data/2737471799/2737471799.cog.tab.txt", 
-                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471799")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471802_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133656.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471802/IMG_Data/2737471802/2737471802.gene_oid_2_seq_id.txt", 
-                             functions = "./IMG_annotation/IMG_2737471802/IMG_Data/2737471802/2737471802.cog.tab.txt", 
-                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471802")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471804_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133658.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471804/IMG_Data/2737471804/2737471804.gene_oid_2_seq_id.txt", 
-                             functions = "./IMG_annotation/IMG_2737471804/IMG_Data/2737471804/2737471804.cog.tab.txt", 
-                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471804")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471805_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133659.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471805/IMG_Data/2737471805/2737471805.gene_oid_2_seq_id.txt", 
-                             functions = "./IMG_annotation/IMG_2737471805/IMG_Data/2737471805/2737471805.cog.tab.txt", 
-                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471805")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-Bin_2737471806_gc_cog <- gc2function(seq_id_gc = "GC_analysis/seqid_GC_133660.assembled.gff.tsv", gene_id_seq_id ="./IMG_annotation/IMG_2737471806/IMG_Data/2737471806/2737471806.gene_oid_2_seq_id.txt", 
-                             functions = "./IMG_annotation/IMG_2737471806/IMG_Data/2737471806/2737471806.cog.tab.txt", 
-                             gc_thresh = 0.1, output = FALSE, label = "Bin_2737471806")
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-```r
-merged_gc_cog <- rbind(Bin_2737471681_gc_cog, Bin_2737471682_gc_cog, Bin_2737471683_gc_cog,
-                       Bin_2737471793_gc_cog, Bin_2737471794_gc_cog, Bin_2737471795_gc_cog,
-                       Bin_2737471797_gc_cog, Bin_2737471799_gc_cog, Bin_2737471802_gc_cog,
-                       Bin_2737471804_gc_cog, Bin_2737471805_gc_cog, Bin_2737471806_gc_cog)
-```
-
-```
-## Error in eval(quote(list(...)), env): object 'Bin_2737471681_gc_cog' not found
-```
-
-```r
-merged_gc_cog$genome_id <- as.character(merged_gc_cog$genome_id)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'merged_gc_cog' not found
-```
-
-<!-- # 4. Analysis of gene length distribution -->
-<!-- ```{r gene length analysis, dpi = 300, warning = FALSE, fig.width = 5, fig.height = 20} -->
-<!-- p_cog_length <- easyGgplot2::ggplot2.histogram(data = merged_gc_cog, xName = 'gene_length', -->
-<!--                   groupName = 'genome_id', alpha = 0.5, -->
-<!--                   legendPosition = "top", binwidth = 0.15, addMeanLine=TRUE, meanLineColor="black", -->
-<!--                   meanLineType="dashed")+ theme_bw()+ ylim(0,15)+ -->
-<!--   facet_grid(genome_id~.)+ -->
-<!--   labs(x = "Gene length (bp)", y = "Count")+ theme(legend.position="none", axis.text.x = element_text(angle = 45))+ -->
-<!--   ggtitle("Limnohabitans MAGs")+ xlim(0,2000) -->
-
-<!-- print(p_cog_length) -->
-<!-- ``` -->
-
-# 5. COG functional categories
-Get COG ID to COG functional category mapping file here: ftp://ftp.ncbi.nih.gov/pub/wolf/COGs/COG0303/cogs.csv    
-
-The exact statistical analysis to compare genomes based on these profiles should be performed in STAMP.
-
-
-```r
-# Import COG mapping file
-cogid_2_cogcat <- read.csv("./Mapping_files/cogid_2_cogcat.csv", sep = ",", header = FALSE, fill = TRUE,col.names = c("COG_ID", "COG_class", "function"))[, 1:2]
-cogid_2_cogcat <- cogid_2_cogcat[(cogid_2_cogcat$COG_class)!="", ]
-cogid_2_cogcat <- droplevels(cogid_2_cogcat)
-
-# Read COG category file
-cog_categories <- read.table("./Mapping_files/cog_categories.tsv", header = TRUE, sep = "\t")
-
-# Merge COG metadata
-cog_meta <- dplyr::left_join(cog_categories, cogid_2_cogcat, by = c("COG_class" = "COG_class"))
-cog_meta <- droplevels(cog_meta)
-
-# Merge this metadata with the genome data from before
-# COGs with multiple classifications are currently still NA - work on this.
-merged_gc_cog <- dplyr::left_join(merged_gc_cog, cog_meta, by = c("cog_id" = "COG_ID"))
-```
-
-```
-## Error in dplyr::left_join(merged_gc_cog, cog_meta, by = c(cog_id = "COG_ID")): object 'merged_gc_cog' not found
-```
-
-```r
-merged_gc_cog <- merged_gc_cog[!is.na(merged_gc_cog$COG_functional_category),]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'merged_gc_cog' not found
-```
-
-```r
-# Visualize distribution across major metabolism functional COG groups per genome.
-p_cog_func_group <- ggplot(data = merged_gc_cog, aes(x=COG_functional_category, fill = COG_functional_cluster))+
-  geom_bar(stat="count", width=0.7, color = "black", size = 0.75)+
-  theme_bw()+
-  facet_grid(genome_id~.)+
-  scale_fill_brewer(palette = "Accent")+
-  labs(x = "Gene length (bp)", y = "Count")+ theme(legend.position="bottom", axis.text.x = element_text(angle = 90, hjust = 1),
-                                                   legend.text = element_text(size = 7))+
-  ggtitle("Limnohabitans MAGs")+
-  guides(fill=guide_legend(nrow=2,byrow=TRUE))
-```
-
-```
-## Error in ggplot(data = merged_gc_cog, aes(x = COG_functional_category, : object 'merged_gc_cog' not found
-```
-
-```r
-print(p_cog_func_group)
-```
-
-```
-## Error in print(p_cog_func_group): object 'p_cog_func_group' not found
-```
-
-```r
-p_cog_func_clust <- ggplot(data = merged_gc_cog, aes(x=COG_functional_cluster, fill = COG_functional_cluster))+
-  geom_bar(stat="count", width=0.7, color = "black", size = 0.75)+
-  theme_bw()+
-  facet_grid(genome_id~.)+
-  scale_fill_brewer(palette = "Accent")+
-  labs(x = "Gene length (bp)", y = "Count")+ theme(legend.position="bottom",axis.text.x = element_text(angle = 90, hjust = 1),
-                                                   legend.text = element_text(size = 7))+
-  ggtitle("Limnohabitans MAGs")+
-  guides(fill=guide_legend(nrow=2,byrow=TRUE))
-```
-
-```
-## Error in ggplot(data = merged_gc_cog, aes(x = COG_functional_cluster, : object 'merged_gc_cog' not found
-```
-
-```r
-print(p_cog_func_clust)
-```
-
-```
-## Error in print(p_cog_func_clust): object 'p_cog_func_clust' not found
-```
-
-# 6. Expression analysis  
+# 3. Expression analysis  
 
 One way: 
   1. Get total nr. of reads through the `samtools flagstat command`.
@@ -1071,11 +720,12 @@ merged_file <- merge_annotations(file_list[1:10], genoid_seqid = FALSE)
 ## [1] 17644
 ## [1] 19813
 ## [1] 21848
-## Sat Mar 03 16:36:41 2018  --- Sucessfully merged files
+## Thu May 24 13:40:37 2018  --- Sucessfully merged files
 ```
 
 ```r
-merged_file$ko_id <- gsub(merged_file$ko_id, pattern = "KO:", replacement = "")
+merged_file$ko_id <- gsub(merged_file$ko_id, pattern = "KO:", 
+                          replacement = "")
 
 # import KO annotation hierarchy 
 ko_df <- format_ko(path = "./Mapping_files/ko00000.keg")
@@ -1160,6 +810,7 @@ all(rownames(meta_metaT) %in% colnames(expr_cov_bins[[1]]))
 
 ```r
 # Perform DESeq2 for differential abundance testing for each genome separately
+
 ## Season effect
 General_deseq_results_season <- list()
 deseq_comparisons_season <- list()
@@ -1249,7 +900,7 @@ for(i in 1:nlevels(expr_cov_long$Genome_ID)){
 ```
 
 ```r
-## Season effect
+## Depth effect
 General_deseq_results_depth <- list()
 deseq_comparisons_depth <- list()
 for(i in 1:nlevels(expr_cov_long$Genome_ID)){
@@ -1452,6 +1103,273 @@ print(p_deseq_1)
 # print(p_deseq_2)
 ```
 
+## Run MAG8-DESeq
+
+
+```r
+# Select MAG8 genome and temperature gradient
+expr_cov_MAG8 <- expr_cov_bins[levels(expr_cov_long$Genome_ID) == "2757320398"]
+sel_MAG8 <- meta_metaT[, "Site"] == "110" & meta_metaT[, "Depth"] != "Mid"
+expr_cov_MAG8[[1]] <- expr_cov_MAG8[[1]][, sel_MAG8]
+meta_metaT_MAG8 <- meta_metaT[sel_MAG8, ]
+
+# Create interaction day * depth
+meta_metaT_MAG8 <- cbind(meta_metaT_MAG8,
+                         as.character(interaction(meta_metaT_MAG8[,"Time"],
+                                    meta_metaT_MAG8[,"Depth"])))
+colnames(meta_metaT_MAG8)[29] <- "Time.Depth"
+# Perform DESeq
+
+## Depth (temperature effect) effect and control for Seasonal variation
+dds <- DESeq2::DESeqDataSetFromMatrix(countData = expr_cov_MAG8[[1]],
+                              colData = meta_metaT_MAG8,
+                              design= ~ Season + Time.Depth) 
+# Run DESeq
+dds <- DESeq2::DESeq(dds, quiet = TRUE)
+  
+# Calculate contrasts for all comparisons (deep vs surface logFC)
+comp1 <- DESeq2::results(dds, contrast=c("Time.Depth", "Day.Deep", "Day.Surface"))[order(results(dds)$padj), ]
+comp2 <- DESeq2::results(dds, contrast=c("Time.Depth", "Night.Deep", "Night.Surface"))[order(results(dds)$padj), ]
+
+# Store data in single dataframes
+MAG8_deseq_results_depth_comp1 <- data.frame(gene_oid = comp1@rownames,
+                    baseMean = comp1@listData$baseMean,
+                    log2FoldChange = comp1@listData$log2FoldChange,
+                    pvalue = comp1@listData$pvalue,
+                    padj = comp1@listData$padj,
+                    Genome_ID = "2757320398",
+                    Comparison = "Day.Deep - Day.Surface",
+                    Time_of_day = "Day"
+)
+
+MAG8_deseq_results_depth_comp2 <- data.frame(gene_oid = comp2@rownames,
+                    baseMean = comp2@listData$baseMean,
+                    log2FoldChange = comp2@listData$log2FoldChange,
+                    pvalue = comp2@listData$pvalue,
+                    padj = comp2@listData$padj,
+                    Genome_ID = "2757320398",
+                    Comparison = "Night.Deep - Night.Surface",
+                    Time_of_day = "Night"
+)
+MAG8_deseq_results_depth <- rbind(MAG8_deseq_results_depth_comp1,
+                                  MAG8_deseq_results_depth_comp2)
+
+# Filter at p < 0.01
+MAG8_deseq_results_depth <- MAG8_deseq_results_depth %>% dplyr::filter(padj < 0.01)
+```
+
+
+```r
+# Merge with Kegg and COG annotations
+# Import COG mapping file
+cogid_2_cogcat <- read.csv("./Mapping_files/cogid_2_cogcat.csv", sep = ",", header = FALSE, fill = TRUE,col.names = c("COG_ID", "COG_class", "function"))[, 1:2]
+cogid_2_cogcat <- cogid_2_cogcat[(cogid_2_cogcat$COG_class)!="", ]
+cogid_2_cogcat <- droplevels(cogid_2_cogcat)
+
+# Read COG category file
+cog_categories <- read.table("./Mapping_files/cog_categories.tsv", header = TRUE, sep = "\t")
+
+# Merge COG metadata
+cog_meta <- dplyr::left_join(cog_categories, cogid_2_cogcat, by = c("COG_class" = "COG_class"))
+cog_meta <- droplevels(cog_meta)
+
+# Import KO hierarchical data
+ko_path_df <- format_ko(path = "./Mapping_files/ko00000.keg")
+
+# Import COG and KEGG annotation data of MAG8
+MAG8_KO <- read.table("./IMG_annotation/IMG_2757320398/IMG Data/2757320398/2757320398.ko.tab.txt",
+                              header = TRUE, fill = TRUE, sep = "\t" )
+MAG8_KO$ko_id <- gsub("KO:", "", MAG8_KO$ko_id)
+
+MAG8_COG <- read.table("./IMG_annotation/IMG_2757320398/IMG Data/2757320398/2757320398.cog.tab.txt",
+                              stringsAsFactors = FALSE,  
+                       sep = "\t", header = TRUE,
+                       quote=NULL, comment='')
+
+# add hierarchy to cog and KO annotations
+MAG8_KO <- left_join(MAG8_KO, ko_path_df, by = "ko_id")
+MAG8_COG <- left_join(MAG8_COG, cog_meta, by = c("cog_id" = "COG_ID"))
+
+# Merge annotations and remove duplicate columns
+MAG8_annot <- full_join(MAG8_KO[, c(1,10:11, 14:18)], 
+                        MAG8_COG[, c(1,10:11, 13:15)], by = "gene_oid")
+MAG8_annot$gene_oid <- as.character(MAG8_annot$gene_oid)
+
+# Annotate differentially expressed genes
+MAG8_deseq_results_depth_fin <- left_join(MAG8_deseq_results_depth, MAG8_annot,
+                                      by = c("gene_oid") ) %>% distinct()
+
+# Change NA to unknown
+MAG8_deseq_results_depth_fin[,9:20] <- apply(MAG8_deseq_results_depth_fin[,9:20], 
+                                             2, function(x) as.character(x))
+MAG8_deseq_results_depth_fin[is.na(MAG8_deseq_results_depth_fin)] <- "Unknown"
+
+# Add label for up or downregulation
+MAG8_deseq_results_depth_fin$regulation <- MAG8_deseq_results_depth_fin$log2FoldChange > 0
+MAG8_deseq_results_depth_fin$regulation[MAG8_deseq_results_depth_fin$regulation == TRUE] <- "Upregulated"
+MAG8_deseq_results_depth_fin$regulation[MAG8_deseq_results_depth_fin$regulation == FALSE] <- "Downregulated"
+MAG8_deseq_results_depth_fin$regulation <- factor(MAG8_deseq_results_depth_fin$regulation,
+                                                  levels =
+                                         c("Upregulated", "Downregulated"))
+```
+
+
+```r
+# Overview
+## Log fold changes deep vs surface
+p_mag8_deseq_ov <- MAG8_deseq_results_depth_fin %>% 
+  dplyr::select(gene_oid:Time_of_day) %>% 
+  distinct() %>% 
+  ggplot(aes(x = gene_oid, y = log2FoldChange, fill = log2FoldChange))+
+  geom_bar(size = 0.1, stat = "identity", color = "black")+
+  # geom_boxplot(alpha = 0.5)+
+ scale_fill_distiller(palette = "RdBu", name = "Fold Change",
+                       limits = c(-15,15), oob=squish,
+                      direction = -1) +
+  theme_bw()+
+  facet_grid(Time_of_day~.)+
+  theme(axis.text.x = element_blank())+
+  labs(x = "", y = "Fold Change (log2)")
+
+metaT_gsea_KO %>% 
+  dplyr::select(Description, GeneRatio, BgRatio, p.adjust, qvalue, Count) %>%
+  print()
+```
+
+```
+## Error in eval(lhs, parent, parent): object 'metaT_gsea_KO' not found
+```
+
+```r
+# Focus on COG annotation and pool per level
+p_mag8_deseq_cog <- MAG8_deseq_results_depth_fin %>% dplyr::select(gene_oid:Time_of_day, contains("cog")) %>% 
+  distinct() %>% 
+  ggplot(aes(x = COG_functional_category, y = log2FoldChange, fill = log2FoldChange))+
+  geom_point(size = 3, color = "black", shape = 21)+
+  # geom_boxplot(alpha = 0.5)+
+ scale_fill_distiller(palette = "RdBu", name = "Fold Change",
+                       limits = c(-15,15), oob=squish,
+                      direction = -1) +
+  theme_bw()+
+  facet_grid(Time_of_day~.)+
+  theme(axis.text.x = element_text(size = 12, angle = 90, hjust = 1))+
+  labs(x = "", y = "Fold Change (log2)")
+
+print(p_mag8_deseq_cog)
+```
+
+<img src="Figures/cached/MAG8-DESeq-3-1.png" style="display: block; margin: auto;" />
+
+```r
+# Focus on KO annotation and pool per level
+p_mag8_deseq_KO <- MAG8_deseq_results_depth_fin %>% 
+  dplyr::select(gene_oid:Time_of_day, contains("ko")) %>% 
+  distinct() %>% 
+  ggplot(aes(x = ko_level_B, y = log2FoldChange, fill = log2FoldChange))+
+  geom_point(size = 3, color = "black", shape = 21)+
+  # geom_boxplot(alpha = 0.5)+
+ scale_fill_distiller(palette = "RdBu", name = "Fold Change",
+                       limits = c(-15,15), oob=squish,
+                      direction = -1) +
+  theme_bw()+
+  facet_grid(Time_of_day~.)+
+  theme(axis.text.x = element_text(size = 12, angle = 90, hjust = 1))+
+  labs(x = "", y = "Fold Change (log2)")
+
+print(p_mag8_deseq_KO)
+```
+
+<img src="Figures/cached/MAG8-DESeq-3-2.png" style="display: block; margin: auto;" />
+
+### Plot
+
+
+```r
+# Test for enrichment of functional categories in differentially expressed gene pool
+## Test for enrichment of KO level C terms in transcriptome
+bg_gsea <- MAG8_annot %>% 
+  dplyr::select(ko_level_C, gene_oid) %>% 
+  distinct()
+bg_gsea[is.na(bg_gsea)] <- "Unknown"
+
+metaT_gsea <- enricher(gene = unique(MAG8_deseq_results_depth_fin$gene_oid),
+         universe = bg_gsea$gene_oid, 
+         TERM2GENE = bg_gsea,
+         pvalueCutoff = 0.05,
+         qvalueCutoff = 0.2)
+metaT_gsea_KO <- data.frame(metaT_gsea@result)
+metaT_gsea_KO %>% 
+  dplyr::select(Description, GeneRatio, BgRatio, p.adjust, qvalue, Count)%>%
+  print()
+```
+
+```
+##                         Description GeneRatio BgRatio    p.adjust
+## Ribosome                  Ribosome     10/211 20/1467 0.003295598
+## Quorum sensing      Quorum sensing     14/211 36/1467 0.003295598
+## ABC transporters  ABC transporters     17/211 50/1467 0.003295598
+## Transporters          Transporters     26/211 96/1467 0.004423634
+##                        qvalue Count
+## Ribosome          0.002710196    10
+## Quorum sensing    0.002710196    14
+## ABC transporters  0.002710196    17
+## Transporters      0.003637857    26
+```
+
+```r
+## Test for enrichment of COG functional categories
+bg_gsea <- MAG8_annot %>% 
+  dplyr::select(COG_functional_category, gene_oid) %>% 
+  distinct()
+bg_gsea <- apply(bg_gsea, 2, function(x) as.character(x))
+bg_gsea[is.na(bg_gsea)] <- "Unknown"
+bg_gsea <- data.frame(bg_gsea)
+
+metaT_gsea <- enricher(gene = unique(MAG8_deseq_results_depth_fin$gene_oid),
+         universe = bg_gsea$gene_oid, 
+         TERM2GENE = bg_gsea,
+         pvalueCutoff = 0.05,
+         qvalueCutoff = 0.2)
+
+metaT_gsea_COG <- data.frame(metaT_gsea@result)
+metaT_gsea_COG %>% 
+  dplyr::select(Description, GeneRatio, BgRatio, p.adjust, qvalue, Count)%>%
+  print()
+```
+
+```
+## [1] Description GeneRatio   BgRatio     p.adjust    qvalue      Count      
+## <0 rows> (or 0-length row.names)
+```
+
+```r
+# Focus on enriched KO level
+p_mag8_deseq_KO_gsea <- MAG8_deseq_results_depth_fin %>% 
+  dplyr::select(regulation, gene_oid:Time_of_day, contains("ko")) %>% 
+  distinct() %>% 
+  dplyr::filter(ko_level_C %in% metaT_gsea_KO$Description) %>% 
+  ggplot(aes(x = ko_level_C, y = log2FoldChange, fill = regulation))+
+  geom_point(shape = 21, size = 3, position=position_jitterdodge(dodge.width=0.9,
+                                                                 jitter.width=0.25)) +
+  geom_boxplot(outlier.colour = NA, width = 0.5,
+                        position = position_dodge(width=0.9), alpha = 0.3)+
+  # geom_boxplot(alpha = 0.5)+
+  scale_fill_manual(values = brewer.pal(11, "RdBu")[c(2,10)], name = "Fold Change\n") +
+  theme_bw()+
+  facet_grid(Time_of_day~.)+
+  theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+        axis.text.y = element_text(size = 12),
+        strip.text = element_text(size = 14),
+        legend.text = element_text(size = 12),
+        legend.title = element_blank(),
+        legend.position = "top")+
+  labs(x = "", y = "Fold Change (log2)")+
+  ylim(-7, 7)
+
+print(p_mag8_deseq_KO_gsea)
+```
+
+<img src="Figures/cached/MAG8-DESeq-4-1.png" style="display: block; margin: auto;" />
 
 # 7. Sequence discrete populations
 
@@ -2165,7 +2083,10 @@ print(p_MAG_div)
 results_desm <- read.csv("./DESMAN/MAG8_scg_10_9/Gamma_meanR.csv", header = TRUE)
 colnames(results_desm)[1] <- "Samples"
 colnames(results_desm) <- gsub("X", "Strain", colnames(results_desm))
+colnames(results_desm) <- c("Samples", "Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                            "Strain 5")
 results_desm$Samples <- gsub(".sorted.MAG8","",results_desm$Samples, fixed = TRUE)
+
 # Import library prep data
 library_prep <- read.table("./mapping_files/Libraries.tsv",header = TRUE)
 
@@ -2215,7 +2136,7 @@ results_desm_long$DOC.mg.L <- as.numeric(as.character(results_desm_long$DOC.mg.L
 #       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
 #       strip.text=element_text(size=14), legend.position = "bottom",
 #       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-#   ylab(paste0("Variant frequency MAG8"))+
+#   ylab(paste0("Strain frequency MAG8"))+
 #   guides(fill=FALSE)+
 #   facet_grid(Season~Site, scales ="free")+
 #   xlab("")+
@@ -2242,7 +2163,7 @@ desm_p1b <- ggplot(results_desm_long, aes(x = Season, y = Freq,
       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Variant frequency"))+
+  ylab(paste0("Strain frequency"))+
   guides(fill=FALSE)+
   facet_grid(Site~Strain, scales ="free")+
   xlab("")+
@@ -2274,7 +2195,7 @@ desm_p2 <- ggplot(results_desm_long, aes(x = Temperature..C., y = Freq,
       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Variant frequency"))+
+  ylab(paste0("Strain frequency"))+
   guides(fill=FALSE)+
   # facet_grid(Season~Site, scales ="free")+
   xlab("Temperature (°C)")+
@@ -2299,7 +2220,7 @@ desm_p3 <- ggplot(results_desm_long, aes(x = PAR , y = Freq,
       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Variant frequency"))+
+  ylab(paste0("Strain frequency"))+
   guides(fill=FALSE)+
   # facet_grid(Season~Site, scales ="free")+
   xlab("PAR")+
@@ -2324,7 +2245,7 @@ desm_p4 <- ggplot(results_desm_long, aes(x = DO.Probe..mg.L. , y = Freq,
       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Variant frequency"))+
+  ylab(paste0("Strain frequency"))+
   guides(fill=FALSE)+
   # facet_grid(Season~Site, scales ="free")+
   xlab("DO concentration (mg/L)")+
@@ -2349,7 +2270,7 @@ desm_p5 <- ggplot(results_desm_long, aes(x =TP.ug.L, y = Freq,
       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Variant frequency"))+
+  ylab(paste0("Strain frequency"))+
   guides(fill=FALSE)+
   # facet_grid(Season~Site, scales ="free")+
   xlab("Total Phosphorous (µg/L)")+
@@ -2374,7 +2295,7 @@ desm_p6 <- ggplot(results_desm_long, aes(x =DOC.mg.L, y = Freq,
       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Variant frequency"))+
+  ylab(paste0("Strain frequency"))+
   guides(fill=FALSE)+
   # facet_grid(Season~Site, scales ="free")+
   xlab("DOC (mg/L)")+
@@ -2642,6 +2563,28 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation",
 
 <img src="Figures/cached/desman-depth-upreg-1.png" style="display: block; margin: auto;" />
 
+
+### Abundance of variants
+
+
+```r
+# Evaluate abundance of variants in the samples used to infer phenotypic plasticity
+p_strain_pheno <- results_desm_long %>% 
+  dplyr::filter(Site == "Lake Michigan\nsite M110" & Depth != "Mid") %>% 
+  ggplot(aes(x = Strain, y = Freq, fill = Depth))+
+  geom_point(size = 4, shape = 21)+
+  facet_grid(Season~Time)+
+  scale_fill_brewer("", palette = "Accent")+
+  theme_bw()+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+        title=element_text(size=16), legend.text=element_text(size=16),
+        strip.text = element_text(size = 16))+
+  ylab("Strain frequency")
+  
+print(p_strain_pheno)
+```
+
+<img src="Figures/cached/MAG8-DESeq-5-1.png" style="display: block; margin: auto;" />
 
 # 9. iRep analysis
 

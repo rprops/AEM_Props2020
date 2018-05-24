@@ -430,3 +430,5 @@ format_ko <- function(path = "./Mapping_files/ko00000.keg"){
   return(ko_path_df)
   
 }
+
+# 
