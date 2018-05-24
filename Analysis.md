@@ -1109,27 +1109,21 @@ print(p_deseq_1)
 ```r
 # Select MAG8 genome and temperature gradient
 expr_cov_MAG8 <- expr_cov_bins[levels(expr_cov_long$Genome_ID) == "2757320398"]
-sel_MAG8 <- meta_metaT[, "Site"] == "110" & meta_metaT[, "Depth"] != "Mid"
+sel_MAG8 <- meta_metaT[, "Site"] == "110" & meta_metaT[, "Depth"] != "Mid" & meta_metaT[, "Season"] != "Spring" & meta_metaT[, "Time"] == "Night"
 expr_cov_MAG8[[1]] <- expr_cov_MAG8[[1]][, sel_MAG8]
 meta_metaT_MAG8 <- meta_metaT[sel_MAG8, ]
 
-# Create interaction day * depth
-meta_metaT_MAG8 <- cbind(meta_metaT_MAG8,
-                         as.character(interaction(meta_metaT_MAG8[,"Time"],
-                                    meta_metaT_MAG8[,"Depth"])))
-colnames(meta_metaT_MAG8)[29] <- "Time.Depth"
-# Perform DESeq
 
 ## Depth (temperature effect) effect and control for Seasonal variation
 dds <- DESeq2::DESeqDataSetFromMatrix(countData = expr_cov_MAG8[[1]],
                               colData = meta_metaT_MAG8,
-                              design= ~ Season + Time.Depth) 
+                              design= ~ Season + Depth)
 # Run DESeq
 dds <- DESeq2::DESeq(dds, quiet = TRUE)
   
 # Calculate contrasts for all comparisons (deep vs surface logFC)
-comp1 <- DESeq2::results(dds, contrast=c("Time.Depth", "Day.Deep", "Day.Surface"))[order(results(dds)$padj), ]
-comp2 <- DESeq2::results(dds, contrast=c("Time.Depth", "Night.Deep", "Night.Surface"))[order(results(dds)$padj), ]
+comp1 <- DESeq2::results(dds, contrast=c("Depth", "Deep", "Surface"))[order(results(dds)$padj), ]
+# comp2 <- DESeq2::results(dds, contrast=c("Time.Depth", "Night.Deep", "Night.Surface"))[order(results(dds)$padj), ]
 
 # Store data in single dataframes
 MAG8_deseq_results_depth_comp1 <- data.frame(gene_oid = comp1@rownames,
@@ -1142,21 +1136,72 @@ MAG8_deseq_results_depth_comp1 <- data.frame(gene_oid = comp1@rownames,
                     Time_of_day = "Day"
 )
 
-MAG8_deseq_results_depth_comp2 <- data.frame(gene_oid = comp2@rownames,
-                    baseMean = comp2@listData$baseMean,
-                    log2FoldChange = comp2@listData$log2FoldChange,
-                    pvalue = comp2@listData$pvalue,
-                    padj = comp2@listData$padj,
-                    Genome_ID = "2757320398",
-                    Comparison = "Night.Deep - Night.Surface",
-                    Time_of_day = "Night"
-)
-MAG8_deseq_results_depth <- rbind(MAG8_deseq_results_depth_comp1,
-                                  MAG8_deseq_results_depth_comp2)
+# MAG8_deseq_results_depth_comp2 <- data.frame(gene_oid = comp2@rownames,
+#                     baseMean = comp2@listData$baseMean,
+#                     log2FoldChange = comp2@listData$log2FoldChange,
+#                     pvalue = comp2@listData$pvalue,
+#                     padj = comp2@listData$padj,
+#                     Genome_ID = "2757320398",
+#                     Comparison = "Night.Deep - Night.Surface",
+#                     Time_of_day = "Night"
+# )
+# MAG8_deseq_results_depth <- rbind(MAG8_deseq_results_depth_comp1,
+                                  # MAG8_deseq_results_depth_comp2)
+
+MAG8_deseq_results_depth <- MAG8_deseq_results_depth_comp1
 
 # Filter at p < 0.01
 MAG8_deseq_results_depth <- MAG8_deseq_results_depth %>% dplyr::filter(padj < 0.01)
 ```
+
+
+```r
+# Select MAG8 genome and temperature gradient in spring M110
+expr_cov_MAG8 <- expr_cov_bins[levels(expr_cov_long$Genome_ID) == "2757320398"]
+sel_MAG8 <- meta_metaT[, "Site"] == "110" & meta_metaT[, "Depth"] == "Surface" & meta_metaT[, "Season"] %in% c("Spring", "Summer")
+expr_cov_MAG8[[1]] <- expr_cov_MAG8[[1]][, sel_MAG8]
+meta_metaT_MAG8 <- meta_metaT[sel_MAG8, ]
+
+
+## Depth (temperature effect) effect and control for Seasonal variation
+dds <- DESeq2::DESeqDataSetFromMatrix(countData = expr_cov_MAG8[[1]],
+                              colData = meta_metaT_MAG8,
+                              design= ~ Time + Season)
+# Run DESeq
+dds <- DESeq2::DESeq(dds, quiet = TRUE)
+  
+# Calculate contrasts for all comparisons (deep vs surface logFC)
+comp1 <- DESeq2::results(dds, contrast=c("Season", "Spring", "Summer"))[order(results(dds)$padj), ]
+# comp2 <- DESeq2::results(dds, contrast=c("Time.Depth", "Night.Deep", "Night.Surface"))[order(results(dds)$padj), ]
+
+# Store data in single dataframes
+MAG8_deseq_results_temp_comp1 <- data.frame(gene_oid = comp1@rownames,
+                    baseMean = comp1@listData$baseMean,
+                    log2FoldChange = comp1@listData$log2FoldChange,
+                    pvalue = comp1@listData$pvalue,
+                    padj = comp1@listData$padj,
+                    Genome_ID = "2757320398",
+                    Comparison = "Cold(Spring) - Warm(Summer)"
+)
+
+# MAG8_deseq_results_depth_comp2 <- data.frame(gene_oid = comp2@rownames,
+#                     baseMean = comp2@listData$baseMean,
+#                     log2FoldChange = comp2@listData$log2FoldChange,
+#                     pvalue = comp2@listData$pvalue,
+#                     padj = comp2@listData$padj,
+#                     Genome_ID = "2757320398",
+#                     Comparison = "Night.Deep - Night.Surface",
+#                     Time_of_day = "Night"
+# )
+# MAG8_deseq_results_depth <- rbind(MAG8_deseq_results_depth_comp1,
+                                  # MAG8_deseq_results_depth_comp2)
+
+MAG8_deseq_results_temp <- MAG8_deseq_results_temp_comp1
+
+# Filter at p < 0.01
+MAG8_deseq_results_temp <- MAG8_deseq_results_temp %>% dplyr::filter(padj < 0.01)
+```
+
 
 
 ```r
@@ -1198,17 +1243,28 @@ MAG8_annot$gene_oid <- as.character(MAG8_annot$gene_oid)
 # Annotate differentially expressed genes
 MAG8_deseq_results_depth_fin <- left_join(MAG8_deseq_results_depth, MAG8_annot,
                                       by = c("gene_oid") ) %>% distinct()
-
+MAG8_deseq_results_temp_fin <- left_join(MAG8_deseq_results_temp, MAG8_annot,
+                                      by = c("gene_oid") ) %>% distinct()
 # Change NA to unknown
 MAG8_deseq_results_depth_fin[,9:20] <- apply(MAG8_deseq_results_depth_fin[,9:20], 
                                              2, function(x) as.character(x))
+MAG8_deseq_results_temp_fin[,8:19] <- apply(MAG8_deseq_results_temp_fin[,8:19], 
+                                             2, function(x) as.character(x))
 MAG8_deseq_results_depth_fin[is.na(MAG8_deseq_results_depth_fin)] <- "Unknown"
+MAG8_deseq_results_temp_fin[is.na(MAG8_deseq_results_temp_fin)] <- "Unknown"
 
 # Add label for up or downregulation
 MAG8_deseq_results_depth_fin$regulation <- MAG8_deseq_results_depth_fin$log2FoldChange > 0
 MAG8_deseq_results_depth_fin$regulation[MAG8_deseq_results_depth_fin$regulation == TRUE] <- "Upregulated"
 MAG8_deseq_results_depth_fin$regulation[MAG8_deseq_results_depth_fin$regulation == FALSE] <- "Downregulated"
 MAG8_deseq_results_depth_fin$regulation <- factor(MAG8_deseq_results_depth_fin$regulation,
+                                                  levels =
+                                         c("Upregulated", "Downregulated"))
+
+MAG8_deseq_results_temp_fin$regulation <- MAG8_deseq_results_temp_fin$log2FoldChange > 0
+MAG8_deseq_results_temp_fin$regulation[MAG8_deseq_results_temp_fin$regulation == TRUE] <- "Upregulated"
+MAG8_deseq_results_temp_fin$regulation[MAG8_deseq_results_temp_fin$regulation == FALSE] <- "Downregulated"
+MAG8_deseq_results_temp_fin$regulation <- factor(MAG8_deseq_results_temp_fin$regulation,
                                                   levels =
                                          c("Upregulated", "Downregulated"))
 ```
@@ -1231,14 +1287,10 @@ p_mag8_deseq_ov <- MAG8_deseq_results_depth_fin %>%
   theme(axis.text.x = element_blank())+
   labs(x = "", y = "Fold Change (log2)")
 
-metaT_gsea_KO %>% 
-  dplyr::select(Description, GeneRatio, BgRatio, p.adjust, qvalue, Count) %>%
-  print()
+print(p_mag8_deseq_ov)
 ```
 
-```
-## Error in eval(lhs, parent, parent): object 'metaT_gsea_KO' not found
-```
+<img src="Figures/cached/MAG8-DESeq-3-1.png" style="display: block; margin: auto;" />
 
 ```r
 # Focus on COG annotation and pool per level
@@ -1258,7 +1310,25 @@ p_mag8_deseq_cog <- MAG8_deseq_results_depth_fin %>% dplyr::select(gene_oid:Time
 print(p_mag8_deseq_cog)
 ```
 
-<img src="Figures/cached/MAG8-DESeq-3-1.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/MAG8-DESeq-3-2.png" style="display: block; margin: auto;" />
+
+```r
+p_mag8_deseq_temp_cog <- MAG8_deseq_results_temp_fin %>% dplyr::select(gene_oid:Comparison, contains("cog")) %>% 
+  distinct() %>% 
+  ggplot(aes(x = COG_functional_category, y = log2FoldChange, fill = log2FoldChange))+
+  geom_point(size = 3, color = "black", shape = 21)+
+  # geom_boxplot(alpha = 0.5)+
+ scale_fill_distiller(palette = "RdBu", name = "Fold Change",
+                       limits = c(-15,15), oob=squish,
+                      direction = -1) +
+  theme_bw()+
+  theme(axis.text.x = element_text(size = 12, angle = 90, hjust = 1))+
+  labs(x = "", y = "Fold Change (log2)")
+
+print(p_mag8_deseq_temp_cog)
+```
+
+<img src="Figures/cached/MAG8-DESeq-3-3.png" style="display: block; margin: auto;" />
 
 ```r
 # Focus on KO annotation and pool per level
@@ -1279,7 +1349,7 @@ p_mag8_deseq_KO <- MAG8_deseq_results_depth_fin %>%
 print(p_mag8_deseq_KO)
 ```
 
-<img src="Figures/cached/MAG8-DESeq-3-2.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/MAG8-DESeq-3-4.png" style="display: block; margin: auto;" />
 
 ### Plot
 
@@ -1304,16 +1374,24 @@ metaT_gsea_KO %>%
 ```
 
 ```
-##                         Description GeneRatio BgRatio    p.adjust
-## Ribosome                  Ribosome     10/211 20/1467 0.003295598
-## Quorum sensing      Quorum sensing     14/211 36/1467 0.003295598
-## ABC transporters  ABC transporters     17/211 50/1467 0.003295598
-## Transporters          Transporters     26/211 96/1467 0.004423634
-##                        qvalue Count
-## Ribosome          0.002710196    10
-## Quorum sensing    0.002710196    14
-## ABC transporters  0.002710196    17
-## Transporters      0.003637857    26
+##                                                                 Description
+## Quorum sensing                                              Quorum sensing 
+## Transporters                                                  Transporters 
+## ABC transporters                                          ABC transporters 
+## Two-component system                                  Two-component system 
+## Porphyrin and chlorophyll metabolism  Porphyrin and chlorophyll metabolism 
+##                                       GeneRatio BgRatio     p.adjust
+## Quorum sensing                           14/108 36/1467 1.036930e-06
+## Transporters                             23/108 96/1467 1.036930e-06
+## ABC transporters                         16/108 50/1467 1.103524e-06
+## Two-component system                      6/108 20/1467 1.260791e-02
+## Porphyrin and chlorophyll metabolism      4/108 10/1467 1.816558e-02
+##                                             qvalue Count
+## Quorum sensing                        8.434356e-07    14
+## Transporters                          8.434356e-07    23
+## ABC transporters                      8.976037e-07    16
+## Two-component system                  1.025524e-02     6
+## Porphyrin and chlorophyll metabolism  1.477583e-02     4
 ```
 
 ```r
@@ -1344,7 +1422,7 @@ metaT_gsea_COG %>%
 
 ```r
 # Focus on enriched KO level
-p_mag8_deseq_KO_gsea <- MAG8_deseq_results_depth_fin %>% 
+p_mag8_deseq_depth_KO_gsea <- MAG8_deseq_results_depth_fin %>% 
   dplyr::select(regulation, gene_oid:Time_of_day, contains("ko")) %>% 
   distinct() %>% 
   dplyr::filter(ko_level_C %in% metaT_gsea_KO$Description) %>% 
@@ -1356,7 +1434,6 @@ p_mag8_deseq_KO_gsea <- MAG8_deseq_results_depth_fin %>%
   # geom_boxplot(alpha = 0.5)+
   scale_fill_manual(values = brewer.pal(11, "RdBu")[c(2,10)], name = "Fold Change\n") +
   theme_bw()+
-  facet_grid(Time_of_day~.)+
   theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
         axis.text.y = element_text(size = 12),
         strip.text = element_text(size = 14),
@@ -1366,10 +1443,118 @@ p_mag8_deseq_KO_gsea <- MAG8_deseq_results_depth_fin %>%
   labs(x = "", y = "Fold Change (log2)")+
   ylim(-7, 7)
 
-print(p_mag8_deseq_KO_gsea)
+print(p_mag8_deseq_depth_KO_gsea)
 ```
 
 <img src="Figures/cached/MAG8-DESeq-4-1.png" style="display: block; margin: auto;" />
+
+```r
+# Focus on enriched KO level in sprin-summer samples too
+p_mag8_deseq_temp_KO_gsea <- MAG8_deseq_results_temp_fin %>% 
+  dplyr::select(regulation, gene_oid:Comparison, contains("ko")) %>% 
+  distinct() %>% 
+  dplyr::filter(ko_level_C %in% metaT_gsea_KO$Description) %>% 
+  ggplot(aes(x = ko_level_C, y = log2FoldChange, fill = regulation))+
+  geom_point(shape = 21, size = 3, position=position_jitterdodge(dodge.width=0.9,
+                                                                 jitter.width=0.25)) +
+  geom_boxplot(outlier.colour = NA, width = 0.5,
+                        position = position_dodge(width=0.9), alpha = 0.3)+
+  # geom_boxplot(alpha = 0.5)+
+  scale_fill_manual(values = brewer.pal(11, "RdBu")[c(2,10)], name = "Fold Change\n") +
+  theme_bw()+
+  theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+        axis.text.y = element_text(size = 12),
+        strip.text = element_text(size = 14),
+        legend.text = element_text(size = 12),
+        legend.title = element_blank(),
+        legend.position = "top")+
+  labs(x = "", y = "Fold Change (log2)")+
+  ylim(-7, 7)
+
+print(p_mag8_deseq_temp_KO_gsea)
+```
+
+<img src="Figures/cached/MAG8-DESeq-4-2.png" style="display: block; margin: auto;" />
+
+
+
+```r
+# Spring - Summer samples at M110 - different temperatures but same depth
+
+# Test for enrichment of functional categories in differentially expressed gene pool
+## Test for enrichment of KO level C terms in transcriptome
+bg_gsea <- MAG8_annot %>% 
+  dplyr::select(ko_level_C, gene_oid) %>% 
+  distinct()
+bg_gsea[is.na(bg_gsea)] <- "Unknown"
+
+metaT_gsea <- enricher(gene = unique(MAG8_deseq_results_temp_fin$gene_oid),
+         universe = bg_gsea$gene_oid, 
+         TERM2GENE = bg_gsea,
+         pvalueCutoff = 0.05,
+         qvalueCutoff = 0.2)
+metaT_gsea_KO <- data.frame(metaT_gsea@result)
+metaT_gsea_KO %>% 
+  dplyr::select(Description, GeneRatio, BgRatio, p.adjust, qvalue, Count)%>%
+  print()
+```
+
+```
+## [1] Description GeneRatio   BgRatio     p.adjust    qvalue      Count      
+## <0 rows> (or 0-length row.names)
+```
+
+```r
+## Test for enrichment of COG functional categories
+bg_gsea <- MAG8_annot %>% 
+  dplyr::select(COG_functional_category, gene_oid) %>% 
+  distinct()
+bg_gsea <- apply(bg_gsea, 2, function(x) as.character(x))
+bg_gsea[is.na(bg_gsea)] <- "Unknown"
+bg_gsea <- data.frame(bg_gsea)
+
+metaT_gsea <- enricher(gene = unique(MAG8_deseq_results_temp_fin$gene_oid),
+         universe = bg_gsea$gene_oid, 
+         TERM2GENE = bg_gsea,
+         pvalueCutoff = 0.05,
+         qvalueCutoff = 0.2)
+
+metaT_gsea_COG <- data.frame(metaT_gsea@result)
+metaT_gsea_COG %>% 
+  dplyr::select(Description, GeneRatio, BgRatio, p.adjust, qvalue, Count)%>%
+  print()
+```
+
+```
+## [1] Description GeneRatio   BgRatio     p.adjust    qvalue      Count      
+## <0 rows> (or 0-length row.names)
+```
+
+```r
+# # Focus on enriched KO level
+# p_mag8_deseq_KO_gsea <- MAG8_deseq_results_temp_fin %>% 
+#   dplyr::select(regulation, gene_oid:Comparison, contains("ko")) %>% 
+#   distinct() %>% 
+#   dplyr::filter(ko_level_C %in% metaT_gsea_KO$Description) %>% 
+#   ggplot(aes(x = ko_level_C, y = log2FoldChange, fill = regulation))+
+#   geom_point(shape = 21, size = 3, position=position_jitterdodge(dodge.width=0.9,
+#                                                                  jitter.width=0.25)) +
+#   geom_boxplot(outlier.colour = NA, width = 0.5,
+#                         position = position_dodge(width=0.9), alpha = 0.3)+
+#   # geom_boxplot(alpha = 0.5)+
+#   scale_fill_manual(values = brewer.pal(11, "RdBu")[c(2,10)], name = "Fold Change\n") +
+#   theme_bw()+
+#   theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+#         axis.text.y = element_text(size = 12),
+#         strip.text = element_text(size = 14),
+#         legend.text = element_text(size = 12),
+#         legend.title = element_blank(),
+#         legend.position = "top")+
+#   labs(x = "", y = "Fold Change (log2)")+
+#   ylim(-7, 7)
+# 
+# print(p_mag8_deseq_KO_gsea)
+```
 
 # 7. Sequence discrete populations
 
@@ -2403,12 +2588,13 @@ Whip out multivariate abundance testing for hypopthesis test on environmental va
 # Import etaS.csv which contains gene assignment
 geneAssign_df <- read.csv("./DESMAN/MAG8_scg_10_9/MAG8.SU-M110-DCMDetaS_df.csv",
                          header = TRUE)
-colnames(geneAssign_df)[1] <- "Gene"
 colnames(geneAssign_df) <- gsub("X", "Variant", colnames(geneAssign_df))
-
+geneAssign_df <- geneAssign_df[, c(1,6,8,9,10,11)]
+colnames(geneAssign_df) <- c("Gene", "Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                            "Strain 5")
 # Wide to long format
 geneAssign_df <- tidyr::gather(geneAssign_df, Variant, Presence, 
-                             Variant0:Variant9, factor_key=TRUE)
+                             `Strain 1`:`Strain 5`, factor_key=TRUE)
 
 # Import blast results
 blast_desman <- read.delim("./DESMAN/MAG8_scg_10_9/desman2img_genes.blast", 
@@ -2439,8 +2625,8 @@ geneAssign_df_annot <- left_join(geneAssign_df, expr_cov_long,
 geneAssign_df_wide <- tidyr::spread(geneAssign_df, Variant, Presence)
 
 # Plot
-upset(geneAssign_df_wide, sets = c("Variant4", "Variant6", "Variant7", "Variant8",
-                                   "Variant9"), mb.ratio = c(0.55, 0.45), 
+upset(geneAssign_df_wide, sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                                   "Strain 5"), mb.ratio = c(0.55, 0.45), 
       order.by = "freq", number.angles = 30, point.size = 3.5,
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
@@ -2465,8 +2651,8 @@ geneAssign_df_wide <- left_join(geneAssign_df_wide, res_deseq,
 # Make upset plot for site-specific downregulation controlled for seasons
 geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
                                      Design == "~ Season + Site") %>% 
-  upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
-                                   "Variant9"), mb.ratio = c(0.55, 0.45), 
+  upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                                   "Strain 5"), mb.ratio = c(0.55, 0.45), 
       order.by = "freq", number.angles = 30, point.size = 3.5,
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
@@ -2486,8 +2672,8 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
 # Make upset plot for site-specific upregulation controlled for seasons
 geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation",
                                      Design == "~ Season + Site") %>% 
-  upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
-                                   "Variant9"), mb.ratio = c(0.55, 0.45), 
+  upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                                   "Strain 5"), mb.ratio = c(0.55, 0.45), 
       order.by = "freq", number.angles = 30, point.size = 3.5, 
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
@@ -2507,8 +2693,8 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation",
 # Make upset plot for seasonal downregulation controlled for site
 geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
                                      Design == "~ Site + Season") %>% 
-  upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
-                                   "Variant9"), mb.ratio = c(0.55, 0.45), 
+  upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                                   "Strain 5"), mb.ratio = c(0.55, 0.45), 
       order.by = "freq", number.angles = 30, point.size = 3.5, 
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
@@ -2528,8 +2714,8 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
 # Make upset plot for depth-specific downregulation controlled for seasons
 geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
                                      Design == "~ Site + Depth") %>% 
-  upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
-                                   "Variant9"), mb.ratio = c(0.55, 0.45), 
+  upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                                   "Strain 5"), mb.ratio = c(0.55, 0.45), 
       order.by = "freq", number.angles = 30, point.size = 3.5,
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
@@ -2549,8 +2735,8 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
 # Make upset plot for depth-specific upregulation controlled for sites
 geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation",
                                      Design == "~ Site + Depth") %>% 
-  upset(., sets = c("Variant4", "Variant6", "Variant7", "Variant8",
-                                   "Variant9"), mb.ratio = c(0.55, 0.45), 
+  upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                                   "Strain 5"), mb.ratio = c(0.55, 0.45), 
       order.by = "freq", number.angles = 30, point.size = 3.5, 
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
@@ -2563,6 +2749,54 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation",
 
 <img src="Figures/cached/desman-depth-upreg-1.png" style="display: block; margin: auto;" />
 
+### Transcript assignment
+
+
+```r
+# Extract 
+geneAssign_df_wide_transcripts_depth <- geneAssign_df_wide %>% 
+  dplyr::filter(sseqid %in% unique(MAG8_deseq_results_depth_fin$gene_oid))
+geneAssign_df_wide_transcripts_temp <- geneAssign_df_wide %>% 
+  dplyr::filter(sseqid %in% unique(MAG8_deseq_results_temp_fin$gene_oid))
+  
+# Evaluate distribution of transcripts expression over strains
+# Plot
+upset(geneAssign_df_wide_transcripts_depth, 
+      sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                                   "Strain 5"), mb.ratio = c(0.55, 0.45), 
+      order.by = "freq", number.angles = 30, point.size = 3.5,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+      show.numbers = FALSE,
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      line.size = NA)
+```
+
+<img src="Figures/cached/MAG8-DESeq-plot-upset1-1.png" style="display: block; margin: auto;" />
+
+```r
+upset(geneAssign_df_wide_transcripts_temp, 
+      sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                                   "Strain 5"), mb.ratio = c(0.55, 0.45), 
+      order.by = "freq", number.angles = 30, point.size = 3.5,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+      show.numbers = FALSE,
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      line.size = NA)
+```
+
+<img src="Figures/cached/MAG8-DESeq-plot-upset1-2.png" style="display: block; margin: auto;" />
+
+```r
+print(p_strain_pheno)
+```
+
+```
+## Error in print(p_strain_pheno): object 'p_strain_pheno' not found
+```
 
 ### Abundance of variants
 
@@ -2584,7 +2818,7 @@ p_strain_pheno <- results_desm_long %>%
 print(p_strain_pheno)
 ```
 
-<img src="Figures/cached/MAG8-DESeq-5-1.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/MAG8-DESeq-plot-strains-1.png" style="display: block; margin: auto;" />
 
 # 9. iRep analysis
 
