@@ -187,6 +187,8 @@ grid.arrange(p_emirge_abund_otu97, p_emirge_abund_otu99, p_emirge_abund_seq ,nro
 
 <img src="Figures/cached/EMIRGE-analysis-2-1.png" style="display: block; margin: auto;" />
 
+# ANI analysis
+
 
 ```r
 # read file
@@ -2307,29 +2309,6 @@ results_desm_long$DOC.mg.L <- as.numeric(as.character(results_desm_long$DOC.mg.L
 
 
 ```r
-# # Make plots
-# desm_p1 <- ggplot(results_desm_long, aes(x = Samples, y = Freq, fill = Variant))+
-#   geom_bar(stat = "identity", color = "black", alpha = 0.7)+
-#   scale_fill_brewer(palette = "Accent")+
-#   theme_bw()+
-#   # geom_point(size = 4, color = "black", alpha = 0.7)+
-#   # scale_shape_manual(values = c(21,24,23))+
-#   # geom_boxplot(alpha = 0.4)+
-#   theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
-#       title=element_text(size=16), legend.text=element_text(size=10),
-#       legend.background = element_rect(fill="transparent"),
-#       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
-#       strip.text=element_text(size=14), legend.position = "bottom",
-#       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-#   ylab(paste0("Strain frequency MAG8"))+
-#   guides(fill=FALSE)+
-#   facet_grid(Season~Site, scales ="free")+
-#   xlab("")+
-#   scale_y_continuous(labels=scaleFUN, limits = c(0,1))
-#   # coord_trans(y = "sqrt")
-# 
-# print(desm_p1)
-
 desm_p1b <- ggplot(results_desm_long, aes(x = Season, y = Freq, 
                                          fill = Strain, 
                                          col = Strain))+
@@ -2361,6 +2340,70 @@ print(desm_p1b)
 ```
 
 <img src="Figures/cached/desman-2a-1.png" style="display: block; margin: auto;" />
+
+
+```r
+# Make correlation plot of strain variances alone
+p.mat_t <- cor.mtest(results_desm[-1],method = "pearson")
+corrplot(cor(results_desm[-1], method = "pearson"), order = "hclust", addrect = 2,
+         tl.col="black", tl.srt=45, 
+         sig.level = 0.05,
+         diag=TRUE)
+```
+
+<img src="Figures/cached/desman-2ab-1.png" style="display: block; margin: auto;" />
+
+```r
+print(cor(results_desm[-1], method = "pearson"))
+```
+
+```
+##            Strain 1   Strain 2    Strain 3   Strain 4    Strain 5
+## Strain 1  1.0000000 -0.8202727 -0.41160714  0.8601689 -0.61595753
+## Strain 2 -0.8202727  1.0000000  0.10207177 -0.8626241  0.48346894
+## Strain 3 -0.4116071  0.1020718  1.00000000 -0.2628128 -0.06622574
+## Strain 4  0.8601689 -0.8626241 -0.26281282  1.0000000 -0.76358889
+## Strain 5 -0.6159575  0.4834689 -0.06622574 -0.7635889  1.00000000
+```
+
+```r
+results_desm$Samples <- gsub(".A", "", results_desm$Samples, fixed = TRUE)
+results_desm$Samples <- gsub(".C", "", results_desm$Samples, fixed = TRUE)
+
+# Make correlation plot of strain variances with environmental parameters
+results_desm_env <- left_join(results_desm, meta_em, by = c("Samples" = "Sample_ID"))
+results_desm_env <- results_desm_env %>% 
+  dplyr::select(Samples:`Strain 5`, Temperature..C., `Cond..µS.cm.`,
+                                   TP.ug.L, DOC.mg.L, PAR) %>% 
+  apply(., 2, function(x) as.numeric(as.character(x))) %>% data.frame()
+
+corrplot(cor(results_desm_env[-1], method = "pearson", use="pairwise"), 
+          addrect = 2, order = "hclust",
+         tl.col="black", tl.srt=45, 
+         sig.level = 0.05,
+         diag=TRUE)
+```
+
+<img src="Figures/cached/desman-2ab-2.png" style="display: block; margin: auto;" />
+
+```r
+print(cor(results_desm_env[-1], method = "pearson", use="pairwise")[1:5, ])
+```
+
+```
+##            Strain.1   Strain.2    Strain.3   Strain.4    Strain.5
+## Strain.1  1.0000000 -0.8202727 -0.41160715  0.8601689 -0.61595750
+## Strain.2 -0.8202727  1.0000000  0.10207178 -0.8626241  0.48346889
+## Strain.3 -0.4116071  0.1020718  1.00000000 -0.2628128 -0.06622572
+## Strain.4  0.8601689 -0.8626241 -0.26281282  1.0000000 -0.76358887
+## Strain.5 -0.6159575  0.4834689 -0.06622572 -0.7635889  1.00000000
+##          Temperature..C. Cond..µS.cm.    TP.ug.L    DOC.mg.L         PAR
+## Strain.1      0.34481960   -0.4860871 -0.3861337  0.13104041  0.14442728
+## Strain.2     -0.07366979    0.5616745  0.6354257  0.13681522 -0.18508745
+## Strain.3     -0.90955092   -0.3110741  0.1936932 -0.07672245 -0.36314128
+## Strain.4      0.09272609   -0.3154406 -0.5826171 -0.31330645 -0.04343812
+## Strain.5      0.25378964    0.4672220  0.7396795  0.30023012  0.20455637
+```
 
 
 ```r
@@ -2753,15 +2796,28 @@ geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation",
 
 
 ```r
-# Extract 
+# Extract upregulated genes of depth comparison
 geneAssign_df_wide_transcripts_depth <- geneAssign_df_wide %>% 
-  dplyr::filter(sseqid %in% unique(MAG8_deseq_results_depth_fin$gene_oid))
+  dplyr::filter(sseqid %in% unique(MAG8_deseq_results_depth_fin$gene_oid)) %>% 
+  dplyr::select(sseqid:`Strain 5`)
+
+geneAssign_df_wide_transcripts_depth <- MAG8_deseq_results_depth_fin %>% 
+  dplyr::select(log2FoldChange, gene_oid, regulation) %>% 
+  left_join(geneAssign_df_wide_transcripts_depth, ., by = c("sseqid" = "gene_oid"))
+
+# Extract upregulated genes of surface comparison
 geneAssign_df_wide_transcripts_temp <- geneAssign_df_wide %>% 
-  dplyr::filter(sseqid %in% unique(MAG8_deseq_results_temp_fin$gene_oid))
-  
+  dplyr::filter(sseqid %in% unique(MAG8_deseq_results_temp_fin$gene_oid)) %>% 
+  dplyr::select(sseqid:`Strain 5`)
+
+geneAssign_df_wide_transcripts_temp <- MAG8_deseq_results_temp_fin %>% 
+  dplyr::select(log2FoldChange, gene_oid, regulation) %>% 
+  left_join(geneAssign_df_wide_transcripts_temp, ., by = c("sseqid" = "gene_oid"))
+
 # Evaluate distribution of transcripts expression over strains
-# Plot
-upset(geneAssign_df_wide_transcripts_depth, 
+# Plot upregulated genes
+geneAssign_df_wide_transcripts_depth %>% dplyr::filter(regulation == "Upregulated") %>% 
+  upset(., 
       sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
                                    "Strain 5"), mb.ratio = c(0.55, 0.45), 
       order.by = "freq", number.angles = 30, point.size = 3.5,
@@ -2770,13 +2826,15 @@ upset(geneAssign_df_wide_transcripts_depth,
       show.numbers = FALSE,
       scale.intersections = "log2",
       keep.order = FALSE,
-      line.size = NA)
+      line.size = 1.2,
+      boxplot.summary = "log2FoldChange")
 ```
 
 <img src="Figures/cached/MAG8-DESeq-plot-upset1-1.png" style="display: block; margin: auto;" />
 
 ```r
-upset(geneAssign_df_wide_transcripts_temp, 
+geneAssign_df_wide_transcripts_temp %>% dplyr::filter(regulation == "Upregulated") %>%
+  upset(., 
       sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
                                    "Strain 5"), mb.ratio = c(0.55, 0.45), 
       order.by = "freq", number.angles = 30, point.size = 3.5,
@@ -2785,18 +2843,47 @@ upset(geneAssign_df_wide_transcripts_temp,
       show.numbers = FALSE,
       scale.intersections = "log2",
       keep.order = FALSE,
-      line.size = NA)
+      line.size = 1.2,
+      boxplot.summary = "log2FoldChange")
 ```
 
 <img src="Figures/cached/MAG8-DESeq-plot-upset1-2.png" style="display: block; margin: auto;" />
 
 ```r
-print(p_strain_pheno)
+# Evaluate distribution of transcripts expression over strains
+# Plot down regulated genes
+geneAssign_df_wide_transcripts_depth %>% dplyr::filter(regulation == "Downregulated") %>% 
+  upset(., 
+      sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                                   "Strain 5"), mb.ratio = c(0.55, 0.45), 
+      order.by = "freq", number.angles = 30, point.size = 3.5,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+      show.numbers = FALSE,
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      line.size = 1.2,
+      boxplot.summary = "log2FoldChange")
 ```
 
+<img src="Figures/cached/MAG8-DESeq-plot-upset1-3.png" style="display: block; margin: auto;" />
+
+```r
+geneAssign_df_wide_transcripts_temp %>% dplyr::filter(regulation == "Downregulated") %>%
+  upset(., 
+      sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                                   "Strain 5"), mb.ratio = c(0.55, 0.45), 
+      order.by = "freq", number.angles = 30, point.size = 3.5,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+      show.numbers = FALSE,
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      line.size = 1.2,
+      boxplot.summary = "log2FoldChange")
 ```
-## Error in print(p_strain_pheno): object 'p_strain_pheno' not found
-```
+
+<img src="Figures/cached/MAG8-DESeq-plot-upset1-4.png" style="display: block; margin: auto;" />
 
 ### Abundance of variants
 
