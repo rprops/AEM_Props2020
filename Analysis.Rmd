@@ -124,6 +124,7 @@ EMIRGE_OTU <- read.table("./Tree/EMIRGE/read.info.txt",
                          stringsAsFactors = FALSE)
 colnames(EMIRGE_OTU) <- c("Sample",  "Sequence", "Prior", "Length", "Prior_norm")
 EMIRGE_names <- read.table("./Tree/EMIRGE/EMIRGE_Limno.names")
+
 EMIRGE_OTU_97 <- read.table("./Tree/EMIRGE/final.otu.emirge.pick.an.0.03.rep.names",
                             stringsAsFactors = FALSE)
 EMIRGE_OTU_99 <- read.table("./Tree/EMIRGE/final.otu.emirge.pick.an.0.01.rep.names",
@@ -165,6 +166,8 @@ EMIRGE_OTU <- EMIRGE_OTU %>% dplyr::group_by(OTU_99, Sample) %>%
 meta_em <- meta[-1]; meta_em$Sample_ID <- gsub("_",".", meta_em$Sample_ID)
 meta_em <- meta_em %>% dplyr::distinct()
 EMIRGE_OTU <- dplyr::left_join(EMIRGE_OTU, meta_em, by = c("Sample" = "Sample_ID"))
+
+# to change
 ```
 
 ```{r EMIRGE-analysis-2, warning = FALSE, fig.width = 9, fig.height = 15, dpi = 500}
@@ -225,6 +228,64 @@ p_emirge_abund_seq <- ggplot(EMIRGE_OTU, aes(x = Sample, y = 100*Prior_norm, fil
   # coord_trans(x = "atanh", y = "atanh")
 
 grid.arrange(p_emirge_abund_otu97, p_emirge_abund_otu99, p_emirge_abund_seq ,nrow = 3)
+
+```
+
+```{r EMIRGE-analysis-3, warning = FALSE, fig.width = 5, fig.height = 4, dpi = 500, dev = c("png","pdf")}
+# Import blast results
+blast_emirge <- read.csv("./Tree/EMIRGE/blast_table.csv", header = FALSE)[, 1:3]
+colnames(blast_emirge) <- c("seq1", "seq2", "pid")
+# Annotate based on 97% clusters
+EMIRGE_OTU_annot <- EMIRGE_OTU %>% dplyr::select(Sequence, OTU_97) %>%
+  distinct() %>% 
+  left_join(., EMIRGE_OTU_97[, c("V3", "V4")], by = c("OTU_97" = "V3"))
+
+# label sequence 1
+blast_emirge_annot <- left_join(blast_emirge, EMIRGE_OTU_annot,
+                              by = c("seq1" = "Sequence")) %>% 
+  dplyr::filter(V4 != "not_limno")
+colnames(blast_emirge_annot)[7] <- "seq1_label"
+# label sequence 2
+blast_emirge_annot <- left_join(blast_emirge_annot, EMIRGE_OTU_annot[, c(3,5)],
+                              by = c("seq2" = "Sequence")) %>% 
+  dplyr::filter(V4 != "not_limno")
+colnames(blast_emirge_annot)[8] <- "seq2_label"
+
+# Create interaction effect
+blast_emirge_annot$label_interaction <- interaction(blast_emirge_annot$seq1_label,
+                                                    blast_emirge_annot$seq2_label,
+                                                    sep= "-")
+# Only visualize within-group blast identities
+subset_seq_labels <- c("LimB-LimB", "Lhab-A4-Lhab-A4")
+blast_emirge_annot %>% dplyr::filter(label_interaction %in% subset_seq_labels) %>% 
+ggplot(aes(x = label_interaction, y = pid, fill = label_interaction))+
+  geom_jitter(size = 2.5,
+             color = "black", shape = 21, width = 0.1, alpha = 0.5)+
+  geom_violin(alpha = 0.4, adjust = 1, draw_quantiles = TRUE, width = 0.3)+
+  stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1), 
+                 geom="pointrange", color="black")+
+  ylim(95,100)+
+  scale_fill_manual("", values = rev(c("#e31a1c","#fdbf6f")))+
+  theme_bw()+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        axis.text.x=element_text(size=14),
+        title=element_text(size=16), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        strip.text.x=element_text(size=18))+
+  guides(fill = FALSE)+
+  labs(x="")
+
+# Only look at the outlying sequence of LimB
+# 10|JN626652.1.1352
+blast_emirge_annot$label_interaction <- interaction(blast_emirge_annot$seq1_label,
+                                                    blast_emirge_annot$seq2_label,
+                                                    sep= "-")
+# Only visualize within-group blast identities
+subset_seq_labels <- c("LimB-LimB", "Lhab-A4-Lhab-A4")
+blast_emirge_annot %>% dplyr::filter(label_interaction %in% subset_seq_labels &
+                                      seq1 == "10|JN626652.1.1352") %>% 
+  summarize(mean(pid), sd(pid))
+
 ```
 
 # ANI analysis
@@ -1878,69 +1939,69 @@ p_scat_abund <- ggplot(abs_merged, aes(x = bwa_norm_abundance, y = blastn_norm_a
 print(p_scat_abund)
 ```
 
-### Calculate temporospatial diversity in Lhab
+<!-- ### Calculate temporospatial diversity in Lhab -->
 
-```{r diversity-Lhab, dpi = 500, warning = FALSE, fig.width = 9, fig.height = 5}
-abs_merged_div <- map_disc_cum[, c("Sample", "new_bin_name", "n_norm")]
-abs_merged_div$n_norm <- as.integer(abs_merged_div$n_norm )
+<!-- ```{r diversity-Lhab, dpi = 500, warning = FALSE, fig.width = 9, fig.height = 5} -->
+<!-- abs_merged_div <- map_disc_cum[, c("Sample", "new_bin_name", "n_norm")] -->
+<!-- abs_merged_div$n_norm <- as.integer(abs_merged_div$n_norm ) -->
 
-# Format long to wide format
-abs_table <- spread(abs_merged_div, Sample, n_norm)
-abs_table <- data.frame(abs_table)
-rownames(abs_table) <- abs_table[, 1]; abs_table <- abs_table[, -1]
-tax.table <- data.frame(MAGs = rownames(abs_table))
-rownames(tax.table) <- tax.table$MAGs
+<!-- # Format long to wide format -->
+<!-- abs_table <- spread(abs_merged_div, Sample, n_norm) -->
+<!-- abs_table <- data.frame(abs_table) -->
+<!-- rownames(abs_table) <- abs_table[, 1]; abs_table <- abs_table[, -1] -->
+<!-- tax.table <- data.frame(MAGs = rownames(abs_table)) -->
+<!-- rownames(tax.table) <- tax.table$MAGs -->
 
-# Make phyloseq object
-MAG_phy <- phyloseq(otu_table(abs_table, taxa_are_rows = TRUE), 
-         tax_table(as.matrix(tax.table)))
+<!-- # Make phyloseq object -->
+<!-- MAG_phy <- phyloseq(otu_table(abs_table, taxa_are_rows = TRUE),  -->
+<!--          tax_table(as.matrix(tax.table))) -->
 
-# Run Diversity_16S()
-MAG_div <- Diversity_16S(MAG_phy, ncore = 3, parallel = TRUE,
-                         R = 100, brea = FALSE)
+<!-- # Run Diversity_16S() -->
+<!-- MAG_div <- Diversity_16S(MAG_phy, ncore = 3, parallel = TRUE, -->
+<!--                          R = 100, brea = FALSE) -->
 
-MAG_div <- data.frame(Sample = rownames(MAG_div), MAG_div[,-c(3:6)])
+<!-- MAG_div <- data.frame(Sample = rownames(MAG_div), MAG_div[,-c(3:6)]) -->
 
-# Merge with metadata
-MAG_div <- left_join(MAG_div, meta_blast, by = c("Sample" = "Sample_ID"))
+<!-- # Merge with metadata -->
+<!-- MAG_div <- left_join(MAG_div, meta_blast, by = c("Sample" = "Sample_ID")) -->
 
-# Annotate and order metavariables
-MAG_div$Site <- as.character(MAG_div$Site)
-MAG_div$Site <- gsub("Buoy","Muskegon Lake", MAG_div$Site)
-MAG_div$Site <- gsub("110","Lake Michigan\nsite M110", MAG_div$Site)
-MAG_div$Site <- gsub("15","Lake Michigan\nsite M15", MAG_div$Site)
-MAG_div$Site <- factor(MAG_div$Site, levels = c("Muskegon Lake",
-                                                          "Lake Michigan\nsite M15",
-                                                          "Lake Michigan\nsite M110"))
-MAG_div$Depth <- as.character(MAG_div$Depth)
-MAG_div$Depth <- factor(MAG_div$Depth, levels = c("Surface", "Mid", "Deep"))
-MAG_div$Season <- as.character(MAG_div$Season)
-MAG_div$Season <- factor(MAG_div$Season, levels = c("Spring", "Summer", "Fall"))
+<!-- # Annotate and order metavariables -->
+<!-- MAG_div$Site <- as.character(MAG_div$Site) -->
+<!-- MAG_div$Site <- gsub("Buoy","Muskegon Lake", MAG_div$Site) -->
+<!-- MAG_div$Site <- gsub("110","Lake Michigan\nsite M110", MAG_div$Site) -->
+<!-- MAG_div$Site <- gsub("15","Lake Michigan\nsite M15", MAG_div$Site) -->
+<!-- MAG_div$Site <- factor(MAG_div$Site, levels = c("Muskegon Lake", -->
+<!--                                                           "Lake Michigan\nsite M15", -->
+<!--                                                           "Lake Michigan\nsite M110")) -->
+<!-- MAG_div$Depth <- as.character(MAG_div$Depth) -->
+<!-- MAG_div$Depth <- factor(MAG_div$Depth, levels = c("Surface", "Mid", "Deep")) -->
+<!-- MAG_div$Season <- as.character(MAG_div$Season) -->
+<!-- MAG_div$Season <- factor(MAG_div$Season, levels = c("Spring", "Summer", "Fall")) -->
 
-# Plot results
-p_MAG_div <- ggplot(MAG_div, aes(x = Season, y = D2, 
-                                        fill = Season, shape = Depth))+
-  theme_bw()+
-  scale_fill_brewer(palette = "Accent")+
-  geom_point(size = 4, color = "black", alpha = 0.7)+
-  scale_shape_manual(values = c(21,24,23))+
-  # geom_boxplot(alpha = 0.4)+
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-      title=element_text(size=20), legend.text=element_text(size=12),
-      legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
-      strip.text=element_text(size=14), legend.position = "bottom",
-      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Limnohabitans population\n diversity (D2)"))+
-  guides(fill=FALSE)+
-  facet_grid(~Site, scales ="free")+
-  xlab("")+
-  geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+
-  scale_y_continuous(labels=scaleFUN, limits = c(0,6.5))
-  # coord_trans(y = "sqrt")
+<!-- # Plot results -->
+<!-- p_MAG_div <- ggplot(MAG_div, aes(x = Season, y = D2,  -->
+<!--                                         fill = Season, shape = Depth))+ -->
+<!--   theme_bw()+ -->
+<!--   scale_fill_brewer(palette = "Accent")+ -->
+<!--   geom_point(size = 4, color = "black", alpha = 0.7)+ -->
+<!--   scale_shape_manual(values = c(21,24,23))+ -->
+<!--   # geom_boxplot(alpha = 0.4)+ -->
+<!--   theme(axis.text=element_text(size=14), axis.title=element_text(size=20), -->
+<!--       title=element_text(size=20), legend.text=element_text(size=12), -->
+<!--       legend.background = element_rect(fill="transparent"), -->
+<!--       axis.text.x = element_text(size = 14, angle = 45, hjust = 1), -->
+<!--       strip.text=element_text(size=14), legend.position = "bottom", -->
+<!--       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+ -->
+<!--   ylab(paste0("Limnohabitans population\n diversity (D2)"))+ -->
+<!--   guides(fill=FALSE)+ -->
+<!--   facet_grid(~Site, scales ="free")+ -->
+<!--   xlab("")+ -->
+<!--   geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+ -->
+<!--   scale_y_continuous(labels=scaleFUN, limits = c(0,6.5)) -->
+<!--   # coord_trans(y = "sqrt") -->
 
-print(p_MAG_div)
-```
+<!-- print(p_MAG_div) -->
+<!-- ``` -->
 
 # 8. DESMAN
 
