@@ -257,7 +257,9 @@ blast_emirge_annot$label_interaction <- interaction(blast_emirge_annot$seq1_labe
                                                     sep= "-")
 # Only visualize within-group blast identities
 subset_seq_labels <- c("LimB-LimB", "Lhab-A4-Lhab-A4")
-blast_emirge_annot %>% dplyr::filter(label_interaction %in% subset_seq_labels) %>% 
+blast_emirge_annot %>% 
+  dplyr::filter(label_interaction %in% subset_seq_labels &
+                                       seq1 != seq2) %>% 
 ggplot(aes(x = label_interaction, y = pid, fill = label_interaction))+
   geom_jitter(size = 2.5,
              color = "black", shape = 21, width = 0.1, alpha = 0.5)+
@@ -274,6 +276,11 @@ ggplot(aes(x = label_interaction, y = pid, fill = label_interaction))+
         strip.text.x=element_text(size=18))+
   guides(fill = FALSE)+
   labs(x="")
+
+blast_emirge_annot %>% dplyr::filter(label_interaction %in% subset_seq_labels &
+                                       seq1 != seq2) %>% 
+  group_by(label_interaction) %>% 
+  summarize(mean(pid), sd(pid))
 
 # Only look at the outlying sequence of LimB
 # 10|JN626652.1.1352
@@ -2080,7 +2087,7 @@ print(desm_p1b)
 
 ```{r desman-2ab, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 6, dev = c("png","pdf")}
 # Make correlation plot of strain variances alone
-p.mat_t <- cor.mtest(results_desm[-1],method = "pearson")
+p.mat_t <- cor.mtest(results_desm[-1],method = "pearson", use="pairwise")
 corrplot(cor(results_desm[-1], method = "pearson"), order = "hclust", addrect = 2,
          tl.col="black", tl.srt=45, 
          sig.level = 0.05,
@@ -2093,7 +2100,7 @@ results_desm$Samples <- gsub(".C", "", results_desm$Samples, fixed = TRUE)
 results_desm_env <- left_join(results_desm, meta_em, by = c("Samples" = "Sample_ID"))
 results_desm_env <- results_desm_env %>% 
   dplyr::select(Samples:`Strain 5`, Temperature..C., `Cond..µS.cm.`,
-                                   TP.ug.L, DOC.mg.L, PAR) %>% 
+                                   TP.ug.L, DOC.mg.L, PAR, DO.Probe..mg.L.) %>% 
   apply(., 2, function(x) as.numeric(as.character(x))) %>% data.frame()
 
 corrplot(cor(results_desm_env[-1], method = "pearson", use="pairwise"), 
@@ -2103,6 +2110,8 @@ corrplot(cor(results_desm_env[-1], method = "pearson", use="pairwise"),
          diag=TRUE)
 
 print(cor(results_desm_env[-1], method = "pearson", use="pairwise")[1:5, ])
+colnames(results_desm_env)[-1]
+print(cor.mtest(results_desm_env[-1],method = "pearson", use="pairwise")$p)
 ```
 
 ```{r desman-2, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 7, dev = c("png","pdf")}
@@ -2236,7 +2245,6 @@ cowplot::plot_grid(desm_p2, desm_p3, desm_p4, desm_p5, ncol = 2, align = 'hv')
 ```
 
 
-
 ## Ordination plots 
 
 ```{r desman-3, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 5, dev = c("png","pdf")}
@@ -2349,20 +2357,36 @@ geneAssign_df_annot <- left_join(geneAssign_df, expr_cov_long,
 
 ### **upset diagram**  
 
-```{r desman-5, dpi = 500, warning = FALSE, fig.width = 7.5, fig.height = 6, dev = c("png","pdf")}
+```{r desman-5, dpi = 500, warning = FALSE, fig.width = 7.5, fig.height = 5, dev = c("png","pdf")}
 # Long to wide
 geneAssign_df_wide <- tidyr::spread(geneAssign_df, Variant, Presence)
 
 # Plot
 upset(geneAssign_df_wide, sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
-                                   "Strain 5"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5,
+                                   "Strain 5"), mb.ratio = c(0.6, 0.45), 
+      order.by = "freq", point.size = 3.5,
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
-      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
-      show.numbers = FALSE,
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 1.5),
       scale.intersections = "log2",
       keep.order = FALSE,
-      line.size = NA)
+      line.size = 1.5)
+
+upset(geneAssign_df_wide, sets = c("Strain 1", "Strain 4"), mb.ratio = c(0.6, 0.45), 
+      order.by = "freq", point.size = 3.5,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 2),
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      line.size = 1.5)
+
+upset(geneAssign_df_wide, sets = c("Strain 2", "Strain 5"), mb.ratio = c(0.6, 0.45), 
+      order.by = "freq", point.size = 3.5,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 2),
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      line.size = 1.5)
+
 
 # Indicate site and season-specific differential abundant genes
 geneAssign_df_wide <- left_join(geneAssign_df_wide, res_deseq, 
