@@ -2405,7 +2405,8 @@ results_desm$Samples <- gsub(".C", "", results_desm$Samples, fixed = TRUE)
 results_desm_env <- left_join(results_desm, meta_em, by = c("Samples" = "Sample_ID"))
 results_desm_env <- results_desm_env %>% 
   dplyr::select(Samples:`Strain 5`, Temperature..C., `Cond..µS.cm.`,
-                                   TP.ug.L, DOC.mg.L, PAR, DO.Probe..mg.L.) %>% 
+                                   TP.ug.L, DOC.mg.L, PAR, DO.Probe..mg.L.,
+                Chl.Lab..ug.L.) %>% 
   apply(., 2, function(x) as.numeric(as.character(x))) %>% data.frame()
 
 corrplot(cor(results_desm_env[-1], method = "pearson", use="pairwise"), 
@@ -2434,12 +2435,12 @@ print(cor(results_desm_env[-1], method = "pearson", use="pairwise")[1:5, ])
 ## Strain.3     -0.90955092   -0.3110741  0.1936932 -0.07672245 -0.36314128
 ## Strain.4      0.09272609   -0.3154406 -0.5826171 -0.31330645 -0.04343812
 ## Strain.5      0.25378964    0.4672220  0.7396795  0.30023012  0.20455637
-##          DO.Probe..mg.L.
-## Strain.1     -0.03438865
-## Strain.2     -0.06078842
-## Strain.3      0.42427714
-## Strain.4      0.21315075
-## Strain.5     -0.50569631
+##          DO.Probe..mg.L. Chl.Lab..ug.L.
+## Strain.1     -0.03438865    -0.25151040
+## Strain.2     -0.06078842     0.38969012
+## Strain.3      0.42427714     0.04255277
+## Strain.4      0.21315075    -0.40976670
+## Strain.5     -0.50569631     0.65365968
 ```
 
 ```r
@@ -2450,7 +2451,7 @@ colnames(results_desm_env)[-1]
 ##  [1] "Strain.1"        "Strain.2"        "Strain.3"       
 ##  [4] "Strain.4"        "Strain.5"        "Temperature..C."
 ##  [7] "Cond..µS.cm."    "TP.ug.L"         "DOC.mg.L"       
-## [10] "PAR"             "DO.Probe..mg.L."
+## [10] "PAR"             "DO.Probe..mg.L." "Chl.Lab..ug.L."
 ```
 
 ```r
@@ -2470,18 +2471,33 @@ print(cor.mtest(results_desm_env[-1],method = "pearson", use="pairwise")$p)
 ##  [9,] 6.415704e-01 6.268178e-01 7.858018e-01 2.555027e-01 2.769303e-01
 ## [10,] 5.935779e-01 4.925486e-01 1.668248e-01 8.730920e-01 4.472885e-01
 ## [11,] 8.823569e-01 7.935129e-01 5.524854e-02 3.535678e-01 1.935020e-02
-##               [,6]       [,7]        [,8]      [,9]      [,10]       [,11]
-##  [1,] 1.160468e-01 0.07801333 0.155143234 0.6415704 0.59357792 0.882356890
-##  [2,] 7.445643e-01 0.03659950 0.010908050 0.6268178 0.49254864 0.793512882
-##  [3,] 4.534080e-09 0.27900255 0.489134949 0.7858018 0.16682479 0.055248542
-##  [4,] 6.814959e-01 0.27195000 0.022656572 0.2555027 0.87309199 0.353567755
-##  [5,] 2.544210e-01 0.09209330 0.001621215 0.2769303 0.44728845 0.019350202
-##  [6,] 0.000000e+00 0.46841256 0.347004233 0.4230109 0.02338948 0.007414131
-##  [7,] 4.684126e-01 0.00000000 0.691804059 0.9795950 0.69252132 0.012186900
-##  [8,] 3.470042e-01 0.69180406 0.000000000 0.2903015 0.72210624 0.238587083
-##  [9,] 4.230109e-01 0.97959502 0.290301526 0.0000000 0.14215923 0.068072096
-## [10,] 2.338948e-02 0.69252132 0.722106243 0.1421592 0.00000000 0.459116263
-## [11,] 7.414131e-03 0.01218690 0.238587083 0.0680721 0.45911626 0.000000000
+## [12,] 3.473915e-01 1.356871e-01 8.756597e-01 1.149672e-01 6.027313e-03
+##               [,6]       [,7]         [,8]       [,9]      [,10]
+##  [1,] 1.160468e-01 0.07801333 1.551432e-01 0.64157041 0.59357792
+##  [2,] 7.445643e-01 0.03659950 1.090805e-02 0.62681784 0.49254864
+##  [3,] 4.534080e-09 0.27900255 4.891349e-01 0.78580179 0.16682479
+##  [4,] 6.814959e-01 0.27195000 2.265657e-02 0.25550268 0.87309199
+##  [5,] 2.544210e-01 0.09209330 1.621215e-03 0.27693035 0.44728845
+##  [6,] 0.000000e+00 0.46841256 3.470042e-01 0.42301090 0.02338948
+##  [7,] 4.684126e-01 0.00000000 6.918041e-01 0.97959502 0.69252132
+##  [8,] 3.470042e-01 0.69180406 0.000000e+00 0.29030153 0.72210624
+##  [9,] 4.230109e-01 0.97959502 2.903015e-01 0.00000000 0.14215923
+## [10,] 2.338948e-02 0.69252132 7.221062e-01 0.14215923 0.00000000
+## [11,] 7.414131e-03 0.01218690 2.385871e-01 0.06807210 0.45911626
+## [12,] 6.392885e-01 0.63632415 4.665197e-07 0.08948707 0.87398504
+##             [,11]        [,12]
+##  [1,] 0.882356890 3.473915e-01
+##  [2,] 0.793512882 1.356871e-01
+##  [3,] 0.055248542 8.756597e-01
+##  [4,] 0.353567755 1.149672e-01
+##  [5,] 0.019350202 6.027313e-03
+##  [6,] 0.007414131 6.392885e-01
+##  [7,] 0.012186900 6.363242e-01
+##  [8,] 0.238587083 4.665197e-07
+##  [9,] 0.068072096 8.948707e-02
+## [10,] 0.459116263 8.739850e-01
+## [11,] 0.000000000 6.159640e-01
+## [12,] 0.615964034 0.000000e+00
 ```
 
 
@@ -2499,7 +2515,7 @@ desm_p2 <- ggplot(results_desm_long, aes(x = Temperature..C., y = Freq,
   theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
       title=element_text(size=16), legend.text=element_text(size=10),
       legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      axis.text.x = element_text(size = 12),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
   ylab(paste0("Strain frequency"))+
@@ -2511,7 +2527,9 @@ desm_p2 <- ggplot(results_desm_long, aes(x = Temperature..C., y = Freq,
   guides(fill=guide_legend(nrow=2))
   # coord_trans(y = "sqrt")
 
-desm_p3 <- ggplot(results_desm_long, aes(x = PAR , y = Freq, 
+desm_p3 <- results_desm_long %>% mutate(Chl.Lab..ug.L. =
+                                          as.numeric(as.character(Chl.Lab..ug.L.))) %>% 
+  ggplot(., aes(x = Chl.Lab..ug.L. , y = Freq, 
                                          fill = Strain, 
                                          col = Strain))+
   geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
@@ -2524,19 +2542,20 @@ desm_p3 <- ggplot(results_desm_long, aes(x = PAR , y = Freq,
   theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
       title=element_text(size=16), legend.text=element_text(size=10),
       legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      axis.text.x = element_text(size = 12),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
   ylab(paste0("Strain frequency"))+
   guides(fill=FALSE)+
   # facet_grid(Season~Site, scales ="free")+
-  xlab("PAR")+
+  xlab("Chl a concentration (µg/L)")+
   scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
-  geom_smooth(se = FALSE)+
+  geom_smooth(se = FALSE, span = 1)+
   guides(fill=guide_legend(nrow=2))
   # coord_trans(y = "sqrt")
 
-desm_p4 <- ggplot(results_desm_long, aes(x = DO.Probe..mg.L. , y = Freq, 
+desm_p4 <- results_desm_long %>% mutate(TDP.SRP = as.numeric(as.character(TDP.SRP))) %>% 
+  ggplot(., aes(x = TDP.SRP, y = Freq, 
                                          fill = Strain, 
                                          col = Strain))+
   geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
@@ -2549,19 +2568,20 @@ desm_p4 <- ggplot(results_desm_long, aes(x = DO.Probe..mg.L. , y = Freq,
   theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
       title=element_text(size=16), legend.text=element_text(size=10),
       legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      axis.text.x = element_text(size = 12),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
   ylab(paste0("Strain frequency"))+
   guides(fill=FALSE)+
   # facet_grid(Season~Site, scales ="free")+
-  xlab("DO concentration (mg/L)")+
+  xlab("Soluble Reactive Phosphorus (SRP - µg/L)")+
   scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
-  geom_smooth(se = FALSE)+
+  geom_smooth(se = FALSE, span = 0.75)+
   guides(fill=guide_legend(nrow=2))
   # coord_trans(y = "sqrt")
 
-desm_p5 <- ggplot(results_desm_long, aes(x =TP.ug.L, y = Freq, 
+desm_p5 <- results_desm_long %>% mutate(PON.mg.L = as.numeric(as.character(PON.mg.L))) %>% 
+  ggplot(., aes(x = PON.mg.L, y = Freq, 
                                          fill = Strain, 
                                          col = Strain))+
   geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
@@ -2574,19 +2594,20 @@ desm_p5 <- ggplot(results_desm_long, aes(x =TP.ug.L, y = Freq,
   theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
       title=element_text(size=16), legend.text=element_text(size=10),
       legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      axis.text.x = element_text(size = 12),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
   ylab(paste0("Strain frequency"))+
   guides(fill=FALSE)+
   # facet_grid(Season~Site, scales ="free")+
-  xlab("Total Phosphorous (µg/L)")+
+  xlab("Particulate Organic Nitrogen (PON - mg/L)")+
   scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
-  geom_smooth(se = FALSE)+
+  geom_smooth(se = FALSE, span = 0.75)+
   guides(fill=guide_legend(nrow=2))
   # coord_trans(y = "sqrt")
 
-desm_p6 <- ggplot(results_desm_long, aes(x =DOC.mg.L, y = Freq, 
+desm_p6 <- results_desm_long %>% mutate(POC.mg.L = as.numeric(as.character(POC.mg.L))) %>%
+  ggplot(., aes(x = POC.mg.L, y = Freq, 
                                          fill = Strain, 
                                          col = Strain))+
   geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
@@ -2599,20 +2620,20 @@ desm_p6 <- ggplot(results_desm_long, aes(x =DOC.mg.L, y = Freq,
   theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
       title=element_text(size=16), legend.text=element_text(size=10),
       legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      axis.text.x = element_text(size = 12),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
   ylab(paste0("Strain frequency"))+
   guides(fill=FALSE)+
   # facet_grid(Season~Site, scales ="free")+
-  xlab("DOC (mg/L)")+
+  xlab("Particulate Organic Carbon (POC - mg/L)")+
   scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
-  geom_smooth(se = FALSE)+
+  geom_smooth(se = FALSE, span = 0.75)+
   guides(fill=guide_legend(nrow=2))
   # coord_trans(y = "sqrt")
 
 # Combine all exploratory plots
-cowplot::plot_grid(desm_p2, desm_p3, desm_p4, desm_p5, ncol = 2, align = 'hv')
+cowplot::plot_grid(desm_p3, desm_p4, desm_p5, desm_p6, ncol = 2, align = 'hv')
 ```
 
 ```
@@ -2914,6 +2935,9 @@ geneAssign_df_wide_transcripts_temp <- geneAssign_df_wide %>%
 geneAssign_df_wide_transcripts_temp <- MAG8_deseq_results_temp_fin %>% 
   dplyr::select(log2FoldChange, gene_oid, regulation) %>% 
   left_join(geneAssign_df_wide_transcripts_temp, ., by = c("sseqid" = "gene_oid"))
+
+# Add functional annotation of genes
+
 
 # Evaluate distribution of transcripts expression over strains
 # Plot upregulated genes
