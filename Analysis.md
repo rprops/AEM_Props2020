@@ -2646,7 +2646,47 @@ cowplot::plot_grid(desm_p3, desm_p4, desm_p5, desm_p6, ncol = 2, align = 'hv')
 <img src="Figures/cached/desman-2-1.png" style="display: block; margin: auto;" />
 
 
-## Ordination plots 
+## Diversity plots 
+
+
+```r
+alpha_div_desman <- data.frame(Sample = results_desm[,1], 
+      D2 = vegan::diversity(results_desm[,2:ncol(results_desm)], index = "invsimpson")
+)
+
+alpha_div_desman <- left_join(alpha_div_desman, meta_em,
+                              by = c("Sample" = "Sample_ID"))
+
+alpha_div_desman$Site <- as.character(alpha_div_desman$Site)
+alpha_div_desman$Site <- gsub("110", "Lake Michigan\nsite M110", alpha_div_desman$Site)
+alpha_div_desman$Site <- gsub("15", "Lake Michigan\nsite M15", alpha_div_desman$Site)
+alpha_div_desman$Site <- gsub("Buoy", "Muskegon Lake", alpha_div_desman$Site)
+alpha_div_desman$Site <- factor(alpha_div_desman$Site, levels = c("Muskegon Lake",
+                                                            "Lake Michigan\nsite M15",
+                                                            "Lake Michigan\nsite M110"))
+alpha_div_desman$Season <- as.character(alpha_div_desman$Season)
+alpha_div_desman$Season <- factor(alpha_div_desman$Season, levels = c("Spring", "Summer","Fall"))
+
+p_alpha_desman <- alpha_div_desman %>% 
+  ggplot(., aes(x = Season, y = D2, fill = Season, shape = Depth))+
+  geom_point(size = 4) +
+  scale_shape_manual("", values = c(21,22,24))+
+  facet_grid(.~Site)+
+  theme_bw()+
+  scale_fill_brewer(palette = "Accent")+
+  labs(y = expression("LimB strain diversity (D"[2]*")"), x = "")+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+        title=element_text(size=16), legend.text=element_text(size=16),
+        strip.text = element_text(size = 16))+
+  ylim(0,4.2)+
+  guides(fill  = guide_legend(title = "", override.aes = list(size = 4, shape = 21),
+                         nrow = 4)
+   )
+
+print(p_alpha_desman)
+```
+
+<img src="Figures/cached/desman-alpha-div-1.png" style="display: block; margin: auto;" />
 
 
 ```r
@@ -2676,6 +2716,16 @@ var <- round(pcoa$values$Eigenvalues/sum(pcoa$values$Eigenvalues)*100,1)
 pcoa.df$Samples <- gsub(".A", "", pcoa.df$Samples, fixed = TRUE)
 pcoa.df$Samples <- gsub(".C", "", pcoa.df$Samples, fixed = TRUE)
 pcoa.df <- dplyr::left_join(pcoa.df, meta_em, by = c("Samples" = "Sample_ID"))
+
+pcoa.df$Site <- as.character(pcoa.df$Site)
+pcoa.df$Site <- gsub("110", "Lake Michigan - M110", pcoa.df$Site)
+pcoa.df$Site <- gsub("15", "Lake Michigan - M15", pcoa.df$Site)
+pcoa.df$Site <- gsub("Buoy", "Muskegon Lake", pcoa.df$Site)
+pcoa.df$Site <- factor(pcoa.df$Site, levels = c("Muskegon Lake",
+                                                            "Lake Michigan - M15",
+                                                            "Lake Michigan - M110"))
+pcoa.df$Season <- as.character(pcoa.df$Season)
+pcoa.df$Season <- factor(pcoa.df$Season, levels = c("Spring", "Summer","Fall"))
 
 # Run permanova
 x <- results_desm[,2:ncol(results_desm)]
