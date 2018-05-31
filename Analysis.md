@@ -2344,6 +2344,7 @@ desm_p1b <- ggplot(results_desm_long, aes(x = Season, y = Freq,
                                          fill = Strain, 
                                          col = Strain))+
   geom_point(color = "black", alpha = 0.7, size = 3, shape = 21)+
+  # scale_shape_manual("", values = c(24,22,21))+
   # scale_shape_manual(values = c(21,22,23))+
   geom_boxplot(alpha = 0.3, col = "black", outlier.shape = NA, size = 0.3)+
   scale_fill_brewer("", palette = "Accent")+
@@ -2986,15 +2987,11 @@ geneAssign_df_wide_transcripts_temp <- MAG8_deseq_results_temp_fin %>%
   dplyr::select(log2FoldChange, gene_oid, regulation) %>% 
   left_join(geneAssign_df_wide_transcripts_temp, ., by = c("sseqid" = "gene_oid"))
 
-# Add functional annotation of genes
-
-
 # Evaluate distribution of transcripts expression over strains
 # Plot upregulated genes
 geneAssign_df_wide_transcripts_depth %>% dplyr::filter(regulation == "Upregulated") %>% 
   upset(., 
-      sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
-                                   "Strain 5"), mb.ratio = c(0.55, 0.45), 
+      sets = c("Strain 1", "Strain 3", "Strain 4"), mb.ratio = c(0.55, 0.45), 
       order.by = "freq", number.angles = 30, point.size = 3.5,
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
@@ -3029,8 +3026,7 @@ geneAssign_df_wide_transcripts_temp %>% dplyr::filter(regulation == "Upregulated
 # Plot down regulated genes
 geneAssign_df_wide_transcripts_depth %>% dplyr::filter(regulation == "Downregulated") %>% 
   upset(., 
-      sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
-                                   "Strain 5"), mb.ratio = c(0.55, 0.45), 
+      sets = c("Strain 1",  "Strain 3", "Strain 4"), mb.ratio = c(0.55, 0.45), 
       order.by = "freq", number.angles = 30, point.size = 3.5,
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
@@ -3060,27 +3056,224 @@ geneAssign_df_wide_transcripts_temp %>% dplyr::filter(regulation == "Downregulat
 
 <img src="Figures/cached/MAG8-DESeq-plot-upset1-4.png" style="display: block; margin: auto;" />
 
-### Abundance of variants
+### Assign functions
+
+```r
+# Assign interactins for each strain
+geneAssign_df_wide_transcripts_depth$Strain_interaction <-
+  interaction(geneAssign_df_wide_transcripts_depth$`Strain 1`,
+              geneAssign_df_wide_transcripts_depth$`Strain 2`,
+              geneAssign_df_wide_transcripts_depth$`Strain 3`,
+              geneAssign_df_wide_transcripts_depth$`Strain 4`,
+              geneAssign_df_wide_transcripts_depth$`Strain 5`,
+              sep = "-")
+
+# Assign functions
+geneAssign_df_wide_transcripts_depth <- left_join(geneAssign_df_wide_transcripts_depth,
+                                                  merged_file_annot,
+                                                  by = c("sseqid" = "gene_oid"))
+
+# Check for gene enrichment in interactions of strain 1 - 4 / strain 2 - 5 / strain 3
+# these interactions correspond to interaction term 1-0-0-1-0 / 0-1-0-0-1 / 0-0-1-0-0
+
+# geneAssign_df_wide_transcripts_depth %>% 
+#   dplyr::filter(grepl("1-.-.-1-.", Strain_interaction))
+
+# For strain 1
+geneAssign_df_wide_transcripts_depth %>% 
+  dplyr::filter(!grepl("0-0-0-0-0", Strain_interaction)) %>% 
+  dplyr::filter(grepl("1-0-1-0-0", Strain_interaction)) %>% 
+  dplyr::select(sseqid:ko_name, ko_function_abbrev:ko_level_C) %>% 
+  dplyr::filter(!is.na(ko_name)) %>% 
+  unique() %>% 
+  ggplot(., aes(x = ko_level_B, y = log2FoldChange, fill = regulation))+
+  geom_point()+
+  geom_boxplot()+
+  # geom_bar(stat = "count")+
+  scale_fill_brewer("", palette = "Accent")+
+  theme_bw()+
+  theme(axis.text.x=element_text(size=12, angle = 30, hjust = 1),
+        axis.text.y = element_text(size = 12),
+        axis.title=element_text(size=16),
+        title=element_text(size=16), legend.text=element_text(size=16),
+        strip.text = element_text(size = 16))+
+  guides(fill = FALSE)
+```
+
+<img src="Figures/cached/MAG8-DESeq-plot-upset2-1.png" style="display: block; margin: auto;" />
+
+```r
+  # ylim(0,40)
+
+# Strain 4
+geneAssign_df_wide_transcripts_depth %>% 
+  dplyr::filter(!grepl("0-0-0-0-0", Strain_interaction)) %>% 
+  dplyr::filter(grepl(".-.-.-1-.", Strain_interaction)) %>% 
+  dplyr::select(sseqid:ko_name, ko_function_abbrev:ko_level_C) %>% 
+  dplyr::filter(!is.na(ko_name)) %>% 
+  unique() %>% 
+  ggplot(., aes(x = ko_level_B, y = log2FoldChange, fill = regulation))+
+  geom_point()+
+  geom_boxplot()+
+  # geom_bar(stat = "count")+
+  scale_fill_brewer("", palette = "Accent")+
+  theme_bw()+
+  theme(axis.text.x=element_text(size=12, angle = 30, hjust = 1),
+        axis.text.y = element_text(size = 12),
+        axis.title=element_text(size=16),
+        title=element_text(size=16), legend.text=element_text(size=16),
+        strip.text = element_text(size = 16))+
+  guides(fill = FALSE)
+```
+
+<img src="Figures/cached/MAG8-DESeq-plot-upset2-2.png" style="display: block; margin: auto;" />
+
+```r
+  # ylim(0,40)
+```
+
+### Black Queen Hypothesis
 
 
 ```r
-# Evaluate abundance of variants in the samples used to infer phenotypic plasticity
-p_strain_pheno <- results_desm_long %>% 
-  dplyr::filter(Site == "Lake Michigan\nsite M110" & Depth != "Mid") %>% 
-  ggplot(aes(x = Strain, y = Freq, fill = Depth))+
-  geom_point(size = 4, shape = 21)+
-  facet_grid(Season~Time)+
-  scale_fill_brewer("", palette = "Accent")+
+geneAssign_df_annot_func <- geneAssign_df_wide[, 1:7]
+geneAssign_df_annot_func$Strain_interaction <- 
+  interaction(geneAssign_df_annot_func$`Strain 1`,
+              geneAssign_df_annot_func$`Strain 2`,
+              geneAssign_df_annot_func$`Strain 3`,
+              geneAssign_df_annot_func$`Strain 4`,
+              geneAssign_df_annot_func$`Strain 5`,
+              sep = "-")
+
+# Annotate full accessory genomes
+geneAssign_df_annot_func <- left_join(geneAssign_df_annot_func, 
+                                 merged_file_annot, by = c("sseqid" = "gene_oid"))
+
+# Compare only strain 1 and 4
+p_unique_s1 <- geneAssign_df_annot_func %>% 
+  dplyr::filter(grepl("1-.-.-0-.", Strain_interaction)) %>% 
+  dplyr::select(sseqid, ko_name, ko_function_abbrev:ko_level_C) %>% 
+  dplyr::filter(!is.na(ko_name)) %>% 
+  unique() %>% 
+  ggplot(., aes(x = ko_level_C, fill = ko_level_B))+
+  # geom_point()+
+  # geom_boxplot()+
+  geom_bar(stat = "count", col = "black")+
+  scale_fill_brewer("", palette = "Paired")+
   theme_bw()+
-  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+  theme(axis.text.x=element_text(size=12, angle = 30, hjust = 1),
+        axis.text.y = element_text(size = 12),
+        axis.title=element_text(size=16),
         title=element_text(size=16), legend.text=element_text(size=16),
         strip.text = element_text(size = 16))+
-  ylab("Strain frequency")
-  
-print(p_strain_pheno)
+  guides(fill = FALSE)
+  # ylim(0,40)
+
+p_unique_s2 <- geneAssign_df_annot_func %>% 
+  dplyr::filter(grepl("0-.-.-1-.", Strain_interaction)) %>% 
+  dplyr::select(sseqid, ko_name, ko_function_abbrev:ko_level_C) %>% 
+  dplyr::filter(!is.na(ko_name)) %>% 
+  unique() %>% 
+  ggplot(., aes(x = ko_level_C, fill = ko_level_B))+
+  # geom_point()+
+  # geom_boxplot()+
+  geom_bar(stat = "count", col = "black")+
+  scale_fill_brewer("", palette = "Paired")+
+  theme_bw()+
+  theme(axis.text.x=element_text(size=12, angle = 30, hjust = 1),
+        axis.text.y = element_text(size = 12),
+        axis.title=element_text(size=16),
+        title=element_text(size=16), legend.text=element_text(size=16),
+        strip.text = element_text(size = 16))+
+  guides(fill = FALSE)
+  # ylim(0,40)
+
+cowplot::plot_grid(p_unique_s1, p_unique_s2, align = "hv", ncol = 2)
 ```
 
 <img src="Figures/cached/MAG8-DESeq-plot-strains-1.png" style="display: block; margin: auto;" />
+
+### Strain DOM usage
+
+
+```r
+# Import DOM usage table
+DOM_usage_df <- read.csv("./IMG_annotation/DOM_usage.csv", stringsAsFactors = FALSE,
+                         check.names =FALSE)
+DOM_usage_df$DOM_type <- gsub("\\n","\n", DOM_usage_df$DOM_type, fixed = TRUE)
+
+# Retain COG_ids that are found in DOM_usage_df list
+COG_profiles_sub <- geneAssign_df_annot_func %>%
+  dplyr::filter(cog_id %in% DOM_usage_df$COG_ID)
+
+COG_profiles_sub <- dplyr::left_join(COG_profiles_sub, DOM_usage_df, 
+                                     by = c("cog_id" = "COG_ID")) %>% 
+  dplyr::select(sseqid, Strain_interaction, cog_id, DOM_type) %>% 
+  unique()
+
+# Add COG counts
+COG_profiles_sub_cnt <- COG_profiles_sub %>% 
+  group_by(Strain_interaction, DOM_type) %>% 
+  mutate(sum_counts = n())
+
+# Order COG ids according to classification
+COG_order <- DOM_usage_df %>% 
+  dplyr::filter(COG_ID %in% unique(COG_profiles_sub_cnt$cog_id))
+COG_profiles_sub_cnt$cog_id <- factor(COG_profiles_sub_cnt$cog_id,
+                                        levels = COG_order$COG_ID)
+
+# # make heatmap
+# hm_DOC1 <- complete(COG_profiles_sub_cnt, cog_id,
+#          fill = list(sum_counts = 0)) %>% 
+#   # dplyr::filter(Genome %in% selected_genomes) %>% 
+#   ggplot(aes(y = Strain_interaction, x= cog_id)) + # x and y axes => Var1 and Var2
+#   geom_tile(aes(fill = sum_counts), col = "lightgrey") + # background colours are mapped according to the value column
+#   geom_text(aes(label = round(sum_counts, 0)), size = 3) + # write the values
+#   # scale_fill_gradientn(colours = terrain.colors(10), trans = "log1p")+
+#   # scale_fill_gradient(low = "lightblue", high = "darkslategray", na.value="white",
+#                       # trans = "log1p", limits=c(1, 40)) +
+#   scale_fill_distiller(palette="YlOrRd", na.value="lightgrey", trans = "sqrt",
+#                        direction = 1) +
+#   theme(panel.grid.major.x=element_blank(), #no gridlines
+#         panel.grid.minor.x=element_blank(), 
+#         panel.grid.major.y=element_blank(), 
+#         panel.grid.minor.y=element_blank(),
+#         panel.background=element_rect(fill="white"), # background=white
+#         axis.text.x = element_text(angle=45, hjust = 1, vjust=1, size = 12,face = "bold"),
+#         plot.title = element_text(size=20,face="bold"),
+#         axis.text.y = element_text(size = 12,face = "bold"))+
+#   theme(legend.title=element_text(face="bold", size=14)) + 
+#   scale_x_discrete(name="") +
+#   scale_y_discrete(name="") +
+#   labs(fill="Gene\ncount")
+# 
+# print(hm_DOC1)
+
+# Barplot
+p_DOM_dist <- COG_profiles_sub_cnt %>% 
+  dplyr::filter(Strain_interaction != "0-0-0-0-0") %>% 
+  dplyr::select(Strain_interaction, DOM_type, sum_counts) %>% 
+  unique() %>% 
+  ggplot2::ggplot(aes(x = Strain_interaction, y = sum_counts, fill = DOM_type))+
+  geom_bar(alpha = 0.8, stat = "identity", color = "black", width = 0.5)+
+  scale_fill_brewer("", palette = "Paired")+
+  theme_bw()+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=10),
+        legend.background = element_rect(fill="transparent"),
+        # axis.text.x = element_text(angle = 65, hjust = 1),
+        strip.text.x=element_text(size = 18),
+        legend.position="right",
+        axis.text.x=element_text(size = 14, angle =45, hjust= 1),
+        plot.title = element_text(hjust = 0, size=18))+
+  guides(fill=guide_legend(ncol=1))+
+  ylab("Number of genes")+
+  xlab('Intersection')
+
+print(p_DOM_dist)
+```
+
+<img src="Figures/cached/MAG8-strains-DOM-1.png" style="display: block; margin: auto;" />
 
 # 9. iRep analysis
 
