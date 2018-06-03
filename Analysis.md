@@ -2375,6 +2375,41 @@ print(desm_p1b)
 
 
 ```r
+# Just depth profile for M110 station
+desm_p2b <- results_desm_long %>% dplyr::filter(Site == "Lake Michigan\nsite M110"& 
+                                                  Depth != "Mid") %>% 
+  ggplot(., aes(x = Season, y = Freq, 
+                                         fill = Strain, 
+                                         col = Strain))+
+  geom_point(color = "black", alpha = 0.7, size = 4, shape = 21)+
+  scale_fill_brewer("", palette = "Accent")+
+  scale_color_brewer("",palette = "Accent")+
+  theme_bw()+
+  # geom_point(size = 4, color = "black", alpha = 0.7)+
+  # scale_shape_manual(values = c(21,24,23))+
+  # geom_boxplot(alpha = 0.4)+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Strain frequency"))+
+  guides(fill=FALSE)+
+  facet_grid(Depth~Strain, scales ="free")+
+  xlab("")+
+  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
+  # geom_smooth(se = FALSE)+
+  guides(fill=FALSE)
+  # coord_trans(y = "sqrt")
+
+print(desm_p2b)
+```
+
+<img src="Figures/cached/desman-2abc-1.png" style="display: block; margin: auto;" />
+
+
+```r
 # Make correlation plot of strain variances alone
 p.mat_t <- cor.mtest(results_desm[-1],method = "pearson", use="pairwise")
 corrplot(cor(results_desm[-1], method = "pearson"), order = "hclust", addrect = 2,
@@ -2989,72 +3024,74 @@ geneAssign_df_wide_transcripts_temp <- MAG8_deseq_results_temp_fin %>%
 
 # Evaluate distribution of transcripts expression over strains
 # Plot upregulated genes
-geneAssign_df_wide_transcripts_depth %>% dplyr::filter(regulation == "Upregulated") %>% 
+geneAssign_df_wide_transcripts_depth %>% 
+  unique() %>% 
   upset(., 
-      sets = c("Strain 1", "Strain 3", "Strain 4"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5,
+      sets = c("Strain 1", "Strain 2","Strain 3", "Strain 4", "Strain 5"), 
+      mb.ratio = c(0.55, 0.45), 
+      order.by = "freq", point.size = 3.5,
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
-      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
-      show.numbers = FALSE,
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 3),
       scale.intersections = "log2",
       keep.order = FALSE,
-      line.size = 1.2,
-      boxplot.summary = "log2FoldChange")
+      line.size = 1.2)
 ```
 
 <img src="Figures/cached/MAG8-DESeq-plot-upset1-1.png" style="display: block; margin: auto;" />
 
 ```r
-geneAssign_df_wide_transcripts_temp %>% dplyr::filter(regulation == "Upregulated") %>%
-  upset(., 
-      sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
-                                   "Strain 5"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5,
-      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
-      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
-      show.numbers = FALSE,
-      scale.intersections = "log2",
-      keep.order = FALSE,
-      line.size = 1.2,
-      boxplot.summary = "log2FoldChange")
+geneAssign_df_wide_transcripts_depth %>% 
+  dplyr::filter(regulation == "Downregulated") %>%
+  unique() %>% 
+  summary()
 ```
 
-<img src="Figures/cached/MAG8-DESeq-plot-upset1-2.png" style="display: block; margin: auto;" />
+```
+##     sseqid             Strain 1         Strain 2         Strain 3     
+##  Length:45          Min.   :0.0000   Min.   :0.0000   Min.   :0.0000  
+##  Class :character   1st Qu.:1.0000   1st Qu.:0.0000   1st Qu.:1.0000  
+##  Mode  :character   Median :1.0000   Median :1.0000   Median :1.0000  
+##                     Mean   :0.9333   Mean   :0.5778   Mean   :0.9778  
+##                     3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1.0000  
+##                     Max.   :1.0000   Max.   :1.0000   Max.   :1.0000  
+##     Strain 4         Strain 5      log2FoldChange           regulation
+##  Min.   :0.0000   Min.   :0.0000   Min.   :-4.535   Upregulated  : 0  
+##  1st Qu.:0.0000   1st Qu.:1.0000   1st Qu.:-3.143   Downregulated:45  
+##  Median :1.0000   Median :1.0000   Median :-2.521                     
+##  Mean   :0.6444   Mean   :0.9111   Mean   :-2.689                     
+##  3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:-2.179                     
+##  Max.   :1.0000   Max.   :1.0000   Max.   :-1.684
+```
 
 ```r
-# Evaluate distribution of transcripts expression over strains
-# Plot down regulated genes
-geneAssign_df_wide_transcripts_depth %>% dplyr::filter(regulation == "Downregulated") %>% 
-  upset(., 
-      sets = c("Strain 1",  "Strain 3", "Strain 4"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5,
-      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
-      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
-      show.numbers = FALSE,
-      scale.intersections = "log2",
-      keep.order = FALSE,
-      line.size = 1.2,
-      boxplot.summary = "log2FoldChange")
+# 
+# geneAssign_df_wide_transcripts_temp %>% dplyr::filter(regulation == "Upregulated") %>%
+#   upset(., 
+#       sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+#                                    "Strain 5"), mb.ratio = c(0.55, 0.45), 
+#       order.by = "freq", number.angles = 30, point.size = 3.5,
+#       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+#       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+#       show.numbers = FALSE,
+#       scale.intersections = "log2",
+#       keep.order = FALSE,
+#       line.size = 1.2,
+#       boxplot.summary = "log2FoldChange")
+
+
+# geneAssign_df_wide_transcripts_temp %>% dplyr::filter(regulation == "Downregulated") %>%
+#   upset(., 
+#       sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+#                                    "Strain 5"), mb.ratio = c(0.55, 0.45), 
+#       order.by = "freq", number.angles = 30, point.size = 3.5,
+#       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+#       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+#       show.numbers = FALSE,
+#       scale.intersections = "log2",
+#       keep.order = FALSE,
+#       line.size = 1.2,
+#       boxplot.summary = "log2FoldChange")
 ```
-
-<img src="Figures/cached/MAG8-DESeq-plot-upset1-3.png" style="display: block; margin: auto;" />
-
-```r
-geneAssign_df_wide_transcripts_temp %>% dplyr::filter(regulation == "Downregulated") %>%
-  upset(., 
-      sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
-                                   "Strain 5"), mb.ratio = c(0.55, 0.45), 
-      order.by = "freq", number.angles = 30, point.size = 3.5,
-      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
-      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
-      show.numbers = FALSE,
-      scale.intersections = "log2",
-      keep.order = FALSE,
-      line.size = 1.2,
-      boxplot.summary = "log2FoldChange")
-```
-
-<img src="Figures/cached/MAG8-DESeq-plot-upset1-4.png" style="display: block; margin: auto;" />
 
 ### Assign functions
 
@@ -3079,18 +3116,17 @@ geneAssign_df_wide_transcripts_depth <- left_join(geneAssign_df_wide_transcripts
 # geneAssign_df_wide_transcripts_depth %>% 
 #   dplyr::filter(grepl("1-.-.-1-.", Strain_interaction))
 
-# For strain 1
 geneAssign_df_wide_transcripts_depth %>% 
-  dplyr::filter(!grepl("0-0-0-0-0", Strain_interaction)) %>% 
-  dplyr::filter(grepl("1-0-1-0-0", Strain_interaction)) %>% 
-  dplyr::select(sseqid:ko_name, ko_function_abbrev:ko_level_C) %>% 
-  dplyr::filter(!is.na(ko_name)) %>% 
+  # dplyr::filter(!grepl("0-0-0-0-0", Strain_interaction)) %>% 
+  # dplyr::filter(grepl("1-0-1-0-0", Strain_interaction)) %>% 
+  dplyr::select(sseqid:ko_name) %>% 
+  # dplyr::filter(!is.na(ko_name)) %>%
   unique() %>% 
-  ggplot(., aes(x = ko_level_B, y = log2FoldChange, fill = regulation))+
-  geom_point()+
-  geom_boxplot()+
+  ggplot(., aes(x = Strain_interaction, y = log2FoldChange, fill = regulation))+
+  # geom_point(shape = 21, size = 4)+
+  geom_boxplot(alpha = 0.4, outlier.shape = NA)+
   # geom_bar(stat = "count")+
-  scale_fill_brewer("", palette = "Accent")+
+  scale_fill_brewer("", palette = "Set1")+
   theme_bw()+
   theme(axis.text.x=element_text(size=12, angle = 30, hjust = 1),
         axis.text.y = element_text(size = 12),
@@ -3101,32 +3137,6 @@ geneAssign_df_wide_transcripts_depth %>%
 ```
 
 <img src="Figures/cached/MAG8-DESeq-plot-upset2-1.png" style="display: block; margin: auto;" />
-
-```r
-  # ylim(0,40)
-
-# Strain 4
-geneAssign_df_wide_transcripts_depth %>% 
-  dplyr::filter(!grepl("0-0-0-0-0", Strain_interaction)) %>% 
-  dplyr::filter(grepl(".-.-.-1-.", Strain_interaction)) %>% 
-  dplyr::select(sseqid:ko_name, ko_function_abbrev:ko_level_C) %>% 
-  dplyr::filter(!is.na(ko_name)) %>% 
-  unique() %>% 
-  ggplot(., aes(x = ko_level_B, y = log2FoldChange, fill = regulation))+
-  geom_point()+
-  geom_boxplot()+
-  # geom_bar(stat = "count")+
-  scale_fill_brewer("", palette = "Accent")+
-  theme_bw()+
-  theme(axis.text.x=element_text(size=12, angle = 30, hjust = 1),
-        axis.text.y = element_text(size = 12),
-        axis.title=element_text(size=16),
-        title=element_text(size=16), legend.text=element_text(size=16),
-        strip.text = element_text(size = 16))+
-  guides(fill = FALSE)
-```
-
-<img src="Figures/cached/MAG8-DESeq-plot-upset2-2.png" style="display: block; margin: auto;" />
 
 ```r
   # ylim(0,40)
