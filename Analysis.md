@@ -814,7 +814,7 @@ merged_file <- merge_annotations(file_list[1:10], genoid_seqid = FALSE)
 ## [1] 17644
 ## [1] 19813
 ## [1] 21848
-## Fri May 25 18:03:00 2018  --- Sucessfully merged files
+## Wed Jun 06 20:51:29 2018  --- Sucessfully merged files
 ```
 
 ```r
@@ -856,14 +856,84 @@ expr_cov_long <- expr_cov_long %>%
 # Now add the metadata to this long dataframe
 # Metadata file
 meta_metaT <- distinct(meta[, 2:nrow(meta)])
-rownames(meta_metaT) <- gsub(meta_metaT$Sample_ID, pattern="_", replacement = ".")
-
-expr_cov_long <- left_join(expr_cov_long, meta_metaT[, 1:11], by = c("Sample" = "Sample_ID"))
+meta_metaT$Sample_ID <- gsub(meta_metaT$Sample_ID, pattern="_", replacement = ".")
+rownames(meta_metaT) <- meta_metaT$Sample_ID
+expr_cov_long <- left_join(expr_cov_long, meta_metaT[, 1:11], 
+                           by = c("Sample" = "Sample_ID"))
 expr_cov_long$Genome_ID <- as.factor(expr_cov_long$Genome_ID)
 
 # Remove duplicate rows
 expr_cov_long <- expr_cov_long %>% distinct()
 ```
+
+## Calculate dissimarility between expression profiles
+
+
+```r
+colnames(expr_cov_long)[colnames(expr_cov_long) == "Plus_reads"] <- "mapped_reads"
+# For each MAG calculat the dissimarilties in expression profiles between samples
+for(i in 1:nlevels(expr_cov_long$Genome_ID)){
+  tmp_table <-  expr_cov_long %>% 
+  dplyr::filter(Genome_ID == levels(expr_cov_long$Genome_ID)[i]) %>% 
+  dplyr::select(gene_oid, Sample, mapped_reads) %>% 
+  tidyr::spread(Sample, mapped_reads)
+  r.geneoid <- tmp_table$gene_oid
+  min_sample_size <- min(colSums(tmp_table[,-1]))
+  tmp_table <- vegan::rrarefy(t(tmp_table[, -1]), min_sample_size)
+  tmp_table <- scale(tmp_table)
+  tmp_dist <- dist(tmp_table, method = "euclidean")
+  
+  if(i == 1) results_diss <- data.frame(dist_m = matrix(tmp_dist), 
+                           Genome = levels(expr_cov_long$Genome_ID)[i]) else {
+    results_diss <- rbind(results_diss, 
+                          data.frame(dist_m = matrix(tmp_dist),
+                                     Genome = levels(expr_cov_long$Genome_ID)[i]))
+                           }
+  remove(tmp_table)
+}
+
+# Merge with correct sample names
+new_bin_names2 <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(3,8:10)]; 
+new_bin_names2$IMG_taxID <- as.character(new_bin_names2$IMG_taxID)
+results_diss <- left_join(results_diss, new_bin_names2, 
+                          by = c("Genome" = "IMG_taxID"))
+results_diss$new_bin_name <- as.character(results_diss$new_bin_name)
+results_diss$new_bin_name <- factor(results_diss$new_bin_name, levels =
+                                      c("MAG5.SP-M110-DD","MAG2.FA-MLB-SN",
+                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+                                        "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
+                                        "MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
+                                        "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"))
+
+# Plot
+results_diss %>% 
+  ggplot(aes(x = new_bin_name, y = dist_m, fill = new_bin_name))+
+  # geom_jitter(size = 2.5,
+             # color = "black", shape = 21, width = 0.1, alpha = 0.5)+
+  geom_violin(alpha = 0.4, adjust = 1, draw_quantiles = TRUE)+
+  stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1), 
+                 geom="pointrange", color="#333333", size = 1.05)+
+  # ylim(0,120)+
+  scale_fill_manual("",
+                    values = c(rep(rgb(red=t(col2rgb("#deebf7ff")), 
+                                       maxColorValue  = 255), 2), 
+                               rep(rgb(red=t(col2rgb("#c6dbefff")), 
+                                       maxColorValue  = 255),5),
+                               rgb(red=t(col2rgb("#9ecae1ff")), maxColorValue  = 255),
+                               rep(rgb(red=t(col2rgb("#6baed6ff")), 
+                                       maxColorValue  = 255),2)
+                              ))+
+  theme_bw()+
+  theme(axis.text.y=element_text(size=14), axis.title=element_text(size=20),
+        axis.text.x=element_text(size=14, angle = 45, hjust = 1),
+        title=element_text(size=16), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        strip.text.x=element_text(size=18))+
+  guides(fill = FALSE)+
+  labs(x="", y = "Euclidean distance")
+```
+
+<img src="Figures/cached/metaT-disper-1.png" style="display: block; margin: auto;" />
 
 ## Run DESeq  
 
@@ -878,8 +948,6 @@ Manual can be found [here](file:///C:/Users/rprops/Desktop/metaG_lakeMI/Limno_la
 ```r
 # Format data for DESeq2
 ## Put count matrices in list including a count matrix for each bin 
-
-colnames(expr_cov_long)[colnames(expr_cov_long) == "Plus_reads"] <- "mapped_reads"
 expr_cov_bins <- list()
 for(i in 1:nlevels(expr_cov_long$Genome_ID)){
   expr_cov_bins[[i]] <-  expr_cov_long %>% 
@@ -1919,21 +1987,22 @@ print(p_blast_sdisc_merged)
 
 <img src="Figures/cached/merged-blast-approach-1-1.png" style="display: block; margin: auto;" />
 
+
 ```r
 # Plot for most abundant bin (B63)
-p_blast_sdisc_B63 <- blast_df_sum %>% dplyr::filter(bin == "B63_Su13.BD.MM110.DCMD_rebin1") %>% 
-  ggplot(aes(x = bin_xcoord, ..density.., fill = season, group = Sample,
-             shape = Depth))+
+p_blast_sdisc_B63 <- blast_df_sum %>% 
+  dplyr::filter(bin == "B63_Su13.BD.MM110.DCMD_rebin1") %>% 
+  ggplot(aes(x = bin_xcoord, ..density..))+
   theme_bw()+
-  facet_grid(season~Site)+
-  geom_density(alpha = 0.4, color = "black", size = 1)+
+  # facet_grid(season~Site)+
+  geom_density(alpha = 0.4, size = 0.75, color = "#333333")+
   scale_shape_manual("", values = c(21,22,24))+
-  scale_fill_brewer(palette = "Accent")+
-  guides(color = FALSE, fill = FALSE)+
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+  scale_color_brewer("", palette = "Accent")+
+  guides(fill = FALSE)+
+  theme(axis.text.y=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
-        axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.text.x = element_text(size = 14),
         strip.text=element_text(size=16),
         panel.grid.minor = element_blank(),
         legend.position = "bottom")+
@@ -1944,7 +2013,81 @@ p_blast_sdisc_B63 <- blast_df_sum %>% dplyr::filter(bin == "B63_Su13.BD.MM110.DC
 p_blast_sdisc_B63
 ```
 
-<img src="Figures/cached/merged-blast-approach-1-2.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/merged-blast-approach-1b-1.png" style="display: block; margin: auto;" />
+
+```r
+blast_df_sum$new_bin_name <- factor(blast_df_sum$new_bin_name, levels =
+                                      c("MAG5.SP-M110-DD","MAG2.FA-MLB-SN",
+                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+                                        "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
+                                        "MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
+                                        "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"))
+# Plot for most abundant bin (B63)
+p_blast_all_violin <- blast_df_sum %>% 
+  ggplot(aes(x = new_bin_name, y= Identity, fill = new_bin_name))+
+  theme_bw()+
+  # facet_grid(season~Site)+
+  # geom_density(alpha = 0.4, size = 0.75, color = "#333333")+
+  geom_violin(alpha = 0.4, size = 0.75, color = "#333333",
+              scale = "area", fill = "#333333")+
+  scale_color_brewer("", palette = "Paired")+
+  guides(fill = FALSE)+
+  # facet_grid(new_bin_name~., scales = "free")+
+  theme(axis.text.y=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(size = 14),
+        strip.text=element_text(size=16),
+        panel.grid.minor = element_blank(),
+        legend.position = "bottom")+
+  # scale_x_log10()+
+  ylab("% Identity")+
+  xlab("")+
+  scale_y_continuous(limits = c(90,100))+
+  guides(shape = FALSE)+
+  # stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1), 
+                 # geom="pointrange", color="#333333", size = 1)+
+  coord_flip()
+  # xlim(90,100)
+
+p_blast_all_violin
+```
+
+<img src="Figures/cached/merged-blast-approach-1b-2.png" style="display: block; margin: auto;" />
+
+```r
+# Plot for most abundant bin (B63)
+p_blast_all_dens <- blast_df_sum %>% 
+  ggplot(aes(x = bin_xcoord, shape = Sample))+
+  theme_bw()+
+  # facet_grid(season~Site)+
+  geom_density(alpha = 0.4, size = 0.75, color = "#333333")+
+  # geom_violin(alpha = 0.4, size = 0.75, color = "#333333",
+  #             scale = "area", fill = "#333333")+
+  scale_color_brewer("", palette = "Paired")+
+  guides(fill = FALSE)+
+  facet_grid(new_bin_name~., scales = "free")+
+  theme(axis.text.y=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(size = 14),
+        strip.text=element_text(size=16),
+        panel.grid.minor = element_blank(),
+        legend.position = "bottom")+
+  # scale_x_log10()+
+  ylab("% Identity")+
+  xlab("")+
+  scale_x_continuous(limits = c(90,100))+
+  guides(shape = FALSE)
+  # stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1), 
+                 # geom="pointrange", color="#333333", size = 1)+
+  # coord_flip()
+  # xlim(90,100)
+
+p_blast_all_dens
+```
+
+<img src="Figures/cached/merged-blast-approach-1b-3.png" style="display: block; margin: auto;" />
 
 
 ```r
@@ -2080,107 +2223,79 @@ print(p_sdisc_cum4)
 
 <img src="Figures/cached/summary-blast-approach-2-2.png" style="display: block; margin: auto;" />
 
-### Filter out bins using MClust  
+<!-- ### Filter out bins using MClust   -->
 
-** Here we will use model-based clustering to determine whether there is a MAG present or not in a certain sample. ** 
+<!-- ** Here we will use model-based clustering to determine whether there is a MAG present or not in a certain sample. **  -->
 
+<!-- ```{r filter-bins-1, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 6} -->
+<!-- # Perform gaussian mixture clustering on whole dataset. -->
+<!-- mod1 <- densityMclust(blast_df_sum$bin_xcoord) -->
+<!-- summary(mod1) -->
+<!-- par(mfrow=c(2,2)) -->
+<!-- plot(mod1, what = "density", data = blast_df_sum$bin_xcoord, breaks = 15) -->
+<!-- plot(mod1, what = "BIC") -->
+<!-- plot(mod1, what = "diagnostic", type = "cdf") -->
+<!-- plot(mod1, what = "diagnostic", type = "qq") -->
+<!-- par(mfrow=c(1,1)) -->
 
-```r
-# Perform gaussian mixture clustering on whole dataset.
-mod1 <- densityMclust(blast_df_sum$bin_xcoord)
-summary(mod1)
-```
+<!-- # Return cluster labels and plot the Sequence discrete populations again. -->
+<!-- blast_df_sum$cluster_label <- mod1$classification -->
+<!-- blast_df_sum$model_density <- mod1$density -->
 
-```
-## -------------------------------------------------------
-## Density estimation via Gaussian finite mixture modeling 
-## -------------------------------------------------------
-## 
-## Mclust V (univariate, unequal variance) model with 3 components:
-## 
-##  log.likelihood      n df      BIC      ICL
-##        -2219529 946589  8 -4439168 -4675702
-## 
-## Clustering table:
-##      1      2      3 
-## 329524 251916 365149
-```
+<!-- # Add cluster labels to blast_df_sum_comp -->
+<!-- tmp <- blast_df_sum[, c("bin_xcoord", "cluster_label", "model_density")] %>% distinct() -->
+<!-- tmp$bin_xcoord <- as.factor(tmp$bin_xcoord) -->
+<!-- blast_df_sum_comp$bin_xcoord <- as.factor(blast_df_sum_comp$bin_xcoord) -->
+<!-- blast_df_sum_comp <- left_join(blast_df_sum_comp, tmp, by = "bin_xcoord") -->
+<!-- blast_df_sum_comp$bin_xcoord <-  -->
+<!--   as.numeric(as.character(blast_df_sum_comp$bin_xcoord)) -->
+<!-- blast_df_sum_comp$cluster_label <- as.factor(blast_df_sum_comp$cluster_label) -->
 
-```r
-par(mfrow=c(2,2))
-plot(mod1, what = "density", data = blast_df_sum$bin_xcoord, breaks = 15)
-plot(mod1, what = "BIC")
-plot(mod1, what = "diagnostic", type = "cdf")
-plot(mod1, what = "diagnostic", type = "qq")
-```
+<!-- # Plot for global analysis -->
+<!-- p_blast_sdisc_glob_clust <- blast_df_sum_comp %>%  -->
+<!--   ggplot(aes(x = bin_xcoord, y = model_density,  -->
+<!--              color = cluster_label, group = Sample))+ -->
+<!--   theme_bw()+ -->
+<!--   geom_line(alpha = 1, size = 1)+ -->
+<!--   scale_color_brewer(palette = "Dark2")+ -->
+<!--   guides(color = FALSE, fill = FALSE)+ -->
+<!--   theme(axis.text=element_text(size=14), axis.title=element_text(size=20), -->
+<!--         title=element_text(size=20), legend.text=element_text(size=14), -->
+<!--         legend.background = element_rect(fill="transparent"), -->
+<!--         axis.text.x = element_text(angle = 45, hjust = 1), -->
+<!--         strip.text=element_text(size=16), -->
+<!--         panel.grid.minor = element_blank(), -->
+<!--         legend.position = "bottom")+ -->
+<!--   ylab("Density")+ -->
+<!--   xlab("Nucleotide identity (%)")+ -->
+<!--   xlim(75,100) -->
 
-<img src="Figures/cached/filter-bins-1-1.png" style="display: block; margin: auto;" />
+<!-- print(p_blast_sdisc_glob_clust) -->
 
-```r
-par(mfrow=c(1,1))
+<!-- ``` -->
 
-# Return cluster labels and plot the Sequence discrete populations again.
-blast_df_sum$cluster_label <- mod1$classification
-blast_df_sum$model_density <- mod1$density
+<!-- ```{r filter-bins-2, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 20} -->
+<!-- # Plot for most abundant bin (B63) -->
+<!-- p_blast_sdisc_B63_clust <- blast_df_sum_comp %>% dplyr::filter(bin == "B63_Su13.BD.MM110.DCMD_rebin1") %>%  -->
+<!--   ggplot(aes(x = bin_xcoord, y = n, color = cluster_label, group = Sample))+ -->
+<!--   theme_bw()+ -->
+<!--   facet_grid(Season~Site)+ -->
+<!--   geom_line(alpha = 1, size = 1)+ -->
+<!--   scale_color_brewer(palette = "Dark2")+ -->
+<!--   guides(color = FALSE, fill = FALSE)+ -->
+<!--   theme(axis.text=element_text(size=14), axis.title=element_text(size=20), -->
+<!--         title=element_text(size=20), legend.text=element_text(size=14), -->
+<!--         legend.background = element_rect(fill="transparent"), -->
+<!--         axis.text.x = element_text(angle = 45, hjust = 1), -->
+<!--         strip.text=element_text(size=16), -->
+<!--         panel.grid.minor = element_blank(), -->
+<!--         legend.position = "bottom")+ -->
+<!--   ylab("Density")+ -->
+<!--   xlab("Nucleotide identity (%)")+ -->
+<!--   xlim(75,100) -->
 
-# Add cluster labels to blast_df_sum_comp
-tmp <- blast_df_sum[, c("bin_xcoord", "cluster_label", "model_density")] %>% distinct()
-tmp$bin_xcoord <- as.factor(tmp$bin_xcoord)
-blast_df_sum_comp$bin_xcoord <- as.factor(blast_df_sum_comp$bin_xcoord)
-blast_df_sum_comp <- left_join(blast_df_sum_comp, tmp, by = "bin_xcoord")
-blast_df_sum_comp$bin_xcoord <- 
-  as.numeric(as.character(blast_df_sum_comp$bin_xcoord))
-blast_df_sum_comp$cluster_label <- as.factor(blast_df_sum_comp$cluster_label)
-
-# Plot for global analysis
-p_blast_sdisc_glob_clust <- blast_df_sum_comp %>% 
-  ggplot(aes(x = bin_xcoord, y = model_density, 
-             color = cluster_label, group = Sample))+
-  theme_bw()+
-  geom_line(alpha = 1, size = 1)+
-  scale_color_brewer(palette = "Dark2")+
-  guides(color = FALSE, fill = FALSE)+
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-        title=element_text(size=20), legend.text=element_text(size=14),
-        legend.background = element_rect(fill="transparent"),
-        axis.text.x = element_text(angle = 45, hjust = 1),
-        strip.text=element_text(size=16),
-        panel.grid.minor = element_blank(),
-        legend.position = "bottom")+
-  ylab("Density")+
-  xlab("Nucleotide identity (%)")+
-  xlim(75,100)
-
-print(p_blast_sdisc_glob_clust)
-```
-
-<img src="Figures/cached/filter-bins-1-2.png" style="display: block; margin: auto;" />
-
-
-```r
-# Plot for most abundant bin (B63)
-p_blast_sdisc_B63_clust <- blast_df_sum_comp %>% dplyr::filter(bin == "B63_Su13.BD.MM110.DCMD_rebin1") %>% 
-  ggplot(aes(x = bin_xcoord, y = n, color = cluster_label, group = Sample))+
-  theme_bw()+
-  facet_grid(Season~Site)+
-  geom_line(alpha = 1, size = 1)+
-  scale_color_brewer(palette = "Dark2")+
-  guides(color = FALSE, fill = FALSE)+
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-        title=element_text(size=20), legend.text=element_text(size=14),
-        legend.background = element_rect(fill="transparent"),
-        axis.text.x = element_text(angle = 45, hjust = 1),
-        strip.text=element_text(size=16),
-        panel.grid.minor = element_blank(),
-        legend.position = "bottom")+
-  ylab("Density")+
-  xlab("Nucleotide identity (%)")+
-  xlim(75,100)
-
-print(p_blast_sdisc_B63_clust)
-```
-
-<img src="Figures/cached/filter-bins-2-1.png" style="display: block; margin: auto;" />
+<!-- print(p_blast_sdisc_B63_clust) -->
+<!-- ``` -->
 
 ### Compare blast to bwa results  
 
@@ -3189,7 +3304,7 @@ geneAssign_df_wide_transcripts_depth %>%
   # ylim(0,40)
 ```
 
-### Black Queen Hypothesis
+### Black Queen Hypothesis?
 
 
 ```r
@@ -3305,8 +3420,8 @@ COG_profiles_sub_cnt$cog_id <- factor(COG_profiles_sub_cnt$cog_id,
 
 # # make heatmap
 # hm_DOC1 <- complete(COG_profiles_sub_cnt, cog_id,
-#          fill = list(sum_counts = 0)) %>% 
-#   # dplyr::filter(Genome %in% selected_genomes) %>% 
+#          fill = list(sum_counts = 0)) %>%
+#   # dplyr::filter(Genome %in% selected_genomes) %>%
 #   ggplot(aes(y = Strain_interaction, x= cog_id)) + # x and y axes => Var1 and Var2
 #   geom_tile(aes(fill = sum_counts), col = "lightgrey") + # background colours are mapped according to the value column
 #   geom_text(aes(label = round(sum_counts, 0)), size = 3) + # write the values
@@ -3316,18 +3431,18 @@ COG_profiles_sub_cnt$cog_id <- factor(COG_profiles_sub_cnt$cog_id,
 #   scale_fill_distiller(palette="YlOrRd", na.value="lightgrey", trans = "sqrt",
 #                        direction = 1) +
 #   theme(panel.grid.major.x=element_blank(), #no gridlines
-#         panel.grid.minor.x=element_blank(), 
-#         panel.grid.major.y=element_blank(), 
+#         panel.grid.minor.x=element_blank(),
+#         panel.grid.major.y=element_blank(),
 #         panel.grid.minor.y=element_blank(),
 #         panel.background=element_rect(fill="white"), # background=white
 #         axis.text.x = element_text(angle=45, hjust = 1, vjust=1, size = 12,face = "bold"),
 #         plot.title = element_text(size=20,face="bold"),
 #         axis.text.y = element_text(size = 12,face = "bold"))+
-#   theme(legend.title=element_text(face="bold", size=14)) + 
+#   theme(legend.title=element_text(face="bold", size=14)) +
 #   scale_x_discrete(name="") +
 #   scale_y_discrete(name="") +
 #   labs(fill="Gene\ncount")
-# 
+
 # print(hm_DOC1)
 
 # Barplot
@@ -3642,16 +3757,18 @@ panG_MAG$aa_sequence <- gsub("-", "", panG_MAG$aa_sequence)
 
 # Import KEGG annotation through KAAS (http://www.genome.jp/tools/kaas/) of amino
 # acid sequences
-ko_files <- list.files(".", pattern = "KO-annotation.tsv",
+ko_files <- list.files(".", pattern = "KO_annot",
                        recursive = TRUE)
 panG_ko <- data.frame()
 for(ko_file in ko_files){
-  tmp <- read.delim(ko_file, fill = TRUE)
-  tmp <- data.frame(tmp, Genome = do.call(rbind, strsplit(ko_file, "_"))[,2])
+  tmp <- data.table::fread(ko_file, fill = TRUE, sep = "\t", header = FALSE)
+  tmp <- data.frame(tmp, Genome = do.call(rbind, strsplit(ko_file, "-"))[,2])
   if(ko_file == ko_files[1]) panG_ko <- tmp else{
     panG_ko <- rbind(panG_ko, tmp)
   }
 }
+panG_ko$Genome <- gsub(".txt","",panG_ko$Genome)
+colnames(panG_ko)[1:2] <- c("unique_gene_callers_id", "ko_id")
 panG_ko <- panG_ko[panG_ko$ko_id != "",]
 panG_ko$ko_id <- gsub(" ","", panG_ko$ko_id)
 
@@ -3661,63 +3778,205 @@ panG_ko <- dplyr::left_join(panG_ko, ko_path_df, by = "ko_id")
 # join with corresponding COG ids
 panG_ko_cog <- dplyr::left_join(panG_MAG, panG_ko, 
                                 by = "unique_gene_callers_id")
-```
 
-```
-## Error: `by` can't contain join column `unique_gene_callers_id` which is missing from RHS
-```
-
-```r
 # Shorten/change ko_level_B annotation a bit
 panG_ko_cog$ko_level_B[panG_ko_cog$ko_level_B == "Cellular community - prokaryotes"] <- "Biofilm formation & quorum sensing"
-```
-
-```
-## Error in panG_ko_cog$ko_level_B[panG_ko_cog$ko_level_B == "Cellular community - prokaryotes"] <- "Biofilm formation & quorum sensing": object 'panG_ko_cog' not found
-```
-
-```r
 panG_ko_cog$ko_level_B[panG_ko_cog$ko_level_B == "Xenobiotics biodegradation and metabolism"] <- "Xenobiotics degradation"
-```
-
-```
-## Error in panG_ko_cog$ko_level_B[panG_ko_cog$ko_level_B == "Xenobiotics biodegradation and metabolism"] <- "Xenobiotics degradation": object 'panG_ko_cog' not found
-```
-
-```r
 panG_ko_cog$ko_level_C[panG_ko_cog$ko_level_C == "Biofilm formation - Escherichia coli "] <- "Biofilm formation"
-```
-
-```
-## Error in panG_ko_cog$ko_level_C[panG_ko_cog$ko_level_C == "Biofilm formation - Escherichia coli "] <- "Biofilm formation": object 'panG_ko_cog' not found
-```
-
-```r
 panG_ko_cog$ko_level_C[panG_ko_cog$ko_level_C == "Biofilm formation - Pseudomonas aeruginosa "] <- "Biofilm formation"
-```
 
-```
-## Error in panG_ko_cog$ko_level_C[panG_ko_cog$ko_level_C == "Biofilm formation - Pseudomonas aeruginosa "] <- "Biofilm formation": object 'panG_ko_cog' not found
-```
+panG_ko$ko_level_C[panG_ko$ko_level_C == "Biofilm formation - Escherichia coli "] <- "Biofilm formation"
+panG_ko$ko_level_C[panG_ko$ko_level_C == "Biofilm formation - Pseudomonas aeruginosa "] <- "Biofilm formation"
 
-```r
 # Add column denoting whether it is core/mixed or accessory
-panG_ko_cog$bin_core <- factor(panG_ko_cog$bin_name == "CORE_PC" | panG_ko_cog$bin_name == "Mixed_PCs")
-```
-
-```
-## Error in factor(panG_ko_cog$bin_name == "CORE_PC" | panG_ko_cog$bin_name == : object 'panG_ko_cog' not found
-```
-
-```r
+panG_ko_cog$bin_core <- factor(panG_ko_cog$bin_name == "CORE_PC" | panG_ko_cog$bin_name == "MIXED_PCs")
 panG_ko_cog$bin_core <- plyr::revalue(panG_ko_cog$bin_core, replace = c("TRUE" = "CORE/Mixed", "FALSE" = "Accessory"))
 ```
 
-```
-## Error in plyr::revalue(panG_ko_cog$bin_core, replace = c(`TRUE` = "CORE/Mixed", : object 'panG_ko_cog' not found
+
+```r
+# Perform hypergeometric test to see if there is functional enrichment in the pangenome
+for(i_genome in 1:length(unique(panG_ko$Genome))){
+  bg_gsea <- panG_ko %>% dplyr::filter(Genome == unique(panG_ko$Genome)[i_genome]) %>% 
+  dplyr::select(ko_level_C,unique_gene_callers_id) %>% 
+  distinct()
+  
+  panG_gseq <- panG_ko_cog %>% 
+    dplyr::filter(Genome == unique(panG_ko$Genome)[i_genome] & 
+                    bin_core == "Accessory") %>%
+    dplyr::select(ko_level_C,unique_gene_callers_id) %>% 
+    distinct()
+  
+  panG_gsea <- enricher(gene = panG_gseq$unique_gene_callers_id,
+         universe = bg_gsea$unique_gene_callers_id, 
+         TERM2GENE = bg_gsea,
+         pvalueCutoff = 0.05,
+         qvalueCutoff = 0.2)
+
+  tmp_gseq <- data.frame(panG_gsea@result, Genome = unique(panG_ko$Genome)[i_genome])
+  if(i_genome == 1) results_gseq <- tmp_gseq else {
+    results_gseq <- rbind(results_gseq, tmp_gseq)
+  }
+  genes_per_gseq <- panG_gseq %>% 
+     dplyr::filter(ko_level_C %in% panG_gsea@result$Description) %>%
+     group_by(ko_level_C) %>% 
+     summarize(Counts = n())
+  genes_per_gseq <- data.frame(genes_per_gseq, 
+                               Genome = unique(panG_ko$Genome)[i_genome])
+  if(i_genome == 1) results_pergene <- genes_per_gseq else {
+    results_pergene <- rbind(results_pergene, genes_per_gseq)
+  }
+}
+# Calculate fraction of enriched genes vs. annotated panG genes
+results_pergene_sum <- results_pergene %>% 
+  group_by(Genome) %>% 
+  summarize(enrich_counts = sum(Counts))
+
+annotated_fraction_panG <- panG_ko_cog %>% 
+  dplyr::filter(bin_core == "Accessory") %>% 
+  group_by(genome_name) %>% 
+  dplyr::select(unique_gene_callers_id) %>% 
+  distinct() %>% 
+  summarize(panG_counts = n())
 ```
 
+```
+## Adding missing grouping variables: `genome_name`
+```
 
+```r
+print(annotated_fraction_panG)
+```
+
+```
+## # A tibble: 19 x 2
+##    genome_name       panG_counts
+##    <chr>                   <int>
+##  1 MAG1_FA_MLB_DN            551
+##  2 MAG10_SU_M15_SN           658
+##  3 MAG2_FA_MLB_SN           1020
+##  4 MAG3_FA_MLB_SN            537
+##  5 MAG4_FA_M110_DN           647
+##  6 MAG5_SP_M110_DD           277
+##  7 MAG6_SP_M15_SD            554
+##  8 MAG7_SU_MLB_SD            120
+##  9 MAG8_SU_M110_DCMD         288
+## 10 MAG9_SU_M15_SN            234
+## 11 REF_Lim_103DPR2           333
+## 12 REF_Lim_2KL27             192
+## 13 REF_Lim_2KL3              674
+## 14 REF_Lim_63ED37_2          200
+## 15 REF_Lim_DM1               709
+## 16 REF_Lim_IID5              560
+## 17 REF_Lim_Rim11             287
+## 18 REF_Lim_Rim28             447
+## 19 REF_Lim_Rim47             187
+```
+
+```r
+results_pergene_sum <- left_join(results_pergene_sum, annotated_fraction_panG,
+                                 by = c("Genome" = "genome_name"))
+
+# Merge actual unique gene counts per gsea category with the accessory genome sizes
+results_pergene_sum <- results_pergene_sum %>% 
+  mutate(frac_enrich = enrich_counts/panG_counts)
+
+print(results_pergene_sum)
+```
+
+```
+## # A tibble: 10 x 4
+##    Genome            enrich_counts panG_counts frac_enrich
+##    <chr>                     <int>       <int>       <dbl>
+##  1 MAG1_FA_MLB_DN               87         551      0.158 
+##  2 MAG10_SU_M15_SN              91         658      0.138 
+##  3 MAG2_FA_MLB_SN              180        1020      0.176 
+##  4 MAG3_FA_MLB_SN               53         537      0.0987
+##  5 MAG4_FA_M110_DN             144         647      0.223 
+##  6 MAG5_SP_M110_DD              14         277      0.0505
+##  7 MAG6_SP_M15_SD               32         554      0.0578
+##  8 MAG7_SU_MLB_SD               15         120      0.125 
+##  9 MAG8_SU_M110_DCMD            66         288      0.229 
+## 10 MAG9_SU_M15_SN                5         234      0.0214
+```
+
+```r
+# Make plot
+results_gseq$Genome <- gsub("_","-",results_gseq$Genome)
+results_gseq$Genome <- gsub("-FA",".FA",results_gseq$Genome)
+results_gseq$Genome <- gsub("-SU",".SU",results_gseq$Genome)
+results_gseq$Genome <- gsub("-SP",".SP",results_gseq$Genome)
+results_gseq$Genome <- factor(results_gseq$Genome, levels =
+                                      c("MAG5.SP-M110-DD","MAG2.FA-MLB-SN",
+                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+                                        "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
+                                        "MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
+                                        "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"))
+
+p_panG5 <- results_gseq %>% 
+  ggplot(aes(x = Description, fill = Genome, y = Count))+
+  geom_bar(color = "black", stat = "identity")+
+  theme_bw()+
+  scale_fill_brewer(palette="Paired")+
+  ylab("Number of genes") + xlab("")+
+  facet_grid(.~Genome, scales = "free")+
+  theme(axis.text.y=element_text(size=12.5), axis.title.y =element_text(size = 18),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(size=12.5, angle = 45, hjust = 1),
+        plot.margin = unit(c(1.1,1.1,1.1,1.1), "cm"),
+        strip.text = element_text(size = 12))+
+  guides(fill = FALSE)
+
+# print(p_panG5)
+
+# Make heatmap instread
+
+results_gseq_wide <- complete(results_gseq, Genome, Description,
+         fill = list(Count = 0)) %>% 
+  dplyr::select(Description, Genome, Count) %>% 
+  spread(., Description, Count)
+
+
+dat <- results_gseq_wide[,2:ncol(results_gseq_wide)]  # numerical columns
+rownames(dat) <- results_gseq_wide$Genome
+# row.order <- hclust(dist(dat))$order # clustering
+col.order <- hclust(dist(t(dat)))$order
+dat_new <- dat[, col.order] # re-order matrix accoring to clustering
+rownames(dat_new) <- results_gseq_wide$Genome
+  
+df_molten_dat <- melt(as.matrix(dat_new)) # reshape into dataframe
+names(df_molten_dat)[c(1:2)] <- c("Genome", "Description")
+
+
+p_panG6 <- complete(df_molten_dat, Genome, Description,
+         fill = list(value = 0)) %>%
+  # dplyr::filter(Genome %in% selected_genomes) %>%
+  ggplot(aes(x = Genome, y = Description)) + # x and y axes => Var1 and Var2
+  geom_tile(aes(fill = value), col = "lightgrey") + # background colours are mapped according to the value column
+  geom_text(aes(label = round(value, 0)), size = 4) + # write the values
+  # scale_fill_gradientn(colours = terrain.colors(10), trans = "log1p")+
+  # scale_fill_gradient(low = "lightblue", high = "darkslategray", na.value="white",
+                      # trans = "log1p", limits=c(1, 40)) +
+  scale_fill_distiller(palette="YlOrRd", na.value="lightgrey", trans = "sqrt",
+                       direction = 1) +
+  theme(panel.grid.major.x=element_blank(), #no gridlines
+        panel.grid.minor.x=element_blank(),
+        panel.grid.major.y=element_blank(),
+        panel.grid.minor.y=element_blank(),
+        panel.background=element_rect(fill="white"), # background=white
+        axis.text.x = element_text(angle=45, 
+                                   hjust = 0, vjust=0, size = 12,face = "bold"),
+        plot.title = element_text(size=20,face="bold"),
+        axis.text.y = element_text(size = 12,face = "bold"))+
+  theme(legend.title=element_text(face="bold", size=14)) +
+  scale_x_discrete(name="", position = "top") +
+  scale_y_discrete(name="") +
+  labs(fill="Gene\ncount")
+
+print(p_panG6)
+```
+
+<img src="Figures/cached/panG-2-1.png" style="display: block; margin: auto;" />
 
 # Phenotypic diversity
 
@@ -3758,14 +4017,14 @@ p_MAG_Pdiv2 <- ggplot(results_pd, aes(x = Season, y = D2))+
 dodge <- position_dodge(width=0.6)  
 p_MAG_Pdiv3 <- ggplot(results_pd, aes(x = new_bin_name, y = D2))+
   theme_bw()+
-  scale_fill_brewer(palette = "Accent")+
-  geom_point(size = 4, color = "black", 
-             alpha = 0.5, aes(fill = Season, shape = Depth),
-             position=dodge)+
+  scale_fill_brewer("",palette = "Accent")+
+  # geom_point(size = 4, color = "black", 
+             # alpha = 0.5, aes(fill = Season, shape = Depth),
+             # position=dodge)+
   geom_boxplot(alpha = 0.4, width = 0.4, outlier.shape = NA, 
                aes(fill = Season),
-               position=dodge, size = 1.05)+
-  scale_shape_manual(values = c(21,24,23))+
+               position=dodge)+
+  scale_shape_manual("",values = c(21,24,23))+
   # geom_boxplot(alpha = 0.4, width = 0.2, outlier.shape = NA)+
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
       title=element_text(size=20), legend.text=element_text(size=12),
@@ -3787,77 +4046,133 @@ print(p_MAG_Pdiv3)
 
 <img src="Figures/cached/PhenoD-2-1.png" style="display: block; margin: auto;" />
 
-### Example expression profiles
+### Match with abundance
+
 
 ```r
-new_bin_names2 <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(3,8:10)]; new_bin_names2$IMG_taxID <- as.character(new_bin_names2$IMG_taxID)
-expr_cov_long_sb <- left_join(expr_cov_long, new_bin_names2, by = c("Genome_ID" = "IMG_taxID"))
+# Merge with abundance data
+sel_abund <- c("new_bin_name","Sample",
+               "norm_lower_rel_abundance",
+               "norm_mean_rel_abundance",
+               "norm_upper_rel_abundance",
+               "MGT","Topt","Lineage")
+results_pd_abund <- dplyr::left_join(results_pd, data_total_abund[, sel_abund],
+                         by = c("new_bin_name", "Sample"))
 
-p_Pdist <- expr_cov_long_sb %>% 
-  dplyr::filter(new_bin_name %in% c("MAG6.SP-M15-SD", 
-                                    "MAG8.SU-M110-DCMD",
-                                    "MAG4.FA-M110-DN") &
-                                   Sample == "Fa13.BD.MM15.SD") %>%
-  group_by(new_bin_name) %>% 
-  dplyr::mutate(rank = rank(-mapped_reads/sum(mapped_reads))) %>%
-  dplyr::mutate(mapped_reads_norm = mapped_reads/sum(mapped_reads)) %>%
-  ggplot(aes(x = rank, y = mapped_reads_norm, color = new_bin_name))+
-  geom_line(size = 2, linetype = 2)+
+p_MAG_Pdiv4 <- ggplot(results_pd_abund, aes(y = D2, x = norm_mean_rel_abundance))+
   theme_bw()+
-  scale_color_brewer("", palette = "Accent")+
-  theme(axis.text=element_text(size=12), axis.title=element_text(size=12),
-      title=element_text(size=12), legend.text=element_text(size=12),
-      legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
-      strip.text=element_text(size=12), legend.position = "bottom",
-      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab("Relative number of mapped reads")+
-  xlab("Genes ranked by mapped reads")+
-  scale_y_continuous(labels=scaleFUN)+
-  xlim(0,300)
-  # coord_trans(y = "sqrt")
-
-print(p_Pdist)
-```
-
-<img src="Figures/cached/PhenoD-3-1.png" style="display: block; margin: auto;" />
-
-```r
-# Add 16S-estimated taxonomic diversity
-diversity_df_phy <- data.frame(Sample = rownames(diversity_df_phy), diversity_df_phy)
-diversity16S_df_phy <- diversity_df_phy[grep(".1", diversity_df_phy$Sample,
-                                             fixed = TRUE), ]
-diversity16S_df_phy$Sample <- gsub(".1.renamed", "", diversity16S_df_phy$Sample)
-colnames(diversity16S_df_phy)[2:ncol(diversity16S_df_phy)] <- paste("16S", colnames(diversity16S_df_phy)[2:ncol(diversity16S_df_phy)], sep = "_")
-results_pd_16S <- left_join(results_pd, diversity16S_df_phy, by = "Sample")
-
-# Plot taxonomic vs. phenotypic diversity
-p_MAG_Pdiv3 <- ggplot(results_pd_16S, aes(x = `16S_D2`, y = D2, fill = new_bin_name.x))+
-  theme_bw()+
-  scale_fill_brewer(palette = "Paired")+
-  scale_color_brewer(palette = "Paired")+
-  geom_point(size = 4, color = "black", alpha = 0.7, shape = 21)+
-  scale_shape_manual(values = c(21,24,23))+
+    geom_point(size = 4, color = "black", shape = 21,
+             alpha = 0.5, aes(fill = new_bin_name))+
+  scale_fill_brewer("",palette = "Paired")+
+  # geom_boxplot(alpha = 0.4, width = 0.2, outlier.shape = NA)+
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
       title=element_text(size=20), legend.text=element_text(size=12),
       legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+      axis.text.x = element_text(size = 14),
       strip.text=element_text(size=14), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Limnohabitans population\n phenotypic diversity (D2)"))+
-  guides(shape=FALSE)+
-  xlab("")+
-  facet_grid(Site~new_bin_name.x)+
-  geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+
-  scale_y_continuous(labels=scaleFUN)+
-  geom_smooth(method = "loess", aes(color = new_bin_name.x))
-  # coord_trans(y = "sqrt")
+  ylab(expression("Transcriptional diversity (D"[2]*")"))+
+  xlab("Mean normalized abundance")+
+  # guides(
+  #        fill = guide_legend(override.aes=list(colour=brewer.pal(10,"Paired"))))
+  # facet_grid(Season~Site, scales ="free")
+  # geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+
+  coord_trans(y = "log10", x = "log10")
 
-print(p_MAG_Pdiv3)
+print(p_MAG_Pdiv4)
 ```
 
-```
-## Error in combine_vars(data, params$plot_env, cols, drop = params$drop): At least one layer must contain all variables used for facetting
+<img src="Figures/cached/PhenoD-2b-1.png" style="display: block; margin: auto;" />
+
+```r
+p_MAG_Pdiv5 <- ggplot(results_pd_abund, aes(y = D2, x = log(2)/MGT))+
+  theme_bw()+
+    geom_point(size = 4, color = "black", shape = 21,
+             alpha = 0.5, aes(fill = new_bin_name))+
+  scale_fill_brewer("",palette = "Paired")+
+  # geom_boxplot(alpha = 0.4, outlier.shape = NA, aes(fill = new_bin_name), 
+               # width = 0.005)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 14),
+      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(expression("Transcriptional diversity (D"[2]*")"))+
+  xlab(expression("Maximum growth rate (µ"^-1*")"))+
+  stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1), 
+                 geom="pointrange", color="#333333", size = 1)+
+  guides(
+         fill = guide_legend(override.aes=list(colour=brewer.pal(10,"Paired"))))
+  # facet_grid(.~Lineage, scales ="free")
+  # geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+
+  # coord_trans(x = "log10")
+
+print(p_MAG_Pdiv5)
 ```
 
-<img src="Figures/cached/PhenoD-3-2.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/PhenoD-2b-2.png" style="display: block; margin: auto;" />
+
+<!-- ### Example expression profiles -->
+<!-- ```{r PhenoD-3, dpi = 500, warning = FALSE, fig.width = 12, fig.height = 12} -->
+<!-- new_bin_names2 <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(3,8:10)]; new_bin_names2$IMG_taxID <- as.character(new_bin_names2$IMG_taxID) -->
+<!-- expr_cov_long_sb <- left_join(expr_cov_long, new_bin_names2, by = c("Genome_ID" = "IMG_taxID")) -->
+
+<!-- p_Pdist <- expr_cov_long_sb %>% -->
+<!--   dplyr::filter(new_bin_name %in% c("MAG6.SP-M15-SD", -->
+<!--                                     "MAG8.SU-M110-DCMD", -->
+<!--                                     "MAG4.FA-M110-DN") & -->
+<!--                                    Sample == "Fa13.BD.MM15.SD") %>% -->
+<!--   group_by(new_bin_name) %>% -->
+<!--   dplyr::mutate(rank = rank(-mapped_reads/sum(mapped_reads))) %>% -->
+<!--   dplyr::mutate(mapped_reads_norm = mapped_reads/sum(mapped_reads)) %>% -->
+<!--   ggplot(aes(x = rank, y = mapped_reads_norm, color = new_bin_name))+ -->
+<!--   geom_line(size = 2, linetype = 2)+ -->
+<!--   theme_bw()+ -->
+<!--   scale_color_brewer("", palette = "Accent")+ -->
+<!--   theme(axis.text=element_text(size=12), axis.title=element_text(size=12), -->
+<!--       title=element_text(size=12), legend.text=element_text(size=12), -->
+<!--       legend.background = element_rect(fill="transparent"), -->
+<!--       axis.text.x = element_text(size = 12, angle = 45, hjust = 1), -->
+<!--       strip.text=element_text(size=12), legend.position = "bottom", -->
+<!--       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+ -->
+<!--   ylab("Relative number of mapped reads")+ -->
+<!--   xlab("Genes ranked by mapped reads")+ -->
+<!--   scale_y_continuous(labels=scaleFUN)+ -->
+<!--   xlim(0,300) -->
+<!--   # coord_trans(y = "sqrt") -->
+
+<!-- print(p_Pdist) -->
+
+<!-- # Add 16S-estimated taxonomic diversity -->
+<!-- diversity_df_phy <- data.frame(Sample = rownames(diversity_df_phy), diversity_df_phy) -->
+<!-- diversity16S_df_phy <- diversity_df_phy[grep(".1", diversity_df_phy$Sample, -->
+<!--                                              fixed = TRUE), ] -->
+<!-- diversity16S_df_phy$Sample <- gsub(".1.renamed", "", diversity16S_df_phy$Sample) -->
+<!-- colnames(diversity16S_df_phy)[2:ncol(diversity16S_df_phy)] <- paste("16S", colnames(diversity16S_df_phy)[2:ncol(diversity16S_df_phy)], sep = "_") -->
+<!-- results_pd_16S <- left_join(results_pd, diversity16S_df_phy, by = "Sample") -->
+
+<!-- # Plot taxonomic vs. phenotypic diversity -->
+<!-- p_MAG_Pdiv3 <- ggplot(results_pd_16S, aes(x = `16S_D2`, y = D2, fill = new_bin_name.x))+ -->
+<!--   theme_bw()+ -->
+<!--   scale_fill_brewer(palette = "Paired")+ -->
+<!--   scale_color_brewer(palette = "Paired")+ -->
+<!--   geom_point(size = 4, color = "black", alpha = 0.7, shape = 21)+ -->
+<!--   scale_shape_manual(values = c(21,24,23))+ -->
+<!--   theme(axis.text=element_text(size=14), axis.title=element_text(size=20), -->
+<!--       title=element_text(size=20), legend.text=element_text(size=12), -->
+<!--       legend.background = element_rect(fill="transparent"), -->
+<!--       axis.text.x = element_text(size = 14, angle = 45, hjust = 1), -->
+<!--       strip.text=element_text(size=14), legend.position = "bottom", -->
+<!--       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+ -->
+<!--   ylab(paste0("Limnohabitans population\n phenotypic diversity (D2)"))+ -->
+<!--   guides(shape=FALSE)+ -->
+<!--   xlab("")+ -->
+<!--   facet_grid(Site~new_bin_name.x)+ -->
+<!--   geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+ -->
+<!--   scale_y_continuous(labels=scaleFUN)+ -->
+<!--   geom_smooth(method = "loess", aes(color = new_bin_name.x)) -->
+<!--   # coord_trans(y = "sqrt") -->
+
+<!-- print(p_MAG_Pdiv3) -->
+<!-- ``` -->
