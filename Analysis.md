@@ -871,7 +871,7 @@ expr_cov_long <- expr_cov_long %>% distinct()
 
 ```r
 colnames(expr_cov_long)[colnames(expr_cov_long) == "Plus_reads"] <- "mapped_reads"
-# For each MAG calculat the dissimarilties in expression profiles between samples
+# For each MAG calculate the dissimarilties in expression profiles between samples
 for(i in 1:nlevels(expr_cov_long$Genome_ID)){
   tmp_table <-  expr_cov_long %>% 
   dplyr::filter(Genome_ID == levels(expr_cov_long$Genome_ID)[i]) %>% 
@@ -934,6 +934,74 @@ results_diss %>%
 ```
 
 <img src="Figures/cached/metaT-disper-1.png" style="display: block; margin: auto;" />
+
+
+
+```r
+# For each MAG calculate the Z-score of each gene in each sample
+for(i in 1:nlevels(expr_cov_long$Genome_ID)){
+  tmp_table <-  expr_cov_long %>% 
+  dplyr::filter(Genome_ID == levels(expr_cov_long$Genome_ID)[i]) %>% 
+  dplyr::select(gene_oid, Sample, mapped_reads) %>% 
+  tidyr::spread(Sample, mapped_reads)
+  r.geneoid <- tmp_table$gene_oid
+  min_sample_size <- min(colSums(tmp_table[,-1]))
+  tmp_table <- vegan::rrarefy(t(tmp_table[, -1]), min_sample_size)
+  # Remove genes with less than 100 counts over 24 samples
+  tmp_table <- tmp_table[, colSums(tmp_table)>100]
+  tmp_table <- base::scale(tmp_table)
+  tmp_zscore <- tidyr::gather(data.frame(tmp_table), gene, Zscore)
+  if(i == 1) results_Zscore <- data.frame(Zscore = tmp_zscore$Zscore, 
+                           Genome = levels(expr_cov_long$Genome_ID)[i]) else {
+    results_Zscore <- rbind(results_Zscore, 
+                          data.frame(Zscore = tmp_zscore$Zscore,
+                                     Genome = levels(expr_cov_long$Genome_ID)[i]))
+                           }
+  remove(tmp_table, tmp_zscore)
+}
+
+# Merge with correct sample names
+new_bin_names2 <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(3,8:10)]; 
+new_bin_names2$IMG_taxID <- as.character(new_bin_names2$IMG_taxID)
+results_Zscore <- left_join(results_Zscore, new_bin_names2, 
+                          by = c("Genome" = "IMG_taxID"))
+results_Zscore$new_bin_name <- as.character(results_Zscore$new_bin_name)
+results_Zscore$new_bin_name <- factor(results_Zscore$new_bin_name, levels =
+                                      c("MAG5.SP-M110-DD","MAG2.FA-MLB-SN",
+                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+                                        "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
+                                        "MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
+                                        "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"))
+
+# Plot
+results_Zscore %>% 
+  ggplot(aes(x = new_bin_name, y = abs(Zscore), fill = new_bin_name))+
+  # geom_jitter(size = 2.5,
+             # color = "black", shape = 21, width = 0.1, alpha = 0.5)+
+  geom_violin(alpha = 0.4, adjust = 1, draw_quantiles = TRUE)+
+  stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1), 
+                 geom="pointrange", color="#333333", size = 1.05)+
+  # ylim(0,120)+
+  scale_fill_manual("",
+                    values = c(rep(rgb(red=t(col2rgb("#deebf7ff")), 
+                                       maxColorValue  = 255), 2), 
+                               rep(rgb(red=t(col2rgb("#c6dbefff")), 
+                                       maxColorValue  = 255),5),
+                               rgb(red=t(col2rgb("#9ecae1ff")), maxColorValue  = 255),
+                               rep(rgb(red=t(col2rgb("#6baed6ff")), 
+                                       maxColorValue  = 255),2)
+                              ))+
+  theme_bw()+
+  theme(axis.text.y=element_text(size=14), axis.title=element_text(size=20),
+        axis.text.x=element_text(size=14, angle = 45, hjust = 1),
+        title=element_text(size=16), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        strip.text.x=element_text(size=18))+
+  guides(fill = FALSE)+
+  labs(x="", y = "Zscore")
+```
+
+<img src="Figures/cached/metaT-Zscore-1.png" style="display: block; margin: auto;" />
 
 ## Run DESeq  
 
@@ -1279,6 +1347,70 @@ print(p_deseq_1)
 # print(p_deseq_2)
 ```
 
+### Overview figure
+
+
+```r
+res_deseq_anott_changed <- res_deseq_anott
+res_deseq_anott_changed$new_bin_name <- factor(res_deseq_anott_changed$new_bin_name,
+                                               levels =
+                                      c("MAG5.SP-M110-DD","MAG2.FA-MLB-SN",
+                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+                                        "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
+                                        "MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
+                                        "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"))
+
+  
+p_deseq_overview <- res_deseq_anott_changed %>% 
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
+  dplyr::filter(Design == "~ Season + Site" 
+                & Comparison == "Muskegon Lake\nVs\nM110") %>% 
+  ggplot2::ggplot(aes(x = new_bin_name, y= abs(log2FoldChange)))+
+  geom_boxplot(fill = "#333333", alpha = 0.5, outlier.shape = NA, size = 1.5)+
+  theme_bw()+
+  scale_fill_brewer("", palette = "Paired")+
+  theme(axis.text.x =  element_text(size = 10.5, angle = 45, hjust =1),
+        axis.text.y = element_text(size = 14),
+        legend.title = element_blank(),
+        axis.title = element_text(size = 14),
+        strip.text = element_text(size = 14))+
+  ylab("log2FoldChange")+
+  ylim(0,5)+
+  xlab("")+
+  guides(fill = FALSE)+
+  ggtitle("Muskegon lake vs. Lake Michigan M110")
+
+print(p_deseq_overview)
+```
+
+<img src="Figures/cached/DEseq-overview-1.png" style="display: block; margin: auto;" />
+
+```r
+p_deseq_overview2 <- res_deseq_anott_changed %>% 
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
+  dplyr::filter(Design == "~ Site + Season" 
+                & Comparison == "Fall-Spring") %>% 
+  ggplot2::ggplot(aes(x = new_bin_name, y= abs(log2FoldChange)))+
+  geom_boxplot(fill = "#333333", alpha = 0.5, outlier.shape = NA, size = 1.25)+
+  # geom_violin(fill = "#333333", alpha = 0.5, scale = "count")+
+  theme_bw()+
+  # scale_fill_brewer("", palette = "Paired")+
+  theme(axis.text.x =  element_text(size = 14, angle = 45, hjust =1),
+        axis.text.y = element_text(size = 14),
+        legend.title = element_blank(),
+        axis.title = element_text(size = 14),
+        strip.text = element_text(size = 14))+
+  ylab("log2FoldChange")+
+  ylim(0,5)+
+  xlab("")+
+  guides(fill = FALSE)
+  # stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1),
+  #                geom="pointrange", color="#333333", size = 1.5)
+
+print(p_deseq_overview2)
+```
+
+<img src="Figures/cached/DEseq-overview-2.png" style="display: block; margin: auto;" />
 ## Run MAG8-DESeq
 
 
@@ -2055,23 +2187,24 @@ p_blast_all_violin
 
 <img src="Figures/cached/merged-blast-approach-1b-2.png" style="display: block; margin: auto;" />
 
+
 ```r
-# Plot for most abundant bin (B63)
+# Plot for all bins density plots
 p_blast_all_dens <- blast_df_sum %>% 
   ggplot(aes(x = bin_xcoord, shape = Sample))+
   theme_bw()+
   # facet_grid(season~Site)+
-  geom_density(alpha = 0.4, size = 0.75, color = "#333333")+
+  geom_density(alpha = 0.4, size = 0.4, color = "#333333")+
   # geom_violin(alpha = 0.4, size = 0.75, color = "#333333",
   #             scale = "area", fill = "#333333")+
   scale_color_brewer("", palette = "Paired")+
   guides(fill = FALSE)+
-  facet_grid(new_bin_name~., scales = "free")+
+  facet_wrap(~new_bin_name, ncol = 2, scales = "free")+
   theme(axis.text.y=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
         axis.text.x = element_text(size = 14),
-        strip.text=element_text(size=16),
+        strip.text=element_text(size=14),
         panel.grid.minor = element_blank(),
         legend.position = "bottom")+
   # scale_x_log10()+
@@ -2087,7 +2220,7 @@ p_blast_all_dens <- blast_df_sum %>%
 p_blast_all_dens
 ```
 
-<img src="Figures/cached/merged-blast-approach-1b-3.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/merged-blast-approach-1bb-1.png" style="display: block; margin: auto;" />
 
 
 ```r
