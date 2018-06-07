@@ -1366,10 +1366,10 @@ p_deseq_overview <- res_deseq_anott_changed %>%
   dplyr::filter(Design == "~ Season + Site" 
                 & Comparison == "Muskegon Lake\nVs\nM110") %>% 
   ggplot2::ggplot(aes(x = new_bin_name, y= abs(log2FoldChange)))+
-  geom_boxplot(fill = "#333333", alpha = 0.5, outlier.shape = NA, size = 1.5)+
+  geom_boxplot(fill = "#333333", alpha = 0.5, outlier.shape = NA, size = 1.25)+
   theme_bw()+
   scale_fill_brewer("", palette = "Paired")+
-  theme(axis.text.x =  element_text(size = 10.5, angle = 45, hjust =1),
+  theme(axis.text.x =  element_text(size = 14),
         axis.text.y = element_text(size = 14),
         legend.title = element_blank(),
         axis.title = element_text(size = 14),
@@ -1378,7 +1378,7 @@ p_deseq_overview <- res_deseq_anott_changed %>%
   ylim(0,5)+
   xlab("")+
   guides(fill = FALSE)+
-  ggtitle("Muskegon lake vs. Lake Michigan M110")
+  coord_flip()
 
 print(p_deseq_overview)
 ```
@@ -1395,15 +1395,16 @@ p_deseq_overview2 <- res_deseq_anott_changed %>%
   # geom_violin(fill = "#333333", alpha = 0.5, scale = "count")+
   theme_bw()+
   # scale_fill_brewer("", palette = "Paired")+
-  theme(axis.text.x =  element_text(size = 14, angle = 45, hjust =1),
+  theme(axis.text.x =  element_text(size = 14),
         axis.text.y = element_text(size = 14),
         legend.title = element_blank(),
-        axis.title = element_text(size = 14),
+        axis.title = element_text(size = 20),
         strip.text = element_text(size = 14))+
   ylab("log2FoldChange")+
   ylim(0,5)+
   xlab("")+
-  guides(fill = FALSE)
+  guides(fill = FALSE)+
+  coord_flip()
   # stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1),
   #                geom="pointrange", color="#333333", size = 1.5)
 
@@ -2194,7 +2195,8 @@ p_blast_all_dens <- blast_df_sum %>%
   ggplot(aes(x = bin_xcoord, shape = Sample))+
   theme_bw()+
   # facet_grid(season~Site)+
-  geom_density(alpha = 0.4, size = 0.4, color = "#333333")+
+  geom_density(alpha = 0.4, size = 0.4, color = "#333333",
+               bw = "nrd0")+
   # geom_violin(alpha = 0.4, size = 0.75, color = "#333333",
   #             scale = "area", fill = "#333333")+
   scale_color_brewer("", palette = "Paired")+
