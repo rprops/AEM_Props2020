@@ -1386,11 +1386,16 @@ print(p_deseq_overview)
 <img src="Figures/cached/DEseq-overview-1.png" style="display: block; margin: auto;" />
 
 ```r
+# Add up and down regulation
+res_deseq_anott_changed$regulation <- res_deseq_anott_changed$log2FoldChange > 0
+res_deseq_anott_changed$regulation[res_deseq_anott_changed$regulation == TRUE] <- "Upregulated"
+res_deseq_anott_changed$regulation[res_deseq_anott_changed$regulation == FALSE] <- "Downregulated"
+
 p_deseq_overview2 <- res_deseq_anott_changed %>% 
   dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
   dplyr::filter(Design == "~ Site + Season" 
                 & Comparison == "Fall-Spring") %>% 
-  ggplot2::ggplot(aes(x = new_bin_name, y= abs(log2FoldChange)))+
+  ggplot2::ggplot(aes(x = new_bin_name, y= log2FoldChange, fill = regulation))+
   geom_boxplot(fill = "#333333", alpha = 0.5, outlier.shape = NA, size = 1.25)+
   # geom_violin(fill = "#333333", alpha = 0.5, scale = "count")+
   theme_bw()+
@@ -1412,6 +1417,61 @@ print(p_deseq_overview2)
 ```
 
 <img src="Figures/cached/DEseq-overview-2.png" style="display: block; margin: auto;" />
+
+```r
+p_deseq_overview3 <- res_deseq_anott_changed %>% 
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design,
+                regulation) %>% 
+  dplyr::filter(Design == "~ Site + Season" 
+                & Comparison == "Fall-Spring") %>% 
+  ggplot2::ggplot(aes(x = new_bin_name, y= log2FoldChange, fill = regulation))+
+  geom_boxplot( alpha = 0.5, outlier.shape = NA, size = 1.25)+
+  # geom_violin(fill = "#333333", alpha = 0.5, scale = "count")+
+  theme_bw()+
+  # scale_fill_brewer("", palette = "Paired")+
+  theme(axis.text.x =  element_text(size = 14),
+        axis.text.y = element_text(size = 14),
+        legend.title = element_blank(),
+        axis.title = element_text(size = 20),
+        strip.text = element_text(size = 14))+
+  ylab("log2FoldChange")+
+  ylim(-5,5)+
+  xlab("")+
+  guides(fill = FALSE)+
+  coord_flip()
+  # stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1),
+  #                geom="pointrange", color="#333333", size = 1.5)
+
+print(p_deseq_overview3)
+```
+
+<img src="Figures/cached/DEseq-overview-3.png" style="display: block; margin: auto;" />
+
+```r
+res_deseq_anott_changed %>% 
+    dplyr::select(gene_oid, new_bin_name, Comparison, Design) %>% 
+    dplyr::filter(Design == "~ Site + Season" 
+                & Comparison == "Fall-Spring") %>% 
+  distinct() %>% 
+  group_by(new_bin_name) %>% summarise(sum_genes = n())
+```
+
+```
+## # A tibble: 10 x 2
+##    new_bin_name      sum_genes
+##    <fct>                 <int>
+##  1 MAG5.SP-M110-DD          77
+##  2 MAG2.FA-MLB-SN          247
+##  3 MAG3.FA-MLB-SN          150
+##  4 MAG4.FA-M110-DN          84
+##  5 MAG1.FA-MLB-DN           79
+##  6 MAG10.SU-M15-SN          62
+##  7 MAG6.SP-M15-SD           69
+##  8 MAG8.SU-M110-DCMD        75
+##  9 MAG7.SU-MLB-SD          151
+## 10 MAG9.SU-M15-SN          247
+```
+
 ## Run MAG8-DESeq
 
 
@@ -3923,6 +3983,9 @@ panG_ko_cog$ko_level_C[panG_ko_cog$ko_level_C == "Biofilm formation - Pseudomona
 panG_ko$ko_level_C[panG_ko$ko_level_C == "Biofilm formation - Escherichia coli "] <- "Biofilm formation"
 panG_ko$ko_level_C[panG_ko$ko_level_C == "Biofilm formation - Pseudomonas aeruginosa "] <- "Biofilm formation"
 
+# Change the gene clusters shared between MAG1_6_10 to mixed category
+panG_ko_cog$bin_name[panG_ko_cog$bin_name == "MAG1_6_10_PC"] <- "MIXED_PCs"
+
 # Add column denoting whether it is core/mixed or accessory
 panG_ko_cog$bin_core <- factor(panG_ko_cog$bin_name == "CORE_PC" | panG_ko_cog$bin_name == "MIXED_PCs")
 panG_ko_cog$bin_core <- plyr::revalue(panG_ko_cog$bin_core, replace = c("TRUE" = "CORE/Mixed", "FALSE" = "Accessory"))
@@ -3987,13 +4050,13 @@ print(annotated_fraction_panG)
 ## # A tibble: 19 x 2
 ##    genome_name       panG_counts
 ##    <chr>                   <int>
-##  1 MAG1_FA_MLB_DN            551
-##  2 MAG10_SU_M15_SN           658
+##  1 MAG1_FA_MLB_DN            125
+##  2 MAG10_SU_M15_SN           235
 ##  3 MAG2_FA_MLB_SN           1020
 ##  4 MAG3_FA_MLB_SN            537
 ##  5 MAG4_FA_M110_DN           647
 ##  6 MAG5_SP_M110_DD           277
-##  7 MAG6_SP_M15_SD            554
+##  7 MAG6_SP_M15_SD            114
 ##  8 MAG7_SU_MLB_SD            120
 ##  9 MAG8_SU_M110_DCMD         288
 ## 10 MAG9_SU_M15_SN            234
@@ -4023,13 +4086,13 @@ print(results_pergene_sum)
 ## # A tibble: 10 x 4
 ##    Genome            enrich_counts panG_counts frac_enrich
 ##    <chr>                     <int>       <int>       <dbl>
-##  1 MAG1_FA_MLB_DN               87         551      0.158 
-##  2 MAG10_SU_M15_SN              91         658      0.138 
+##  1 MAG1_FA_MLB_DN               12         125      0.0960
+##  2 MAG10_SU_M15_SN               6         235      0.0255
 ##  3 MAG2_FA_MLB_SN              180        1020      0.176 
 ##  4 MAG3_FA_MLB_SN               53         537      0.0987
 ##  5 MAG4_FA_M110_DN             144         647      0.223 
 ##  6 MAG5_SP_M110_DD              14         277      0.0505
-##  7 MAG6_SP_M15_SD               32         554      0.0578
+##  7 MAG6_SP_M15_SD               24         114      0.211 
 ##  8 MAG7_SU_MLB_SD               15         120      0.125 
 ##  9 MAG8_SU_M110_DCMD            66         288      0.229 
 ## 10 MAG9_SU_M15_SN                5         234      0.0214
@@ -4112,6 +4175,13 @@ print(p_panG6)
 ```
 
 <img src="Figures/cached/panG-2-1.png" style="display: block; margin: auto;" />
+
+```r
+# for figure
+```
+
+# DOC transporters
+
 
 # Phenotypic diversity
 

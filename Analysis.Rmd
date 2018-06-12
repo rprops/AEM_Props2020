@@ -53,6 +53,7 @@ library("phyloseq")
 library("ggrepel")
 library("RColorBrewer")
 library("igraph")
+library("stringr")
 library("UpSetR")
 library("corrplot")
 # library("pegas")
@@ -112,7 +113,7 @@ data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_cover
 ## 16S rRNA gene phylogenetic tree
 ![Annotated 16S rRNA gene phylogenetic tree](./Tree/16S/fasttree.png)
 
-### Microdiversity in MAG8  
+### Microdiversity in LimB
 
 **At each iteration, SSU sequences were merged into one sequence if the identity of non-gapped positions in a global alignment was greater than 97%. A single SSU sequence (and its prior probability) was divided into two sequences if the second most probable base in more than 4% of all positions had a probability greater than 10%. In this way, sequences that evolved over iterations to be the same were merged, and sequences with evidence from the reads for multiple OTUs were duplicated and allowed to evolve as separate OTUs in future iterations.** [Reference](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2011-12-5-r44)  
 
@@ -1208,12 +1209,16 @@ p_deseq_overview <- res_deseq_anott_changed %>%
 
 print(p_deseq_overview)
 
+# Add up and down regulation
+res_deseq_anott_changed$regulation <- res_deseq_anott_changed$log2FoldChange > 0
+res_deseq_anott_changed$regulation[res_deseq_anott_changed$regulation == TRUE] <- "Upregulated"
+res_deseq_anott_changed$regulation[res_deseq_anott_changed$regulation == FALSE] <- "Downregulated"
 
 p_deseq_overview2 <- res_deseq_anott_changed %>% 
   dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
   dplyr::filter(Design == "~ Site + Season" 
                 & Comparison == "Fall-Spring") %>% 
-  ggplot2::ggplot(aes(x = new_bin_name, y= abs(log2FoldChange)))+
+  ggplot2::ggplot(aes(x = new_bin_name, y= log2FoldChange, fill = regulation))+
   geom_boxplot(fill = "#333333", alpha = 0.5, outlier.shape = NA, size = 1.25)+
   # geom_violin(fill = "#333333", alpha = 0.5, scale = "count")+
   theme_bw()+
@@ -1232,7 +1237,63 @@ p_deseq_overview2 <- res_deseq_anott_changed %>%
   #                geom="pointrange", color="#333333", size = 1.5)
 
 print(p_deseq_overview2)
+
+
+p_deseq_overview3 <- res_deseq_anott_changed %>% 
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design,
+                regulation) %>% 
+  dplyr::filter(Design == "~ Site + Season" 
+                & Comparison == "Fall-Spring") %>% 
+  ggplot2::ggplot(aes(x = new_bin_name, y= log2FoldChange, fill = regulation))+
+  geom_boxplot( alpha = 0.5, outlier.shape = NA, size = 1.25)+
+  # geom_violin(fill = "#333333", alpha = 0.5, scale = "count")+
+  theme_bw()+
+  # scale_fill_brewer("", palette = "Paired")+
+  theme(axis.text.x =  element_text(size = 14),
+        axis.text.y = element_text(size = 14),
+        legend.title = element_blank(),
+        axis.title = element_text(size = 20),
+        strip.text = element_text(size = 14))+
+  ylab("log2FoldChange")+
+  ylim(-5,5)+
+  xlab("")+
+  guides(fill = FALSE)+
+  coord_flip()
+  # stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1),
+  #                geom="pointrange", color="#333333", size = 1.5)
+
+print(p_deseq_overview3)
+
+res_deseq_anott_changed %>% 
+    dplyr::select(gene_oid, new_bin_name, Comparison, Design) %>% 
+    dplyr::filter(Design == "~ Site + Season" 
+                & Comparison == "Fall-Spring") %>% 
+  distinct() %>% 
+  group_by(new_bin_name) %>% summarise(sum_genes = n())
+
+# Run statistics
+test <- res_deseq_anott_changed %>% 
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design,
+                regulation) %>% 
+  dplyr::filter(Design == "~ Site + Season" 
+                & Comparison == "Fall-Spring") 
+
+pairwise.wilcox.test(test$log2FoldChange, g = test$new_bin_name,
+                   p.adjust = "hochberg")
+
+
+# Run statistics
+test <- res_deseq_anott_changed %>%
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design,
+                regulation) %>%
+  dplyr::filter(Design == "~ Season + Site"
+                & Comparison == "Muskegon Lake\nVs\nM110" &
+                  new_bin_name == "MAG8.SU-M110-DCMD") %>% 
+  distinct()
+
+
 ```
+
 ## Run MAG8-DESeq
 
 ```{r MAG8-DESeq-1, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 7}
@@ -1251,7 +1312,8 @@ dds <- DESeq2::DESeqDataSetFromMatrix(countData = expr_cov_MAG8[[1]],
 dds <- DESeq2::DESeq(dds, quiet = TRUE)
   
 # Calculate contrasts for all comparisons (deep vs surface logFC)
-comp1 <- DESeq2::results(dds, contrast=c("Depth", "Deep", "Surface"))[order(results(dds)$padj), ]
+comp1 <- DESeq2::results(dds, 
+                         contrast=c("Depth", "Deep","Surface"))[order(DESeq2::results(dds)$padj), ]
 # comp2 <- DESeq2::results(dds, contrast=c("Time.Depth", "Night.Deep", "Night.Surface"))[order(results(dds)$padj), ]
 
 # Store data in single dataframes
@@ -1285,9 +1347,9 @@ MAG8_deseq_results_depth <- MAG8_deseq_results_depth %>% dplyr::filter(padj < 0.
 ```
 
 ```{r MAG8-DESeq-1b, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 7}
-# Select MAG8 genome and temperature gradient in spring M110
+# Select MAG8 genome and MLB vs M110 at the surface
 expr_cov_MAG8 <- expr_cov_bins[levels(expr_cov_long$Genome_ID) == "2757320398"]
-sel_MAG8 <- meta_metaT[, "Site"] == "110" & meta_metaT[, "Depth"] == "Surface" & meta_metaT[, "Season"] %in% c("Spring", "Summer")
+sel_MAG8 <- meta_metaT[, "Depth"] == "Surface"
 expr_cov_MAG8[[1]] <- expr_cov_MAG8[[1]][, sel_MAG8]
 meta_metaT_MAG8 <- meta_metaT[sel_MAG8, ]
 
@@ -1295,40 +1357,35 @@ meta_metaT_MAG8 <- meta_metaT[sel_MAG8, ]
 ## Depth (temperature effect) effect and control for Seasonal variation
 dds <- DESeq2::DESeqDataSetFromMatrix(countData = expr_cov_MAG8[[1]],
                               colData = meta_metaT_MAG8,
-                              design= ~ Time + Season)
+                              design= ~ Season + Site)
 # Run DESeq
 dds <- DESeq2::DESeq(dds, quiet = TRUE)
   
 # Calculate contrasts for all comparisons (deep vs surface logFC)
-comp1 <- DESeq2::results(dds, contrast=c("Season", "Spring", "Summer"))[order(results(dds)$padj), ]
+comp1 <- DESeq2::results(dds, contrast=c("Site", "110", "Buoy"))[order(DESeq2::results(dds)$padj), ]
 # comp2 <- DESeq2::results(dds, contrast=c("Time.Depth", "Night.Deep", "Night.Surface"))[order(results(dds)$padj), ]
 
 # Store data in single dataframes
-MAG8_deseq_results_temp_comp1 <- data.frame(gene_oid = comp1@rownames,
+MAG8_deseq_results_nutrient_comp1 <- data.frame(gene_oid = comp1@rownames,
                     baseMean = comp1@listData$baseMean,
                     log2FoldChange = comp1@listData$log2FoldChange,
                     pvalue = comp1@listData$pvalue,
                     padj = comp1@listData$padj,
                     Genome_ID = "2757320398",
-                    Comparison = "Cold(Spring) - Warm(Summer)"
+                    Comparison = "M110 - MLB"
 )
 
-# MAG8_deseq_results_depth_comp2 <- data.frame(gene_oid = comp2@rownames,
-#                     baseMean = comp2@listData$baseMean,
-#                     log2FoldChange = comp2@listData$log2FoldChange,
-#                     pvalue = comp2@listData$pvalue,
-#                     padj = comp2@listData$padj,
-#                     Genome_ID = "2757320398",
-#                     Comparison = "Night.Deep - Night.Surface",
-#                     Time_of_day = "Night"
-# )
-# MAG8_deseq_results_depth <- rbind(MAG8_deseq_results_depth_comp1,
-                                  # MAG8_deseq_results_depth_comp2)
-
-MAG8_deseq_results_temp <- MAG8_deseq_results_temp_comp1
+MAG8_deseq_results_nutrient <- MAG8_deseq_results_nutrient_comp1
 
 # Filter at p < 0.01
-MAG8_deseq_results_temp <- MAG8_deseq_results_temp %>% dplyr::filter(padj < 0.01)
+MAG8_deseq_results_nutrient <- MAG8_deseq_results_nutrient %>% dplyr::filter(padj < 0.01)
+
+# Check share DE genes between MLB/M110 and bottom/surface M110
+sum(MAG8_deseq_results_nutrient$gene_oid %in% MAG8_deseq_results_depth$gene_oid)
+sum(!MAG8_deseq_results_nutrient$gene_oid %in% MAG8_deseq_results_depth$gene_oid)
+
+sum(MAG8_deseq_results_depth$gene_oid %in% MAG8_deseq_results_nutrient$gene_oid)
+sum(!MAG8_deseq_results_depth$gene_oid %in% MAG8_deseq_results_nutrient$gene_oid)
 
 ```
 
@@ -1372,15 +1429,15 @@ MAG8_annot$gene_oid <- as.character(MAG8_annot$gene_oid)
 # Annotate differentially expressed genes
 MAG8_deseq_results_depth_fin <- left_join(MAG8_deseq_results_depth, MAG8_annot,
                                       by = c("gene_oid") ) %>% distinct()
-MAG8_deseq_results_temp_fin <- left_join(MAG8_deseq_results_temp, MAG8_annot,
+MAG8_deseq_results_nutrient_fin <- left_join(MAG8_deseq_results_nutrient, MAG8_annot,
                                       by = c("gene_oid") ) %>% distinct()
 # Change NA to unknown
 MAG8_deseq_results_depth_fin[,9:20] <- apply(MAG8_deseq_results_depth_fin[,9:20], 
                                              2, function(x) as.character(x))
-MAG8_deseq_results_temp_fin[,8:19] <- apply(MAG8_deseq_results_temp_fin[,8:19], 
+MAG8_deseq_results_nutrient_fin[,8:19] <- apply(MAG8_deseq_results_nutrient_fin[,8:19], 
                                              2, function(x) as.character(x))
 MAG8_deseq_results_depth_fin[is.na(MAG8_deseq_results_depth_fin)] <- "Unknown"
-MAG8_deseq_results_temp_fin[is.na(MAG8_deseq_results_temp_fin)] <- "Unknown"
+MAG8_deseq_results_nutrient_fin[is.na(MAG8_deseq_results_nutrient_fin)] <- "Unknown"
 
 # Add label for up or downregulation
 MAG8_deseq_results_depth_fin$regulation <- MAG8_deseq_results_depth_fin$log2FoldChange > 0
@@ -1390,12 +1447,13 @@ MAG8_deseq_results_depth_fin$regulation <- factor(MAG8_deseq_results_depth_fin$r
                                                   levels =
                                          c("Upregulated", "Downregulated"))
 
-MAG8_deseq_results_temp_fin$regulation <- MAG8_deseq_results_temp_fin$log2FoldChange > 0
-MAG8_deseq_results_temp_fin$regulation[MAG8_deseq_results_temp_fin$regulation == TRUE] <- "Upregulated"
-MAG8_deseq_results_temp_fin$regulation[MAG8_deseq_results_temp_fin$regulation == FALSE] <- "Downregulated"
-MAG8_deseq_results_temp_fin$regulation <- factor(MAG8_deseq_results_temp_fin$regulation,
-                                                  levels =
-                                         c("Upregulated", "Downregulated"))
+MAG8_deseq_results_nutrient_fin$regulation <-
+  MAG8_deseq_results_nutrient_fin$log2FoldChange > 0
+MAG8_deseq_results_nutrient_fin$regulation[MAG8_deseq_results_nutrient_fin$regulation == TRUE] <- "Upregulated"
+MAG8_deseq_results_nutrient_fin$regulation[MAG8_deseq_results_nutrient_fin$regulation == FALSE] <- "Downregulated"
+MAG8_deseq_results_nutrient_fin$regulation <-
+  factor(MAG8_deseq_results_nutrient_fin$regulation,
+         levels =c("Upregulated", "Downregulated"))
 
 ```
 
@@ -1434,7 +1492,7 @@ p_mag8_deseq_cog <- MAG8_deseq_results_depth_fin %>% dplyr::select(gene_oid:Time
 
 print(p_mag8_deseq_cog)
 
-p_mag8_deseq_temp_cog <- MAG8_deseq_results_temp_fin %>% dplyr::select(gene_oid:Comparison, contains("cog")) %>% 
+p_mag8_deseq_nutrient_cog <- MAG8_deseq_results_nutrient_fin %>% dplyr::select(gene_oid:Comparison, contains("cog")) %>% 
   distinct() %>% 
   ggplot(aes(x = COG_functional_category, y = log2FoldChange, fill = log2FoldChange))+
   geom_point(size = 3, color = "black", shape = 21)+
@@ -1530,7 +1588,7 @@ p_mag8_deseq_depth_KO_gsea <- MAG8_deseq_results_depth_fin %>%
 print(p_mag8_deseq_depth_KO_gsea)
 
 # Focus on enriched KO level in sprin-summer samples too
-p_mag8_deseq_temp_KO_gsea <- MAG8_deseq_results_temp_fin %>% 
+p_mag8_deseq_temp_KO_gsea <- MAG8_deseq_results_nutrient_fin %>% 
   dplyr::select(regulation, gene_oid:Comparison, contains("ko")) %>% 
   distinct() %>% 
   dplyr::filter(ko_level_C %in% metaT_gsea_KO$Description) %>% 
@@ -1557,7 +1615,7 @@ print(p_mag8_deseq_temp_KO_gsea)
 
 
 ```{r MAG8-DESeq-5, dpi = 500, warning = FALSE, fig.width = 5, fig.height = 7, dev = c("png","pdf")}
-# Spring - Summer samples at M110 - different temperatures but same depth
+# M110 vs MLB station
 
 # Test for enrichment of functional categories in differentially expressed gene pool
 ## Test for enrichment of KO level C terms in transcriptome
@@ -1566,7 +1624,7 @@ bg_gsea <- MAG8_annot %>%
   distinct()
 bg_gsea[is.na(bg_gsea)] <- "Unknown"
 
-metaT_gsea <- enricher(gene = unique(MAG8_deseq_results_temp_fin$gene_oid),
+metaT_gsea <- enricher(gene = unique(MAG8_deseq_results_nutrient_fin$gene_oid),
          universe = bg_gsea$gene_oid, 
          TERM2GENE = bg_gsea,
          pvalueCutoff = 0.05,
@@ -2718,11 +2776,6 @@ geneAssign_df_annot <- left_join(geneAssign_df, expr_cov_long,
 
 ```
 
-### Control core gene presence in strains
-```{r desman-4-control, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")}
-
-```
-
 ### **upset diagram**  
 
 ```{r desman-5, dpi = 500, warning = FALSE, fig.width = 7.5, fig.height = 5, dev = c("png","pdf")}
@@ -3429,6 +3482,9 @@ panG_ko_cog$ko_level_C[panG_ko_cog$ko_level_C == "Biofilm formation - Pseudomona
 panG_ko$ko_level_C[panG_ko$ko_level_C == "Biofilm formation - Escherichia coli "] <- "Biofilm formation"
 panG_ko$ko_level_C[panG_ko$ko_level_C == "Biofilm formation - Pseudomonas aeruginosa "] <- "Biofilm formation"
 
+# Change the gene clusters shared between MAG1_6_10 to mixed category
+panG_ko_cog$bin_name[panG_ko_cog$bin_name == "MAG1_6_10_PC"] <- "MIXED_PCs"
+
 # Add column denoting whether it is core/mixed or accessory
 panG_ko_cog$bin_core <- factor(panG_ko_cog$bin_name == "CORE_PC" | panG_ko_cog$bin_name == "MIXED_PCs")
 panG_ko_cog$bin_core <- plyr::revalue(panG_ko_cog$bin_core, replace = c("TRUE" = "CORE/Mixed", "FALSE" = "Accessory"))
@@ -3564,6 +3620,96 @@ p_panG6 <- complete(df_molten_dat, Genome, Description,
   labs(fill="Gene\ncount")
 
 print(p_panG6)
+# for figure
+```
+
+# DOC transporters
+```{r DOC-1, dpi = 500, warning = FALSE, fig.width = 13, fig.height = 8, include = FALSE, dev = c("png","pdf")}
+# Annotate the core and acessory genomes with DOC transporter labels
+matches <- unique(grep(paste(DOM_usage_df$COG_ID,collapse = "|"), 
+                        panG_ko_cog$COG_FUNCTION_ACC, value = TRUE))
+
+
+DOC_panG <- panG_ko_cog %>% dplyr::select(bin_name, genome_name,
+                              unique_gene_callers_id, COG_FUNCTION_ACC,
+                              bin_core) %>% 
+  distinct() %>% 
+  dplyr::filter(COG_FUNCTION_ACC %in% matches) %>% 
+  fuzzyjoin::fuzzy_inner_join(DOM_usage_df,
+                            by = c("COG_FUNCTION_ACC" = "COG_ID"), 
+                            match_fun = str_detect) %>% 
+  dplyr::select(bin_name, bin_core, unique_gene_callers_id, genome_name, COG_ID) %>% 
+  distinct()
+
+# Order DOC categories
+COG_order <- DOM_usage_df %>% 
+  dplyr::filter(COG_ID %in% unique(DOC_panG$COG_ID))
+DOC_panG$COG_ID <- factor(DOC_panG$COG_ID,
+                                        levels = COG_order$COG_ID)
+
+# Get COG counts in core and accessory genome separately
+DOC_panG_cnt_split <- DOC_panG %>% 
+  group_by(genome_name, bin_name, COG_ID) %>% 
+  summarise(Counts = n())
+
+# make heatmap of accessory genome
+hm_DOC1_acc <- DOC_panG_cnt_split %>% 
+  complete(., genome_name, bin_name,COG_ID,
+         fill = list(Counts = 0)) %>% 
+  ungroup() %>% 
+  dplyr::filter(bin_name != "CORE_PC" & bin_name != "MIXED_PCs") %>%
+  ggplot(aes(y= genome_name, x= COG_ID)) + 
+  geom_tile(aes(fill = Counts), col = "lightgrey") + # according to the value column
+  geom_text(aes(label = round(Counts, 0)), size = 3) + # write the values
+  scale_fill_distiller(palette="YlOrRd", na.value="lightgrey", trans = "sqrt",
+                       direction = 1) +
+  theme(panel.grid.major.x=element_blank(), #no gridlines
+        panel.grid.minor.x=element_blank(), 
+        panel.grid.major.y=element_blank(), 
+        panel.grid.minor.y=element_blank(),
+        panel.background=element_rect(fill="white"), # background=white
+        axis.text.x = element_text(angle=45, hjust = 1, vjust=1, size = 12,face = "bold"),
+        plot.title = element_text(size=20,face="bold"),
+        axis.text.y = element_text(size = 12,face = "bold"))+
+  theme(legend.title=element_text(face="bold", size=14)) + 
+  scale_x_discrete(name="") +
+  scale_y_discrete(name="") +
+  labs(fill="Gene\ncount")
+
+print(hm_DOC1_acc)
+
+# Get COG counts in full genome
+DOC_panG_cnt_full <- DOC_panG %>% 
+  group_by(genome_name, COG_ID) %>% 
+  summarise(Counts = n())
+
+# make heatmap of full genome DOC transporters
+hm_DOC2_full <- DOC_panG_cnt_full %>% 
+  complete(., genome_name, COG_ID,
+         fill = list(Counts = 0)) %>% 
+  ungroup() %>% 
+  ggplot(aes(y= genome_name, x= COG_ID)) + 
+  geom_tile(aes(fill = Counts), col = "lightgrey") + # according to the value column
+  geom_text(aes(label = round(Counts, 0)), size = 3) + # write the values
+  scale_fill_distiller(palette="YlOrRd", na.value="lightgrey", trans = "sqrt",
+                       direction = 1) +
+  theme(panel.grid.major.x=element_blank(), #no gridlines
+        panel.grid.minor.x=element_blank(), 
+        panel.grid.major.y=element_blank(), 
+        panel.grid.minor.y=element_blank(),
+        panel.background=element_rect(fill="white"), # background=white
+        axis.text.x = element_text(angle=45, hjust = 1, vjust=1, 
+                                   size = 12,face = "bold"),
+        plot.title = element_text(size=20,face="bold"),
+        axis.text.y = element_text(size = 12,face = "bold"))+
+  theme(legend.title=element_text(face="bold", size=14)) + 
+  scale_x_discrete(name="") +
+  scale_y_discrete(name="") +
+  labs(fill="Gene\ncount")
+
+print(hm_DOC2_full)
+
+
 ```
 
 # Phenotypic diversity
