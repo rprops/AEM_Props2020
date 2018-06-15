@@ -1271,6 +1271,7 @@ res_deseq_anott_changed %>%
   distinct() %>% 
   group_by(new_bin_name) %>% summarise(sum_genes = n())
 
+
 # Run statistics
 test <- res_deseq_anott_changed %>% 
   dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design,
@@ -3766,6 +3767,15 @@ results_pd$Site <- gsub("Buoy", "Muskegon Lake", results_pd$Site)
 results_pd$Site <- factor(results_pd$Site, levels = c("Muskegon Lake",
                                                             "Lake Michigan\nsite M15",
                                                             "Lake Michigan\nsite M110"))
+
+# Run statistics for D2
+for(i in 1:length(unique(results_pd$new_bin_name))){
+  tmp_pd <- results_pd[results_pd$new_bin_name == unique(results_pd$new_bin_name)[i], ]
+  print(unique(results_pd$new_bin_name)[i])
+  print(kruskal.test(D2 ~ Season,
+             data = tmp_pd))
+}
+
 ```
 
 ### Plot phenoD

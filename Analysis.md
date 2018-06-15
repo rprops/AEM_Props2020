@@ -68,7 +68,7 @@ data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_cover
 ## 16S rRNA gene phylogenetic tree
 ![Annotated 16S rRNA gene phylogenetic tree](./Tree/16S/fasttree.png)
 
-### Microdiversity in MAG8  
+### Microdiversity in LimB
 
 **At each iteration, SSU sequences were merged into one sequence if the identity of non-gapped positions in a global alignment was greater than 97%. A single SSU sequence (and its prior probability) was divided into two sequences if the second most probable base in more than 4% of all positions had a probability greater than 10%. In this way, sequences that evolved over iterations to be the same were merged, and sequences with evidence from the reads for multiple OTUs were duplicated and allowed to evolve as separate OTUs in future iterations.** [Reference](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2011-12-5-r44)  
 
@@ -1472,6 +1472,69 @@ res_deseq_anott_changed %>%
 ## 10 MAG9.SU-M15-SN          247
 ```
 
+```r
+# Run statistics
+test <- res_deseq_anott_changed %>% 
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design,
+                regulation) %>% 
+  dplyr::filter(Design == "~ Site + Season" 
+                & Comparison == "Fall-Spring") 
+
+pairwise.wilcox.test(test$log2FoldChange, g = test$new_bin_name,
+                   p.adjust = "hochberg")
+```
+
+```
+## 
+## 	Pairwise comparisons using Wilcoxon rank sum test 
+## 
+## data:  test$log2FoldChange and test$new_bin_name 
+## 
+##                   MAG5.SP-M110-DD MAG2.FA-MLB-SN MAG3.FA-MLB-SN
+## MAG2.FA-MLB-SN    0.4472          -              -             
+## MAG3.FA-MLB-SN    0.9618          0.9618         -             
+## MAG4.FA-M110-DN   0.9618          0.9618         0.9618        
+## MAG1.FA-MLB-DN    0.9618          0.9618         0.9618        
+## MAG10.SU-M15-SN   0.9618          0.9618         0.9618        
+## MAG6.SP-M15-SD    0.9618          0.1011         0.9618        
+## MAG8.SU-M110-DCMD 0.9618          3.4e-05        0.0093        
+## MAG7.SU-MLB-SD    0.9618          0.0175         0.5504        
+## MAG9.SU-M15-SN    0.9618          1.7e-07        0.0019        
+##                   MAG4.FA-M110-DN MAG1.FA-MLB-DN MAG10.SU-M15-SN
+## MAG2.FA-MLB-SN    -               -              -              
+## MAG3.FA-MLB-SN    -               -              -              
+## MAG4.FA-M110-DN   -               -              -              
+## MAG1.FA-MLB-DN    0.9618          -              -              
+## MAG10.SU-M15-SN   0.9618          0.9618         -              
+## MAG6.SP-M15-SD    0.9618          0.8260         0.9618         
+## MAG8.SU-M110-DCMD 0.3674          0.0129         0.2188         
+## MAG7.SU-MLB-SD    0.9618          0.9618         0.9618         
+## MAG9.SU-M15-SN    0.9618          0.0137         0.8379         
+##                   MAG6.SP-M15-SD MAG8.SU-M110-DCMD MAG7.SU-MLB-SD
+## MAG2.FA-MLB-SN    -              -                 -             
+## MAG3.FA-MLB-SN    -              -                 -             
+## MAG4.FA-M110-DN   -              -                 -             
+## MAG1.FA-MLB-DN    -              -                 -             
+## MAG10.SU-M15-SN   -              -                 -             
+## MAG6.SP-M15-SD    -              -                 -             
+## MAG8.SU-M110-DCMD 0.9618         -                 -             
+## MAG7.SU-MLB-SD    0.9618         0.9618            -             
+## MAG9.SU-M15-SN    0.9618         0.9618            0.9618        
+## 
+## P value adjustment method: hochberg
+```
+
+```r
+# Run statistics
+test <- res_deseq_anott_changed %>%
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design,
+                regulation) %>%
+  dplyr::filter(Design == "~ Season + Site"
+                & Comparison == "Muskegon Lake\nVs\nM110" &
+                  new_bin_name == "MAG8.SU-M110-DCMD") %>% 
+  distinct()
+```
+
 ## Run MAG8-DESeq
 
 
@@ -1491,7 +1554,8 @@ dds <- DESeq2::DESeqDataSetFromMatrix(countData = expr_cov_MAG8[[1]],
 dds <- DESeq2::DESeq(dds, quiet = TRUE)
   
 # Calculate contrasts for all comparisons (deep vs surface logFC)
-comp1 <- DESeq2::results(dds, contrast=c("Depth", "Deep", "Surface"))[order(results(dds)$padj), ]
+comp1 <- DESeq2::results(dds, 
+                         contrast=c("Depth", "Deep","Surface"))[order(DESeq2::results(dds)$padj), ]
 # comp2 <- DESeq2::results(dds, contrast=c("Time.Depth", "Night.Deep", "Night.Surface"))[order(results(dds)$padj), ]
 
 # Store data in single dataframes
@@ -1525,9 +1589,9 @@ MAG8_deseq_results_depth <- MAG8_deseq_results_depth %>% dplyr::filter(padj < 0.
 
 
 ```r
-# Select MAG8 genome and temperature gradient in spring M110
+# Select MAG8 genome and MLB vs M110 at the surface
 expr_cov_MAG8 <- expr_cov_bins[levels(expr_cov_long$Genome_ID) == "2757320398"]
-sel_MAG8 <- meta_metaT[, "Site"] == "110" & meta_metaT[, "Depth"] == "Surface" & meta_metaT[, "Season"] %in% c("Spring", "Summer")
+sel_MAG8 <- meta_metaT[, "Depth"] == "Surface"
 expr_cov_MAG8[[1]] <- expr_cov_MAG8[[1]][, sel_MAG8]
 meta_metaT_MAG8 <- meta_metaT[sel_MAG8, ]
 
@@ -1535,40 +1599,59 @@ meta_metaT_MAG8 <- meta_metaT[sel_MAG8, ]
 ## Depth (temperature effect) effect and control for Seasonal variation
 dds <- DESeq2::DESeqDataSetFromMatrix(countData = expr_cov_MAG8[[1]],
                               colData = meta_metaT_MAG8,
-                              design= ~ Time + Season)
+                              design= ~ Season + Site)
 # Run DESeq
 dds <- DESeq2::DESeq(dds, quiet = TRUE)
   
 # Calculate contrasts for all comparisons (deep vs surface logFC)
-comp1 <- DESeq2::results(dds, contrast=c("Season", "Spring", "Summer"))[order(results(dds)$padj), ]
+comp1 <- DESeq2::results(dds, contrast=c("Site", "110", "Buoy"))[order(DESeq2::results(dds)$padj), ]
 # comp2 <- DESeq2::results(dds, contrast=c("Time.Depth", "Night.Deep", "Night.Surface"))[order(results(dds)$padj), ]
 
 # Store data in single dataframes
-MAG8_deseq_results_temp_comp1 <- data.frame(gene_oid = comp1@rownames,
+MAG8_deseq_results_nutrient_comp1 <- data.frame(gene_oid = comp1@rownames,
                     baseMean = comp1@listData$baseMean,
                     log2FoldChange = comp1@listData$log2FoldChange,
                     pvalue = comp1@listData$pvalue,
                     padj = comp1@listData$padj,
                     Genome_ID = "2757320398",
-                    Comparison = "Cold(Spring) - Warm(Summer)"
+                    Comparison = "M110 - MLB"
 )
 
-# MAG8_deseq_results_depth_comp2 <- data.frame(gene_oid = comp2@rownames,
-#                     baseMean = comp2@listData$baseMean,
-#                     log2FoldChange = comp2@listData$log2FoldChange,
-#                     pvalue = comp2@listData$pvalue,
-#                     padj = comp2@listData$padj,
-#                     Genome_ID = "2757320398",
-#                     Comparison = "Night.Deep - Night.Surface",
-#                     Time_of_day = "Night"
-# )
-# MAG8_deseq_results_depth <- rbind(MAG8_deseq_results_depth_comp1,
-                                  # MAG8_deseq_results_depth_comp2)
-
-MAG8_deseq_results_temp <- MAG8_deseq_results_temp_comp1
+MAG8_deseq_results_nutrient <- MAG8_deseq_results_nutrient_comp1
 
 # Filter at p < 0.01
-MAG8_deseq_results_temp <- MAG8_deseq_results_temp %>% dplyr::filter(padj < 0.01)
+MAG8_deseq_results_nutrient <- MAG8_deseq_results_nutrient %>% dplyr::filter(padj < 0.01)
+
+# Check share DE genes between MLB/M110 and bottom/surface M110
+sum(MAG8_deseq_results_nutrient$gene_oid %in% MAG8_deseq_results_depth$gene_oid)
+```
+
+```
+## [1] 13
+```
+
+```r
+sum(!MAG8_deseq_results_nutrient$gene_oid %in% MAG8_deseq_results_depth$gene_oid)
+```
+
+```
+## [1] 146
+```
+
+```r
+sum(MAG8_deseq_results_depth$gene_oid %in% MAG8_deseq_results_nutrient$gene_oid)
+```
+
+```
+## [1] 13
+```
+
+```r
+sum(!MAG8_deseq_results_depth$gene_oid %in% MAG8_deseq_results_nutrient$gene_oid)
+```
+
+```
+## [1] 164
 ```
 
 
@@ -1612,15 +1695,15 @@ MAG8_annot$gene_oid <- as.character(MAG8_annot$gene_oid)
 # Annotate differentially expressed genes
 MAG8_deseq_results_depth_fin <- left_join(MAG8_deseq_results_depth, MAG8_annot,
                                       by = c("gene_oid") ) %>% distinct()
-MAG8_deseq_results_temp_fin <- left_join(MAG8_deseq_results_temp, MAG8_annot,
+MAG8_deseq_results_nutrient_fin <- left_join(MAG8_deseq_results_nutrient, MAG8_annot,
                                       by = c("gene_oid") ) %>% distinct()
 # Change NA to unknown
 MAG8_deseq_results_depth_fin[,9:20] <- apply(MAG8_deseq_results_depth_fin[,9:20], 
                                              2, function(x) as.character(x))
-MAG8_deseq_results_temp_fin[,8:19] <- apply(MAG8_deseq_results_temp_fin[,8:19], 
+MAG8_deseq_results_nutrient_fin[,8:19] <- apply(MAG8_deseq_results_nutrient_fin[,8:19], 
                                              2, function(x) as.character(x))
 MAG8_deseq_results_depth_fin[is.na(MAG8_deseq_results_depth_fin)] <- "Unknown"
-MAG8_deseq_results_temp_fin[is.na(MAG8_deseq_results_temp_fin)] <- "Unknown"
+MAG8_deseq_results_nutrient_fin[is.na(MAG8_deseq_results_nutrient_fin)] <- "Unknown"
 
 # Add label for up or downregulation
 MAG8_deseq_results_depth_fin$regulation <- MAG8_deseq_results_depth_fin$log2FoldChange > 0
@@ -1630,12 +1713,13 @@ MAG8_deseq_results_depth_fin$regulation <- factor(MAG8_deseq_results_depth_fin$r
                                                   levels =
                                          c("Upregulated", "Downregulated"))
 
-MAG8_deseq_results_temp_fin$regulation <- MAG8_deseq_results_temp_fin$log2FoldChange > 0
-MAG8_deseq_results_temp_fin$regulation[MAG8_deseq_results_temp_fin$regulation == TRUE] <- "Upregulated"
-MAG8_deseq_results_temp_fin$regulation[MAG8_deseq_results_temp_fin$regulation == FALSE] <- "Downregulated"
-MAG8_deseq_results_temp_fin$regulation <- factor(MAG8_deseq_results_temp_fin$regulation,
-                                                  levels =
-                                         c("Upregulated", "Downregulated"))
+MAG8_deseq_results_nutrient_fin$regulation <-
+  MAG8_deseq_results_nutrient_fin$log2FoldChange > 0
+MAG8_deseq_results_nutrient_fin$regulation[MAG8_deseq_results_nutrient_fin$regulation == TRUE] <- "Upregulated"
+MAG8_deseq_results_nutrient_fin$regulation[MAG8_deseq_results_nutrient_fin$regulation == FALSE] <- "Downregulated"
+MAG8_deseq_results_nutrient_fin$regulation <-
+  factor(MAG8_deseq_results_nutrient_fin$regulation,
+         levels =c("Upregulated", "Downregulated"))
 ```
 
 
@@ -1682,7 +1766,7 @@ print(p_mag8_deseq_cog)
 <img src="Figures/cached/MAG8-DESeq-3-2.png" style="display: block; margin: auto;" />
 
 ```r
-p_mag8_deseq_temp_cog <- MAG8_deseq_results_temp_fin %>% dplyr::select(gene_oid:Comparison, contains("cog")) %>% 
+p_mag8_deseq_nutrient_cog <- MAG8_deseq_results_nutrient_fin %>% dplyr::select(gene_oid:Comparison, contains("cog")) %>% 
   distinct() %>% 
   ggplot(aes(x = COG_functional_category, y = log2FoldChange, fill = log2FoldChange))+
   geom_point(size = 3, color = "black", shape = 21)+
@@ -1697,7 +1781,9 @@ p_mag8_deseq_temp_cog <- MAG8_deseq_results_temp_fin %>% dplyr::select(gene_oid:
 print(p_mag8_deseq_temp_cog)
 ```
 
-<img src="Figures/cached/MAG8-DESeq-3-3.png" style="display: block; margin: auto;" />
+```
+## Error in print(p_mag8_deseq_temp_cog): object 'p_mag8_deseq_temp_cog' not found
+```
 
 ```r
 # Focus on KO annotation and pool per level
@@ -1718,7 +1804,7 @@ p_mag8_deseq_KO <- MAG8_deseq_results_depth_fin %>%
 print(p_mag8_deseq_KO)
 ```
 
-<img src="Figures/cached/MAG8-DESeq-3-4.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/MAG8-DESeq-3-3.png" style="display: block; margin: auto;" />
 
 ### Plot
 
@@ -1819,7 +1905,7 @@ print(p_mag8_deseq_depth_KO_gsea)
 
 ```r
 # Focus on enriched KO level in sprin-summer samples too
-p_mag8_deseq_temp_KO_gsea <- MAG8_deseq_results_temp_fin %>% 
+p_mag8_deseq_temp_KO_gsea <- MAG8_deseq_results_nutrient_fin %>% 
   dplyr::select(regulation, gene_oid:Comparison, contains("ko")) %>% 
   distinct() %>% 
   dplyr::filter(ko_level_C %in% metaT_gsea_KO$Description) %>% 
@@ -1848,7 +1934,7 @@ print(p_mag8_deseq_temp_KO_gsea)
 
 
 ```r
-# Spring - Summer samples at M110 - different temperatures but same depth
+# M110 vs MLB station
 
 # Test for enrichment of functional categories in differentially expressed gene pool
 ## Test for enrichment of KO level C terms in transcriptome
@@ -1857,7 +1943,7 @@ bg_gsea <- MAG8_annot %>%
   distinct()
 bg_gsea[is.na(bg_gsea)] <- "Unknown"
 
-metaT_gsea <- enricher(gene = unique(MAG8_deseq_results_temp_fin$gene_oid),
+metaT_gsea <- enricher(gene = unique(MAG8_deseq_results_nutrient_fin$gene_oid),
          universe = bg_gsea$gene_oid, 
          TERM2GENE = bg_gsea,
          pvalueCutoff = 0.05,
@@ -1887,7 +1973,13 @@ metaT_gsea <- enricher(gene = unique(MAG8_deseq_results_temp_fin$gene_oid),
          TERM2GENE = bg_gsea,
          pvalueCutoff = 0.05,
          qvalueCutoff = 0.2)
+```
 
+```
+## Error in unique(MAG8_deseq_results_temp_fin$gene_oid): object 'MAG8_deseq_results_temp_fin' not found
+```
+
+```r
 metaT_gsea_COG <- data.frame(metaT_gsea@result)
 metaT_gsea_COG %>% 
   dplyr::select(Description, GeneRatio, BgRatio, p.adjust, qvalue, Count)%>%
@@ -3198,9 +3290,6 @@ geneAssign_df_annot <- left_join(geneAssign_df, merged_file_annot,
 geneAssign_df_annot <- left_join(geneAssign_df, expr_cov_long, 
                            by = c("sseqid" = "gene_oid"))
 ```
-
-### Control core gene presence in strains
-
 
 ### **upset diagram**  
 
