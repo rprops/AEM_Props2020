@@ -4309,7 +4309,9 @@ p_MAG_Pdiv2 <- ggplot(results_pd, aes(x = Season, y = D2))+
 
 # Plot results
 dodge <- position_dodge(width=0.6)  
-p_MAG_Pdiv3 <- ggplot(results_pd, aes(x = new_bin_name, y = D2))+
+p_MAG_Pdiv3 <- results_pd %>% 
+  dplyr::filter(Depth != "Deep") %>% 
+  ggplot(., aes(x = new_bin_name, y = D2))+
   theme_bw()+
   scale_fill_brewer("",palette = "Accent")+
   # geom_point(size = 4, color = "black", 
@@ -4339,6 +4341,40 @@ print(p_MAG_Pdiv3)
 ```
 
 <img src="Figures/cached/PhenoD-2-1.png" style="display: block; margin: auto;" />
+
+```r
+p_MAG_Pdiv4 <- results_pd %>% 
+  dplyr::filter(Depth == "Deep") %>% 
+  ggplot(., aes(x = new_bin_name, y = D2))+
+  theme_bw()+
+  scale_fill_brewer("",palette = "Accent")+
+  # geom_point(size = 4, color = "black", 
+             # alpha = 0.5, aes(fill = Season, shape = Depth),
+             # position=dodge)+
+  geom_boxplot(alpha = 0.4, width = 0.4, outlier.shape = NA, 
+               aes(fill = Season),
+               position=dodge)+
+  scale_shape_manual("",values = c(21,24,23))+
+  # geom_boxplot(alpha = 0.4, width = 0.2, outlier.shape = NA)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(expression("Transcriptional diversity (D"[2]*")"))+
+  guides(
+         fill = guide_legend(override.aes=list(colour=brewer.pal(3,"Accent"))))+
+  # facet_grid(Season~., scales ="free")+
+  xlab("")+
+  # geom_errorbar(aes(ymin = D2 - sd.D2, ymax = D2 + sd.D2), width = 0.05)+
+  scale_y_continuous(labels=scaleFUN)
+  # coord_trans(y = "sqrt")
+
+print(p_MAG_Pdiv4)
+```
+
+<img src="Figures/cached/PhenoD-2-2.png" style="display: block; margin: auto;" />
 
 ### Match with abundance
 
@@ -4470,3 +4506,387 @@ print(p_MAG_Pdiv5)
 
 <!-- print(p_MAG_Pdiv3) -->
 <!-- ``` -->
+
+
+# C and N-ARSC
+
+# ```{r CN-ARSC, dpi = 500, warning = FALSE, fig.width = 2, fig.height = 12, include = FALSE}
+# # Import amino acid information
+# meta_aa <- read.csv("./mapping_files/aa_comp.csv")
+# 
+# # Get amino acid names individually
+# aa_seq_split <- strsplit(panG_ko_cog$aa_sequence, split = "")
+# names(aa_seq_split) <- panG_ko_cog$unique_gene_callers_id
+# ncol <- max(sapply(aa_seq_split,length))
+# test <- lapply(seq_along(aa_seq_split), 
+#                FUN = function(x, n, i) {data.table(table(x[[i]]), 
+#                                                    unique_gene_callers_id = n[[i]])}, 
+#                n = names(aa_seq_split), x = aa_seq_split)
+# 
+# # Calculat for each gene the C-ARSC and the Gene N-ARSC
+# calc_ARSC <- function(x, meta_aa){
+#   # x is a list and meta_aa is the mapping file containing elemental composition AAs
+#   interm <- dplyr::left_join(x, meta_aa, by = c("V1" = "AA_abbrev2"))
+#   # Remove X AA 
+#   interm <- interm %>% dplyr::filter(V1 != "X")
+#   N_ARSC <- sum(interm$N_elem*interm$N)/sum(interm$N)
+#   C_ARSC <- sum(interm$C_elem*interm$N)/sum(interm$N)
+#   return(data.frame(C_ARSC = C_ARSC, N_ARSC = N_ARSC, 
+#                     unique_gene_callers_id = unique(interm$unique_gene_callers_id)))
+# }
+# 
+# test_ARSC <- lapply(seq_along(test), 
+#                     FUN = function(x, meta_test, i){calc_ARSC(x[[i]], meta_test)},
+#                     x = test,
+#                     meta_test = meta_aa)
+# 
+# results_ARSC <- do.call(rbind, test_ARSC)
+# results_final_ARSC <- left_join(results_ARSC,  
+#                                 panG_ko_cog[, c("genome_name","unique_gene_callers_id")], 
+#                                 by = "unique_gene_callers_id")
+# 
+# ord_list_bin_arsc <- c(
+#   "MAG5_SP_M110_DD", "MAG2_FA_MLB_SN",
+#   "MAG3_FA_MLB_SN", "MAG4_FA_M110_DN",
+#   "MAG1_FA_MLB_DN", "MAG10_SU_M15_SN",
+#   "MAG6_SP_M15_SD","MAG8_SU_M110_DCMD",
+#   "REF_Lim_Rim11", "REF_Lim_103DPR2",
+#   "MAG7_SU_MLB_SD", "REF_Lim_Rim47",
+#   "MAG9_SU_M15_SN", "REF_Lim_Rim28",
+#   "REF_Lim_63ED37_2","REF_Lim_2KL27",
+#   "REF_Lim_2KL3", "REF_Lim_DM1",
+#   "REF_Lim_IID5"
+#   )
+# 
+# results_final_ARSC$genome_name <- factor(results_final_ARSC$genome_name,
+#                                          levels=ord_list_bin_arsc)
+# 
+# 
+# pairwise.wilcox.test(x = results_final_ARSC$N_ARSC, 
+#                      g = results_final_ARSC$genome_name)
+# 
+# pairwise.wilcox.test(x = results_final_ARSC$C_ARSC, 
+#                      g = results_final_ARSC$genome_name)
+# 
+# ggplot(results_final_ARSC, aes(x = genome_name, y = N_ARSC, fill = genome_name))+
+#      geom_boxplot(alpha = 0.2, outlier.shape = NA)+
+#   # stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1), 
+#                  # geom="pointrange", color="black", size = 1.5, alpha = 0.75)+
+#   theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1))+
+#   ylim(0,0.5)
+#    # scale_fill_manual("",
+#    #                  values = c(rgb(red=t(col2rgb("#deebf7ff")), 
+#    #                                 maxColorValue  = 255), 
+#    #                             rgb(red=t(col2rgb("#c6dbefff")), 
+#    #                                 maxColorValue  = 255),
+#    #                             rgb(red=t(col2rgb("#9ecae1ff")), 
+#    #                                 maxColorValue  = 255),
+#    #                             rgb(red=t(col2rgb("#6baed6ff")),
+#    #                                 maxColorValue  = 255)
+#    #                            ))+
+# 
+# ggplot(results_final_ARSC, aes(x = genome_name, y = C_ARSC, fill = genome_name))+
+#      geom_boxplot(alpha = 0.2, outlier.shape = NA)+
+#   # stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1), 
+#   #                geom="pointrange", color="black", size = 1.5, alpha = 0.75)+
+#   theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1))+
+#   ylim(2,3.5)
+# 
+# # extend to unseen AA with NA values so that rbind can be used
+# 
+# levels(meta_aa$AA_abbrev2)
+# 
+# # rbind the different tables
+# 
+# # aa_seq_split <- as.data.table(lapply(1:ncol, function(i) sapply(aa_seq_split, "[", i)))
+# 
+# # merge in oen data table
+# df_aa_seq_split <- data.table::data.table(bin_name = panG_ko_cog$bin_name, 
+#                  genome_name = panG_ko_cog$genome_name,
+#                  unique_gene_callers_id = panG_ko_cog$unique_gene_callers_id,
+#                  aa_seq_split)
+# 
+# remove(aa_seq_split)
+# 
+# # Wide to long format
+# df_aa_seq_split <- gather(df_aa_seq_split, codon_position,
+#                           aa_ID, V1:V2467, factor_key=TRUE)
+# # Annotate AA sequences
+# df_aa_seq_split <- left_join(df_aa_seq_split, meta_aa, by = c("aa_ID" = "AA_abbrev2"))
+# df_aa_seq_split$unique_gene_callers_id <- factor(df_aa_seq_split$unique_gene_callers_id)
+# 
+# # Calculate C and N content of AA residuals
+# data_C_N <- df_aa_seq_split %>%
+#   filter(!is.na(C_elem)) %>% 
+#   distinct() %>% 
+#   group_by(unique_gene_callers_id) %>% 
+#   summarize(N_sum = sum(N_elem),
+#             C_sum = sum(C_elem),
+#             aa_length = n())
+# remove(df_aa_seq_split)
+# 
+# # Merge this information with initial dataframe
+# final_df_arsc <- left_join(panG_ko_cog, data_C_N, by = "unique_gene_callers_id")
+# 
+# # Calculate N_ARSC and C_ARSC
+# final_df_arsc <- final_df_arsc %>% 
+#   select(unique_gene_callers_id, bin_name, genome_name, aa_length, N_sum, C_sum) %>% 
+#   distinct() %>% 
+#   mutate(N_ARSC = N_sum/aa_length, C_ARSC = C_sum/aa_length)
+# 
+# p_aa_C <- final_df_arsc %>% 
+#   ggplot(aes(x = bin_name, y = C_ARSC))+
+#    geom_violin(alpha = 0.2, fill = col_RAMLI, draw_quantiles = TRUE)+
+#   stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1), 
+#                  geom="pointrange", color="black", size = 1.5, alpha = 0.75)+
+#   xlab("")+ ylab("C-ARSC")+
+#   theme_bw()+
+#   theme(axis.title.x = element_blank(),
+#         axis.title.y = element_text(size = 16),
+#         axis.text.y = element_text(size = 14),
+#         axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+#         plot.title = element_text(size = 20, hjust = 0.5))+
+#   labs(title = "")
+# 
+# p_aa_N <- final_df_arsc %>% 
+#   ggplot(aes(x = bin_name, y = N_ARSC))+
+#    geom_violin(alpha = 0.2, fill = col_RAMLI)+
+#   stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1), 
+#                  geom="pointrange", color="black", size = 1.5, alpha = 0.75)+
+#   xlab("")+ ylab("N-ARSC")+
+#   theme_bw()+
+#   theme(axis.title.x = element_blank(),
+#         axis.title.y = element_text(size = 16),
+#         axis.text.y = element_text(size = 14),
+#         axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+#         plot.title = element_text(size = 20, hjust = 0.5))+
+#   labs(title = "")
+# 
+# cowplot::plot_grid(p_aa_C, p_aa_N, nrow = 2,
+#                    labels = c("A","B"))
+# 
+# ```
+
+# Posigene
+
+
+# External metagenomes
+
+```r
+df_BlastExt <- data.table::fread("./ExternalData/merged_blastfiles.tsv", 
+                         header = TRUE)
+# Import metadata
+meta_Ext <- xlsx::read.xlsx("./ExternalData/ismej2017156x1.xlsx", sheetIndex = 1)
+meta_Ext <- meta_Ext[!is.na(meta_Ext$metagenomic.sample),]
+meta_Ext <- meta_Ext[, c(1, 2, 4, 5)]
+
+# Import contig_ids of each bin
+contig_ids <- cbind(read.table("./IMG_annotation/IMG_2757320398/IMG Data/160144.assembled.names_map", stringsAsFactors = FALSE)[,1], "MAG8")
+contig_ids <- data.frame(contig_ids)
+colnames(contig_ids) <- c("contig_id", "bin")
+
+# Clean up SRA identifier label
+df_BlastExt$SRA <- gsub("_blast.tsv", "", df_BlastExt$SRA)
+
+# Remove contigs not in contig_ids
+df_BlastExt <- df_BlastExt %>% dplyr::filter(contig_id %in% contig_ids$contig_id)
+
+# Add contig labels of MAGs
+df_BlastExt <- dplyr::left_join(df_BlastExt, contig_ids, by = c("contig_id"))
+
+# Bin the %Identity in intervals of 0.5%
+df_BlastExt_sum <- transform(df_BlastExt, bin_group = cut(identity,  breaks=seq(0, 100, 0.5)))
+
+# Add extra column that converts the binning range to a numeric x-coordinate that
+# is positioned in the middle of the binning interval
+df_BlastExt_sum$bin_group <- gsub("\\(|]", "", 
+                               as.character(df_BlastExt_sum$bin_group))
+df_BlastExt_sum$bin_xcoord <- as.numeric(do.call(rbind,
+                                              strsplit(df_BlastExt_sum$bin_group,
+                                                       ","))[,1])+0.25
+
+# Add metadata
+df_BlastExt_sum <- left_join(df_BlastExt_sum, meta_Ext, by = c("SRA" = "accession.number"))
+
+SRA_ranking <- df_BlastExt_sum %>% dplyr::filter(bin == "Ramlibacter sp. MAG" & identity > 95) %>%
+  dplyr::select(SRA) %>% table()
+SRA_ranking <- SRA_ranking[rev(order(SRA_ranking))]
+
+# Plot sequence discrete populations
+p_blast_sdisc <- df_BlastExt_sum %>% 
+     ggplot(aes(x = bin_xcoord, ..scaled.., fill = bin))+
+      theme_bw()+
+      scale_fill_manual("", values = c("blue"))+
+      facet_grid(bin~Water_type)+
+      geom_density(color = "black")+
+      guides(color = FALSE)+
+      theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        strip.text=element_text(size=14))+
+      ylab("Density")+
+      xlab("Nucleotide identity (%)")+
+    xlim(75,100)
+
+print(p_blast_sdisc)
+```
+
+<img src="Figures/cached/SDP_external-1.png" style="display: block; margin: auto;" />
+
+```r
+# Plot for all bins density plots
+p_blast_all_dens <- df_BlastExt_sum %>% 
+  ggplot(aes(x = bin_xcoord, shape = SRA))+
+  theme_bw()+
+  geom_density(alpha = 0.4, size = 0.4, color = "#333333",
+               bw = "nrd0")+
+  scale_color_brewer("", palette = "Paired")+
+  guides(fill = FALSE)+
+  facet_grid(Water_type~bin)+
+  theme(axis.text.y=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(size = 14),
+        strip.text=element_text(size=14),
+        panel.grid.minor = element_blank(),
+        legend.position = "bottom")+
+  ylab("")+
+  xlab("% Identity")+
+  scale_x_continuous(limits = c(80,100))+
+  guides(shape = FALSE)
+
+p_blast_all_dens
+```
+
+<img src="Figures/cached/SDP_external-2.png" style="display: block; margin: auto;" />
+
+
+```r
+# Plot % reads corrected for genome size over threshold of 0.95
+blast_df_sum_comp <- df_BlastExt_sum %>% group_by(SRA, bin) %>% dplyr::count(bin_xcoord)
+
+id_thresh <- 95-0.25
+map_disc_cum <- blast_df_sum_comp  %>% 
+  dplyr::filter(bin_xcoord > id_thresh) %>% group_by(SRA, bin) %>% 
+  mutate(cum_rel_reads_mapped = cumsum(n))%>% 
+  dplyr::filter(bin_xcoord == 100-0.25)
+
+map_disc_cum <- left_join(map_disc_cum, meta_Ext, by = c("SRA" = "accession.number"))
+
+p_sdisc_cum3 <- ggplot(map_disc_cum, aes(x = bin, 
+                                         y = 100*cum_rel_reads_mapped/1e6, 
+                                        fill = bin))+
+  theme_bw()+
+  scale_fill_manual("", values = c("blue"))+
+  geom_jitter(size = 4, shape = 21, color = "black", alpha = 0.7, width = 0.15)+
+  geom_boxplot(fill = NA, outlier.shape = NA)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=14), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Relative abundance\n ( > ", id_thresh-0.25, "% NI)"))+
+  xlab("")+
+  guides(fill=FALSE)+
+  facet_wrap(.~metagenomic.sample, nrow = 2)
+
+print(p_sdisc_cum3)
+```
+
+<img src="Figures/cached/SDP_external-2-1.png" style="display: block; margin: auto;" />
+
+
+```r
+df_BlastExt2 <- data.table::fread("./ExternalData/merged_blastfiles.tsv", 
+                         header = TRUE)
+
+# Import contig lengths
+contigs_MAG8 <- data.table::fread("./ExternalData/final-rebinned-contigs-fixed.len", 
+                         header = FALSE) %>% 
+  dplyr::filter(V1 %in% contig_ids$contig_id) %>% 
+  top_n(3, V2) %>% 
+  dplyr::select(V1)
+  
+# Filter out metagenomes with at least 1,000 reads
+metaG_5k <- df_BlastExt2 %>% 
+  dplyr::select(SRA) %>% 
+  table() %>% 
+  data.frame() %>% 
+  dplyr::filter(Freq>5e3) %>% 
+  dplyr::select(".")
+colnames(metaG_5k) <- "Filtered_metaG"
+df_BlastExt2 <- df_BlastExt2 %>% dplyr::filter(SRA %in% metaG_5k$Filtered_metaG)
+
+# Filter out largest contigs (top N)
+df_BlastExt2 <- df_BlastExt2 %>% dplyr::filter(contig_id %in% contigs_MAG8$V1)
+
+
+# add metadata
+df_BlastExt2 <- dplyr::left_join(df_BlastExt2, contig_ids, by = "contig_id")
+
+# Plot first alignment point
+p_sdp_aln1 <- df_BlastExt2 %>% 
+  ggplot(., aes(x = sstart, y = identity, fill = bin))+
+  theme_bw()+
+  scale_fill_manual("", values = c("Blue"))+
+  geom_point(shape = 21, size = 2)+
+  geom_smooth(color = "black", size = 3)+
+ # geom_density(aes(x=sstart, y=..scaled.., fill=bin),
+ #               alpha = 0.4, size = 0.4, color = "#333333",
+ #               bw = "nrd0", trim = TRUE)+
+  facet_grid(bin~contig_id, scales = "free_x")+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("% identity"))+
+  xlab("Position in alignment")+
+  guides(fill=FALSE)
+
+p_sdp_aln1
+```
+
+```
+## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+```
+
+<img src="Figures/cached/SDP_alignment-check-1-1.png" style="display: block; margin: auto;" />
+
+```r
+# Plot for each SRA data set seperately
+# for(dataset in 1:length(metaG_5k$Filtered_metaG)){
+#   # Plot first alignment point
+# p_sdp_aln1 <- df_BlastExt2 %>% 
+#   dplyr::filter(SRA == metaG_5k$Filtered_metaG[dataset]) %>% 
+#   ggplot(., aes(x = sstart, y = identity, fill = bin))+
+#   theme_bw()+
+#   scale_fill_manual("", values = c("Blue"))+
+#   geom_point(shape = 21, size = 2)+
+#   geom_smooth(color = "black", size = 3)+
+#   facet_grid(bin~contig_id, scales = "free_x")+
+#   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+#       title=element_text(size=14), legend.text=element_text(size=12),
+#       legend.background = element_rect(fill="transparent"),
+#       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+#       strip.text=element_text(size=12), legend.position = "bottom",
+#       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+#   ylab(paste0("% identity"))+
+#   xlab("Position in alignment")+
+#   guides(fill=FALSE)+
+#   ggtitle(metaG_5k$Filtered_metaG[dataset])+
+#   ylim(75,100)
+# 
+# # now add the title
+# # title <- ggdraw() + draw_label(metaG_5k$Filtered_metaG[dataset], fontface='bold')
+# # plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)) 
+# png(paste0("./ExternalData/Figures/",gsub(".tsv","",metaG_5k$Filtered_metaG[dataset]),
+#            ".png"), height = 5, width = 10, res = 500, units = "in")
+# print(p_sdp_aln1)
+# # print(cowplot::plot_grid(p_sdp_aln1, p_sdp_aln2, p_sdp_aln3, align = "hv", nrow = 3))
+# dev.off()
+# }
+```
