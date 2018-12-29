@@ -464,48 +464,48 @@ diversity_df_phy <- Diversity_16S(df_phy, brea = FALSE, R = 100)
 ```
 ## 	**WARNING** this functions assumes that rows are samples and columns
 ##       	are taxa in your phyloseq object, please verify.
-## Fri May 25 17:37:00 2018	Calculating diversity for sample 1/41 --- Fa13.BD.MLB.DN.1.renamed
-## Fri May 25 17:37:35 2018	Calculating diversity for sample 2/41 --- Fa13.BD.MLB.SN.1.renamed
-## Fri May 25 17:38:11 2018	Calculating diversity for sample 3/41 --- Fa13.BD.MM110.DN.1.renamed
-## Fri May 25 17:38:44 2018	Calculating diversity for sample 4/41 --- Fa13.BD.MM110.DN.2.renamed
-## Fri May 25 17:39:18 2018	Calculating diversity for sample 5/41 --- Fa13.BD.MM110.SD.1.renamed
-## Fri May 25 17:39:51 2018	Calculating diversity for sample 6/41 --- Fa13.BD.MM110.SD.2.renamed
-## Fri May 25 17:40:27 2018	Calculating diversity for sample 7/41 --- Fa13.BD.MM110.SN.1.renamed
-## Fri May 25 17:41:00 2018	Calculating diversity for sample 8/41 --- Fa13.BD.MM110.SN.2.renamed
-## Fri May 25 17:41:34 2018	Calculating diversity for sample 9/41 --- Fa13.BD.MM15.DN.1.renamed
-## Fri May 25 17:42:06 2018	Calculating diversity for sample 10/41 --- Fa13.BD.MM15.DN.2.renamed
-## Fri May 25 17:42:40 2018	Calculating diversity for sample 11/41 --- Fa13.BD.MM15.SD.1.renamed
-## Fri May 25 17:43:18 2018	Calculating diversity for sample 12/41 --- Fa13.BD.MM15.SD.2.renamed
-## Fri May 25 17:43:51 2018	Calculating diversity for sample 13/41 --- Fa13.BD.MM15.SN.1.renamed
-## Fri May 25 17:44:21 2018	Calculating diversity for sample 14/41 --- Fa13.BD.MM15.SN.2.renamed
-## Fri May 25 17:44:53 2018	Calculating diversity for sample 15/41 --- Sp13.BD.MLB.SN.1.renamed
-## Fri May 25 17:45:29 2018	Calculating diversity for sample 16/41 --- Sp13.BD.MLB.SN.2.renamed
-## Fri May 25 17:46:06 2018	Calculating diversity for sample 17/41 --- Sp13.BD.MM110.DD.1.renamed
-## Fri May 25 17:46:46 2018	Calculating diversity for sample 18/41 --- Sp13.BD.MM110.SD.1.renamed
-## Fri May 25 17:47:25 2018	Calculating diversity for sample 19/41 --- Sp13.BD.MM110.SD.2.renamed
-## Fri May 25 17:48:04 2018	Calculating diversity for sample 20/41 --- Sp13.BD.MM110.SN.1.renamed
-## Fri May 25 17:48:43 2018	Calculating diversity for sample 21/41 --- Sp13.BD.MM110.SN.2.renamed
-## Fri May 25 17:49:27 2018	Calculating diversity for sample 22/41 --- Sp13.BD.MM15.DD.1.renamed
-## Fri May 25 17:50:09 2018	Calculating diversity for sample 23/41 --- Sp13.BD.MM15.SD.1.renamed
-## Fri May 25 17:50:46 2018	Calculating diversity for sample 24/41 --- Sp13.BD.MM15.SN.1.renamed
-## Fri May 25 17:51:24 2018	Calculating diversity for sample 25/41 --- Sp13.BD.MM15.SN.2.renamed
-## Fri May 25 17:52:03 2018	Calculating diversity for sample 26/41 --- Su13.BD.MLB.DD.1.renamed
-## Fri May 25 17:52:37 2018	Calculating diversity for sample 27/41 --- Su13.BD.MLB.SD.1.renamed
-## Fri May 25 17:53:13 2018	Calculating diversity for sample 28/41 --- Su13.BD.MM110.DCMD.1.renamed
-## Fri May 25 17:53:53 2018	Calculating diversity for sample 29/41 --- Su13.BD.MM110.DCMD.2.renamed
-## Fri May 25 17:54:37 2018	Calculating diversity for sample 30/41 --- Su13.BD.MM110.DN.1.renamed
-## Fri May 25 17:55:13 2018	Calculating diversity for sample 31/41 --- Su13.BD.MM110.DN.2.renamed
-## Fri May 25 17:55:46 2018	Calculating diversity for sample 32/41 --- Su13.BD.MM110.SD.1.renamed
-## Fri May 25 17:56:20 2018	Calculating diversity for sample 33/41 --- Su13.BD.MM110.SD.2.renamed
-## Fri May 25 17:56:54 2018	Calculating diversity for sample 34/41 --- Su13.BD.MM110.SN.1.renamed
-## Fri May 25 17:57:28 2018	Calculating diversity for sample 35/41 --- Su13.BD.MM110.SN.2.renamed
-## Fri May 25 17:58:01 2018	Calculating diversity for sample 36/41 --- Su13.BD.MM15.DN.1.renamed
-## Fri May 25 17:58:34 2018	Calculating diversity for sample 37/41 --- Su13.BD.MM15.DN.2.renamed
-## Fri May 25 17:59:08 2018	Calculating diversity for sample 38/41 --- Su13.BD.MM15.SD.1.renamed
-## Fri May 25 17:59:41 2018	Calculating diversity for sample 39/41 --- Su13.BD.MM15.SD.2.renamed
-## Fri May 25 18:00:15 2018	Calculating diversity for sample 40/41 --- Su13.BD.MM15.SN.1.renamed
-## Fri May 25 18:00:50 2018	Calculating diversity for sample 41/41 --- Su13.BD.MM15.SN.2.renamed
-## Fri May 25 18:01:24 2018 	Done with all 41 samples
+## Sat Dec 29 15:43:59 2018	Calculating diversity for sample 1/41 --- Fa13.BD.MLB.DN.1.renamed
+## Sat Dec 29 15:44:18 2018	Calculating diversity for sample 2/41 --- Fa13.BD.MLB.SN.1.renamed
+## Sat Dec 29 15:44:38 2018	Calculating diversity for sample 3/41 --- Fa13.BD.MM110.DN.1.renamed
+## Sat Dec 29 15:44:58 2018	Calculating diversity for sample 4/41 --- Fa13.BD.MM110.DN.2.renamed
+## Sat Dec 29 15:45:17 2018	Calculating diversity for sample 5/41 --- Fa13.BD.MM110.SD.1.renamed
+## Sat Dec 29 15:45:37 2018	Calculating diversity for sample 6/41 --- Fa13.BD.MM110.SD.2.renamed
+## Sat Dec 29 15:45:57 2018	Calculating diversity for sample 7/41 --- Fa13.BD.MM110.SN.1.renamed
+## Sat Dec 29 15:46:15 2018	Calculating diversity for sample 8/41 --- Fa13.BD.MM110.SN.2.renamed
+## Sat Dec 29 15:46:34 2018	Calculating diversity for sample 9/41 --- Fa13.BD.MM15.DN.1.renamed
+## Sat Dec 29 15:46:52 2018	Calculating diversity for sample 10/41 --- Fa13.BD.MM15.DN.2.renamed
+## Sat Dec 29 15:47:11 2018	Calculating diversity for sample 11/41 --- Fa13.BD.MM15.SD.1.renamed
+## Sat Dec 29 15:47:29 2018	Calculating diversity for sample 12/41 --- Fa13.BD.MM15.SD.2.renamed
+## Sat Dec 29 15:47:47 2018	Calculating diversity for sample 13/41 --- Fa13.BD.MM15.SN.1.renamed
+## Sat Dec 29 15:48:04 2018	Calculating diversity for sample 14/41 --- Fa13.BD.MM15.SN.2.renamed
+## Sat Dec 29 15:48:22 2018	Calculating diversity for sample 15/41 --- Sp13.BD.MLB.SN.1.renamed
+## Sat Dec 29 15:48:41 2018	Calculating diversity for sample 16/41 --- Sp13.BD.MLB.SN.2.renamed
+## Sat Dec 29 15:49:00 2018	Calculating diversity for sample 17/41 --- Sp13.BD.MM110.DD.1.renamed
+## Sat Dec 29 15:49:19 2018	Calculating diversity for sample 18/41 --- Sp13.BD.MM110.SD.1.renamed
+## Sat Dec 29 15:49:37 2018	Calculating diversity for sample 19/41 --- Sp13.BD.MM110.SD.2.renamed
+## Sat Dec 29 15:49:56 2018	Calculating diversity for sample 20/41 --- Sp13.BD.MM110.SN.1.renamed
+## Sat Dec 29 15:50:15 2018	Calculating diversity for sample 21/41 --- Sp13.BD.MM110.SN.2.renamed
+## Sat Dec 29 15:50:33 2018	Calculating diversity for sample 22/41 --- Sp13.BD.MM15.DD.1.renamed
+## Sat Dec 29 15:50:52 2018	Calculating diversity for sample 23/41 --- Sp13.BD.MM15.SD.1.renamed
+## Sat Dec 29 15:51:12 2018	Calculating diversity for sample 24/41 --- Sp13.BD.MM15.SN.1.renamed
+## Sat Dec 29 15:51:31 2018	Calculating diversity for sample 25/41 --- Sp13.BD.MM15.SN.2.renamed
+## Sat Dec 29 15:51:50 2018	Calculating diversity for sample 26/41 --- Su13.BD.MLB.DD.1.renamed
+## Sat Dec 29 15:52:08 2018	Calculating diversity for sample 27/41 --- Su13.BD.MLB.SD.1.renamed
+## Sat Dec 29 15:52:27 2018	Calculating diversity for sample 28/41 --- Su13.BD.MM110.DCMD.1.renamed
+## Sat Dec 29 15:52:46 2018	Calculating diversity for sample 29/41 --- Su13.BD.MM110.DCMD.2.renamed
+## Sat Dec 29 15:53:04 2018	Calculating diversity for sample 30/41 --- Su13.BD.MM110.DN.1.renamed
+## Sat Dec 29 15:53:23 2018	Calculating diversity for sample 31/41 --- Su13.BD.MM110.DN.2.renamed
+## Sat Dec 29 15:53:42 2018	Calculating diversity for sample 32/41 --- Su13.BD.MM110.SD.1.renamed
+## Sat Dec 29 15:54:00 2018	Calculating diversity for sample 33/41 --- Su13.BD.MM110.SD.2.renamed
+## Sat Dec 29 15:54:19 2018	Calculating diversity for sample 34/41 --- Su13.BD.MM110.SN.1.renamed
+## Sat Dec 29 15:54:37 2018	Calculating diversity for sample 35/41 --- Su13.BD.MM110.SN.2.renamed
+## Sat Dec 29 15:54:56 2018	Calculating diversity for sample 36/41 --- Su13.BD.MM15.DN.1.renamed
+## Sat Dec 29 15:55:15 2018	Calculating diversity for sample 37/41 --- Su13.BD.MM15.DN.2.renamed
+## Sat Dec 29 15:55:34 2018	Calculating diversity for sample 38/41 --- Su13.BD.MM15.SD.1.renamed
+## Sat Dec 29 15:55:52 2018	Calculating diversity for sample 39/41 --- Su13.BD.MM15.SD.2.renamed
+## Sat Dec 29 15:56:11 2018	Calculating diversity for sample 40/41 --- Su13.BD.MM15.SN.1.renamed
+## Sat Dec 29 15:56:30 2018	Calculating diversity for sample 41/41 --- Su13.BD.MM15.SN.2.renamed
+## Sat Dec 29 15:56:49 2018 	Done with all 41 samples
 ```
 
 ```r
@@ -518,23 +518,30 @@ sp_easi <- spiec.easi(df_phy, method='mb', lambda.min.ratio=1e-2,
 ```
 
 ```
-## Normalizing/clr transformation of data with pseudocount ...
+## Applying data transformations...
 ```
 
 ```
-## Inverse Covariance Estimation with mb ...
+## Selecting model with pulsar using stars...
 ```
 
 ```
-## Model selection with stars ...
+## Fitting final estimate with mb...
 ```
 
 ```
-## Done!
+## done
 ```
 
 ```r
 ig.mb <- adj2igraph(sp_easi$refit,  vertex.attr = list(name=taxa_names(df_phy)))
+```
+
+```
+## Error in mde(x): (list) object cannot be coerced to type 'double'
+```
+
+```r
 vsize <- Biobase::rowMax(clr(t(otu_table(df_phy)), 1))+10
 Lineage_rel <- tax_table(df_phy)[,"Rank2"]
 Lineage_rel <- factor(Lineage_rel, levels = unique(Lineage_rel))
@@ -546,6 +553,13 @@ limno_otus <- limno_otus[!is.na(limno_otus)]
 # Make Limno label
 limno_labs <- c()
 limno_labs[vertex.attributes(ig.mb)$name %in% limno_otus] <- "Limnohabitans sp."
+```
+
+```
+## Error in "igraph" %in% class(graph): object 'ig.mb' not found
+```
+
+```r
 limno_labs[is.na(limno_labs)] <- ""
 
 # Plot network
@@ -576,11 +590,19 @@ p_16S_network <- plot_network_custom(ig.mb, df_phy, type='taxa',
                    nudge_x = -0.1,
                    nudge_y = 0.6
   )
+```
 
+```
+## Error in "igraph" %in% class(graph): object 'ig.mb' not found
+```
+
+```r
 print(p_16S_network)
 ```
 
-<img src="Figures/cached/network_16S-1.png" style="display: block; margin: auto;" />
+```
+## Error in print(p_16S_network): object 'p_16S_network' not found
+```
 
 # 2. Investigate MAG- and 16S-based abundances  
 
@@ -814,7 +836,7 @@ merged_file <- merge_annotations(file_list[1:10], genoid_seqid = FALSE)
 ## [1] 17644
 ## [1] 19813
 ## [1] 21848
-## Wed Jun 06 20:51:29 2018  --- Sucessfully merged files
+## Sat Dec 29 15:57:54 2018  --- Sucessfully merged files
 ```
 
 ```r
@@ -1491,25 +1513,25 @@ pairwise.wilcox.test(test$log2FoldChange, g = test$new_bin_name,
 ## data:  test$log2FoldChange and test$new_bin_name 
 ## 
 ##                   MAG5.SP-M110-DD MAG2.FA-MLB-SN MAG3.FA-MLB-SN
-## MAG2.FA-MLB-SN    0.4472          -              -             
-## MAG3.FA-MLB-SN    0.9618          0.9618         -             
-## MAG4.FA-M110-DN   0.9618          0.9618         0.9618        
-## MAG1.FA-MLB-DN    0.9618          0.9618         0.9618        
-## MAG10.SU-M15-SN   0.9618          0.9618         0.9618        
-## MAG6.SP-M15-SD    0.9618          0.1011         0.9618        
-## MAG8.SU-M110-DCMD 0.9618          3.4e-05        0.0093        
-## MAG7.SU-MLB-SD    0.9618          0.0175         0.5504        
-## MAG9.SU-M15-SN    0.9618          1.7e-07        0.0019        
+## MAG2.FA-MLB-SN    0.69305         -              -             
+## MAG3.FA-MLB-SN    0.99860         0.01815        -             
+## MAG4.FA-M110-DN   0.84676         0.99860        0.01865       
+## MAG1.FA-MLB-DN    0.29879         0.99860        0.01923       
+## MAG10.SU-M15-SN   0.99860         0.07291        0.99860       
+## MAG6.SP-M15-SD    0.99860         0.99860        0.99860       
+## MAG8.SU-M110-DCMD 0.63177         9.6e-07        0.09017       
+## MAG7.SU-MLB-SD    0.01369         1.3e-08        0.59756       
+## MAG9.SU-M15-SN    0.06185         9.7e-14        0.11481       
 ##                   MAG4.FA-M110-DN MAG1.FA-MLB-DN MAG10.SU-M15-SN
 ## MAG2.FA-MLB-SN    -               -              -              
 ## MAG3.FA-MLB-SN    -               -              -              
 ## MAG4.FA-M110-DN   -               -              -              
-## MAG1.FA-MLB-DN    0.9618          -              -              
-## MAG10.SU-M15-SN   0.9618          0.9618         -              
-## MAG6.SP-M15-SD    0.9618          0.8260         0.9618         
-## MAG8.SU-M110-DCMD 0.3674          0.0129         0.2188         
-## MAG7.SU-MLB-SD    0.9618          0.9618         0.9618         
-## MAG9.SU-M15-SN    0.9618          0.0137         0.8379         
+## MAG1.FA-MLB-DN    0.99860         -              -              
+## MAG10.SU-M15-SN   0.05425         0.04236        -              
+## MAG6.SP-M15-SD    0.99860         0.99860        0.69803        
+## MAG8.SU-M110-DCMD 3.9e-10         0.00013        0.55235        
+## MAG7.SU-MLB-SD    9.0e-06         3.6e-05        0.99860        
+## MAG9.SU-M15-SN    2.5e-11         7.9e-07        0.99860        
 ##                   MAG6.SP-M15-SD MAG8.SU-M110-DCMD MAG7.SU-MLB-SD
 ## MAG2.FA-MLB-SN    -              -                 -             
 ## MAG3.FA-MLB-SN    -              -                 -             
@@ -1517,9 +1539,9 @@ pairwise.wilcox.test(test$log2FoldChange, g = test$new_bin_name,
 ## MAG1.FA-MLB-DN    -              -                 -             
 ## MAG10.SU-M15-SN   -              -                 -             
 ## MAG6.SP-M15-SD    -              -                 -             
-## MAG8.SU-M110-DCMD 0.9618         -                 -             
-## MAG7.SU-MLB-SD    0.9618         0.9618            -             
-## MAG9.SU-M15-SN    0.9618         0.9618            0.9618        
+## MAG8.SU-M110-DCMD 2.0e-05        -                 -             
+## MAG7.SU-MLB-SD    0.04236        0.99860           -             
+## MAG9.SU-M15-SN    0.00033        0.99860           0.99860       
 ## 
 ## P value adjustment method: hochberg
 ```
@@ -1829,24 +1851,98 @@ metaT_gsea_KO %>%
 ```
 
 ```
-##                                                                 Description
-## Quorum sensing                                              Quorum sensing 
-## Transporters                                                  Transporters 
-## ABC transporters                                          ABC transporters 
-## Two-component system                                  Two-component system 
-## Porphyrin and chlorophyll metabolism  Porphyrin and chlorophyll metabolism 
-##                                       GeneRatio BgRatio     p.adjust
-## Quorum sensing                           14/108 36/1467 1.036930e-06
-## Transporters                             23/108 96/1467 1.036930e-06
-## ABC transporters                         16/108 50/1467 1.103524e-06
-## Two-component system                      6/108 20/1467 1.260791e-02
-## Porphyrin and chlorophyll metabolism      4/108 10/1467 1.816558e-02
-##                                             qvalue Count
-## Quorum sensing                        8.434356e-07    14
-## Transporters                          8.434356e-07    23
-## ABC transporters                      8.976037e-07    16
-## Two-component system                  1.025524e-02     6
-## Porphyrin and chlorophyll metabolism  1.477583e-02     4
+##                                                                               Description
+## Quorum sensing                                                            Quorum sensing 
+## Transporters                                                                Transporters 
+## ABC transporters                                                        ABC transporters 
+## Two-component system                                                Two-component system 
+## Porphyrin and chlorophyll metabolism                Porphyrin and chlorophyll metabolism 
+## Tryptophan metabolism                                              Tryptophan metabolism 
+## Benzoate degradation                                                Benzoate degradation 
+## Fatty acid degradation                                            Fatty acid degradation 
+## Phenylalanine metabolism                                        Phenylalanine metabolism 
+## Exosome                                                                          Exosome 
+## Propanoate metabolism                                              Propanoate metabolism 
+## Valine, leucine and isoleucine degradation    Valine, leucine and isoleucine degradation 
+## Glyoxylate and dicarboxylate metabolism          Glyoxylate and dicarboxylate metabolism 
+## Alanine, aspartate and glutamate metabolism  Alanine, aspartate and glutamate metabolism 
+## DNA replication proteins                                        DNA replication proteins 
+## Histidine metabolism                                                Histidine metabolism 
+## Pyruvate metabolism                                                  Pyruvate metabolism 
+## Function unknown                                                         Function unknown
+## Carbon fixation pathways in prokaryotes          Carbon fixation pathways in prokaryotes 
+## Butanoate metabolism                                                Butanoate metabolism 
+## DNA repair and recombination proteins              DNA repair and recombination proteins 
+## Transfer RNA biogenesis                                          Transfer RNA biogenesis 
+##                                              GeneRatio BgRatio
+## Quorum sensing                                  14/108 36/1467
+## Transporters                                    23/108 96/1467
+## ABC transporters                                16/108 50/1467
+## Two-component system                             6/108 20/1467
+## Porphyrin and chlorophyll metabolism             4/108 10/1467
+## Tryptophan metabolism                            3/108 12/1467
+## Benzoate degradation                             2/108 10/1467
+## Fatty acid degradation                           2/108 11/1467
+## Phenylalanine metabolism                         2/108 11/1467
+## Exosome                                          2/108 13/1467
+## Propanoate metabolism                            2/108 16/1467
+## Valine, leucine and isoleucine degradation       2/108 16/1467
+## Glyoxylate and dicarboxylate metabolism          2/108 25/1467
+## Alanine, aspartate and glutamate metabolism      1/108 12/1467
+## DNA replication proteins                         1/108 12/1467
+## Histidine metabolism                             1/108 12/1467
+## Pyruvate metabolism                              1/108 13/1467
+## Function unknown                                 2/108 30/1467
+## Carbon fixation pathways in prokaryotes          1/108 15/1467
+## Butanoate metabolism                             1/108 19/1467
+## DNA repair and recombination proteins            1/108 20/1467
+## Transfer RNA biogenesis                          1/108 26/1467
+##                                                  p.adjust       qvalue
+## Quorum sensing                               1.036930e-06 8.434356e-07
+## Transporters                                 1.036930e-06 8.434356e-07
+## ABC transporters                             1.103524e-06 8.976037e-07
+## Two-component system                         1.260791e-02 1.025524e-02
+## Porphyrin and chlorophyll metabolism         1.816558e-02 1.477583e-02
+## Tryptophan metabolism                        1.919981e-01 1.561707e-01
+## Benzoate degradation                         4.680617e-01 3.807201e-01
+## Fatty acid degradation                       4.680617e-01 3.807201e-01
+## Phenylalanine metabolism                     4.680617e-01 3.807201e-01
+## Exosome                                      5.443781e-01 4.427956e-01
+## Propanoate metabolism                        6.085794e-01 4.950168e-01
+## Valine, leucine and isoleucine degradation   6.085794e-01 4.950168e-01
+## Glyoxylate and dicarboxylate metabolism      7.922815e-01 6.444395e-01
+## Alanine, aspartate and glutamate metabolism  7.922815e-01 6.444395e-01
+## DNA replication proteins                     7.922815e-01 6.444395e-01
+## Histidine metabolism                         7.922815e-01 6.444395e-01
+## Pyruvate metabolism                          7.922815e-01 6.444395e-01
+## Function unknown                             7.922815e-01 6.444395e-01
+## Carbon fixation pathways in prokaryotes      7.922815e-01 6.444395e-01
+## Butanoate metabolism                         8.229834e-01 6.694124e-01
+## DNA repair and recombination proteins        8.229834e-01 6.694124e-01
+## Transfer RNA biogenesis                      8.654811e-01 7.039798e-01
+##                                              Count
+## Quorum sensing                                  14
+## Transporters                                    23
+## ABC transporters                                16
+## Two-component system                             6
+## Porphyrin and chlorophyll metabolism             4
+## Tryptophan metabolism                            3
+## Benzoate degradation                             2
+## Fatty acid degradation                           2
+## Phenylalanine metabolism                         2
+## Exosome                                          2
+## Propanoate metabolism                            2
+## Valine, leucine and isoleucine degradation       2
+## Glyoxylate and dicarboxylate metabolism          2
+## Alanine, aspartate and glutamate metabolism      1
+## DNA replication proteins                         1
+## Histidine metabolism                             1
+## Pyruvate metabolism                              1
+## Function unknown                                 2
+## Carbon fixation pathways in prokaryotes          1
+## Butanoate metabolism                             1
+## DNA repair and recombination proteins            1
+## Transfer RNA biogenesis                          1
 ```
 
 ```r
@@ -1871,8 +1967,102 @@ metaT_gsea_COG %>%
 ```
 
 ```
-## [1] Description GeneRatio   BgRatio     p.adjust    qvalue      Count      
-## <0 rows> (or 0-length row.names)
+##                                                                                                                         Description
+## Amino acid transport and metabolism                                                             Amino acid transport and metabolism
+## Carbohydrate transport and metabolism                                                         Carbohydrate transport and metabolism
+## Signal transduction mechanisms                                                                       Signal transduction mechanisms
+## Inorganic ion transport and metabolism                                                       Inorganic ion transport and metabolism
+## Unknown                                                                                                                     Unknown
+## Energy production and conversion                                                                   Energy production and conversion
+## Function unknown                                                                                                   Function unknown
+## Post-translational modification, protein turnover, and chaperones Post-translational modification, protein turnover, and chaperones
+## Replication, recombination and repair                                                         Replication, recombination and repair
+## Lipid transport and metabolism                                                                       Lipid transport and metabolism
+## Secondary metabolites biosynthesis, transport, and catabolism         Secondary metabolites biosynthesis, transport, and catabolism
+## Coenzyme transport and metabolism                                                                 Coenzyme transport and metabolism
+## Intracellular trafficking, secretion, and vesicular transport         Intracellular trafficking, secretion, and vesicular transport
+## General function prediction only                                                                   General function prediction only
+## Translation, ribosomal structure and biogenesis                                     Translation, ribosomal structure and biogenesis
+##                                                                   GeneRatio
+## Amino acid transport and metabolism                                  22/108
+## Carbohydrate transport and metabolism                                11/108
+## Signal transduction mechanisms                                        4/108
+## Inorganic ion transport and metabolism                                8/108
+## Unknown                                                              16/108
+## Energy production and conversion                                      8/108
+## Function unknown                                                     11/108
+## Post-translational modification, protein turnover, and chaperones     4/108
+## Replication, recombination and repair                                 3/108
+## Lipid transport and metabolism                                        5/108
+## Secondary metabolites biosynthesis, transport, and catabolism         2/108
+## Coenzyme transport and metabolism                                     3/108
+## Intracellular trafficking, secretion, and vesicular transport         1/108
+## General function prediction only                                      7/108
+## Translation, ribosomal structure and biogenesis                       2/108
+##                                                                    BgRatio
+## Amino acid transport and metabolism                               169/1467
+## Carbohydrate transport and metabolism                              70/1467
+## Signal transduction mechanisms                                     18/1467
+## Inorganic ion transport and metabolism                             59/1467
+## Unknown                                                           190/1467
+## Energy production and conversion                                   98/1467
+## Function unknown                                                  144/1467
+## Post-translational modification, protein turnover, and chaperones  57/1467
+## Replication, recombination and repair                              43/1467
+## Lipid transport and metabolism                                     73/1467
+## Secondary metabolites biosynthesis, transport, and catabolism      29/1467
+## Coenzyme transport and metabolism                                  51/1467
+## Intracellular trafficking, secretion, and vesicular transport      23/1467
+## General function prediction only                                  149/1467
+## Translation, ribosomal structure and biogenesis                   113/1467
+##                                                                    p.adjust
+## Amino acid transport and metabolism                               0.0594385
+## Carbohydrate transport and metabolism                             0.0826176
+## Signal transduction mechanisms                                    0.1901436
+## Inorganic ion transport and metabolism                            0.2349609
+## Unknown                                                           0.8768303
+## Energy production and conversion                                  0.8768303
+## Function unknown                                                  0.8768303
+## Post-translational modification, protein turnover, and chaperones 0.8768303
+## Replication, recombination and repair                             0.8768303
+## Lipid transport and metabolism                                    0.8768303
+## Secondary metabolites biosynthesis, transport, and catabolism     0.8768303
+## Coenzyme transport and metabolism                                 0.9246769
+## Intracellular trafficking, secretion, and vesicular transport     0.9578324
+## General function prediction only                                  0.9986733
+## Translation, ribosomal structure and biogenesis                   0.9986733
+##                                                                       qvalue
+## Amino acid transport and metabolism                               0.05005347
+## Carbohydrate transport and metabolism                             0.06957271
+## Signal transduction mechanisms                                    0.16012090
+## Inorganic ion transport and metabolism                            0.19786180
+## Unknown                                                           0.73838343
+## Energy production and conversion                                  0.73838343
+## Function unknown                                                  0.73838343
+## Post-translational modification, protein turnover, and chaperones 0.73838343
+## Replication, recombination and repair                             0.73838343
+## Lipid transport and metabolism                                    0.73838343
+## Secondary metabolites biosynthesis, transport, and catabolism     0.73838343
+## Coenzyme transport and metabolism                                 0.77867527
+## Intracellular trafficking, secretion, and vesicular transport     0.80659571
+## General function prediction only                                  0.84098800
+## Translation, ribosomal structure and biogenesis                   0.84098800
+##                                                                   Count
+## Amino acid transport and metabolism                                  22
+## Carbohydrate transport and metabolism                                11
+## Signal transduction mechanisms                                        4
+## Inorganic ion transport and metabolism                                8
+## Unknown                                                              16
+## Energy production and conversion                                      8
+## Function unknown                                                     11
+## Post-translational modification, protein turnover, and chaperones     4
+## Replication, recombination and repair                                 3
+## Lipid transport and metabolism                                        5
+## Secondary metabolites biosynthesis, transport, and catabolism         2
+## Coenzyme transport and metabolism                                     3
+## Intracellular trafficking, secretion, and vesicular transport         1
+## General function prediction only                                      7
+## Translation, ribosomal structure and biogenesis                       2
 ```
 
 ```r
@@ -1955,8 +2145,126 @@ metaT_gsea_KO %>%
 ```
 
 ```
-## [1] Description GeneRatio   BgRatio     p.adjust    qvalue      Count      
-## <0 rows> (or 0-length row.names)
+##                                                                                               Description
+## Oxidative phosphorylation                                                      Oxidative phosphorylation 
+## Benzoate degradation                                                                Benzoate degradation 
+## Butanoate metabolism                                                                Butanoate metabolism 
+## Chromosome and associated proteins                                    Chromosome and associated proteins 
+## Carbon fixation pathways in prokaryotes                          Carbon fixation pathways in prokaryotes 
+## Propanoate metabolism                                                              Propanoate metabolism 
+## Valine, leucine and isoleucine degradation                    Valine, leucine and isoleucine degradation 
+## Citrate cycle (TCA cycle)                                                      Citrate cycle (TCA cycle) 
+## Fatty acid degradation                                                            Fatty acid degradation 
+## Alanine, aspartate and glutamate metabolism                  Alanine, aspartate and glutamate metabolism 
+## DNA replication proteins                                                        DNA replication proteins 
+## Histidine metabolism                                                                Histidine metabolism 
+## Tryptophan metabolism                                                              Tryptophan metabolism 
+## Exosome                                                                                          Exosome 
+## Pyruvate metabolism                                                                  Pyruvate metabolism 
+## ABC transporters                                                                        ABC transporters 
+## Pyrimidine metabolism                                                              Pyrimidine metabolism 
+## Quorum sensing                                                                            Quorum sensing 
+## Transporters                                                                                Transporters 
+## Peptidoglycan biosynthesis and degradation proteins  Peptidoglycan biosynthesis and degradation proteins 
+## Cysteine and methionine metabolism                                    Cysteine and methionine metabolism 
+## Peptidases                                                                                    Peptidases 
+## Function unknown                                                                         Function unknown
+## Bacterial secretion system                                                    Bacterial secretion system 
+## Amino acid related enzymes                                                    Amino acid related enzymes 
+## Glycine, serine and threonine metabolism                        Glycine, serine and threonine metabolism 
+## Secretion system                                                                        Secretion system 
+## Two-component system                                                                Two-component system 
+## Glyoxylate and dicarboxylate metabolism                          Glyoxylate and dicarboxylate metabolism 
+##                                                      GeneRatio BgRatio
+## Oxidative phosphorylation                                 4/94 14/1467
+## Benzoate degradation                                      3/94 10/1467
+## Butanoate metabolism                                      4/94 19/1467
+## Chromosome and associated proteins                        4/94 19/1467
+## Carbon fixation pathways in prokaryotes                   3/94 15/1467
+## Propanoate metabolism                                     3/94 16/1467
+## Valine, leucine and isoleucine degradation                3/94 16/1467
+## Citrate cycle (TCA cycle)                                 2/94 11/1467
+## Fatty acid degradation                                    2/94 11/1467
+## Alanine, aspartate and glutamate metabolism               2/94 12/1467
+## DNA replication proteins                                  2/94 12/1467
+## Histidine metabolism                                      2/94 12/1467
+## Tryptophan metabolism                                     2/94 12/1467
+## Exosome                                                   2/94 13/1467
+## Pyruvate metabolism                                       2/94 13/1467
+## ABC transporters                                          5/94 50/1467
+## Pyrimidine metabolism                                     2/94 14/1467
+## Quorum sensing                                            3/94 36/1467
+## Transporters                                              7/94 96/1467
+## Peptidoglycan biosynthesis and degradation proteins       1/94 10/1467
+## Cysteine and methionine metabolism                        1/94 11/1467
+## Peptidases                                                1/94 12/1467
+## Function unknown                                          2/94 30/1467
+## Bacterial secretion system                                1/94 14/1467
+## Amino acid related enzymes                                1/94 15/1467
+## Glycine, serine and threonine metabolism                  1/94 15/1467
+## Secretion system                                          1/94 20/1467
+## Two-component system                                      1/94 20/1467
+## Glyoxylate and dicarboxylate metabolism                   1/94 25/1467
+##                                                       p.adjust    qvalue
+## Oxidative phosphorylation                            0.2111202 0.1915791
+## Benzoate degradation                                 0.2111202 0.1915791
+## Butanoate metabolism                                 0.2111202 0.1915791
+## Chromosome and associated proteins                   0.2111202 0.1915791
+## Carbon fixation pathways in prokaryotes              0.3218983 0.2921037
+## Propanoate metabolism                                0.3218983 0.2921037
+## Valine, leucine and isoleucine degradation           0.3218983 0.2921037
+## Citrate cycle (TCA cycle)                            0.3833508 0.3478683
+## Fatty acid degradation                               0.3833508 0.3478683
+## Alanine, aspartate and glutamate metabolism          0.3833508 0.3478683
+## DNA replication proteins                             0.3833508 0.3478683
+## Histidine metabolism                                 0.3833508 0.3478683
+## Tryptophan metabolism                                0.3833508 0.3478683
+## Exosome                                              0.3833508 0.3478683
+## Pyruvate metabolism                                  0.3833508 0.3478683
+## ABC transporters                                     0.3833508 0.3478683
+## Pyrimidine metabolism                                0.3833508 0.3478683
+## Quorum sensing                                       0.6398201 0.5805990
+## Transporters                                         0.6398201 0.5805990
+## Peptidoglycan biosynthesis and degradation proteins  0.7037986 0.6386557
+## Cysteine and methionine metabolism                   0.7043407 0.6391476
+## Peptidases                                           0.7043407 0.6391476
+## Function unknown                                     0.7043407 0.6391476
+## Bacterial secretion system                           0.7043407 0.6391476
+## Amino acid related enzymes                           0.7043407 0.6391476
+## Glycine, serine and threonine metabolism             0.7043407 0.6391476
+## Secretion system                                     0.7627148 0.6921187
+## Two-component system                                 0.7627148 0.6921187
+## Glyoxylate and dicarboxylate metabolism              0.8116961 0.7365664
+##                                                      Count
+## Oxidative phosphorylation                                4
+## Benzoate degradation                                     3
+## Butanoate metabolism                                     4
+## Chromosome and associated proteins                       4
+## Carbon fixation pathways in prokaryotes                  3
+## Propanoate metabolism                                    3
+## Valine, leucine and isoleucine degradation               3
+## Citrate cycle (TCA cycle)                                2
+## Fatty acid degradation                                   2
+## Alanine, aspartate and glutamate metabolism              2
+## DNA replication proteins                                 2
+## Histidine metabolism                                     2
+## Tryptophan metabolism                                    2
+## Exosome                                                  2
+## Pyruvate metabolism                                      2
+## ABC transporters                                         5
+## Pyrimidine metabolism                                    2
+## Quorum sensing                                           3
+## Transporters                                             7
+## Peptidoglycan biosynthesis and degradation proteins      1
+## Cysteine and methionine metabolism                       1
+## Peptidases                                               1
+## Function unknown                                         2
+## Bacterial secretion system                               1
+## Amino acid related enzymes                               1
+## Glycine, serine and threonine metabolism                 1
+## Secretion system                                         1
+## Two-component system                                     1
+## Glyoxylate and dicarboxylate metabolism                  1
 ```
 
 ```r
@@ -1987,8 +2295,126 @@ metaT_gsea_COG %>%
 ```
 
 ```
-## [1] Description GeneRatio   BgRatio     p.adjust    qvalue      Count      
-## <0 rows> (or 0-length row.names)
+##                                                                                               Description
+## Oxidative phosphorylation                                                      Oxidative phosphorylation 
+## Benzoate degradation                                                                Benzoate degradation 
+## Butanoate metabolism                                                                Butanoate metabolism 
+## Chromosome and associated proteins                                    Chromosome and associated proteins 
+## Carbon fixation pathways in prokaryotes                          Carbon fixation pathways in prokaryotes 
+## Propanoate metabolism                                                              Propanoate metabolism 
+## Valine, leucine and isoleucine degradation                    Valine, leucine and isoleucine degradation 
+## Citrate cycle (TCA cycle)                                                      Citrate cycle (TCA cycle) 
+## Fatty acid degradation                                                            Fatty acid degradation 
+## Alanine, aspartate and glutamate metabolism                  Alanine, aspartate and glutamate metabolism 
+## DNA replication proteins                                                        DNA replication proteins 
+## Histidine metabolism                                                                Histidine metabolism 
+## Tryptophan metabolism                                                              Tryptophan metabolism 
+## Exosome                                                                                          Exosome 
+## Pyruvate metabolism                                                                  Pyruvate metabolism 
+## ABC transporters                                                                        ABC transporters 
+## Pyrimidine metabolism                                                              Pyrimidine metabolism 
+## Quorum sensing                                                                            Quorum sensing 
+## Transporters                                                                                Transporters 
+## Peptidoglycan biosynthesis and degradation proteins  Peptidoglycan biosynthesis and degradation proteins 
+## Cysteine and methionine metabolism                                    Cysteine and methionine metabolism 
+## Peptidases                                                                                    Peptidases 
+## Function unknown                                                                         Function unknown
+## Bacterial secretion system                                                    Bacterial secretion system 
+## Amino acid related enzymes                                                    Amino acid related enzymes 
+## Glycine, serine and threonine metabolism                        Glycine, serine and threonine metabolism 
+## Secretion system                                                                        Secretion system 
+## Two-component system                                                                Two-component system 
+## Glyoxylate and dicarboxylate metabolism                          Glyoxylate and dicarboxylate metabolism 
+##                                                      GeneRatio BgRatio
+## Oxidative phosphorylation                                 4/94 14/1467
+## Benzoate degradation                                      3/94 10/1467
+## Butanoate metabolism                                      4/94 19/1467
+## Chromosome and associated proteins                        4/94 19/1467
+## Carbon fixation pathways in prokaryotes                   3/94 15/1467
+## Propanoate metabolism                                     3/94 16/1467
+## Valine, leucine and isoleucine degradation                3/94 16/1467
+## Citrate cycle (TCA cycle)                                 2/94 11/1467
+## Fatty acid degradation                                    2/94 11/1467
+## Alanine, aspartate and glutamate metabolism               2/94 12/1467
+## DNA replication proteins                                  2/94 12/1467
+## Histidine metabolism                                      2/94 12/1467
+## Tryptophan metabolism                                     2/94 12/1467
+## Exosome                                                   2/94 13/1467
+## Pyruvate metabolism                                       2/94 13/1467
+## ABC transporters                                          5/94 50/1467
+## Pyrimidine metabolism                                     2/94 14/1467
+## Quorum sensing                                            3/94 36/1467
+## Transporters                                              7/94 96/1467
+## Peptidoglycan biosynthesis and degradation proteins       1/94 10/1467
+## Cysteine and methionine metabolism                        1/94 11/1467
+## Peptidases                                                1/94 12/1467
+## Function unknown                                          2/94 30/1467
+## Bacterial secretion system                                1/94 14/1467
+## Amino acid related enzymes                                1/94 15/1467
+## Glycine, serine and threonine metabolism                  1/94 15/1467
+## Secretion system                                          1/94 20/1467
+## Two-component system                                      1/94 20/1467
+## Glyoxylate and dicarboxylate metabolism                   1/94 25/1467
+##                                                       p.adjust    qvalue
+## Oxidative phosphorylation                            0.2111202 0.1915791
+## Benzoate degradation                                 0.2111202 0.1915791
+## Butanoate metabolism                                 0.2111202 0.1915791
+## Chromosome and associated proteins                   0.2111202 0.1915791
+## Carbon fixation pathways in prokaryotes              0.3218983 0.2921037
+## Propanoate metabolism                                0.3218983 0.2921037
+## Valine, leucine and isoleucine degradation           0.3218983 0.2921037
+## Citrate cycle (TCA cycle)                            0.3833508 0.3478683
+## Fatty acid degradation                               0.3833508 0.3478683
+## Alanine, aspartate and glutamate metabolism          0.3833508 0.3478683
+## DNA replication proteins                             0.3833508 0.3478683
+## Histidine metabolism                                 0.3833508 0.3478683
+## Tryptophan metabolism                                0.3833508 0.3478683
+## Exosome                                              0.3833508 0.3478683
+## Pyruvate metabolism                                  0.3833508 0.3478683
+## ABC transporters                                     0.3833508 0.3478683
+## Pyrimidine metabolism                                0.3833508 0.3478683
+## Quorum sensing                                       0.6398201 0.5805990
+## Transporters                                         0.6398201 0.5805990
+## Peptidoglycan biosynthesis and degradation proteins  0.7037986 0.6386557
+## Cysteine and methionine metabolism                   0.7043407 0.6391476
+## Peptidases                                           0.7043407 0.6391476
+## Function unknown                                     0.7043407 0.6391476
+## Bacterial secretion system                           0.7043407 0.6391476
+## Amino acid related enzymes                           0.7043407 0.6391476
+## Glycine, serine and threonine metabolism             0.7043407 0.6391476
+## Secretion system                                     0.7627148 0.6921187
+## Two-component system                                 0.7627148 0.6921187
+## Glyoxylate and dicarboxylate metabolism              0.8116961 0.7365664
+##                                                      Count
+## Oxidative phosphorylation                                4
+## Benzoate degradation                                     3
+## Butanoate metabolism                                     4
+## Chromosome and associated proteins                       4
+## Carbon fixation pathways in prokaryotes                  3
+## Propanoate metabolism                                    3
+## Valine, leucine and isoleucine degradation               3
+## Citrate cycle (TCA cycle)                                2
+## Fatty acid degradation                                   2
+## Alanine, aspartate and glutamate metabolism              2
+## DNA replication proteins                                 2
+## Histidine metabolism                                     2
+## Tryptophan metabolism                                    2
+## Exosome                                                  2
+## Pyruvate metabolism                                      2
+## ABC transporters                                         5
+## Pyrimidine metabolism                                    2
+## Quorum sensing                                           3
+## Transporters                                             7
+## Peptidoglycan biosynthesis and degradation proteins      1
+## Cysteine and methionine metabolism                       1
+## Peptidases                                               1
+## Function unknown                                         2
+## Bacterial secretion system                               1
+## Amino acid related enzymes                               1
+## Glycine, serine and threonine metabolism                 1
+## Secretion system                                         1
+## Two-component system                                     1
+## Glyoxylate and dicarboxylate metabolism                  1
 ```
 
 ```r
@@ -3089,10 +3515,10 @@ cowplot::plot_grid(desm_p3, desm_p4, desm_p5, desm_p6, ncol = 2, align = 'hv')
 ```
 
 ```
-## `geom_smooth()` using method = 'loess'
-## `geom_smooth()` using method = 'loess'
-## `geom_smooth()` using method = 'loess'
-## `geom_smooth()` using method = 'loess'
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 ```
 
 <img src="Figures/cached/desman-2-1.png" style="display: block; margin: auto;" />
@@ -3463,11 +3889,23 @@ geneAssign_df_wide_transcripts_depth <- MAG8_deseq_results_depth_fin %>%
 geneAssign_df_wide_transcripts_temp <- geneAssign_df_wide %>% 
   dplyr::filter(sseqid %in% unique(MAG8_deseq_results_temp_fin$gene_oid)) %>% 
   dplyr::select(sseqid:`Strain 5`)
+```
 
+```
+## Error in filter_impl(.data, quo): Evaluation error: object 'MAG8_deseq_results_temp_fin' not found.
+```
+
+```r
 geneAssign_df_wide_transcripts_temp <- MAG8_deseq_results_temp_fin %>% 
   dplyr::select(log2FoldChange, gene_oid, regulation) %>% 
   left_join(geneAssign_df_wide_transcripts_temp, ., by = c("sseqid" = "gene_oid"))
+```
 
+```
+## Error in eval(lhs, parent, parent): object 'MAG8_deseq_results_temp_fin' not found
+```
+
+```r
 # Evaluate distribution of transcripts expression over strains
 # Plot upregulated genes
 geneAssign_df_wide_transcripts_depth %>% 
@@ -4009,7 +4447,13 @@ panG <- panG[, -c("V1","V2","V6", "V7")]
 # Add column names
 colnames(panG) <- c("bin_name", "genome_name",  "gene_callers_id",
      "COG_FUNCTION_ACC", "COG_FUNCTION", "aa_sequence")
+```
 
+```
+## Error in setnames(x, value): Can't assign 6 names to a 10 column data.table
+```
+
+```r
 panG_MAG <- panG
 panG_MAG$gene_callers_id <- as.character(panG_MAG$gene_callers_id)
 # Add unique gene identifier 
@@ -4021,7 +4465,7 @@ sum(panG_MAG$genome_name=="MAG8_SU_M110_DCMD")
 ```
 
 ```
-## [1] 2294
+## [1] 0
 ```
 
 ```r
@@ -4051,6 +4495,13 @@ for(ko_file in ko_files){
     panG_ko <- rbind(panG_ko, tmp)
   }
 }
+```
+
+```
+## Error in rbind(deparse.level, ...): numbers of columns of arguments do not match
+```
+
+```r
 panG_ko$Genome <- gsub(".txt","",panG_ko$Genome)
 colnames(panG_ko)[1:2] <- c("unique_gene_callers_id", "ko_id")
 panG_ko <- panG_ko[panG_ko$ko_id != "",]
@@ -4078,6 +4529,10 @@ panG_ko_cog$bin_name[panG_ko_cog$bin_name == "MAG1_6_10_PC"] <- "MIXED_PCs"
 # Add column denoting whether it is core/mixed or accessory
 panG_ko_cog$bin_core <- factor(panG_ko_cog$bin_name == "CORE_PC" | panG_ko_cog$bin_name == "MIXED_PCs")
 panG_ko_cog$bin_core <- plyr::revalue(panG_ko_cog$bin_core, replace = c("TRUE" = "CORE/Mixed", "FALSE" = "Accessory"))
+```
+
+```
+## The following `from` values were not present in `x`: TRUE
 ```
 
 
@@ -4114,11 +4569,24 @@ for(i_genome in 1:length(unique(panG_ko$Genome))){
     results_pergene <- rbind(results_pergene, genes_per_gseq)
   }
 }
+```
+
+```
+## Error in filter_impl(.data, quo): Evaluation error: object 'Genome' not found.
+```
+
+```r
 # Calculate fraction of enriched genes vs. annotated panG genes
 results_pergene_sum <- results_pergene %>% 
   group_by(Genome) %>% 
   summarize(enrich_counts = sum(Counts))
+```
 
+```
+## Error in eval(lhs, parent, parent): object 'results_pergene' not found
+```
+
+```r
 annotated_fraction_panG <- panG_ko_cog %>% 
   dplyr::filter(bin_core == "Accessory") %>% 
   group_by(genome_name) %>% 
@@ -4136,70 +4604,96 @@ print(annotated_fraction_panG)
 ```
 
 ```
-## # A tibble: 19 x 2
-##    genome_name       panG_counts
-##    <chr>                   <int>
-##  1 MAG1_FA_MLB_DN            125
-##  2 MAG10_SU_M15_SN           235
-##  3 MAG2_FA_MLB_SN           1020
-##  4 MAG3_FA_MLB_SN            537
-##  5 MAG4_FA_M110_DN           647
-##  6 MAG5_SP_M110_DD           277
-##  7 MAG6_SP_M15_SD            114
-##  8 MAG7_SU_MLB_SD            120
-##  9 MAG8_SU_M110_DCMD         288
-## 10 MAG9_SU_M15_SN            234
-## 11 REF_Lim_103DPR2           333
-## 12 REF_Lim_2KL27             192
-## 13 REF_Lim_2KL3              674
-## 14 REF_Lim_63ED37_2          200
-## 15 REF_Lim_DM1               709
-## 16 REF_Lim_IID5              560
-## 17 REF_Lim_Rim11             287
-## 18 REF_Lim_Rim28             447
-## 19 REF_Lim_Rim47             187
+## # A tibble: 4,331 x 2
+##    genome_name panG_counts
+##          <int>       <int>
+##  1           0          12
+##  2           1          13
+##  3           2          15
+##  4           3          13
+##  5           4          12
+##  6           5          13
+##  7           6          12
+##  8           7          11
+##  9           8          14
+## 10           9          13
+## # ... with 4,321 more rows
 ```
 
 ```r
 results_pergene_sum <- left_join(results_pergene_sum, annotated_fraction_panG,
                                  by = c("Genome" = "genome_name"))
+```
 
+```
+## Error in left_join(results_pergene_sum, annotated_fraction_panG, by = c(Genome = "genome_name")): object 'results_pergene_sum' not found
+```
+
+```r
 # Merge actual unique gene counts per gsea category with the accessory genome sizes
 results_pergene_sum <- results_pergene_sum %>% 
   mutate(frac_enrich = enrich_counts/panG_counts)
+```
 
+```
+## Error in eval(lhs, parent, parent): object 'results_pergene_sum' not found
+```
+
+```r
 print(results_pergene_sum)
 ```
 
 ```
-## # A tibble: 10 x 4
-##    Genome            enrich_counts panG_counts frac_enrich
-##    <chr>                     <int>       <int>       <dbl>
-##  1 MAG1_FA_MLB_DN               12         125      0.0960
-##  2 MAG10_SU_M15_SN               6         235      0.0255
-##  3 MAG2_FA_MLB_SN              180        1020      0.176 
-##  4 MAG3_FA_MLB_SN               53         537      0.0987
-##  5 MAG4_FA_M110_DN             144         647      0.223 
-##  6 MAG5_SP_M110_DD              14         277      0.0505
-##  7 MAG6_SP_M15_SD               24         114      0.211 
-##  8 MAG7_SU_MLB_SD               15         120      0.125 
-##  9 MAG8_SU_M110_DCMD            66         288      0.229 
-## 10 MAG9_SU_M15_SN                5         234      0.0214
+## Error in print(results_pergene_sum): object 'results_pergene_sum' not found
 ```
 
 ```r
 # Make plot
 results_gseq$Genome <- gsub("_","-",results_gseq$Genome)
+```
+
+```
+## Error in gsub("_", "-", results_gseq$Genome): object 'results_gseq' not found
+```
+
+```r
 results_gseq$Genome <- gsub("-FA",".FA",results_gseq$Genome)
+```
+
+```
+## Error in gsub("-FA", ".FA", results_gseq$Genome): object 'results_gseq' not found
+```
+
+```r
 results_gseq$Genome <- gsub("-SU",".SU",results_gseq$Genome)
+```
+
+```
+## Error in gsub("-SU", ".SU", results_gseq$Genome): object 'results_gseq' not found
+```
+
+```r
 results_gseq$Genome <- gsub("-SP",".SP",results_gseq$Genome)
+```
+
+```
+## Error in gsub("-SP", ".SP", results_gseq$Genome): object 'results_gseq' not found
+```
+
+```r
 results_gseq$Genome <- factor(results_gseq$Genome, levels =
                                       c("MAG5.SP-M110-DD","MAG2.FA-MLB-SN",
                                         "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
                                         "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
                                         "MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
                                         "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"))
+```
 
+```
+## Error in factor(results_gseq$Genome, levels = c("MAG5.SP-M110-DD", "MAG2.FA-MLB-SN", : object 'results_gseq' not found
+```
+
+```r
 p_panG5 <- results_gseq %>% 
   ggplot(aes(x = Description, fill = Genome, y = Count))+
   geom_bar(color = "black", stat = "identity")+
@@ -4213,7 +4707,13 @@ p_panG5 <- results_gseq %>%
         plot.margin = unit(c(1.1,1.1,1.1,1.1), "cm"),
         strip.text = element_text(size = 12))+
   guides(fill = FALSE)
+```
 
+```
+## Error in eval(lhs, parent, parent): object 'results_gseq' not found
+```
+
+```r
 # print(p_panG5)
 
 # Make heatmap instread
@@ -4222,19 +4722,70 @@ results_gseq_wide <- complete(results_gseq, Genome, Description,
          fill = list(Count = 0)) %>% 
   dplyr::select(Description, Genome, Count) %>% 
   spread(., Description, Count)
+```
 
+```
+## Error in complete(results_gseq, Genome, Description, fill = list(Count = 0)): object 'results_gseq' not found
+```
 
+```r
 dat <- results_gseq_wide[,2:ncol(results_gseq_wide)]  # numerical columns
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'results_gseq_wide' not found
+```
+
+```r
 rownames(dat) <- results_gseq_wide$Genome
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'results_gseq_wide' not found
+```
+
+```r
 # row.order <- hclust(dist(dat))$order # clustering
 col.order <- hclust(dist(t(dat)))$order
+```
+
+```
+## Error in t(dat): object 'dat' not found
+```
+
+```r
 dat_new <- dat[, col.order] # re-order matrix accoring to clustering
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'dat' not found
+```
+
+```r
 rownames(dat_new) <- results_gseq_wide$Genome
-  
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'results_gseq_wide' not found
+```
+
+```r
 df_molten_dat <- melt(as.matrix(dat_new)) # reshape into dataframe
+```
+
+```
+## Error in as.matrix(dat_new): object 'dat_new' not found
+```
+
+```r
 names(df_molten_dat)[c(1:2)] <- c("Genome", "Description")
+```
 
+```
+## Error in names(df_molten_dat)[c(1:2)] <- c("Genome", "Description"): object 'df_molten_dat' not found
+```
 
+```r
 p_panG6 <- complete(df_molten_dat, Genome, Description,
          fill = list(value = 0)) %>%
   # dplyr::filter(Genome %in% selected_genomes) %>%
@@ -4259,11 +4810,19 @@ p_panG6 <- complete(df_molten_dat, Genome, Description,
   scale_x_discrete(name="", position = "top") +
   scale_y_discrete(name="") +
   labs(fill="Gene\ncount")
+```
 
+```
+## Error in complete(df_molten_dat, Genome, Description, fill = list(value = 0)): object 'df_molten_dat' not found
+```
+
+```r
 print(p_panG6)
 ```
 
-<img src="Figures/cached/panG-2-1.png" style="display: block; margin: auto;" />
+```
+## Error in print(p_panG6): object 'p_panG6' not found
+```
 
 ```r
 # for figure
@@ -4679,6 +5238,7 @@ df_BlastExt <- data.table::fread("./ExternalData/merged_blastfiles.tsv",
 meta_Ext <- xlsx::read.xlsx("./ExternalData/ismej2017156x1.xlsx", sheetIndex = 1)
 meta_Ext <- meta_Ext[!is.na(meta_Ext$metagenomic.sample),]
 meta_Ext <- meta_Ext[, c(1, 2, 4, 5)]
+meta_Ext <- meta_Ext %>% dplyr::filter(grepl("SRR", accession.number)) # Only data used for which SRR accession IDs (NCBI) were available
 
 # Import contig_ids of each bin
 IMG_folders <- list.files("./", pattern = "assembled.names_map", include.dirs = TRUE, recursive = TRUE)
@@ -4706,9 +5266,12 @@ ord_list_bin_ext <- c(
   "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
   "MAG6.SP-M15-SD","MAG8.SU-M110-DCMD",
   "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"
-  )
+)
 
 contig_ids$new_bin_name <- factor(contig_ids$new_bin_name, levels = ord_list_bin_ext)
+
+# Add Lineage label
+contig_ids <- left_join(contig_ids, MGT_df, by = c("new_bin_name" = "Genome_ID"))
 
 # Clean up SRA identifier label
 df_BlastExt$SRA <- gsub("_blast.tsv", "", df_BlastExt$SRA)
@@ -4732,19 +5295,128 @@ df_BlastExt_sum$bin_xcoord <- as.numeric(do.call(rbind,
 
 # Add metadata
 df_BlastExt_sum <- left_join(df_BlastExt_sum, meta_Ext, by = c("SRA" = "accession.number"))
+```
 
-SRA_ranking <- df_BlastExt_sum %>% dplyr::filter(new_bin_name == "MAG8.SU-M110-DCMD" & identity > 94.5) %>%
-  dplyr::select(metagenomic.sample) %>% table()
-SRA_ranking <- SRA_ranking[rev(order(SRA_ranking))]
 
-# # Plot sequence discrete populations
+```r
+# Plot % reads corrected for genome size over threshold of 0.95
+blast_df_sum_comp <- df_BlastExt_sum %>% group_by(SRA, new_bin_name) %>% dplyr::count(bin_xcoord)
+
+# Add Lineage label
+blast_df_sum_comp <- left_join(blast_df_sum_comp, MGT_df, by = c("new_bin_name" = "Genome_ID"))
+
+id_thresh <- 95-0.25
+map_disc_cum <- blast_df_sum_comp  %>% 
+  dplyr::filter(bin_xcoord > id_thresh) %>% group_by(SRA, new_bin_name) %>% 
+  mutate(cum_rel_reads_mapped = cumsum(n))%>% 
+  dplyr::filter(bin_xcoord == 100 - 0.25)
+
+map_disc_cum <- left_join(map_disc_cum, meta_Ext, by = c("SRA" = "accession.number"))
+
+SRA_ranking <- map_disc_cum %>% 
+  dplyr::filter(new_bin_name == "MAG8.SU-M110-DCMD" & bin_xcoord > 94.5) %>%
+  dplyr::group_by(metagenomic.sample, new_bin_name) %>% 
+  summarise(mean_n = median(cum_rel_reads_mapped))
+SRA_ranking <- as.character(SRA_ranking$metagenomic.sample[rev(order(SRA_ranking$mean_n))])
+map_disc_cum$metagenomic.sample <- factor(as.character(map_disc_cum$metagenomic.sample), levels = SRA_ranking)
+
+MAG_ranking <- map_disc_cum %>% 
+  dplyr::filter(bin_xcoord > 94.5) %>%
+  dplyr::group_by(new_bin_name) %>% 
+  summarise(sum_n = sum(cum_rel_reads_mapped))
+MAG_ranking <- as.character(MAG_ranking$new_bin_name[rev(order(MAG_ranking$sum_n))])
+map_disc_cum$new_bin_name <- factor(as.character(map_disc_cum$new_bin_name), levels = MAG_ranking)
+
+p_sdisc_cum3 <- map_disc_cum %>% 
+  # dplyr::filter(!grepl("Yellowstone|Amadorio|Mendota|Klamath - Copco Reservoir", metagenomic.sample) &
+  #                                               metagenomic.sample != "Houston"& metagenomic.sample != "Trout Bog") %>% 
+  ggplot(aes(x = metagenomic.sample, y =  100*cum_rel_reads_mapped/1e6, 
+                                        fill = Lineage))+
+  theme_bw()+
+  scale_fill_manual("",
+                    values = c("#deebf7ff", "#c6dbefff","#9ecae1ff",
+                               "#6baed6ff"))+
+  geom_jitter(size = 2, shape = 21, color = "black", alpha = 0.75, width = 0.15)+
+  geom_boxplot(alpha = 0.5, outlier.shape = NA)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size=11, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Relative abundance\n (> ", id_thresh-0.25, "% NI)"))+
+  xlab("")+
+  guides(fill=FALSE)+
+  facet_wrap(.~new_bin_name, nrow = 2)+
+  scale_y_sqrt()
+
+print(p_sdisc_cum3)
+```
+
+<img src="Figures/cached/SDP_external-2-1.png" style="display: block; margin: auto;" />
+
+
+```r
+# Make one graph of abundances across different external metagenomic data sets for each MAG
+p_sdisc_cum4 <- map_disc_cum %>% 
+  # dplyr::filter(!grepl("Yellowstone|Amadorio|Mendota|Klamath - Copco Reservoir", metagenomic.sample) &
+  #                                               metagenomic.sample != "Houston"& metagenomic.sample != "Trout Bog") %>% 
+  ggplot(aes(x = new_bin_name, y =  100*cum_rel_reads_mapped/1e6))+
+  theme_bw()+
+  scale_fill_brewer("", palette = "Paired")+
+  geom_jitter(size = 4, shape = 21, color = "black", alpha = 0.5, width = 0.15,
+              aes(fill = metagenomic.sample))+
+  geom_violin(alpha = 0.5, adjust = 1, draw_quantiles = TRUE, scale = "width")+
+  stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1), 
+                 geom="pointrange", color="#333333", size = 1.05)+
+  theme(axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size=14),
+      axis.text.y = element_text(size = 14),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Relative abundance\n (> ", id_thresh-0.25, "% NI)"))+
+  xlab("")+
+  scale_y_sqrt()+ 
+  coord_flip()+
+  guides(fill = guide_legend(nrow = 4))
+
+print(p_sdisc_cum4)
+```
+
+<img src="Figures/cached/SDP_external-3-1.png" style="display: block; margin: auto;" />
+
+
+```r
+# Remove samples with less than 100 reads
+map_disc_cum_sdp <- map_disc_cum
+map_disc_cum_sdp <- map_disc_cum_sdp %>% 
+  mutate(SRA_bin = interaction(SRA, new_bin_name, sep = "_"))
+
+# Only have metagenomic samples with more than 100 reads mapped to the MAGS in order to assess SDPs
+sample_filter <- map_disc_cum_sdp %>% 
+  ungroup() %>% 
+  dplyr::filter(bin_xcoord > 94.5) %>%
+  dplyr::group_by(SRA_bin) %>% 
+  summarise(sum_n = sum(cum_rel_reads_mapped))
+sample_filter <- sample_filter$SRA_bin[sample_filter$sum_n>100]
+
+# Add interaction terms to filter out samples with low reads mapped for each MAG
+df_BlastExt <- df_BlastExt %>% 
+  mutate(SRA_bin = interaction(SRA, new_bin_name, sep = "_"))
+df_BlastExt_sum <- df_BlastExt_sum %>% 
+  mutate(SRA_bin = interaction(SRA, new_bin_name, sep = "_"))
+
+# Plot sequence discrete populations
 p_blast_sdisc <- df_BlastExt %>%
+  dplyr::filter(SRA_bin %in% sample_filter) %>% 
      ggplot(aes(x = identity, ..scaled.., fill = new_bin_name))+
       theme_bw()+
       scale_fill_brewer("", palette = "Paired")+
       geom_density(color = "black")+
   facet_wrap(new_bin_name~., ncol = 2)+
-      guides(color = FALSE)+
+      guides(color = FALSE, fill = FALSE)+
       theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
@@ -4757,19 +5429,18 @@ p_blast_sdisc <- df_BlastExt %>%
 print(p_blast_sdisc)
 ```
 
-<img src="Figures/cached/SDP_external-1.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/SDP_external-4-1.png" style="display: block; margin: auto;" />
 
 ```r
-# 
-# # Plot sequence discrete populations
+# Plot sequence discrete populations
 p_blast_sdisc2 <- df_BlastExt_sum %>%
+    dplyr::filter(SRA_bin %in% sample_filter) %>% 
      ggplot(aes(x = bin_xcoord, fill = new_bin_name))+
       theme_bw()+
-     scale_fill_brewer("", palette = "Paired")+
+      scale_fill_brewer("", palette = "Paired")+
       geom_bar(stat = "count")+
-  facet_wrap(new_bin_name~., ncol = 2)+
-      # geom_density(color = "black")+
-      guides(color = FALSE)+
+      facet_wrap(new_bin_name~., ncol = 2)+
+      guides(color = FALSE, fill = FALSE)+
       theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
@@ -4780,16 +5451,15 @@ p_blast_sdisc2 <- df_BlastExt_sum %>%
     xlim(75,100)+
   scale_y_sqrt()
 
-# 
 print(p_blast_sdisc2)
 ```
 
-<img src="Figures/cached/SDP_external-2.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/SDP_external-4-2.png" style="display: block; margin: auto;" />
 
 ```r
-# 
 # Plot for all bins density plots
 p_blast_all_dens <- df_BlastExt_sum %>%
+    dplyr::filter(SRA_bin %in% sample_filter) %>% 
   ggplot(aes(x = identity, shape = SRA, color = new_bin_name))+
   theme_bw()+
   geom_density(alpha = 0.4, size = 0.4,
@@ -4807,53 +5477,38 @@ p_blast_all_dens <- df_BlastExt_sum %>%
   ylab("")+
   xlab("% Identity")+
   scale_x_continuous(limits = c(80,100))+
-  guides(shape = FALSE)+
+  guides(shape = FALSE, color = FALSE)+
   scale_y_sqrt()
 
 p_blast_all_dens
 ```
 
-<img src="Figures/cached/SDP_external-3.png" style="display: block; margin: auto;" />
-
+<img src="Figures/cached/SDP_external-4-3.png" style="display: block; margin: auto;" />
 
 ```r
-# Plot % reads corrected for genome size over threshold of 0.95
-blast_df_sum_comp <- df_BlastExt_sum %>% group_by(SRA, new_bin_name) %>% dplyr::count(bin_xcoord)
-
-id_thresh <- 95-0.25
-map_disc_cum <- blast_df_sum_comp  %>% 
-  dplyr::filter(bin_xcoord > id_thresh) %>% group_by(SRA, new_bin_name) %>% 
-  mutate(cum_rel_reads_mapped = cumsum(n))%>% 
-  dplyr::filter(bin_xcoord == 100-0.25)
-
-map_disc_cum <- left_join(map_disc_cum, meta_Ext, by = c("SRA" = "accession.number"))
-
-map_disc_cum$metagenomic.sample <- factor(map_disc_cum$metagenomic.sample, levels  = names(SRA_ranking))
-
-p_sdisc_cum3 <- map_disc_cum %>% dplyr::filter(!grepl("Yellowstone|Amadorio|Mendota|Klamath - Copco Reservoir", metagenomic.sample) &
-                                                metagenomic.sample != "Houston"& metagenomic.sample != "Trout Bog") %>% 
-  ggplot(aes(x = metagenomic.sample, y =  100*cum_rel_reads_mapped/1e6, 
-                                        fill = new_bin_name))+
+p_blast_all_dens2 <- df_BlastExt_sum %>%
+    dplyr::filter(SRA_bin %in% sample_filter) %>% 
+  ggplot(aes(x = bin_xcoord, shape = SRA, color = new_bin_name))+
   theme_bw()+
-  scale_fill_brewer("", palette = c("Paired"))+
-  # scale_fill_manual("Optimal growth temperature (°C)",
-  #                   values = c("#deebf7ff", "#c6dbefff","#9ecae1ff",
-  #                              "#6baed6ff"))+
-  geom_jitter(size = 3, shape = 21, color = "black", alpha = 0.5, width = 0.15)+
-  geom_boxplot(alpha = 0.15, outlier.shape = NA)+
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-      title=element_text(size=20), legend.text=element_text(size=12),
-      legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size=14, angle = 45, hjust = 1),
-      strip.text=element_text(size=12), legend.position = "bottom",
-      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Relative abundance\n ( > ", id_thresh-0.25, "% NI)"))+
-  xlab("")+
-  guides(fill=FALSE)+
-  facet_wrap(.~new_bin_name, nrow = 2)+
+  geom_density(alpha = 0.4, size = 0.4,
+               bw = "nrd0")+
+  scale_color_brewer("", palette = "Paired")+
+  guides(fill = FALSE, color = FALSE)+
+  facet_wrap(new_bin_name~., ncol = 2)+
+  theme(axis.text.y=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(size = 14),
+        strip.text=element_text(size=14),
+        panel.grid.minor = element_blank(),
+        legend.position = "bottom")+
+  ylab("")+
+  xlab("% Identity")+
+  scale_x_continuous(limits = c(80,100))+
+  guides(shape = FALSE)+
   scale_y_sqrt()
 
-print(p_sdisc_cum3)
+p_blast_all_dens2
 ```
 
-<img src="Figures/cached/SDP_external-2-1.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/SDP_external-4-4.png" style="display: block; margin: auto;" />

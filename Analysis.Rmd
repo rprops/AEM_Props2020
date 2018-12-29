@@ -4198,6 +4198,7 @@ df_BlastExt <- data.table::fread("./ExternalData/merged_blastfiles.tsv",
 meta_Ext <- xlsx::read.xlsx("./ExternalData/ismej2017156x1.xlsx", sheetIndex = 1)
 meta_Ext <- meta_Ext[!is.na(meta_Ext$metagenomic.sample),]
 meta_Ext <- meta_Ext[, c(1, 2, 4, 5)]
+meta_Ext <- meta_Ext %>% dplyr::filter(grepl("SRR", accession.number)) # Only data used for which SRR accession IDs (NCBI) were available
 
 # Import contig_ids of each bin
 IMG_folders <- list.files("./", pattern = "assembled.names_map", include.dirs = TRUE, recursive = TRUE)
@@ -4225,13 +4226,12 @@ ord_list_bin_ext <- c(
   "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
   "MAG6.SP-M15-SD","MAG8.SU-M110-DCMD",
   "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"
-  )
+)
 
 contig_ids$new_bin_name <- factor(contig_ids$new_bin_name, levels = ord_list_bin_ext)
 
 # Add Lineage label
-# MGT_df$Lineage <- factor(MGT_df$Lineage, levels = c("LimDEA_1", "LimDEA_2",
-#                                                     "LimB", "LimC"))
+contig_ids <- left_join(contig_ids, MGT_df, by = c("new_bin_name" = "Genome_ID"))
 
 # Clean up SRA identifier label
 df_BlastExt$SRA <- gsub("_blast.tsv", "", df_BlastExt$SRA)
@@ -4255,19 +4255,121 @@ df_BlastExt_sum$bin_xcoord <- as.numeric(do.call(rbind,
 
 # Add metadata
 df_BlastExt_sum <- left_join(df_BlastExt_sum, meta_Ext, by = c("SRA" = "accession.number"))
+```
 
-SRA_ranking <- df_BlastExt_sum %>% dplyr::filter(new_bin_name == "MAG8.SU-M110-DCMD" & identity > 94.5) %>%
-  dplyr::select(metagenomic.sample) %>% table()
-SRA_ranking <- SRA_ranking[rev(order(SRA_ranking))]
+```{r SDP_external-2, warning = FALSE, fig.width = 12, fig.height = 7, dpi = 500, dev = c("png", "pdf")}
+# Plot % reads corrected for genome size over threshold of 0.95
+blast_df_sum_comp <- df_BlastExt_sum %>% group_by(SRA, new_bin_name) %>% dplyr::count(bin_xcoord)
 
-# # Plot sequence discrete populations
+# Add Lineage label
+blast_df_sum_comp <- left_join(blast_df_sum_comp, MGT_df, by = c("new_bin_name" = "Genome_ID"))
+
+id_thresh <- 95-0.25
+map_disc_cum <- blast_df_sum_comp  %>% 
+  dplyr::filter(bin_xcoord > id_thresh) %>% group_by(SRA, new_bin_name) %>% 
+  mutate(cum_rel_reads_mapped = cumsum(n))%>% 
+  dplyr::filter(bin_xcoord == 100 - 0.25)
+
+map_disc_cum <- left_join(map_disc_cum, meta_Ext, by = c("SRA" = "accession.number"))
+
+SRA_ranking <- map_disc_cum %>% 
+  dplyr::filter(new_bin_name == "MAG8.SU-M110-DCMD" & bin_xcoord > 94.5) %>%
+  dplyr::group_by(metagenomic.sample, new_bin_name) %>% 
+  summarise(mean_n = median(cum_rel_reads_mapped))
+SRA_ranking <- as.character(SRA_ranking$metagenomic.sample[rev(order(SRA_ranking$mean_n))])
+map_disc_cum$metagenomic.sample <- factor(as.character(map_disc_cum$metagenomic.sample), levels = SRA_ranking)
+
+MAG_ranking <- map_disc_cum %>% 
+  dplyr::filter(bin_xcoord > 94.5) %>%
+  dplyr::group_by(new_bin_name) %>% 
+  summarise(sum_n = sum(cum_rel_reads_mapped))
+MAG_ranking <- as.character(MAG_ranking$new_bin_name[rev(order(MAG_ranking$sum_n))])
+map_disc_cum$new_bin_name <- factor(as.character(map_disc_cum$new_bin_name), levels = MAG_ranking)
+
+p_sdisc_cum3 <- map_disc_cum %>% 
+  # dplyr::filter(!grepl("Yellowstone|Amadorio|Mendota|Klamath - Copco Reservoir", metagenomic.sample) &
+  #                                               metagenomic.sample != "Houston"& metagenomic.sample != "Trout Bog") %>% 
+  ggplot(aes(x = metagenomic.sample, y =  100*cum_rel_reads_mapped/1e6, 
+                                        fill = Lineage))+
+  theme_bw()+
+  scale_fill_manual("",
+                    values = c("#deebf7ff", "#c6dbefff","#9ecae1ff",
+                               "#6baed6ff"))+
+  geom_jitter(size = 2, shape = 21, color = "black", alpha = 0.75, width = 0.15)+
+  geom_boxplot(alpha = 0.5, outlier.shape = NA)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size=11, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Relative abundance\n (> ", id_thresh-0.25, "% NI)"))+
+  xlab("")+
+  guides(fill=FALSE)+
+  facet_wrap(.~new_bin_name, nrow = 2)+
+  scale_y_sqrt()
+
+print(p_sdisc_cum3)
+```
+
+```{r SDP_external-3, warning = FALSE, fig.width = 9, fig.height = 8, dpi = 500, dev = c("png", "pdf")}
+# Make one graph of abundances across different external metagenomic data sets for each MAG
+p_sdisc_cum4 <- map_disc_cum %>% 
+  # dplyr::filter(!grepl("Yellowstone|Amadorio|Mendota|Klamath - Copco Reservoir", metagenomic.sample) &
+  #                                               metagenomic.sample != "Houston"& metagenomic.sample != "Trout Bog") %>% 
+  ggplot(aes(x = new_bin_name, y =  100*cum_rel_reads_mapped/1e6))+
+  theme_bw()+
+  scale_fill_brewer("", palette = "Paired")+
+  geom_jitter(size = 4, shape = 21, color = "black", alpha = 0.5, width = 0.15,
+              aes(fill = metagenomic.sample))+
+  geom_violin(alpha = 0.5, adjust = 1, draw_quantiles = TRUE, scale = "width")+
+  stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1), 
+                 geom="pointrange", color="#333333", size = 1.05)+
+  theme(axis.title=element_text(size=20),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size=14),
+      axis.text.y = element_text(size = 14),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Relative abundance\n (> ", id_thresh-0.25, "% NI)"))+
+  xlab("")+
+  scale_y_sqrt()+ 
+  coord_flip()+
+  guides(fill = guide_legend(nrow = 4))
+
+print(p_sdisc_cum4)
+```
+
+```{r SDP_external-4, warning = FALSE, fig.width = 13, fig.height = 7, dpi = 500, dev = c("png", "pdf")}
+# Remove samples with less than 100 reads
+map_disc_cum_sdp <- map_disc_cum
+map_disc_cum_sdp <- map_disc_cum_sdp %>% 
+  mutate(SRA_bin = interaction(SRA, new_bin_name, sep = "_"))
+
+# Only have metagenomic samples with more than 100 reads mapped to the MAGS in order to assess SDPs
+sample_filter <- map_disc_cum_sdp %>% 
+  ungroup() %>% 
+  dplyr::filter(bin_xcoord > 94.5) %>%
+  dplyr::group_by(SRA_bin) %>% 
+  summarise(sum_n = sum(cum_rel_reads_mapped))
+sample_filter <- sample_filter$SRA_bin[sample_filter$sum_n>100]
+
+# Add interaction terms to filter out samples with low reads mapped for each MAG
+df_BlastExt <- df_BlastExt %>% 
+  mutate(SRA_bin = interaction(SRA, new_bin_name, sep = "_"))
+df_BlastExt_sum <- df_BlastExt_sum %>% 
+  mutate(SRA_bin = interaction(SRA, new_bin_name, sep = "_"))
+
+# Plot sequence discrete populations
 p_blast_sdisc <- df_BlastExt %>%
+  dplyr::filter(SRA_bin %in% sample_filter) %>% 
      ggplot(aes(x = identity, ..scaled.., fill = new_bin_name))+
       theme_bw()+
       scale_fill_brewer("", palette = "Paired")+
       geom_density(color = "black")+
   facet_wrap(new_bin_name~., ncol = 2)+
-      guides(color = FALSE)+
+      guides(color = FALSE, fill = FALSE)+
       theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
@@ -4278,16 +4380,16 @@ p_blast_sdisc <- df_BlastExt %>%
     xlim(75,100)
 
 print(p_blast_sdisc)
-# 
-# # Plot sequence discrete populations
+
+# Plot sequence discrete populations
 p_blast_sdisc2 <- df_BlastExt_sum %>%
+    dplyr::filter(SRA_bin %in% sample_filter) %>% 
      ggplot(aes(x = bin_xcoord, fill = new_bin_name))+
       theme_bw()+
-     scale_fill_brewer("", palette = "Paired")+
+      scale_fill_brewer("", palette = "Paired")+
       geom_bar(stat = "count")+
-  facet_wrap(new_bin_name~., ncol = 2)+
-      # geom_density(color = "black")+
-      guides(color = FALSE)+
+      facet_wrap(new_bin_name~., ncol = 2)+
+      guides(color = FALSE, fill = FALSE)+
       theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
@@ -4298,11 +4400,11 @@ p_blast_sdisc2 <- df_BlastExt_sum %>%
     xlim(75,100)+
   scale_y_sqrt()
 
-# 
 print(p_blast_sdisc2)
-# 
+
 # Plot for all bins density plots
 p_blast_all_dens <- df_BlastExt_sum %>%
+    dplyr::filter(SRA_bin %in% sample_filter) %>% 
   ggplot(aes(x = identity, shape = SRA, color = new_bin_name))+
   theme_bw()+
   geom_density(alpha = 0.4, size = 0.4,
@@ -4320,49 +4422,32 @@ p_blast_all_dens <- df_BlastExt_sum %>%
   ylab("")+
   xlab("% Identity")+
   scale_x_continuous(limits = c(80,100))+
-  guides(shape = FALSE)+
+  guides(shape = FALSE, color = FALSE)+
   scale_y_sqrt()
 
 p_blast_all_dens
-```
 
-
-```{r SDP_external-2, warning = FALSE, fig.width = 10.5, fig.height = 7, dpi = 500, dev = c("png", "pdf")}
-# Plot % reads corrected for genome size over threshold of 0.95
-blast_df_sum_comp <- df_BlastExt_sum %>% group_by(SRA, new_bin_name) %>% dplyr::count(bin_xcoord)
-
-id_thresh <- 95-0.25
-map_disc_cum <- blast_df_sum_comp  %>% 
-  dplyr::filter(bin_xcoord > id_thresh) %>% group_by(SRA, new_bin_name) %>% 
-  mutate(cum_rel_reads_mapped = cumsum(n))%>% 
-  dplyr::filter(bin_xcoord == 100-0.25)
-
-map_disc_cum <- left_join(map_disc_cum, meta_Ext, by = c("SRA" = "accession.number"))
-
-map_disc_cum$metagenomic.sample <- factor(map_disc_cum$metagenomic.sample, levels  = names(SRA_ranking))
-
-p_sdisc_cum3 <- map_disc_cum %>% dplyr::filter(!grepl("Yellowstone|Amadorio|Mendota|Klamath - Copco Reservoir", metagenomic.sample) &
-                                                metagenomic.sample != "Houston"& metagenomic.sample != "Trout Bog") %>% 
-  ggplot(aes(x = metagenomic.sample, y =  100*cum_rel_reads_mapped/1e6, 
-                                        fill = new_bin_name))+
+p_blast_all_dens2 <- df_BlastExt_sum %>%
+    dplyr::filter(SRA_bin %in% sample_filter) %>% 
+  ggplot(aes(x = bin_xcoord, shape = SRA, color = new_bin_name))+
   theme_bw()+
-  scale_fill_brewer("", palette = c("Paired"))+
-  # scale_fill_manual("Optimal growth temperature (°C)",
-  #                   values = c("#deebf7ff", "#c6dbefff","#9ecae1ff",
-  #                              "#6baed6ff"))+
-  geom_jitter(size = 3, shape = 21, color = "black", alpha = 0.5, width = 0.15)+
-  geom_boxplot(alpha = 0.15, outlier.shape = NA)+
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
-      title=element_text(size=20), legend.text=element_text(size=12),
-      legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size=14, angle = 45, hjust = 1),
-      strip.text=element_text(size=12), legend.position = "bottom",
-      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Relative abundance\n ( > ", id_thresh-0.25, "% NI)"))+
-  xlab("")+
-  guides(fill=FALSE)+
-  facet_wrap(.~new_bin_name, nrow = 2)+
+  geom_density(alpha = 0.4, size = 0.4,
+               bw = "nrd0")+
+  scale_color_brewer("", palette = "Paired")+
+  guides(fill = FALSE, color = FALSE)+
+  facet_wrap(new_bin_name~., ncol = 2)+
+  theme(axis.text.y=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(size = 14),
+        strip.text=element_text(size=14),
+        panel.grid.minor = element_blank(),
+        legend.position = "bottom")+
+  ylab("")+
+  xlab("% Identity")+
+  scale_x_continuous(limits = c(80,100))+
+  guides(shape = FALSE)+
   scale_y_sqrt()
 
-print(p_sdisc_cum3)
+p_blast_all_dens2
 ```
