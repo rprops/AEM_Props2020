@@ -563,12 +563,15 @@ data_total_abund$new_bin_name <- factor(data_total_abund$new_bin_name,
 
 # Plot abundance distributions of all bins
 p_season1 <- ggplot(data = data_total_abund, 
-                    aes(x = new_bin_name, y = norm_mean_rel_abundance,
+                    aes(x = new_bin_name, y = norm_mean_rel_abundance/(bin_size/1e6),
                         fill = Lineage))+
-  geom_point(size = 4, shape = 21, alpha = 0.7)+
-  geom_boxplot(alpha = 0.7, outlier.shape = NA)+
+  # geom_point(size = 4, shape = 21, alpha = 0.7)+
+  geom_boxplot(alpha = 1, outlier.shape = 21, outlier.size = 4, size = 0.5)+
+  # geom_violin(scale = "width")+
+  # stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1), 
+                 # geom="pointrange", color="#333333", size = 0.5)+
   theme_bw()+
-    scale_fill_manual(values = c(rgb(red=t(col2rgb("#deebf7ff")),
+  scale_fill_manual(values = c(rgb(red=t(col2rgb("#deebf7ff")),
                                    maxColorValue  = 255), 
                                rgb(red=t(col2rgb("#c6dbefff")), 
                                    maxColorValue  = 255),
@@ -577,7 +580,6 @@ p_season1 <- ggplot(data = data_total_abund,
                                rgb(red=t(col2rgb("#6baed6ff")), 
                                    maxColorValue  = 255)
                               ))+
-  # ylim(0,1)+ 
   theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
         legend.background = element_rect(fill="transparent"),
@@ -586,7 +588,7 @@ p_season1 <- ggplot(data = data_total_abund,
         axis.line = element_line(size = 1, colour = "grey80"),
         panel.border = element_blank())+
   ylab("Normalized relative abundance (%)")+
-  scale_y_sqrt()+
+  scale_y_sqrt(limits = c(0,3))+
   xlab("")
 
 p_season1
@@ -4216,8 +4218,10 @@ for(i in 1:length(IMG_folders)){
 }
 contig_ids$IMG_taxID <- gsub("IMG_","",contig_ids$IMG_taxID)
 
-# Add manuscript bin IDs
-contig_ids <- dplyr::left_join(contig_ids, new_bin_names2, by = "IMG_taxID")
+# Add manuscript bin IDs and genome sizes
+new_bin_names3 <- dplyr::left_join(bin_size, new_bin_names, by = "bins")
+new_bin_names3 <- dplyr::left_join(new_bin_names3, new_bin_names2, by = "new_bin_name")
+contig_ids <- dplyr::left_join(contig_ids, new_bin_names3, by = "IMG_taxID")
 
 # Order bins according to phylogeny
 ord_list_bin_ext <- c(
@@ -4259,10 +4263,15 @@ df_BlastExt_sum <- left_join(df_BlastExt_sum, meta_Ext, by = c("SRA" = "accessio
 
 ```{r SDP_external-2, warning = FALSE, fig.width = 12, fig.height = 7, dpi = 500, dev = c("png", "pdf")}
 # Plot % reads corrected for genome size over threshold of 0.95
-blast_df_sum_comp <- df_BlastExt_sum %>% group_by(SRA, new_bin_name) %>% dplyr::count(bin_xcoord)
+blast_df_sum_comp <- df_BlastExt_sum %>%
+  group_by(SRA, new_bin_name) %>%
+  dplyr::count(bin_xcoord)
 
 # Add Lineage label
-blast_df_sum_comp <- left_join(blast_df_sum_comp, MGT_df, by = c("new_bin_name" = "Genome_ID"))
+blast_df_sum_comp <- left_join(blast_df_sum_comp, MGT_df,
+                               by = c("new_bin_name" = "Genome_ID"))
+blast_df_sum_comp <- left_join(blast_df_sum_comp, new_bin_names3,
+                               by = "new_bin_name")
 
 id_thresh <- 95-0.25
 map_disc_cum <- blast_df_sum_comp  %>% 
@@ -4286,10 +4295,11 @@ MAG_ranking <- map_disc_cum %>%
 MAG_ranking <- as.character(MAG_ranking$new_bin_name[rev(order(MAG_ranking$sum_n))])
 map_disc_cum$new_bin_name <- factor(as.character(map_disc_cum$new_bin_name), levels = MAG_ranking)
 
+# Evaluate normalized abundance (mapped reads/bin size at > 94.5% identity).
 p_sdisc_cum3 <- map_disc_cum %>% 
-  # dplyr::filter(!grepl("Yellowstone|Amadorio|Mendota|Klamath - Copco Reservoir", metagenomic.sample) &
-  #                                               metagenomic.sample != "Houston"& metagenomic.sample != "Trout Bog") %>% 
-  ggplot(aes(x = metagenomic.sample, y =  100*cum_rel_reads_mapped/1e6, 
+  dplyr::filter(cum_rel_reads_mapped > 10) %>% 
+  dplyr::mutate(norm_cum_rel_reads_mapped = cum_rel_reads_mapped/(bin_size/1e6)) %>% 
+  ggplot(aes(x = metagenomic.sample, y =  100*norm_cum_rel_reads_mapped/1e6, 
                                         fill = Lineage))+
   theme_bw()+
   scale_fill_manual("",
@@ -4303,7 +4313,7 @@ p_sdisc_cum3 <- map_disc_cum %>%
       axis.text.x = element_text(size=11, angle = 45, hjust = 1),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Relative abundance\n (> ", id_thresh-0.25, "% NI)"))+
+  ylab(paste0("Normalized relative abundance\n (> ", id_thresh-0.25, "% NI)"))+
   xlab("")+
   guides(fill=FALSE)+
   facet_wrap(.~new_bin_name, nrow = 2)+
@@ -4315,8 +4325,8 @@ print(p_sdisc_cum3)
 ```{r SDP_external-3, warning = FALSE, fig.width = 9, fig.height = 8, dpi = 500, dev = c("png", "pdf")}
 # Make one graph of abundances across different external metagenomic data sets for each MAG
 p_sdisc_cum4 <- map_disc_cum %>% 
-  # dplyr::filter(!grepl("Yellowstone|Amadorio|Mendota|Klamath - Copco Reservoir", metagenomic.sample) &
-  #                                               metagenomic.sample != "Houston"& metagenomic.sample != "Trout Bog") %>% 
+  dplyr::mutate(norm_cum_rel_reads_mapped = cum_rel_reads_mapped/(bin_size/1e6)) %>% 
+  # dplyr::filter(cum_rel_reads_mapped > 10) %>% # In case you want to filter samples with < x reads out
   ggplot(aes(x = new_bin_name, y =  100*cum_rel_reads_mapped/1e6))+
   theme_bw()+
   scale_fill_brewer("", palette = "Paired")+
@@ -4332,16 +4342,68 @@ p_sdisc_cum4 <- map_disc_cum %>%
       axis.text.y = element_text(size = 14),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Relative abundance\n (> ", id_thresh-0.25, "% NI)"))+
+  ylab(paste0("Normalized relative abundance\n (> ", id_thresh-0.25, "% NI)"))+
   xlab("")+
   scale_y_sqrt()+ 
   coord_flip()+
   guides(fill = guide_legend(nrow = 4))
 
 print(p_sdisc_cum4)
+
+map_disc_cum_phy <- map_disc_cum
+map_disc_cum_phy$new_bin_name <- factor(map_disc_cum_phy$new_bin_name,
+                                        levels = c(
+                                          "MAG5.SP-M110-DD",
+                                          "MAG2.FA-MLB-SN",
+                                          "MAG3.FA-MLB-SN",
+                                          "MAG4.FA-M110-DN",
+                                          "MAG1.FA-MLB-DN",
+                                          "MAG10.SU-M15-SN",
+                                          "MAG6.SP-M15-SD",
+                                          "MAG8.SU-M110-DCMD",
+                                          "MAG7.SU-MLB-SD", 
+                                          "MAG9.SU-M15-SN"
+                                          )
+)
+
+# Make one graph of abundances across different external metagenomic datasets 
+# for each MAG with a single boxplot to add to phylogenomic tree
+p_sdisc_cum5 <- map_disc_cum_phy %>% 
+  # dplyr::filter(cum_rel_reads_mapped > 10) %>% 
+  dplyr::mutate(norm_cum_rel_reads_mapped = cum_rel_reads_mapped/(bin_size/1e6)) %>% 
+  ggplot(aes(x = new_bin_name, y =  100*cum_rel_reads_mapped/1e6, fill = Lineage))+
+  theme_bw()+
+  scale_fill_manual("",
+                    values = c("#deebf7ff", "#c6dbefff","#9ecae1ff",
+                               "#6baed6ff"))+
+  # geom_violin(scale = "width")+
+  # stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1), 
+                 # geom="pointrange", color="#333333", size = 0.5)+
+  # geom_point(size = 4, shape = 21, color = "black", alpha = 0.7)+
+  geom_boxplot(alpha = 1, outlier.shape = 21, outlier.size = 4, size = 0.5)+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        axis.text.x = element_text(angle = 90, hjust = 1),
+        strip.text=element_text(size=18),
+        axis.line = element_line(size = 1, colour = "grey80"),
+        panel.border = element_blank())+
+  ylab(paste0("Normalized relative abundance\n (> ", id_thresh-0.25, "% NI)"))+
+  xlab("")+
+  scale_y_sqrt(breaks = c(0,0.5, 1, 2 ,3), labels = c(0, 0.5, 1, 2 ,3))+ 
+  guides(fill = guide_legend(nrow = 4))
+
+print(p_sdisc_cum5)
+
 ```
 
-```{r SDP_external-4, warning = FALSE, fig.width = 13, fig.height = 7, dpi = 500, dev = c("png", "pdf")}
+```{r SDP_external-4, warning = FALSE, fig.width = 10, fig.height = 12, dpi = 500, dev = c("png", "pdf"), dependson="SDP_external-3"}
+# Plot together with abundances estimated from lake MI metaG data
+cowplot::plot_grid(p_sdisc_cum5, p_season1, align = "hv", nrow = 2)
+
+```
+
+```{r SDP_external-5, warning = FALSE, fig.width = 13, fig.height = 7, dpi = 500, dev = c("png", "pdf")}
 # Remove samples with less than 100 reads
 map_disc_cum_sdp <- map_disc_cum
 map_disc_cum_sdp <- map_disc_cum_sdp %>% 
