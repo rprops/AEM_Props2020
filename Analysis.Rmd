@@ -1935,12 +1935,13 @@ print(p_blast_sdisc_merged)
 # Plot for most abundant bin (B63)
 p_blast_sdisc_B63 <- blast_df_sum %>% 
   dplyr::filter(bin == "B63_Su13.BD.MM110.DCMD_rebin1") %>% 
-  ggplot(aes(x = bin_xcoord, ..density..))+
+  ggplot(aes(x = bin_xcoord, color = Sample))+
   theme_bw()+
-  # facet_grid(season~Site)+
-  geom_density(alpha = 0.4, size = 0.75, color = "#333333")+
+  facet_grid(season~Site)+
+  scale_color_manual(values = rep("#333333", 24))+
+  geom_density(alpha = 0.4, size = 0.75, aes(fill = season), bw = "nrd0")+
   scale_shape_manual("", values = c(21,22,24))+
-  scale_color_brewer("", palette = "Accent")+
+  scale_fill_brewer("", palette = "Accent")+
   guides(fill = FALSE)+
   theme(axis.text.y=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
@@ -1951,7 +1952,8 @@ p_blast_sdisc_B63 <- blast_df_sum %>%
         legend.position = "bottom")+
   ylab("Density")+
   xlab("Nucleotide identity (%)")+
-  xlim(75,100)
+  xlim(75,100)+
+  guides(color = FALSE)
 
 p_blast_sdisc_B63
 

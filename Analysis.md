@@ -2705,12 +2705,13 @@ print(p_blast_sdisc_merged)
 # Plot for most abundant bin (B63)
 p_blast_sdisc_B63 <- blast_df_sum %>% 
   dplyr::filter(bin == "B63_Su13.BD.MM110.DCMD_rebin1") %>% 
-  ggplot(aes(x = bin_xcoord, ..density..))+
+  ggplot(aes(x = bin_xcoord, color = Sample))+
   theme_bw()+
-  # facet_grid(season~Site)+
-  geom_density(alpha = 0.4, size = 0.75, color = "#333333")+
+  facet_grid(season~Site)+
+  scale_color_manual(values = rep("#333333", 24))+
+  geom_density(alpha = 0.4, size = 0.75, aes(fill = season), bw = "nrd0")+
   scale_shape_manual("", values = c(21,22,24))+
-  scale_color_brewer("", palette = "Accent")+
+  scale_fill_brewer("", palette = "Accent")+
   guides(fill = FALSE)+
   theme(axis.text.y=element_text(size=14), axis.title=element_text(size=20),
         title=element_text(size=20), legend.text=element_text(size=14),
@@ -2721,7 +2722,8 @@ p_blast_sdisc_B63 <- blast_df_sum %>%
         legend.position = "bottom")+
   ylab("Density")+
   xlab("Nucleotide identity (%)")+
-  xlim(75,100)
+  xlim(75,100)+
+  guides(color = FALSE)
 
 p_blast_sdisc_B63
 ```
@@ -5338,6 +5340,7 @@ map_disc_cum$new_bin_name <- factor(as.character(map_disc_cum$new_bin_name), lev
 
 # Evaluate normalized abundance (mapped reads/bin size at > 94.5% identity).
 p_sdisc_cum3 <- map_disc_cum %>% 
+  dplyr::filter(cum_rel_reads_mapped > 10) %>% 
   dplyr::mutate(norm_cum_rel_reads_mapped = cum_rel_reads_mapped/(bin_size/1e6)) %>% 
   ggplot(aes(x = metagenomic.sample, y =  100*norm_cum_rel_reads_mapped/1e6, 
                                         fill = Lineage))+
@@ -5369,6 +5372,7 @@ print(p_sdisc_cum3)
 # Make one graph of abundances across different external metagenomic data sets for each MAG
 p_sdisc_cum4 <- map_disc_cum %>% 
   dplyr::mutate(norm_cum_rel_reads_mapped = cum_rel_reads_mapped/(bin_size/1e6)) %>% 
+  # dplyr::filter(cum_rel_reads_mapped > 10) %>% # In case you want to filter samples with < x reads out
   ggplot(aes(x = new_bin_name, y =  100*cum_rel_reads_mapped/1e6))+
   theme_bw()+
   scale_fill_brewer("", palette = "Paired")+
@@ -5415,6 +5419,7 @@ map_disc_cum_phy$new_bin_name <- factor(map_disc_cum_phy$new_bin_name,
 # Make one graph of abundances across different external metagenomic datasets 
 # for each MAG with a single boxplot to add to phylogenomic tree
 p_sdisc_cum5 <- map_disc_cum_phy %>% 
+  # dplyr::filter(cum_rel_reads_mapped > 10) %>% 
   dplyr::mutate(norm_cum_rel_reads_mapped = cum_rel_reads_mapped/(bin_size/1e6)) %>% 
   ggplot(aes(x = new_bin_name, y =  100*cum_rel_reads_mapped/1e6, fill = Lineage))+
   theme_bw()+
@@ -5435,7 +5440,7 @@ p_sdisc_cum5 <- map_disc_cum_phy %>%
         panel.border = element_blank())+
   ylab(paste0("Normalized relative abundance\n (> ", id_thresh-0.25, "% NI)"))+
   xlab("")+
-  scale_y_sqrt()+ 
+  scale_y_sqrt(breaks = c(0,0.5, 1, 2 ,3), labels = c(0, 0.5, 1, 2 ,3))+ 
   guides(fill = guide_legend(nrow = 4))
 
 print(p_sdisc_cum5)
