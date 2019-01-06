@@ -1404,10 +1404,95 @@ p_deseq_overview <- res_deseq_anott_changed %>%
   guides(fill = FALSE)+
   coord_flip()
 
-print(p_deseq_overview)
+# mean and median absolute change in gene expression
+res_deseq_anott_changed %>% 
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
+  dplyr::filter(Design == "~ Season + Site" 
+                & Comparison == "Muskegon Lake\nVs\nM110") %>% 
+  group_by(new_bin_name) %>% 
+  summarise(mean_fold = mean(abs(log2FoldChange)),
+            median_fold = median(abs(log2FoldChange)))
 ```
 
-<img src="Figures/cached/DEseq-overview-1.png" style="display: block; margin: auto;" />
+```
+## # A tibble: 10 x 3
+##    new_bin_name      mean_fold median_fold
+##    <fct>                 <dbl>       <dbl>
+##  1 MAG5.SP-M110-DD        1.68        1.49
+##  2 MAG2.FA-MLB-SN         2.06        1.80
+##  3 MAG3.FA-MLB-SN         2.00        1.73
+##  4 MAG4.FA-M110-DN        1.88        1.81
+##  5 MAG1.FA-MLB-DN         2.12        1.98
+##  6 MAG10.SU-M15-SN        2.07        1.93
+##  7 MAG6.SP-M15-SD         2.09        1.88
+##  8 MAG8.SU-M110-DCMD      1.61        1.35
+##  9 MAG7.SU-MLB-SD         1.94        1.68
+## 10 MAG9.SU-M15-SN         1.93        1.75
+```
+
+```r
+tmp_nutrient <- res_deseq_anott_changed %>% 
+   dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
+  dplyr::filter(Design == "~ Season + Site" 
+                & Comparison == "Muskegon Lake\nVs\nM110")
+  
+kruskal.test(abs(log2FoldChange) ~ new_bin_name,
+             data = tmp_nutrient)
+```
+
+```
+## 
+## 	Kruskal-Wallis rank sum test
+## 
+## data:  abs(log2FoldChange) by new_bin_name
+## Kruskal-Wallis chi-squared = 331.85, df = 9, p-value < 2.2e-16
+```
+
+```r
+pairwise.wilcox.test(abs(tmp_nutrient$log2FoldChange),
+                     tmp_nutrient$new_bin_name,
+                     p.adjust.method="BH")
+```
+
+```
+## 
+## 	Pairwise comparisons using Wilcoxon rank sum test 
+## 
+## data:  abs(tmp_nutrient$log2FoldChange) and tmp_nutrient$new_bin_name 
+## 
+##                   MAG5.SP-M110-DD MAG2.FA-MLB-SN MAG3.FA-MLB-SN
+## MAG2.FA-MLB-SN    4.4e-12         -              -             
+## MAG3.FA-MLB-SN    1.2e-05         0.01208        -             
+## MAG4.FA-M110-DN   0.00085         0.00078        0.25923       
+## MAG1.FA-MLB-DN    < 2e-16         0.17917        0.00027       
+## MAG10.SU-M15-SN   8.0e-06         0.40350        0.64735       
+## MAG6.SP-M15-SD    < 2e-16         0.28275        0.00043       
+## MAG8.SU-M110-DCMD 0.00131         < 2e-16        < 2e-16       
+## MAG7.SU-MLB-SD    0.00080         0.00039        0.25923       
+## MAG9.SU-M15-SN    6.8e-05         0.00080        0.42676       
+##                   MAG4.FA-M110-DN MAG1.FA-MLB-DN MAG10.SU-M15-SN
+## MAG2.FA-MLB-SN    -               -              -              
+## MAG3.FA-MLB-SN    -               -              -              
+## MAG4.FA-M110-DN   -               -              -              
+## MAG1.FA-MLB-DN    7.5e-06         -              -              
+## MAG10.SU-M15-SN   0.16664         0.04452        -              
+## MAG6.SP-M15-SD    0.00020         0.68014        0.16763        
+## MAG8.SU-M110-DCMD 9.9e-13         < 2e-16        6.0e-15        
+## MAG7.SU-MLB-SD    0.42676         6.2e-07        0.18812        
+## MAG9.SU-M15-SN    0.88496         1.2e-07        0.04220        
+##                   MAG6.SP-M15-SD MAG8.SU-M110-DCMD MAG7.SU-MLB-SD
+## MAG2.FA-MLB-SN    -              -                 -             
+## MAG3.FA-MLB-SN    -              -                 -             
+## MAG4.FA-M110-DN   -              -                 -             
+## MAG1.FA-MLB-DN    -              -                 -             
+## MAG10.SU-M15-SN   -              -                 -             
+## MAG6.SP-M15-SD    -              -                 -             
+## MAG8.SU-M110-DCMD < 2e-16        -                 -             
+## MAG7.SU-MLB-SD    1.6e-06        < 2e-16           -             
+## MAG9.SU-M15-SN    6.1e-06        2.5e-14           0.88496       
+## 
+## P value adjustment method: BH
+```
 
 ```r
 # Add up and down regulation
@@ -1437,10 +1522,101 @@ p_deseq_overview2 <- res_deseq_anott_changed %>%
   # stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1),
   #                geom="pointrange", color="#333333", size = 1.5)
 
+# mean and median absolute change in gene expression
+res_deseq_anott_changed %>% 
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
+  dplyr::filter(Design == "~ Site + Season" 
+                & Comparison == "Fall-Spring") %>% 
+  group_by(new_bin_name) %>% 
+  summarise(mean_fold = mean(abs(log2FoldChange)),
+            median_fold = median(abs(log2FoldChange)))
+```
+
+```
+## # A tibble: 10 x 3
+##    new_bin_name      mean_fold median_fold
+##    <fct>                 <dbl>       <dbl>
+##  1 MAG5.SP-M110-DD        1.90        1.61
+##  2 MAG2.FA-MLB-SN         2.07        1.85
+##  3 MAG3.FA-MLB-SN         2.13        1.93
+##  4 MAG4.FA-M110-DN        2.03        1.83
+##  5 MAG1.FA-MLB-DN         2.14        2.03
+##  6 MAG10.SU-M15-SN        2.40        2.12
+##  7 MAG6.SP-M15-SD         2.03        2.01
+##  8 MAG8.SU-M110-DCMD      1.57        1.15
+##  9 MAG7.SU-MLB-SD         2.02        1.80
+## 10 MAG9.SU-M15-SN         1.71        1.51
+```
+
+```r
+tmp_season <- res_deseq_anott_changed %>% 
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
+  dplyr::filter(Design == "~ Site + Season" 
+                & Comparison == "Fall-Spring")
+  
+kruskal.test(abs(log2FoldChange) ~ new_bin_name,
+             data = tmp_season)
+```
+
+```
+## 
+## 	Kruskal-Wallis rank sum test
+## 
+## data:  abs(log2FoldChange) by new_bin_name
+## Kruskal-Wallis chi-squared = 221.44, df = 9, p-value < 2.2e-16
+```
+
+```r
+pairwise.wilcox.test(abs(tmp_season$log2FoldChange),
+                     tmp_season$new_bin_name,
+                     p.adjust.method="BH")
+```
+
+```
+## 
+## 	Pairwise comparisons using Wilcoxon rank sum test 
+## 
+## data:  abs(tmp_season$log2FoldChange) and tmp_season$new_bin_name 
+## 
+##                   MAG5.SP-M110-DD MAG2.FA-MLB-SN MAG3.FA-MLB-SN
+## MAG2.FA-MLB-SN    0.01666         -              -             
+## MAG3.FA-MLB-SN    0.00061         0.16363        -             
+## MAG4.FA-M110-DN   2.1e-05         0.09882        0.96800       
+## MAG1.FA-MLB-DN    0.00681         0.22578        0.81486       
+## MAG10.SU-M15-SN   4.2e-06         0.00029        0.00756       
+## MAG6.SP-M15-SD    0.00103         0.24400        0.97917       
+## MAG8.SU-M110-DCMD 9.2e-09         7.7e-15        3.6e-15       
+## MAG7.SU-MLB-SD    0.02656         0.73249        0.05135       
+## MAG9.SU-M15-SN    0.00105         1.6e-14        3.6e-15       
+##                   MAG4.FA-M110-DN MAG1.FA-MLB-DN MAG10.SU-M15-SN
+## MAG2.FA-MLB-SN    -               -              -              
+## MAG3.FA-MLB-SN    -               -              -              
+## MAG4.FA-M110-DN   -               -              -              
+## MAG1.FA-MLB-DN    0.22559         -              -              
+## MAG10.SU-M15-SN   0.00348         0.05141        -              
+## MAG6.SP-M15-SD    0.81486         0.55217        0.00963        
+## MAG8.SU-M110-DCMD 2.3e-16         1.5e-10        1.3e-12        
+## MAG7.SU-MLB-SD    0.03301         0.08659        0.00014        
+## MAG9.SU-M15-SN    3.6e-15         5.4e-09        1.3e-13        
+##                   MAG6.SP-M15-SD MAG8.SU-M110-DCMD MAG7.SU-MLB-SD
+## MAG2.FA-MLB-SN    -              -                 -             
+## MAG3.FA-MLB-SN    -              -                 -             
+## MAG4.FA-M110-DN   -              -                 -             
+## MAG1.FA-MLB-DN    -              -                 -             
+## MAG10.SU-M15-SN   -              -                 -             
+## MAG6.SP-M15-SD    -              -                 -             
+## MAG8.SU-M110-DCMD 4.4e-13        -                 -             
+## MAG7.SU-MLB-SD    0.09882        6.9e-14           -             
+## MAG9.SU-M15-SN    9.5e-11        2.1e-05           1.1e-10       
+## 
+## P value adjustment method: BH
+```
+
+```r
 print(p_deseq_overview2)
 ```
 
-<img src="Figures/cached/DEseq-overview-2.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/DEseq-overview-1.png" style="display: block; margin: auto;" />
 
 ```r
 p_deseq_overview3 <- res_deseq_anott_changed %>% 
@@ -1469,7 +1645,7 @@ p_deseq_overview3 <- res_deseq_anott_changed %>%
 print(p_deseq_overview3)
 ```
 
-<img src="Figures/cached/DEseq-overview-3.png" style="display: block; margin: auto;" />
+<img src="Figures/cached/DEseq-overview-2.png" style="display: block; margin: auto;" />
 
 ```r
 res_deseq_anott_changed %>% 

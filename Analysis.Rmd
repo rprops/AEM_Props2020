@@ -1210,7 +1210,27 @@ p_deseq_overview <- res_deseq_anott_changed %>%
   guides(fill = FALSE)+
   coord_flip()
 
-print(p_deseq_overview)
+# mean and median absolute change in gene expression
+res_deseq_anott_changed %>% 
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
+  dplyr::filter(Design == "~ Season + Site" 
+                & Comparison == "Muskegon Lake\nVs\nM110") %>% 
+  group_by(new_bin_name) %>% 
+  summarise(mean_fold = mean(abs(log2FoldChange)),
+            median_fold = median(abs(log2FoldChange)))
+
+tmp_nutrient <- res_deseq_anott_changed %>% 
+   dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
+  dplyr::filter(Design == "~ Season + Site" 
+                & Comparison == "Muskegon Lake\nVs\nM110")
+  
+kruskal.test(abs(log2FoldChange) ~ new_bin_name,
+             data = tmp_nutrient)
+pairwise.wilcox.test(abs(tmp_nutrient$log2FoldChange),
+                     tmp_nutrient$new_bin_name,
+                     p.adjust.method="BH")
+
+
 
 # Add up and down regulation
 res_deseq_anott_changed$regulation <- res_deseq_anott_changed$log2FoldChange > 0
@@ -1239,7 +1259,31 @@ p_deseq_overview2 <- res_deseq_anott_changed %>%
   # stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1),
   #                geom="pointrange", color="#333333", size = 1.5)
 
+# mean and median absolute change in gene expression
+res_deseq_anott_changed %>% 
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
+  dplyr::filter(Design == "~ Site + Season" 
+                & Comparison == "Fall-Spring") %>% 
+  group_by(new_bin_name) %>% 
+  summarise(mean_fold = mean(abs(log2FoldChange)),
+            median_fold = median(abs(log2FoldChange)))
+
+tmp_season <- res_deseq_anott_changed %>% 
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
+  dplyr::filter(Design == "~ Site + Season" 
+                & Comparison == "Fall-Spring")
+  
+kruskal.test(abs(log2FoldChange) ~ new_bin_name,
+             data = tmp_season)
+pairwise.wilcox.test(abs(tmp_season$log2FoldChange),
+                     tmp_season$new_bin_name,
+                     p.adjust.method="BH")
+
+
+
+
 print(p_deseq_overview2)
+
 
 
 p_deseq_overview3 <- res_deseq_anott_changed %>% 
@@ -4405,7 +4449,7 @@ cowplot::plot_grid(p_sdisc_cum5, p_season1, align = "hv", nrow = 2)
 
 ```
 
-```{r SDP_external-5, warning = FALSE, fig.width = 13, fig.height = 7, dpi = 500, dev = c("png", "pdf")}
+```{r SDP_external-5, warning = FALSE, fig.width = 10, fig.height = 7, dpi = 500, dev = c("png", "pdf")}
 # Remove samples with less than 100 reads
 map_disc_cum_sdp <- map_disc_cum
 map_disc_cum_sdp <- map_disc_cum_sdp %>% 
