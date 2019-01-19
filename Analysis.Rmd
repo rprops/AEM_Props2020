@@ -446,11 +446,12 @@ print(p_Topt)
 
 # 1c. Network analysis based on 16S data
 
+Get data from here: https://doi.org/10.6084/m9.figshare.7608854
 
 ```{r network_16S, warning = FALSE, fig.width = 9, fig.height = 8}
 # import data
-df_phy <- import_mothur(mothur_shared_file = "./16S/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.an.unique_list.shared",
-                        mothur_constaxonomy_file = "./16S/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.an.unique_list.0.03.cons.taxonomy")
+df_phy <- import_mothur(mothur_shared_file = "./Amplicon_16S/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.an.unique_list.shared",
+                        mothur_constaxonomy_file = "./Amplicon_16S/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.an.unique_list.0.03.cons.taxonomy")
 
 # Filter out 2013 samples
 df_phy <- prune_samples(grep(pattern = ".", sample_names(df_phy), fixed = TRUE,
@@ -3764,6 +3765,9 @@ print(hm_DOC2_full)
 
 
 # External metagenomes
+
+Get data from here: https://doi.org/10.6084/m9.figshare.7608848
+
 ```{r SDP_external, warning = FALSE, fig.width = 12, fig.height = 10, dpi = 500, dev = c("png", "pdf")}
 df_BlastExt <- data.table::fread("./ExternalData/merged_blastfiles.tsv", 
                          header = TRUE)
