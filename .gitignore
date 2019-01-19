@@ -5,3 +5,17 @@
 
 IMG_annotation/old_bins/
 Figures/old
+.git_old/
+Amplicon_16S/
+Analysis_cache/
+ExternalData/
+Extra.R
+Manuscript/
+Tree/16S/isolates/
+anvio_output/rebin/anvio_database.tar.gz
+anvio_output/rebin/panG_limno.tar.gz
+anvio_output/rebin/vizbin_rebin_anvio_v230/
+genomes_proks.csv
+mapping_files/aa_comp.csv
+posigene/
+redundant_bins_ANI.0.9_COV.0.7.csv
