@@ -131,7 +131,7 @@ eFile=./Variants/${MAG}/${MAG}_scg.freqtran_df.csv
 			for r in 0 1 2 3 4 5 6 7 8 9
 				do
 				echo $g
-                desman $varFile -e $eFile -o ./Variants/${MAG}/${MAG}_${g}_${r} -g $g -s $r -m 1.0 > ./Variants/${MAG}/${MAG}_${g}_${r}.out
+                desman $varFile -e $eFile -o ./Variants/${MAG}/${MAG}_${g}_${r} -i 500 -g $g -s $r -m 1.0 > ./Variants/${MAG}/${MAG}_${g}_${r}.out
             done
 	done
 done
@@ -143,14 +143,16 @@ set -e
 
 for contig_list in `ls *-simplified_contigs.tsv`
 do
-
-MAG=${contig_list%-simplified_contigs.tsv}
-echo $MAG
-cat ./Variants/${MAG}/*/fit.txt | cut -d"," -f2- > ./Variants/${MAG}/${MAG}_Dev.csv
-sed -i '1iH,G,LP,Dev' ./Variants/${MAG}/${MAG}_Dev.csv 
-/home/rprops/DESMAN/scripts/PlotDev.R -l ./Variants/${MAG}/${MAG}_Dev.csv  -o ./Variants/${MAG}/${MAG}_Dev.pdf 
+	MAG=${contig_list%-simplified_contigs.tsv}
+	echo $MAG
+	cat ./Variants/${MAG}/*/fit.txt | cut -d"," -f2- > ./Variants/${MAG}/${MAG}_Dev.csv
+	sed -i '1iH,G,LP,Dev' ./Variants/${MAG}/${MAG}_Dev.csv 
+	#/home/rprops/DESMAN/scripts/PlotDev.R -l ./Variants/${MAG}/${MAG}_Dev.csv  -o ./Variants/${MAG}/${MAG}_Dev.pdf 
+	cd ./Variants/${MAG}
+	python /home/rprops/DESMAN/scripts/resolvenhap.py ${MAG} > ${MAG}_resolvedNhaplotypes.csv
+	cd -
 done
 
 
 
-python /home/rprops/DESMAN/scripts/resolvenhap.py ClusterEC
+
