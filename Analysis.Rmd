@@ -2402,13 +2402,67 @@ for(i in 1:10){
   tmp_desm <- read.csv(paste0("./DESMAN/DESMAN_other_MAGs/", metadata_desman$MAG_id[i], "/",
     metadata_desman$best_desman_run[i],"/Gamma_meanR.csv"))
   # wide to long
-  colnames(tmp_desm) <- c("Sample", paste0("Strain", 1:(ncol(tmp_desm)-1)))
+  colnames(tmp_desm) <- c("Samples", paste0("Strain ", 1:(ncol(tmp_desm)-1)))
   temp_desm <- gather(tmp_desm, Strain, Frequency, 2:ncol(tmp_desm), factor_key = TRUE)
   temp_desm$MAG <- metadata_desman$MAG_id[i]
   if(i == 1) results_desm_all <- temp_desm else results_desm_all <- rbind(results_desm_all, temp_desm)
 }
+results_desm_all$Samples <- gsub(".MAG*..","", results_desm_all$Samples)
+results_desm_all$Samples <- gsub(".A", "", results_desm_all$Samples, fixed = TRUE)
+results_desm_all$Samples <- gsub(".C", "", results_desm_all$Samples, fixed = TRUE)
 
-# 
+# Merge DESMAN data with environmental metadata
+results_desm_all <- dplyr::left_join(results_desm_all, meta_em, by = c("Samples" = "Sample_ID"))
+results_desm_all$Site <- as.character(results_desm_all$Site)
+results_desm_all$Site <- gsub("110", "Lake Michigan\nsite M110", results_desm_all$Site)
+results_desm_all$Site <- gsub("15", "Lake Michigan\nsite M15", results_desm_all$Site)
+results_desm_all$Site <- gsub("Buoy", "Muskegon Lake", results_desm_all$Site)
+results_desm_all$Site <- factor(results_desm_all$Site, levels = c("Muskegon Lake",
+                                                            "Lake Michigan\nsite M15",
+                                                            "Lake Michigan\nsite M110"))
+results_desm_all$Season <- as.character(results_desm_all$Season)
+results_desm_all$Season <- factor(results_desm_all$Season, levels = c("Spring", "Summer","Fall"))
+# Factor to numeric
+results_desm_all$Temperature..C. <- as.numeric(as.character(results_desm_all$Temperature..C.))
+results_desm_all$PAR <- as.numeric(as.character(results_desm_all$PAR))
+results_desm_all$Chl.Lab..ug.L. <- as.numeric(as.character(results_desm_all$Chl.Lab..ug.L.))
+results_desm_all$DO.Probe..mg.L. <- as.numeric(as.character(results_desm_all$DO.Probe..mg.L.))
+results_desm_all$TP.ug.L <- as.numeric(as.character(results_desm_all$TP.ug.L))
+results_desm_all$DOC.mg.L <- as.numeric(as.character(results_desm_all$DOC.mg.L))
+
+# Add phylogenetic information of MAG/strains
+
+for(i in 1:10){
+p_desm <- results_desm_all %>% 
+    dplyr::filter(MAG %in% paste0("MAG",i)) %>% 
+    ggplot(., aes(x = Season, y = Frequency, fill = Strain, col = Strain))+
+  geom_point(color = "black", alpha = 0.7, size = 3, shape = 21)+
+  geom_boxplot(alpha = 0.3, col = "black", outlier.shape = NA, size = 0.3)+
+  scale_fill_brewer("", palette = "Accent")+
+  scale_color_brewer("",palette = "Accent")+
+  theme_bw()+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab(paste0("Strain frequency"))+
+  guides(fill=FALSE)+
+  facet_grid(Site~Strain, scales ="free")+
+  xlab("")+
+  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
+  guides(fill=FALSE)
+
+ncol <- results_desm_all %>% 
+    dplyr::filter(MAG %in% paste0("MAG",i)) %>% 
+  summarize(number_of_strain= length(unique(Strain)))
+
+png(paste0("./Figures/DESMAN/desman-MAG", i, ".png"), height = 6, 
+  width = 3 + 4*(ncol$number_of_strain/6), units = "in", res = 500)
+print(p_desm)
+dev.off()
+}
 
 ```
 
