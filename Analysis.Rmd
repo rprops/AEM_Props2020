@@ -2394,9 +2394,106 @@ print(p_scat_abund)
 ## All MAGs
 
 ```{r desman-1, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")}
+# For adding manuscript MAG information etcµ
+MGT_df$Genome_ID <- as.character(MGT_df$Genome_ID)
+MGT_df$MAG_id <- do.call(rbind, strsplit(MGT_df$Genome_ID,".", fixed = TRUE))[, 1]
+
 # import metadata
 metadata_desman <- readxl::read_excel("./DESMAN/DESMAN_other_MAGs/desman_results.xlsx", sheet = 1)
+metadata_desman <- left_join(metadata_desman, MGT_df, by = c("MAG_id"))
+  
+# Make the same plot for optimal growth temperature
 
+p_desman_overview <- ggplot(metadata_desman, aes(x = Genome_ID, y = number_of_robust_haplotypes, fill = Lineage, group = Genome_ID))+
+  theme_bw()+
+  geom_bar(alpha = 1, stat = "identity", color = "black",
+           position = position_dodge(width = 1), width = 0.7)+
+  scale_fill_manual("",
+                    values = c("#deebf7ff", "#c6dbefff","#9ecae1ff",
+                               "#6baed6ff"))+
+  theme(axis.text=element_text(size=12, face = "bold"), axis.title=element_text(size=16),
+        title=element_text(size=14), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        # axis.text.x = element_text(angle = 65, hjust = 1),
+        strip.text.x=element_text(size = 16),
+        legend.position="bottom",
+        axis.text.x=element_text(size = 12, angle =45, hjust= 1),
+        axis.title.x=element_blank(),
+        plot.title = element_text(hjust = 0, size=18),
+            plot.margin = unit(c(1.1,1.1,1.1,1.1), "cm"))+
+  guides(fill=FALSE)+
+  ylab("")+
+  xlab("")+
+  ggtitle("Number of resolved haplotypes")
+
+print(p_desman_overview)
+
+png("./Figures/DESMAN/desman_overview.png", height = 4.5, 
+  width = 5, units = "in", res = 500)
+print(p_desman_overview)
+dev.off()
+
+svg("./Figures/DESMAN/desman_overview.svg", height = 4.5, 
+  width = 5)
+print(p_desman_overview)
+dev.off()
+
+# DESMAN error on best runs
+p_desman_overview_error <- ggplot(metadata_desman, aes(x = Genome_ID, y = error, fill = Lineage, group = Genome_ID))+
+  theme_bw()+
+  geom_bar(alpha = 1, stat = "identity", color = "black",
+           position = position_dodge(width = 1), width = 0.7)+
+  scale_fill_manual("",
+                    values = c("#deebf7ff", "#c6dbefff","#9ecae1ff",
+                               "#6baed6ff"))+
+  theme(axis.text=element_text(size=12, face = "bold"), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        # axis.text.x = element_text(angle = 65, hjust = 1),
+        strip.text.x=element_text(size = 18),
+        legend.position="bottom",
+        axis.text.x=element_text(size = 13, angle =45, hjust= 1),
+        axis.title.x=element_blank(),
+        plot.title = element_text(hjust = 0, size=18),
+            plot.margin = unit(c(1.1,1.1,1.1,1.1), "cm"))+
+  guides(fill=FALSE)+
+  ylab("Error on best run")+
+  xlab("")+
+  ylim(0,0.1)
+
+png("./Figures/DESMAN/desman_overview_error.png", height = 5, 
+  width = 6, units = "in", res = 500)
+print(p_desman_overview_error)
+dev.off()
+
+# Match abundance data with number of detected haplotypes
+metadata_desman %>% 
+  ggplot(., aes(x = Topt, y = number_of_robust_haplotypes, fill = Lineage, group = Genome_ID))+
+  theme_bw()+
+  geom_point(alpha = 1, size = 4, shape = 21)+
+  scale_fill_manual("",
+                    values = c("#deebf7ff", "#c6dbefff","#9ecae1ff",
+                               "#6baed6ff"))+
+  theme(axis.text=element_text(size=12, face = "bold"), axis.title=element_text(size=16),
+        title=element_text(size=14), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        # axis.text.x = element_text(angle = 65, hjust = 1),
+        strip.text.x=element_text(size = 16),
+        legend.position="bottom",
+        axis.text.x=element_text(size = 12, angle =45, hjust= 1),
+        axis.title.x=element_blank(),
+        plot.title = element_text(hjust = 0, size=18),
+            plot.margin = unit(c(1.1,1.1,1.1,1.1), "cm"))+
+  guides(fill=FALSE)+
+  ylab("")+
+  xlab("")+
+  ggtitle("Number of resolved haplotypes")
+
+```
+
+### Plots
+
+```{r desman-2, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")}
 # import desman haplotype frequency data
 for(i in 1:10){
   tmp_desm <- read.csv(paste0("./DESMAN/DESMAN_other_MAGs/", metadata_desman$MAG_id[i], "/",
@@ -2431,7 +2528,9 @@ results_desm_all$TP.ug.L <- as.numeric(as.character(results_desm_all$TP.ug.L))
 results_desm_all$DOC.mg.L <- as.numeric(as.character(results_desm_all$DOC.mg.L))
 
 # Add phylogenetic information of MAG/strains
+results_desm_all <- left_join(results_desm_all, MGT_df[, c("MAG_id", "Lineage", "Genome_ID")], by = c("MAG" = "MAG_id"))
 
+# Plot MAG abundances across environment/seasons
 for(i in 1:10){
 p_desm <- results_desm_all %>% 
     dplyr::filter(MAG %in% paste0("MAG",i)) %>% 
@@ -2463,12 +2562,11 @@ png(paste0("./Figures/DESMAN/desman-MAG", i, ".png"), height = 6,
 print(p_desm)
 dev.off()
 }
-
 ```
 
-
 ## Focus on only MAG8
-```{r desman-2, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")}
+
+```{r desman-3, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")}
 # Import data
 results_desm <- read.csv("./DESMAN/MAG8_scg_10_9/Gamma_meanR.csv", header = TRUE)
 colnames(results_desm)[1] <- "Samples"
@@ -2605,7 +2703,7 @@ print(cor.mtest(results_desm_env[-1],method = "pearson", use="pairwise")$p)
 
 ```
 
-```{r desman-2, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 7, dev = c("png","pdf")}
+```{r desman-2c, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 7, dev = c("png","pdf")}
 desm_p2 <- ggplot(results_desm_long, aes(x = Temperature..C., y = Freq, 
                                          fill = Strain, 
                                          col = Strain))+
@@ -3361,6 +3459,9 @@ results_irep$Site <- factor(results_irep$Site, levels = c("Muskegon Lake",
                                                             "Lake Michigan\nsite M110"))
 results_irep$Season <- as.character(results_irep$Season)
 results_irep$Season <- factor(results_irep$Season, levels = c("Spring", "Summer","Fall"))
+
+# Check correlation with the number of haplotypes
+results_irep <- left_join(results_irep, metadata_desman, by = c("new_bin_name" = "Genome_ID"))
 ```
 
 ## Plot results  
@@ -3395,7 +3496,6 @@ irep_p1 <- results_irep %>%
   # coord_trans(y = "sqrt")
 
 print(irep_p1)
-
 
 # Plot filtered irep
 irep_p2 <- results_irep %>% 
@@ -4052,7 +4152,6 @@ print(p_sdisc_cum5)
 ```{r SDP_external-4, warning = FALSE, fig.width = 10, fig.height = 12, dpi = 500, dev = c("png", "pdf"), dependson="SDP_external-3"}
 # Plot together with abundances estimated from lake MI metaG data
 cowplot::plot_grid(p_sdisc_cum5, p_season1, align = "hv", nrow = 2)
-
 ```
 
 ```{r SDP_external-5, warning = FALSE, fig.width = 10, fig.height = 7, dpi = 500, dev = c("png", "pdf")}
