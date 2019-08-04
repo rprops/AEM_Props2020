@@ -2402,9 +2402,9 @@ MGT_df$MAG_id <- do.call(rbind, strsplit(MGT_df$Genome_ID,".", fixed = TRUE))[, 
 metadata_desman <- readxl::read_excel("./DESMAN/DESMAN_other_MAGs/desman_results.xlsx", sheet = 1)
 metadata_desman <- left_join(metadata_desman, MGT_df, by = c("MAG_id"))
   
-# Make the same plot for optimal growth temperature
-
-p_desman_overview <- ggplot(metadata_desman, aes(x = Genome_ID, y = number_of_robust_haplotypes, fill = Lineage, group = Genome_ID))+
+# plot overview of DESMAN results
+p_desman_overview <- ggplot(metadata_desman, aes(x = Genome_ID, y = number_of_robust_haplotypes,
+  fill = Lineage, group = Genome_ID))+
   theme_bw()+
   geom_bar(alpha = 1, stat = "identity", color = "black",
            position = position_dodge(width = 1), width = 0.7)+
@@ -2564,47 +2564,7 @@ dev.off()
 }
 ```
 
-## Focus on only MAG8
-
-```{r desman-3, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")}
-# Import data
-results_desm <- read.csv("./DESMAN/MAG8_scg_10_9/Gamma_meanR.csv", header = TRUE)
-colnames(results_desm)[1] <- "Samples"
-colnames(results_desm) <- gsub("X", "Strain", colnames(results_desm))
-colnames(results_desm) <- c("Samples", "Strain 1", "Strain 2", "Strain 3", "Strain 4",
-                            "Strain 5")
-results_desm$Samples <- gsub(".sorted.MAG8","",results_desm$Samples, fixed = TRUE)
-
-# Import library prep data
-library_prep <- read.table("./mapping_files/Libraries.tsv",header = TRUE)
-
-# Wide to long format
-results_desm_long <- tidyr::gather(results_desm, Strain, Freq, 
-                             2:(ncol(results_desm)), factor_key=TRUE)
-# Merge with metadata
-results_desm_long <- dplyr::left_join(results_desm_long, library_prep, by = "Samples")
-results_desm_long$Samples <- gsub(".A", "", results_desm_long$Samples, fixed = TRUE)
-results_desm_long$Samples <- gsub(".C", "", results_desm_long$Samples, fixed = TRUE)
-results_desm_long <- dplyr::left_join(results_desm_long, meta_em, by = c("Samples" = "Sample_ID"))
-
-results_desm_long$Site <- as.character(results_desm_long$Site)
-results_desm_long$Site <- gsub("110", "Lake Michigan\nsite M110", results_desm_long$Site)
-results_desm_long$Site <- gsub("15", "Lake Michigan\nsite M15", results_desm_long$Site)
-results_desm_long$Site <- gsub("Buoy", "Muskegon Lake", results_desm_long$Site)
-results_desm_long$Site <- factor(results_desm_long$Site, levels = c("Muskegon Lake",
-                                                            "Lake Michigan\nsite M15",
-                                                            "Lake Michigan\nsite M110"))
-results_desm_long$Season <- as.character(results_desm_long$Season)
-results_desm_long$Season <- factor(results_desm_long$Season, levels = c("Spring", "Summer","Fall"))
-
-# Factor to numeric
-results_desm_long$Temperature..C. <- as.numeric(as.character(results_desm_long$Temperature..C.))
-results_desm_long$PAR <- as.numeric(as.character(results_desm_long$PAR))
-results_desm_long$Chl.Lab..ug.L. <- as.numeric(as.character(results_desm_long$Chl.Lab..ug.L.))
-results_desm_long$DO.Probe..mg.L. <- as.numeric(as.character(results_desm_long$DO.Probe..mg.L.))
-results_desm_long$TP.ug.L <- as.numeric(as.character(results_desm_long$TP.ug.L))
-results_desm_long$DOC.mg.L <- as.numeric(as.character(results_desm_long$DOC.mg.L))
-```
+## Correlations
 
 ### Check correlation with environmental variables 
 
@@ -2700,7 +2660,6 @@ corrplot(cor(results_desm_env[-1], method = "pearson", use="pairwise"),
 print(cor(results_desm_env[-1], method = "pearson", use="pairwise")[1:5, ])
 colnames(results_desm_env)[-1]
 print(cor.mtest(results_desm_env[-1],method = "pearson", use="pairwise")$p)
-
 ```
 
 ```{r desman-2c, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 7, dev = c("png","pdf")}
