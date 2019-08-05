@@ -2497,7 +2497,7 @@ metadata_desman %>%
 # import desman haplotype frequency data
 for(i in 1:10){
   tmp_desm <- read.csv(paste0("./DESMAN/DESMAN_other_MAGs/", metadata_desman$MAG_id[i], "/",
-    metadata_desman$best_desman_run[i],"/Gamma_meanR.csv"))
+    metadata_desman$best_desman_run[i],"/Gamma_starR.csv"))
   # wide to long
   colnames(tmp_desm) <- c("Samples", paste0("Strain ", 1:(ncol(tmp_desm)-1)))
   temp_desm <- gather(tmp_desm, Strain, Frequency, 2:ncol(tmp_desm), factor_key = TRUE)
