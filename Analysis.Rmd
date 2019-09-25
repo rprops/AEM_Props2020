@@ -2394,7 +2394,7 @@ print(p_scat_abund)
 ## All MAGs
 
 ```{r desman-1, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")}
-# For adding manuscript MAG information etcµ
+# For adding manuscript MAG information etc
 MGT_df$Genome_ID <- as.character(MGT_df$Genome_ID)
 MGT_df$MAG_id <- do.call(rbind, strsplit(MGT_df$Genome_ID,".", fixed = TRUE))[, 1]
 
@@ -2568,43 +2568,11 @@ dev.off()
 
 ### Check correlation with environmental variables 
 
-```{r desman-2a, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 6, dev = c("png","pdf")}
-desm_p1b <- ggplot(results_desm_long, aes(x = Season, y = Freq, 
-                                         fill = Strain, 
-                                         col = Strain))+
-  geom_point(color = "black", alpha = 0.7, size = 3, shape = 21)+
-  # scale_shape_manual("", values = c(24,22,21))+
-  # scale_shape_manual(values = c(21,22,23))+
-  geom_boxplot(alpha = 0.3, col = "black", outlier.shape = NA, size = 0.3)+
-  scale_fill_brewer("", palette = "Accent")+
-  scale_color_brewer("",palette = "Accent")+
-  theme_bw()+
-  # geom_point(size = 4, color = "black", alpha = 0.7)+
-  # scale_shape_manual(values = c(21,24,23))+
-  # geom_boxplot(alpha = 0.4)+
-  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
-      title=element_text(size=16), legend.text=element_text(size=10),
-      legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
-      strip.text=element_text(size=12), legend.position = "bottom",
-      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Strain frequency"))+
-  guides(fill=FALSE)+
-  facet_grid(Site~Strain, scales ="free")+
-  xlab("")+
-  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
-  # geom_smooth(se = FALSE)+
-  guides(fill=FALSE)
-  # coord_trans(y = "sqrt")
-
-print(desm_p1b)
-```
-
 ```{r desman-2abc, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 4, dev = c("png","pdf")}
 # Just depth profile for M110 station
-desm_p2b <- results_desm_long %>% dplyr::filter(Site == "Lake Michigan\nsite M110"& 
-                                                  Depth != "Mid") %>% 
-  ggplot(., aes(x = Season, y = Freq, 
+desm_p2b <- results_desm_all %>% dplyr::filter(Site == "Lake Michigan\nsite M110"& 
+                                                  Depth != "Mid" & MAG == "MAG8") %>%
+  ggplot(., aes(x = Season, y = Frequency, 
                                          fill = Strain, 
                                          col = Strain))+
   geom_point(color = "black", alpha = 0.7, size = 4, shape = 21)+
@@ -2633,168 +2601,45 @@ print(desm_p2b)
 ```
 
 ```{r desman-2ab, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 6, dev = c("png","pdf")}
-# Make correlation plot of strain variances alone
-p.mat_t <- cor.mtest(results_desm[-1],method = "pearson", use="pairwise")
-corrplot(cor(results_desm[-1], method = "pearson"), order = "hclust", addrect = 2,
-         tl.col="black", tl.srt=45, 
-         sig.level = 0.05,
-         diag=TRUE)
-print(cor(results_desm[-1], method = "pearson"))
-results_desm$Samples <- gsub(".A", "", results_desm$Samples, fixed = TRUE)
-results_desm$Samples <- gsub(".C", "", results_desm$Samples, fixed = TRUE)
+for(i in 1:10){
+  results_desm_all_sb <- results_desm_all %>% 
+     dplyr::filter(MAG %in% paste0("MAG",i)) %>% 
+    dplyr::select(Frequency,`Temperature..C.`, Strain, `Cond..µS.cm.`, DOC.mg.L, PAR, TDP.ug.L, Season) %>% 
+    tidyr::spread(., Strain, Frequency) %>% 
+    dplyr::select(-Season)
+  results_desm_all_sb <- apply(results_desm_all_sb, 2, function(x) as.numeric(as.character(x)))
+  p.mat <- data.frame(cor(results_desm_all_sb, method = "pearson", use="pairwise"))
+  p.mat <- data.frame(cor_variable = rownames(p.mat), p.mat)
+  p.mat <- p.mat %>% dplyr::select(-`Temperature..C.`, -`Cond..µS.cm.`, -`DOC.mg.L`, -PAR, -`TDP.ug.L`) 
+  p.mat <- p.mat %>% 
+    gather(., Strain, Correlation, 2:ncol(p.mat))%>% 
+    dplyr::filter(abs(Correlation) < 1)
+  p.mat <- data.frame(p.mat, MAG =  paste0("MAG",i))
+  if(i == 1) p.res <- p.mat else p.res <- rbind(p.res, p.mat)
+}
 
-# Make correlation plot of strain variances with environmental parameters
-results_desm_env <- left_join(results_desm, meta_em, by = c("Samples" = "Sample_ID"))
-results_desm_env <- results_desm_env %>% 
-  dplyr::select(Samples:`Strain 5`, Temperature..C., `Cond..µS.cm.`,
-                                   TP.ug.L, DOC.mg.L, PAR, DO.Probe..mg.L.,
-                Chl.Lab..ug.L.) %>% 
-  apply(., 2, function(x) as.numeric(as.character(x))) %>% data.frame()
-
-corrplot(cor(results_desm_env[-1], method = "pearson", use="pairwise"), 
-          addrect = 2, order = "hclust",
-         tl.col="black", tl.srt=45, 
-         sig.level = 0.05,
-         diag=TRUE)
-
-print(cor(results_desm_env[-1], method = "pearson", use="pairwise")[1:5, ])
-colnames(results_desm_env)[-1]
-print(cor.mtest(results_desm_env[-1],method = "pearson", use="pairwise")$p)
-```
-
-```{r desman-2c, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 7, dev = c("png","pdf")}
-desm_p2 <- ggplot(results_desm_long, aes(x = Temperature..C., y = Freq, 
-                                         fill = Strain, 
-                                         col = Strain))+
-  geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
-  scale_fill_brewer("", palette = "Accent")+
-  scale_color_brewer("", palette = "Accent")+
+p_cor_desman <- p.res %>% 
+  dplyr::filter(cor_variable %in% c("Temperature..C.", "Cond..µS.cm.", "DOC.mg.L", "PAR", "TDP.ug.L")) %>% 
+  dplyr::filter(!MAG %in% c("MAG5", "MAG2")) %>% 
+  ggplot(., aes(y = MAG, x = Strain, z = Correlation)) +
+  facet_grid(.~cor_variable)+
+  geom_tile(aes(fill=Correlation), col = "black")+
+  geom_text()+
+  ggplot2::scale_fill_distiller(palette="RdBu", na.value="white") + 
   theme_bw()+
-  # geom_point(size = 4, color = "black", alpha = 0.7)+
-  # scale_shape_manual(values = c(21,24,23))+
-  # geom_boxplot(alpha = 0.4)+
+  ylab("")+
+  xlab("")+
   theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
       title=element_text(size=16), legend.text=element_text(size=10),
       legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 12),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
       strip.text=element_text(size=12), legend.position = "bottom",
-      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Strain frequency"))+
-  guides(fill=FALSE)+
-  # facet_grid(Season~Site, scales ="free")+
-  xlab("Temperature (°C)")+
-  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
-  geom_smooth(se = FALSE)+
-  guides(fill=guide_legend(nrow=2))
-  # coord_trans(y = "sqrt")
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))
 
-desm_p3 <- results_desm_long %>% mutate(Chl.Lab..ug.L. =
-                                          as.numeric(as.character(Chl.Lab..ug.L.))) %>% 
-  ggplot(., aes(x = Chl.Lab..ug.L. , y = Freq, 
-                                         fill = Strain, 
-                                         col = Strain))+
-  geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
-  scale_fill_brewer("", palette = "Accent")+
-  scale_color_brewer("", palette = "Accent")+
-  theme_bw()+
-  # geom_point(size = 4, color = "black", alpha = 0.7)+
-  # scale_shape_manual(values = c(21,24,23))+
-  # geom_boxplot(alpha = 0.4)+
-  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
-      title=element_text(size=16), legend.text=element_text(size=10),
-      legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 12),
-      strip.text=element_text(size=12), legend.position = "bottom",
-      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Strain frequency"))+
-  guides(fill=FALSE)+
-  # facet_grid(Season~Site, scales ="free")+
-  xlab("Chl a concentration (µg/L)")+
-  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
-  geom_smooth(se = FALSE, span = 1)+
-  guides(fill=guide_legend(nrow=2))
-  # coord_trans(y = "sqrt")
-
-desm_p4 <- results_desm_long %>% mutate(TDP.SRP = as.numeric(as.character(TDP.SRP))) %>% 
-  ggplot(., aes(x = TDP.SRP, y = Freq, 
-                                         fill = Strain, 
-                                         col = Strain))+
-  geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
-  scale_fill_brewer("", palette = "Accent")+
-  scale_color_brewer("",palette = "Accent")+
-  theme_bw()+
-  # geom_point(size = 4, color = "black", alpha = 0.7)+
-  # scale_shape_manual(values = c(21,24,23))+
-  # geom_boxplot(alpha = 0.4)+
-  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
-      title=element_text(size=16), legend.text=element_text(size=10),
-      legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 12),
-      strip.text=element_text(size=12), legend.position = "bottom",
-      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Strain frequency"))+
-  guides(fill=FALSE)+
-  # facet_grid(Season~Site, scales ="free")+
-  xlab("Soluble Reactive Phosphorus (SRP - µg/L)")+
-  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
-  geom_smooth(se = FALSE, span = 0.75)+
-  guides(fill=guide_legend(nrow=2))
-  # coord_trans(y = "sqrt")
-
-desm_p5 <- results_desm_long %>% mutate(PON.mg.L = as.numeric(as.character(PON.mg.L))) %>% 
-  ggplot(., aes(x = PON.mg.L, y = Freq, 
-                                         fill = Strain, 
-                                         col = Strain))+
-  geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
-  scale_fill_brewer("", palette = "Accent")+
-  scale_color_brewer("",palette = "Accent")+
-  theme_bw()+
-  # geom_point(size = 4, color = "black", alpha = 0.7)+
-  # scale_shape_manual(values = c(21,24,23))+
-  # geom_boxplot(alpha = 0.4)+
-  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
-      title=element_text(size=16), legend.text=element_text(size=10),
-      legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 12),
-      strip.text=element_text(size=12), legend.position = "bottom",
-      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Strain frequency"))+
-  guides(fill=FALSE)+
-  # facet_grid(Season~Site, scales ="free")+
-  xlab("Particulate Organic Nitrogen (PON - mg/L)")+
-  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
-  geom_smooth(se = FALSE, span = 0.75)+
-  guides(fill=guide_legend(nrow=2))
-  # coord_trans(y = "sqrt")
-
-desm_p6 <- results_desm_long %>% mutate(POC.mg.L = as.numeric(as.character(POC.mg.L))) %>%
-  ggplot(., aes(x = POC.mg.L, y = Freq, 
-                                         fill = Strain, 
-                                         col = Strain))+
-  geom_point(color = "black", alpha = 0.7, shape = 21, size = 4, col = "black")+
-  scale_fill_brewer("", palette = "Accent")+
-  scale_color_brewer("",palette = "Accent")+
-  theme_bw()+
-  # geom_point(size = 4, color = "black", alpha = 0.7)+
-  # scale_shape_manual(values = c(21,24,23))+
-  # geom_boxplot(alpha = 0.4)+
-  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
-      title=element_text(size=16), legend.text=element_text(size=10),
-      legend.background = element_rect(fill="transparent"),
-      axis.text.x = element_text(size = 12),
-      strip.text=element_text(size=12), legend.position = "bottom",
-      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Strain frequency"))+
-  guides(fill=FALSE)+
-  # facet_grid(Season~Site, scales ="free")+
-  xlab("Particulate Organic Carbon (POC - mg/L)")+
-  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
-  geom_smooth(se = FALSE, span = 0.75)+
-  guides(fill=guide_legend(nrow=2))
-  # coord_trans(y = "sqrt")
-
-# Combine all exploratory plots
-cowplot::plot_grid(desm_p3, desm_p4, desm_p5, desm_p6, ncol = 2, align = 'hv')
+png(paste0("./Figures/DESMAN/desman-strain-correlations.png"), height = 6, 
+  width = 12, units = "in", res = 500)
+print(p_cor_desman)
+dev.off()
 ```
 
 
@@ -2807,16 +2652,6 @@ alpha_div_desman <- data.frame(Sample = results_desm[,1],
 
 alpha_div_desman <- left_join(alpha_div_desman, meta_em,
                               by = c("Sample" = "Sample_ID"))
-
-alpha_div_desman$Site <- as.character(alpha_div_desman$Site)
-alpha_div_desman$Site <- gsub("110", "Lake Michigan\nsite M110", alpha_div_desman$Site)
-alpha_div_desman$Site <- gsub("15", "Lake Michigan\nsite M15", alpha_div_desman$Site)
-alpha_div_desman$Site <- gsub("Buoy", "Muskegon Lake", alpha_div_desman$Site)
-alpha_div_desman$Site <- factor(alpha_div_desman$Site, levels = c("Muskegon Lake",
-                                                            "Lake Michigan\nsite M15",
-                                                            "Lake Michigan\nsite M110"))
-alpha_div_desman$Season <- as.character(alpha_div_desman$Season)
-alpha_div_desman$Season <- factor(alpha_div_desman$Season, levels = c("Spring", "Summer","Fall"))
 
 p_alpha_desman <- alpha_div_desman %>% 
   ggplot(., aes(x = Season, y = D2, fill = Season, shape = Depth))+
