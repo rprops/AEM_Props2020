@@ -2621,10 +2621,12 @@ for(i in 1:10){
 p_cor_desman <- p.res %>% 
   dplyr::filter(cor_variable %in% c("Temperature..C.", "Cond..µS.cm.", "DOC.mg.L", "PAR", "TDP.ug.L")) %>% 
   dplyr::filter(!MAG %in% c("MAG5", "MAG2")) %>% 
-  ggplot(., aes(y = MAG, x = Strain, z = Correlation)) +
+  # dplyr::filter(abs(Correlation) > 0.5) %>% 
+  ggplot(., aes(y = MAG, x = Strain, z = Correlation, fill = Correlation, size = abs(Correlation))) +
   facet_grid(.~cor_variable)+
-  geom_tile(aes(fill=Correlation), col = "black")+
-  geom_text()+
+  ggplot2::geom_count(color = "black", shape = 21, stat = "identity")+
+  scale_size("Correlation", range = c(3.5,8), breaks=seq(1,10,by=3)) +
+  # geom_tile(aes(fill=Correlation), col = "black")+
   ggplot2::scale_fill_distiller(palette="RdBu", na.value="white") + 
   theme_bw()+
   ylab("")+
