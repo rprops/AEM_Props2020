@@ -2633,7 +2633,7 @@ V(ig.sparcc)$color <- brewer.pal(n = 9, "Set1")[MAG_ids$MAG]
 am.coord <- layout.fruchterman.reingold(ig.sparcc)
 
 # Cluster into modules
-modulos<-cluster_spinglass(delete.vertices(igraph::simplify(ig.sparcc), degree(ig.sparcc)==0))
+modulos <- cluster_spinglass(delete.vertices(igraph::simplify(ig.sparcc), degree(ig.sparcc)==0))
 
 svg(paste0("./Figures/DESMAN/desman-strain-network.svg"), height = 6,
   width = 6)
