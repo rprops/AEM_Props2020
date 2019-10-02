@@ -2748,13 +2748,13 @@ dev.off()
 for(i in 1:10){
   results_desm_all_sb <- results_desm_all %>% 
      dplyr::filter(MAG %in% paste0("MAG",i)) %>% 
-    dplyr::select(Frequency,`Temperature..C.`, Strain, `SpCond..µS.cm.`, DOC.mg.L, PAR, TDP.ug.L, Season) %>% 
+    dplyr::select(Frequency,`Temperature..C.`, Strain, `SpCond..µS.cm.`, DOC.mg.L, PAR, TP.ug.L, Season) %>% 
     tidyr::spread(., Strain, Frequency) %>% 
     dplyr::select(-Season)
   results_desm_all_sb <- apply(results_desm_all_sb, 2, function(x) as.numeric(as.character(x)))
   p.mat <- data.frame(cor(results_desm_all_sb, method = "pearson", use="pairwise"))
   p.mat <- data.frame(cor_variable = rownames(p.mat), p.mat)
-  p.mat <- p.mat %>% dplyr::select(-`Temperature..C.`, -`SpCond..µS.cm.`, -`DOC.mg.L`, -PAR, -`TDP.ug.L`) 
+  p.mat <- p.mat %>% dplyr::select(-`Temperature..C.`, -`SpCond..µS.cm.`, -`DOC.mg.L`, -PAR, -`TP.ug.L`) 
   p.mat <- p.mat %>% 
     gather(., Strain, Correlation, 2:ncol(p.mat))%>% 
     dplyr::filter(abs(Correlation) < 1)
@@ -2763,8 +2763,8 @@ for(i in 1:10){
 }
 
 p_cor_desman <- p.res %>% 
-  dplyr::filter(cor_variable %in% c("Temperature..C.", "SpCond..µS.cm.", "DOC.mg.L", "PAR", "TDP.ug.L")) %>% 
-  dplyr::mutate(cor_variable = factor(cor_variable, levels = c("PAR", "SpCond..µS.cm.", "TDP.ug.L", "DOC.mg.L", "Temperature..C."))) %>% 
+  dplyr::filter(cor_variable %in% c("Temperature..C.", "SpCond..µS.cm.", "DOC.mg.L", "PAR", "TP.ug.L")) %>% 
+  dplyr::mutate(cor_variable = factor(cor_variable, levels = c("PAR", "SpCond..µS.cm.", "TP.ug.L", "DOC.mg.L", "Temperature..C."))) %>% 
   dplyr::filter(!MAG %in% c("MAG5", "MAG2")) %>% 
   # dplyr::filter(abs(Correlation) > 0.5) %>% 
   ggplot(., aes(y = MAG, x = Strain, z = Correlation, fill = Correlation, size = abs(Correlation))) +
@@ -2790,9 +2790,10 @@ print(p_cor_desman)
 dev.off()
 
 p_cor_desman_2 <- p.res %>% 
-  dplyr::filter(cor_variable %in% c("Temperature..C.", "SpCond..µS.cm.", "DOC.mg.L", "PAR", "TDP.ug.L")) %>% 
-  dplyr::mutate(cor_variable = factor(cor_variable, levels = c("PAR", "SpCond..µS.cm.", "TDP.ug.L", "DOC.mg.L", "Temperature..C."))) %>% 
+  dplyr::filter(cor_variable %in% c("PAR","Temperature..C.", "TP.ug.L")) %>% 
+  dplyr::mutate(cor_variable = factor(cor_variable, levels = c("PAR", "Temperature..C.", "TP.ug.L"))) %>% 
   dplyr::filter(!MAG %in% c("MAG5", "MAG2")) %>% 
+  dplyr::mutate(MAG = factor(MAG, levels = c("MAG3", "MAG4", "MAG1", "MAG10", "MAG6", "MAG8", "MAG7", "MAG9"))) %>% 
   # dplyr::filter(abs(Correlation) > 0.5) %>% 
   ggplot(., aes(y = cor_variable, x = Strain, z = Correlation, fill = Correlation, size = abs(Correlation))) +
   facet_wrap(.~MAG, ncol = 4)+
@@ -2811,8 +2812,13 @@ p_cor_desman_2 <- p.res %>%
       strip.text=element_text(size=12), legend.position = "top",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))
 
-png(paste0("./Figures/DESMAN/desman-strain-correlations-2.png"), height = 8, 
-  width = 12, units = "in", res = 500)
+png(paste0("./Figures/DESMAN/desman-strain-correlations-2.png"), height = 5, 
+  width = 10, units = "in", res = 500)
+print(p_cor_desman_2)
+dev.off()
+
+svg(paste0("./Figures/DESMAN/desman-strain-correlations-2.svg"), height = 5, 
+  width = 10)
 print(p_cor_desman_2)
 dev.off()
 ```
