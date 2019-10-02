@@ -2607,6 +2607,7 @@ data_total_abund_sparcc <- data_total_abund
 data_total_abund_sparcc$Sample_ID <- gsub("_", ".", data_total_abund$Sample_ID)
 
 strain_cor <- results_desm_all %>% 
+  dplyr::filter(!MAG %in% c("MAG2", "MAG5")) %>% 
   left_join(., data_total_abund_sparcc, by = c("Genome_ID" = "new_bin_name", "Samples" = "Sample_ID")) %>% 
   mutate(Strain_MAG = paste0(Strain,"-", MAG)) %>% 
   dplyr::select(Samples, Strain_MAG, norm_mean_rel_abundance, Frequency) %>% 
@@ -2618,18 +2619,51 @@ strain_cor <- results_desm_all %>%
   cor(use = "complete.obs")
 
 # run sparcc
-res_sparcc <- sparcc(strain_cor, iter = 100, inner_iter = 100, th = 0.1)
+res_sparcc <- sparcc(strain_cor, iter = 100, inner_iter = 100, th = 0.2)
+colnames(res_sparcc$Cor) <- colnames(strain_cor)
+rownames(res_sparcc$Cor) <- rownames(strain_cor)
 sparcc.graph <- abs(res_sparcc$Cor) >= 0.3
 diag(sparcc.graph) <- 0
 sparcc.graph <- Matrix::Matrix(sparcc.graph, sparse=TRUE)
-ig.sparcc <- adj2igraph(sparcc.graph)
+ig.sparcc <- adj2igraph(sparcc.graph, rmEmptyNodes = TRUE, vertex.attr = list(name = colnames(res_sparcc$Cor)))
+MAG_ids <- data.frame(MAG = factor(do.call(rbind, strsplit(V(ig.sparcc)$name, split = "-"))[, 2]))
+V(ig.sparcc)$color <- brewer.pal(n = 9, "Set1")[MAG_ids$MAG]
 
 # Visualize
-vsize    <- rowMeans(clr(strain_cor, 1))+6
 am.coord <- layout.fruchterman.reingold(ig.sparcc)
 
-plot.igraph(ig.sparcc, layout=am.coord, vertex.size=vsize, vertex.label=NA, main="Strain network",
-  vertex.color = "red")
+# Cluster into modules
+modulos<-cluster_spinglass(delete.vertices(igraph::simplify(ig.sparcc), degree(ig.sparcc)==0))
+
+svg(paste0("./Figures/DESMAN/desman-strain-network.svg"), height = 6,
+  width = 6)
+l<-layout_with_fr(ig.sparcc)
+plot.igraph(delete.vertices(igraph::simplify(ig.sparcc), degree(ig.sparcc)==0),  
+  main="",
+  edge.color = "black",
+  edge.width=2,
+  edge.curved=0.3,
+     layout=l,
+  vertex.label.color = "black",
+  vertex.label.font=1,
+   mark.groups= modulos, mark.border=NA,
+  mark.col = brewer.pal(n = 3, "Accent")[2:1])
+dev.off()
+
+png(paste0("./Figures/DESMAN/desman-strain-network.png"), height = 6,
+  width = 6, res = 500, units = "in")
+plot.igraph(delete.vertices(igraph::simplify(ig.sparcc), degree(ig.sparcc)==0),  
+  main="",
+  edge.color = "black",
+  edge.width=2,
+  edge.curved=0.3,
+     layout=l,
+  vertex.label.color = "black",
+  vertex.label.font=1,
+     mark.groups= modulos, mark.border=NA,
+  mark.col = brewer.pal(n = 3, "Accent")[2:1])
+dev.off()
+
 
 ```
 
