@@ -2467,7 +2467,7 @@ print(p_desman_overview_error)
 dev.off()
 
 # Match abundance data with number of detected haplotypes
-metadata_desman %>% 
+p_desm_Topt <- metadata_desman %>% 
   ggplot(., aes(x = Topt, y = number_of_robust_haplotypes, fill = Lineage, group = Genome_ID))+
   theme_bw()+
   geom_point(alpha = 1, size = 4, shape = 21)+
@@ -2480,15 +2480,44 @@ metadata_desman %>%
         # axis.text.x = element_text(angle = 65, hjust = 1),
         strip.text.x=element_text(size = 16),
         legend.position="bottom",
-        axis.text.x=element_text(size = 12, angle =45, hjust= 1),
-        axis.title.x=element_blank(),
+        axis.text.x=element_text(size = 12),
         plot.title = element_text(hjust = 0, size=18),
             plot.margin = unit(c(1.1,1.1,1.1,1.1), "cm"))+
   guides(fill=FALSE)+
-  ylab("")+
-  xlab("")+
+  ylab("Number of strains")+
+  xlab("Temperature (°C)")+
   ggtitle("Number of resolved haplotypes")
 
+p_desm_abund <- data_total_abund %>% 
+  ungroup() %>% 
+  dplyr::select(norm_mean_rel_abundance, new_bin_name) %>% 
+  left_join(., metadata_desman, by = c("new_bin_name" = "Genome_ID")) %>% 
+  # dplyr::filter(!MAG_id %in% c("MAG5", "MAG2")) %>% 
+  ggplot(., aes(x = number_of_robust_haplotypes, y = norm_mean_rel_abundance, 
+    fill = Lineage, group = MAG_id))+
+  theme_bw()+
+  geom_boxplot(alpha = 1)+
+  scale_fill_manual("",
+                    values = c("#deebf7ff", "#c6dbefff","#9ecae1ff",
+                               "#6baed6ff"))+
+  theme(axis.text=element_text(size=12, face = "bold"), axis.title=element_text(size=16),
+        title=element_text(size=14), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        # axis.text.x = element_text(angle = 65, hjust = 1),
+        strip.text.x=element_text(size = 16),
+        legend.position="top",
+        axis.text.x=element_text(size = 12),
+        plot.title = element_text(hjust = 0, size=18),
+            plot.margin = unit(c(1.1,1.1,1.1,1.1), "cm"))+
+  scale_y_log10()+
+  xlab("Number of strains")+
+  ylab("Normalized abundance")+
+  ggtitle("")
+  
+png("./Figures/DESMAN/desman_overview_abund.png", height = 5, 
+  width = 6, units = "in", res = 500)
+print(p_desm_abund)
+dev.off()
 ```
 
 ### Plots
@@ -2546,7 +2575,7 @@ p_desm <- results_desm_all %>%
       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
       strip.text=element_text(size=12), legend.position = "bottom",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
-  ylab(paste0("Strain frequency"))+
+  ylab(paste0("Strain frequenc"))+
   guides(fill=FALSE)+
   facet_grid(Site~Strain, scales ="free")+
   xlab("")+
@@ -2557,11 +2586,51 @@ ncol <- results_desm_all %>%
     dplyr::filter(MAG %in% paste0("MAG",i)) %>% 
   summarize(number_of_strain= length(unique(Strain)))
 
+# export png
 png(paste0("./Figures/DESMAN/desman-MAG", i, ".png"), height = 6, 
   width = 3 + 4*(ncol$number_of_strain/6), units = "in", res = 500)
 print(p_desm)
 dev.off()
+
+# export svg
+svg(paste0("./Figures/DESMAN/desman-MAG", i, ".svg"), height = 6, 
+  width = 3 + 4*(ncol$number_of_strain/6))
+print(p_desm)
+dev.off()
 }
+```
+
+### Correlation network
+```{r desman-2, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")}
+# format data for sparcc
+data_total_abund_sparcc <- data_total_abund
+data_total_abund_sparcc$Sample_ID <- gsub("_", ".", data_total_abund$Sample_ID)
+
+strain_cor <- results_desm_all %>% 
+  left_join(., data_total_abund_sparcc, by = c("Genome_ID" = "new_bin_name", "Samples" = "Sample_ID")) %>% 
+  mutate(Strain_MAG = paste0(Strain,"-", MAG)) %>% 
+  dplyr::select(Samples, Strain_MAG, norm_mean_rel_abundance, Frequency) %>% 
+  mutate(norm_strain_abundance = norm_mean_rel_abundance*Frequency) %>% 
+  distinct() %>% 
+  dplyr::select(Samples, Strain_MAG, norm_strain_abundance) %>% 
+  spread(., Strain_MAG, norm_strain_abundance) %>%
+  dplyr::select(-Samples) %>% 
+  cor(use = "complete.obs")
+
+# run sparcc
+res_sparcc <- sparcc(strain_cor, iter = 100, inner_iter = 100, th = 0.1)
+sparcc.graph <- abs(res_sparcc$Cor) >= 0.3
+diag(sparcc.graph) <- 0
+sparcc.graph <- Matrix::Matrix(sparcc.graph, sparse=TRUE)
+ig.sparcc <- adj2igraph(sparcc.graph)
+
+# Visualize
+vsize    <- rowMeans(clr(strain_cor, 1))+6
+am.coord <- layout.fruchterman.reingold(ig.sparcc)
+
+plot.igraph(ig.sparcc, layout=am.coord, vertex.size=vsize, vertex.label=NA, main="Strain network",
+  vertex.color = "red")
+
 ```
 
 ## Correlations
@@ -2572,45 +2641,49 @@ dev.off()
 # Just depth profile for M110 station
 desm_p2b <- results_desm_all %>% dplyr::filter(Site == "Lake Michigan\nsite M110"& 
                                                   Depth != "Mid" & MAG == "MAG8") %>%
+  mutate(Depth = factor(Depth, levels = c("Surface", "Deep"))) %>% 
   ggplot(., aes(x = Season, y = Frequency, 
-                                         fill = Strain, 
-                                         col = Strain))+
+                                         fill = Depth, 
+                                         col = Depth))+
   geom_point(color = "black", alpha = 0.7, size = 4, shape = 21)+
-  scale_fill_brewer("", palette = "Accent")+
-  scale_color_brewer("",palette = "Accent")+
+  scale_fill_manual("", values = brewer.pal(n = 3, "Set1"))+
+  # scale_fill_brewer("", palette = "Accent")+
+  # scale_color_brewer("",palette = "Accent")+
   theme_bw()+
   # geom_point(size = 4, color = "black", alpha = 0.7)+
   # scale_shape_manual(values = c(21,24,23))+
   # geom_boxplot(alpha = 0.4)+
   theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
-      title=element_text(size=16), legend.text=element_text(size=10),
+      title=element_text(size=16), legend.text=element_text(size=14),
       legend.background = element_rect(fill="transparent"),
       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
-      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.text=element_text(size=12), legend.position = "top",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
   ylab(paste0("Strain frequency"))+
-  guides(fill=FALSE)+
-  facet_grid(Depth~Strain, scales ="free")+
+  facet_grid(.~Strain, scales ="free")+
   xlab("")+
-  scale_y_continuous(labels=scaleFUN, limits = c(0,1))+
+  scale_y_continuous(labels=scaleFUN, limits = c(0,1))
   # geom_smooth(se = FALSE)+
-  guides(fill=FALSE)
   # coord_trans(y = "sqrt")
 
+png(paste0("./Figures/DESMAN/desman-MAG8-M110.png"), height = 5,  
+  width = 10, units = "in", res = 500)
 print(desm_p2b)
+dev.off()
+
 ```
 
 ```{r desman-2ab, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 6, dev = c("png","pdf")}
 for(i in 1:10){
   results_desm_all_sb <- results_desm_all %>% 
      dplyr::filter(MAG %in% paste0("MAG",i)) %>% 
-    dplyr::select(Frequency,`Temperature..C.`, Strain, `Cond..µS.cm.`, DOC.mg.L, PAR, TDP.ug.L, Season) %>% 
+    dplyr::select(Frequency,`Temperature..C.`, Strain, `SpCond..µS.cm.`, DOC.mg.L, PAR, TDP.ug.L, Season) %>% 
     tidyr::spread(., Strain, Frequency) %>% 
     dplyr::select(-Season)
   results_desm_all_sb <- apply(results_desm_all_sb, 2, function(x) as.numeric(as.character(x)))
   p.mat <- data.frame(cor(results_desm_all_sb, method = "pearson", use="pairwise"))
   p.mat <- data.frame(cor_variable = rownames(p.mat), p.mat)
-  p.mat <- p.mat %>% dplyr::select(-`Temperature..C.`, -`Cond..µS.cm.`, -`DOC.mg.L`, -PAR, -`TDP.ug.L`) 
+  p.mat <- p.mat %>% dplyr::select(-`Temperature..C.`, -`SpCond..µS.cm.`, -`DOC.mg.L`, -PAR, -`TDP.ug.L`) 
   p.mat <- p.mat %>% 
     gather(., Strain, Correlation, 2:ncol(p.mat))%>% 
     dplyr::filter(abs(Correlation) < 1)
@@ -2619,15 +2692,17 @@ for(i in 1:10){
 }
 
 p_cor_desman <- p.res %>% 
-  dplyr::filter(cor_variable %in% c("Temperature..C.", "Cond..µS.cm.", "DOC.mg.L", "PAR", "TDP.ug.L")) %>% 
+  dplyr::filter(cor_variable %in% c("Temperature..C.", "SpCond..µS.cm.", "DOC.mg.L", "PAR", "TDP.ug.L")) %>% 
+  dplyr::mutate(cor_variable = factor(cor_variable, levels = c("PAR", "SpCond..µS.cm.", "TDP.ug.L", "DOC.mg.L", "Temperature..C."))) %>% 
   dplyr::filter(!MAG %in% c("MAG5", "MAG2")) %>% 
   # dplyr::filter(abs(Correlation) > 0.5) %>% 
   ggplot(., aes(y = MAG, x = Strain, z = Correlation, fill = Correlation, size = abs(Correlation))) +
   facet_grid(.~cor_variable)+
   ggplot2::geom_count(color = "black", shape = 21, stat = "identity")+
-  scale_size("Correlation", range = c(3.5,8), breaks=seq(1,10,by=3)) +
+  scale_size("Pearson's\ncorrelation", range = c(3.5,8), breaks=seq(1,10,by=3)) +
   # geom_tile(aes(fill=Correlation), col = "black")+
-  ggplot2::scale_fill_distiller(palette="RdBu", na.value="white") + 
+  ggplot2::scale_fill_distiller("Pearson's\ncorrelation",palette="RdBu", na.value="white", 
+    limits = c(-1,1)) + 
   theme_bw()+
   ylab("")+
   xlab("")+
@@ -2635,15 +2710,41 @@ p_cor_desman <- p.res %>%
       title=element_text(size=16), legend.text=element_text(size=10),
       legend.background = element_rect(fill="transparent"),
       axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
-      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.text=element_text(size=12), legend.position = "top",
       strip.background = element_rect(fill = adjustcolor("gray", 0.15)))
 
-png(paste0("./Figures/DESMAN/desman-strain-correlations.png"), height = 6, 
+png(paste0("./Figures/DESMAN/desman-strain-correlations-1.png"), height = 6, 
   width = 12, units = "in", res = 500)
 print(p_cor_desman)
 dev.off()
-```
 
+p_cor_desman_2 <- p.res %>% 
+  dplyr::filter(cor_variable %in% c("Temperature..C.", "SpCond..µS.cm.", "DOC.mg.L", "PAR", "TDP.ug.L")) %>% 
+  dplyr::mutate(cor_variable = factor(cor_variable, levels = c("PAR", "SpCond..µS.cm.", "TDP.ug.L", "DOC.mg.L", "Temperature..C."))) %>% 
+  dplyr::filter(!MAG %in% c("MAG5", "MAG2")) %>% 
+  # dplyr::filter(abs(Correlation) > 0.5) %>% 
+  ggplot(., aes(y = cor_variable, x = Strain, z = Correlation, fill = Correlation, size = abs(Correlation))) +
+  facet_wrap(.~MAG, ncol = 4)+
+  ggplot2::geom_count(color = "black", shape = 21, stat = "identity")+
+  scale_size("Pearson's\ncorrelation", range = c(3.5,8), breaks=seq(1,10,by=3)) +
+  # geom_tile(aes(fill=Correlation), col = "black")+
+  ggplot2::scale_fill_distiller("Pearson's\ncorrelation",palette="RdBu", na.value="white", 
+    limits = c(-1,1)) + 
+  theme_bw()+
+  ylab("")+
+  xlab("")+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "top",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))
+
+png(paste0("./Figures/DESMAN/desman-strain-correlations-2.png"), height = 8, 
+  width = 12, units = "in", res = 500)
+print(p_cor_desman_2)
+dev.off()
+```
 
 ### Diversity plots 
 
@@ -2756,6 +2857,7 @@ print(pcoa.ord)
 
 ### Gene assignment  
 
+Some highly speculative additional analysis over here.
 
 ```{r desman-4, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")}
 # Import etaS.csv which contains gene assignment
@@ -3047,63 +3149,6 @@ geneAssign_df_wide_transcripts_depth %>%
 
 ```
 
-### Black Queen Hypothesis?
-
-```{r MAG8-DESeq-plot-strains, dpi = 500, warning = FALSE, fig.width = 9, fig.height = 7, dev = c("png","pdf")}
-geneAssign_df_annot_func <- geneAssign_df_wide[, 1:7]
-geneAssign_df_annot_func$Strain_interaction <- 
-  interaction(geneAssign_df_annot_func$`Strain 1`,
-              geneAssign_df_annot_func$`Strain 2`,
-              geneAssign_df_annot_func$`Strain 3`,
-              geneAssign_df_annot_func$`Strain 4`,
-              geneAssign_df_annot_func$`Strain 5`,
-              sep = "-")
-
-# Annotate full accessory genomes
-geneAssign_df_annot_func <- left_join(geneAssign_df_annot_func, 
-                                 merged_file_annot, by = c("sseqid" = "gene_oid"))
-
-# Compare only strain 1 and 4
-p_unique_s1 <- geneAssign_df_annot_func %>% 
-  dplyr::filter(grepl("1-.-.-0-.", Strain_interaction)) %>% 
-  dplyr::select(sseqid, ko_name, ko_function_abbrev:ko_level_C) %>% 
-  dplyr::filter(!is.na(ko_name)) %>% 
-  unique() %>% 
-  ggplot(., aes(x = ko_level_C, fill = ko_level_B))+
-  # geom_point()+
-  # geom_boxplot()+
-  geom_bar(stat = "count", col = "black")+
-  scale_fill_brewer("", palette = "Paired")+
-  theme_bw()+
-  theme(axis.text.x=element_text(size=12, angle = 30, hjust = 1),
-        axis.text.y = element_text(size = 12),
-        axis.title=element_text(size=16),
-        title=element_text(size=16), legend.text=element_text(size=16),
-        strip.text = element_text(size = 16))+
-  guides(fill = FALSE)
-  # ylim(0,40)
-
-p_unique_s2 <- geneAssign_df_annot_func %>% 
-  dplyr::filter(grepl("0-.-.-1-.", Strain_interaction)) %>% 
-  dplyr::select(sseqid, ko_name, ko_function_abbrev:ko_level_C) %>% 
-  dplyr::filter(!is.na(ko_name)) %>% 
-  unique() %>% 
-  ggplot(., aes(x = ko_level_C, fill = ko_level_B))+
-  # geom_point()+
-  # geom_boxplot()+
-  geom_bar(stat = "count", col = "black")+
-  scale_fill_brewer("", palette = "Paired")+
-  theme_bw()+
-  theme(axis.text.x=element_text(size=12, angle = 30, hjust = 1),
-        axis.text.y = element_text(size = 12),
-        axis.title=element_text(size=16),
-        title=element_text(size=16), legend.text=element_text(size=16),
-        strip.text = element_text(size = 16))+
-  guides(fill = FALSE)
-  # ylim(0,40)
-
-cowplot::plot_grid(p_unique_s1, p_unique_s2, align = "hv", ncol = 2)
-```
 
 ### Gene enrichment
 
