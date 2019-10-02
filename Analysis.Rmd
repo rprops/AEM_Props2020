@@ -106,7 +106,44 @@ data_total$upper_rel_abundance <- 100*((data_total$coverage+data_total$std_cover
 data_total$lower_rel_abundance <- 100*((data_total$coverage-data_total$std_coverage)*data_total$bin_size)/(read_length*data_total$Total_reads)
 ```
 
-# 1a. Phylogeny
+# 1a. Environmental parameters
+
+```{r, warning = FALSE, fig.width = 9, fig.height = 9, dpi = 500}
+# import
+meta_env <- readxl::read_excel(path = "./Figures/Table1.xlsx") %>% 
+  gather(., measurement_type, measurement_value,`Temperature (°C)`:PAR) %>% 
+  mutate(measurement_value = as.numeric(as.character(measurement_value)))
+
+meta_env %>% 
+  dplyr::filter(measurement_type %in% c("Chl (ug/L)", "TP ug/L", "SpCond (µS/cm)", "Temperature (°C)")) %>% 
+  group_by(measurement_type, Site, Lake) %>% 
+  summarise(median = median(measurement_value,  na.rm = TRUE)) %>% 
+  droplevels() %>% 
+  ggplot(., aes(x = Site, size = median, y = measurement_type, fill = median))+
+  ggplot2::geom_count(color = "black", shape = 21, stat = "identity")+
+  scale_size("", range = c(3.5,8), breaks=seq(1,10,by=3)) +
+  facet_grid(.~Lake, scales = "free")+
+  ggplot2::scale_fill_distiller("",palette="RdBu", na.value="white") + 
+  theme_bw()+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+      title=element_text(size=20), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      strip.text=element_text(size=14), legend.position = "right",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))
+
+meta_env %>% 
+  dplyr::filter(measurement_type %in% c("Chl (ug/L)", "TP ug/L", "SpCond (µS/cm)", "Temperature (°C)")) %>% 
+  group_by(measurement_type, Lake) %>%
+  summarise(median = median(measurement_value,  na.rm = TRUE),
+    sd = sd(measurement_value, na.rm = TRUE)) %>% 
+  write.csv(., file = "./Figures/summary_env.csv", quote = FALSE, row.names = FALSE)
+
+
+```
+
+
+# 1b. Phylogeny
 
 ## Phylogenomic tree  
 
