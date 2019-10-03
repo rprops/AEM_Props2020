@@ -20,6 +20,7 @@ editor_options:
   chunk_output_type: console
 ---
 
+# Data/Library loading
 
 ```{r setup, include = FALSE, warning = FALSE}
 library("knitr")
@@ -71,6 +72,7 @@ fill_palette <- c(rev(brewer.pal(11, "BrBG")[1:4]),
 
 set.seed(777)
 ```
+
 
 ```{r read-format data, warning = FALSE}
 # Read data
@@ -2821,12 +2823,25 @@ dev.off()
 ### Diversity plots 
 
 ```{r desman-alpha-div, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 4, dev = c("png","pdf")}
-alpha_div_desman <- data.frame(Sample = results_desm[,1], 
-      D2 = vegan::diversity(results_desm[,2:ncol(results_desm)], index = "invsimpson")
+df_div_desman <- results_desm_all %>% 
+  dplyr::filter(MAG == "MAG8") %>% 
+  dplyr::select(Samples:Frequency) %>% 
+  spread(., Strain, Frequency)
+alpha_div_desman <- data.frame(Sample = df_div_desman[,1], 
+      D2 = vegan::diversity(df_div_desman[,2:ncol(df_div_desman)], index = "invsimpson")
 )
 
 alpha_div_desman <- left_join(alpha_div_desman, meta_em,
                               by = c("Sample" = "Sample_ID"))
+alpha_div_desman$Site <- as.character(alpha_div_desman$Site)
+alpha_div_desman$Site <- gsub("110", "Lake Michigan - M110", alpha_div_desman$Site)
+alpha_div_desman$Site <- gsub("15", "Lake Michigan - M15", alpha_div_desman$Site)
+alpha_div_desman$Site <- gsub("Buoy", "Muskegon Lake", alpha_div_desman$Site)
+alpha_div_desman$Site <- factor(alpha_div_desman$Site, levels = c("Muskegon Lake",
+                                                            "Lake Michigan - M15",
+                                                            "Lake Michigan - M110"))
+alpha_div_desman$Season <- as.character(alpha_div_desman$Season)
+alpha_div_desman$Season <- factor(alpha_div_desman$Season, levels = c("Spring", "Summer","Fall"))
 
 p_alpha_desman <- alpha_div_desman %>% 
   ggplot(., aes(x = Season, y = D2, fill = Season, shape = Depth))+
@@ -2839,20 +2854,23 @@ p_alpha_desman <- alpha_div_desman %>%
   theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
         title=element_text(size=16), legend.text=element_text(size=16),
         strip.text = element_text(size = 16))+
-  ylim(0,4.2)+
+  ylim(0,5)+
   guides(fill  = guide_legend(title = "", override.aes = list(size = 4, shape = 21),
                          nrow = 4)
    )
 
+png(paste0("./Figures/DESMAN/desman-alpha-div-MAG8.png"), height = 4,
+  width = 10, res = 500, units = "in")
 print(p_alpha_desman)
+dev.off()
 ```
 
 ```{r desman-3, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 5, dev = c("png","pdf")}
 # Make PCoA
-variants <- results_desm[,2:ncol(results_desm)]
-rownames(variants) <- results_desm[, 1]
-taxa <- as.matrix(data.frame(variant_name = colnames(results_desm)[2:ncol(results_desm)]))
-rownames(taxa) <- colnames(results_desm)[2:ncol(results_desm)]
+variants <- df_div_desman[,2:ncol(df_div_desman)]
+rownames(variants) <- df_div_desman[, 1]
+taxa <- as.matrix(data.frame(variant_name = colnames(df_div_desman)[2:ncol(df_div_desman)]))
+rownames(taxa) <- colnames(df_div_desman)[2:ncol(df_div_desman)]
 
 # Store as phyloseq object
 physeq_desm <- phyloseq(otu_table(variants, taxa_are_rows = FALSE),
@@ -2886,8 +2904,8 @@ pcoa.df$Season <- as.character(pcoa.df$Season)
 pcoa.df$Season <- factor(pcoa.df$Season, levels = c("Spring", "Summer","Fall"))
 
 # Run permanova
-x <- results_desm[,2:ncol(results_desm)]
-rownames(x) <- results_desm[, 1]
+x <- df_div_desman[,2:ncol(df_div_desman)]
+rownames(x) <- df_div_desman[, 1]
 dist_desm <- vegan::vegdist(x)
 perm <- permute::how(nperm = 999)
 permanova_desm <- vegan::adonis(dist_desm ~ Season * Site, 
@@ -2924,7 +2942,10 @@ pcoa.ord <- ggplot(data=pcoa.df, aes(x=Axis.1, y=Axis.2, shape = Site))+
   annotation_custom(my_grob3)+
   ggtitle("PCoA of resolved MAG8 variant composition")
 
+png(paste0("./Figures/DESMAN/desman-beta-div-MAG8.png"), height = 6,
+  width = 10, res = 500, units = "in")
 print(pcoa.ord)
+dev.off()
 ```
 
 <!-- ### Gene assignment   -->
