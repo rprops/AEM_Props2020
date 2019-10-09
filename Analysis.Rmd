@@ -2706,6 +2706,22 @@ plot.igraph(delete.vertices(igraph::simplify(ig.sparcc), degree(ig.sparcc)==0),
 dev.off()
 
 
+png(paste0("./Figures/DESMAN/desman-strain-network-degree.png"), height = 4,
+  width = 6, res = 500, units = "in")
+cbind(MAG_ids, degree = (degree(ig.sparcc, mode="all")), membership = factor(modulos$membership)) %>% 
+  ggplot(., aes(x = MAG, y = degree, fill = membership))+
+  geom_point(size = 4, shape = 21, position = position_dodge(0.75))+
+  geom_boxplot(alpha = 0.5)+
+  theme_bw()+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "bottom",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+    scale_fill_manual("module", values = brewer.pal(n = 3, "Accent")[1:2])
+dev.off()
+
 ```
 
 ## Correlations
@@ -2820,7 +2836,7 @@ print(p_cor_desman_2)
 dev.off()
 ```
 
-### Diversity plots 
+### Strain diversity analysis
 
 ```{r desman-alpha-div, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 4, dev = c("png","pdf")}
 df_div_desman <- results_desm_all %>% 
