@@ -46,7 +46,7 @@ library("scales")
 library("grid")
 library("scales")
 library("gridExtra")
-library("easyGgplot2")
+# library("easyGgplot2")
 library("mclust")
 library("reshape2")
 library("Phenoflow")
@@ -300,6 +300,7 @@ blast_emirge_annot$label_interaction <- interaction(blast_emirge_annot$seq1_labe
                                                     sep= "-")
 # Only visualize within-group blast identities
 subset_seq_labels <- c("LimB-LimB", "Lhab-A4-Lhab-A4")
+svg("./Figures/16S_id.svg", height = 4, width = 5)
 blast_emirge_annot %>% 
   dplyr::filter(label_interaction %in% subset_seq_labels &
                                        seq1 != seq2) %>% 
@@ -319,6 +320,7 @@ ggplot(aes(x = label_interaction, y = pid, fill = label_interaction))+
         strip.text.x=element_text(size=18))+
   guides(fill = FALSE)+
   labs(x="")
+dev.off()
 
 blast_emirge_annot %>% dplyr::filter(label_interaction %in% subset_seq_labels &
                                        seq1 != seq2) %>% 
@@ -2642,9 +2644,10 @@ print(p_desm)
 dev.off()
 }
 ```
-s
+
 ### Correlation network
-```{r desman-2, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")}
+
+```{r, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")}
 # format data for sparcc
 data_total_abund_sparcc <- data_total_abund
 data_total_abund_sparcc$Sample_ID <- gsub("_", ".", data_total_abund$Sample_ID)
@@ -2868,7 +2871,7 @@ p_alpha_desman <- alpha_div_desman %>%
   facet_grid(.~Site)+
   theme_bw()+
   scale_fill_brewer(palette = "Accent")+
-  labs(y = expression("LimB strain diversity (D"[2]*")"), x = "")+
+  labs(y = expression("MAG8 strain diversity (D"[2]*")"), x = "")+
   theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
         title=element_text(size=16), legend.text=element_text(size=16),
         strip.text = element_text(size = 16))+
@@ -2882,6 +2885,59 @@ png(paste0("./Figures/DESMAN/desman-alpha-div-MAG8.png"), height = 4,
 print(p_alpha_desman)
 dev.off()
 ```
+
+<!-- Same analysis but now for all strains -->
+
+<!-- ```{r desman-alpha-div-all, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 4, dev = c("png","pdf")} -->
+<!-- df_div_desman_all <- results_desm_all %>%  -->
+<!--   dplyr::select(Samples:MAG) %>%  -->
+<!--   mutate(Strain_MAG = interaction(Strain, MAG)) %>%  -->
+<!--   dplyr::select(-Strain, - MAG) %>%  -->
+<!--   spread(., Strain_MAG, Frequency) -->
+
+<!-- alpha_div_desman_all <- data.frame(Sample = df_div_desman_all[,1],  -->
+<!--       D2 = vegan::diversity(df_div_desman_all[,2:ncol(df_div_desman_all)], index = "invsimpson") -->
+<!-- ) -->
+
+<!-- alpha_div_desman_all <- left_join(alpha_div_desman_all, meta_em, -->
+<!--                               by = c("Sample" = "Sample_ID")) -->
+<!-- alpha_div_desman_all$Site <- as.character(alpha_div_desman_all$Site) -->
+<!-- alpha_div_desman_all$Site <- gsub("110", "Lake Michigan - M110", alpha_div_desman_all$Site) -->
+<!-- alpha_div_desman_all$Site <- gsub("15", "Lake Michigan - M15", alpha_div_desman_all$Site) -->
+<!-- alpha_div_desman_all$Site <- gsub("Buoy", "Muskegon Lake", alpha_div_desman_all$Site) -->
+<!-- alpha_div_desman_all$Site <- factor(alpha_div_desman_all$Site, levels = c("Muskegon Lake", -->
+<!--                                                             "Lake Michigan - M15", -->
+<!--                                                             "Lake Michigan - M110")) -->
+<!-- alpha_div_desman_all$Season <- as.character(alpha_div_desman_all$Season) -->
+<!-- alpha_div_desman_all$Season <- factor(alpha_div_desman_all$Season, levels = c("Spring", "Summer","Fall")) -->
+
+<!-- p_alpha_desman_all <- alpha_div_desman_all %>%  -->
+<!--   ggplot(., aes(x = Season, y = D2, fill = Season, shape = Depth))+ -->
+<!--   geom_point(size = 4) + -->
+<!--   scale_shape_manual("", values = c(21,22,24))+ -->
+<!--   facet_grid(.~Site)+ -->
+<!--   theme_bw()+ -->
+<!--   scale_fill_brewer(palette = "Accent")+ -->
+<!--   labs(y = expression("Limnohabitans strain diversity (D"[2]*")"), x = "")+ -->
+<!--   theme(axis.text=element_text(size=12), axis.title=element_text(size=16), -->
+<!--         title=element_text(size=16), legend.text=element_text(size=16), -->
+<!--         strip.text = element_text(size = 16))+ -->
+<!--   ylim(0,20)+ -->
+<!--   guides(fill  = guide_legend(title = "", override.aes = list(size = 4, shape = 21), -->
+<!--                          nrow = 4) -->
+<!--    ) -->
+
+<!-- png(paste0("./Figures/DESMAN/desman-alpha-div-allMAGs.png"), height = 4, -->
+<!--   width = 10, res = 500, units = "in") -->
+<!-- print(p_alpha_desman_all) -->
+<!-- dev.off() -->
+
+<!-- png(paste0("./Figures/DESMAN/desman-alpha-div-allMAGs-combined.png"), height = 8, -->
+<!--   width = 10, res = 500, units = "in") -->
+<!-- cowplot::plot_grid(p_alpha_desman_all, p_alpha_desman, align = "hv", ncol = 1, labels = "AUTO") -->
+<!-- dev.off() -->
+<!-- ``` -->
+
 
 ```{r desman-3, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 5, dev = c("png","pdf")}
 # Make PCoA
@@ -2966,403 +3022,403 @@ print(pcoa.ord)
 dev.off()
 ```
 
-<!-- ### Gene assignment   -->
-
-<!-- Some highly speculative additional analysis over here. -->
-
-<!-- ```{r desman-4, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")} -->
-<!-- # Import etaS.csv which contains gene assignment -->
-<!-- geneAssign_df <- read.csv("./DESMAN/MAG8_scg_10_9/MAG8.SU-M110-DCMDetaS_df.csv", -->
-<!--                          header = TRUE) -->
-<!-- colnames(geneAssign_df) <- gsub("X", "Variant", colnames(geneAssign_df)) -->
-<!-- geneAssign_df <- geneAssign_df[, c(1,6,8,9,10,11)] -->
-<!-- colnames(geneAssign_df) <- c("Gene", "Strain 1", "Strain 2", "Strain 3", "Strain 4", -->
-<!--                             "Strain 5") -->
-
-<!-- # Check for presence of core gene presence in strains -->
-<!-- core_cogs_lim <- unique(read.csv("./DESMAN/MAG8_scg_10_9/Filtered_Tau_star.csv")[,1]) -->
-
-<!-- # Check predicted presence of core genes -->
-<!-- geneAssign_df %>% dplyr::filter(Gene %in% core_cogs_lim) -->
-
-<!-- # Wide to long format -->
-<!-- geneAssign_df <- tidyr::gather(geneAssign_df, Variant, Presence,  -->
-<!--                              `Strain 1`:`Strain 5`, factor_key=TRUE) -->
-
-<!-- # Import blast results -->
-<!-- blast_desman <- read.delim("./DESMAN/MAG8_scg_10_9/desman2img_genes.blast",  -->
-<!--                          header = FALSE) -->
-<!-- colnames(blast_desman) <- c("qseqid", "sseqid", "pident", "length", "mismatch", -->
-<!--                           "gapopen", "qstart", "qend", "sstart", "send",  -->
-<!--                           "evalue", "bitscore") -->
-<!-- blast_desman_sb <- blast_desman %>% dplyr::select("qseqid", "sseqid") %>%  distinct() -->
-
-<!-- # Merge IMG gene IDs with  -->
-<!-- geneAssign_df <- left_join(geneAssign_df, blast_desman_sb, by = c("Gene" = "qseqid")) -->
-<!-- geneAssign_df$sseqid <- as.character(geneAssign_df$sseqid) -->
-
-<!-- # Merge with functional annotation (KO & COG) -->
-<!-- geneAssign_df_annot <- left_join(geneAssign_df, merged_file_annot,  -->
-<!--                            by = c("sseqid" = "gene_oid")) -->
-
-<!-- # Merge with metaT data -->
-<!-- geneAssign_df_annot <- left_join(geneAssign_df, expr_cov_long,  -->
-<!--                            by = c("sseqid" = "gene_oid")) -->
-
-<!-- ``` -->
-
-<!-- #### **upset diagram**   -->
-
-<!-- ```{r desman-5, dpi = 500, warning = FALSE, fig.width = 7.5, fig.height = 5, dev = c("png","pdf")} -->
-<!-- # Long to wide -->
-<!-- geneAssign_df_wide <- tidyr::spread(geneAssign_df, Variant, Presence) -->
-
-<!-- # Plot -->
-<!-- upset(geneAssign_df_wide, sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4", -->
-<!--                                    "Strain 5"), mb.ratio = c(0.6, 0.45),  -->
-<!--       order.by = "freq", point.size = 3.5, -->
-<!--       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes", -->
-<!--       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 1.5), -->
-<!--       scale.intersections = "log2", -->
-<!--       keep.order = FALSE, -->
-<!--       line.size = 1.5) -->
-
-<!-- upset(geneAssign_df_wide, sets = c("Strain 1", "Strain 4"), mb.ratio = c(0.6, 0.45),  -->
-<!--       order.by = "freq", point.size = 3.5, -->
-<!--       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes", -->
-<!--       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 2), -->
-<!--       scale.intersections = "log2", -->
-<!--       keep.order = FALSE, -->
-<!--       line.size = 1.5) -->
-
-<!-- upset(geneAssign_df_wide, sets = c("Strain 2", "Strain 5"), mb.ratio = c(0.6, 0.45),  -->
-<!--       order.by = "freq", point.size = 3.5, -->
-<!--       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes", -->
-<!--       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 2), -->
-<!--       scale.intersections = "log2", -->
-<!--       keep.order = FALSE, -->
-<!--       line.size = 1.5) -->
-
-
-<!-- # Indicate site and season-specific differential abundant genes -->
-<!-- geneAssign_df_wide <- left_join(geneAssign_df_wide, res_deseq,  -->
-<!--                                 by = c("sseqid" = "gene_oid")) -->
-<!-- ``` -->
-
-<!-- ##### **Site downregulation** -->
-
-<!-- ```{r desman-site-downreg, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 6, dev = c("png","pdf")} -->
-<!-- # Make upset plot for site-specific downregulation controlled for seasons -->
-<!-- geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation", -->
-<!--                                      Design == "~ Season + Site") %>%  -->
-<!--   upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4", -->
-<!--                                    "Strain 5"), mb.ratio = c(0.55, 0.45),  -->
-<!--       order.by = "freq", number.angles = 30, point.size = 3.5, -->
-<!--       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes", -->
-<!--       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75), -->
-<!--       show.numbers = FALSE, -->
-<!--       scale.intersections = "log2", -->
-<!--       keep.order = FALSE, -->
-<!--       boxplot.summary = "log2FoldChange", -->
-<!--       line.size = NA) -->
-
-<!-- ``` -->
-
-<!-- ##### **Site upregulation** -->
-
-<!-- ```{r desman-site-upreg, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 6, dev = c("png","pdf")} -->
-<!-- # Make upset plot for site-specific upregulation controlled for seasons -->
-<!-- geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation", -->
-<!--                                      Design == "~ Season + Site") %>%  -->
-<!--   upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4", -->
-<!--                                    "Strain 5"), mb.ratio = c(0.55, 0.45),  -->
-<!--       order.by = "freq", number.angles = 30, point.size = 3.5,  -->
-<!--       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes", -->
-<!--       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75), -->
-<!--       show.numbers = FALSE, -->
-<!--       scale.intersections = "log2", -->
-<!--       keep.order = FALSE, -->
-<!--       boxplot.summary = "log2FoldChange", -->
-<!--       line.size = NA) -->
-
-
-<!-- ``` -->
-
-<!-- ##### **Seasonal downregulation** -->
-
-<!-- ```{r desman-season-downreg, dpi = 500, warning = FALSE, fig.width = 5, fig.height = 6, dev = c("png","pdf")} -->
-<!-- # Make upset plot for seasonal downregulation controlled for site -->
-<!-- geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation", -->
-<!--                                      Design == "~ Site + Season") %>%  -->
-<!--   upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4", -->
-<!--                                    "Strain 5"), mb.ratio = c(0.55, 0.45),  -->
-<!--       order.by = "freq", number.angles = 30, point.size = 3.5,  -->
-<!--       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes", -->
-<!--       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75), -->
-<!--       show.numbers = FALSE, -->
-<!--       scale.intersections = "log2", -->
-<!--       keep.order = FALSE, -->
-<!--       boxplot.summary = "log2FoldChange", -->
-<!--       line.size = NA) -->
-
-
-<!-- ``` -->
-
-<!-- ##### **Depth downregulation**   -->
-
-<!-- ```{r desman-depth-downreg, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 6, dev = c("png","pdf")} -->
-<!-- # Make upset plot for depth-specific downregulation controlled for seasons -->
-<!-- geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation", -->
-<!--                                      Design == "~ Site + Depth") %>%  -->
-<!--   upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4", -->
-<!--                                    "Strain 5"), mb.ratio = c(0.55, 0.45),  -->
-<!--       order.by = "freq", number.angles = 30, point.size = 3.5, -->
-<!--       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes", -->
-<!--       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75), -->
-<!--       show.numbers = FALSE, -->
-<!--       scale.intersections = "log2", -->
-<!--       keep.order = FALSE, -->
-<!--       boxplot.summary = "log2FoldChange", -->
-<!--       line.size = NA) -->
-
-<!-- ``` -->
-
-<!-- ##### **Depth upregulation**  -->
-
-<!-- ```{r desman-depth-upreg, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 6, dev = c("png","pdf")} -->
-<!-- # Make upset plot for depth-specific upregulation controlled for sites -->
-<!-- geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation", -->
-<!--                                      Design == "~ Site + Depth") %>%  -->
-<!--   upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4", -->
-<!--                                    "Strain 5"), mb.ratio = c(0.55, 0.45),  -->
-<!--       order.by = "freq", number.angles = 30, point.size = 3.5,  -->
-<!--       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes", -->
-<!--       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75), -->
-<!--       show.numbers = FALSE, -->
-<!--       scale.intersections = "log2", -->
-<!--       keep.order = FALSE, -->
-<!--       boxplot.summary = "log2FoldChange", -->
-<!--       line.size = NA) -->
-
-<!-- ``` -->
-
-<!-- #### Transcript assignment -->
-
-<!-- ```{r MAG8-DESeq-plot-upset1, dpi = 500, warning = FALSE, fig.width = 7.5, fig.height = 5, dev = c("png","pdf")} -->
-<!-- # Extract upregulated genes of depth comparison -->
-<!-- geneAssign_df_wide_transcripts_depth <- geneAssign_df_wide %>%  -->
-<!--   dplyr::filter(sseqid %in% unique(MAG8_deseq_results_depth_fin$gene_oid)) %>%  -->
-<!--   dplyr::select(sseqid:`Strain 5`) -->
-
-<!-- geneAssign_df_wide_transcripts_depth <- MAG8_deseq_results_depth_fin %>%  -->
-<!--   dplyr::select(log2FoldChange, gene_oid, regulation) %>%  -->
-<!--   left_join(geneAssign_df_wide_transcripts_depth, ., by = c("sseqid" = "gene_oid")) -->
-
-<!-- # Extract upregulated genes of surface comparison -->
-<!-- geneAssign_df_wide_transcripts_temp <- geneAssign_df_wide %>%  -->
-<!--   dplyr::filter(sseqid %in% unique(MAG8_deseq_results_temp_fin$gene_oid)) %>%  -->
-<!--   dplyr::select(sseqid:`Strain 5`) -->
-
-<!-- geneAssign_df_wide_transcripts_temp <- MAG8_deseq_results_temp_fin %>%  -->
-<!--   dplyr::select(log2FoldChange, gene_oid, regulation) %>%  -->
-<!--   left_join(geneAssign_df_wide_transcripts_temp, ., by = c("sseqid" = "gene_oid")) -->
-
-<!-- # Evaluate distribution of transcripts expression over strains -->
-<!-- # Plot upregulated genes -->
-<!-- geneAssign_df_wide_transcripts_depth %>%  -->
-<!--   unique() %>%  -->
-<!--   upset(.,  -->
-<!--       sets = c("Strain 1", "Strain 2","Strain 3", "Strain 4", "Strain 5"),  -->
-<!--       mb.ratio = c(0.55, 0.45),  -->
-<!--       order.by = "freq", point.size = 3.5, -->
-<!--       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes", -->
-<!--       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 3), -->
-<!--       scale.intersections = "log2", -->
-<!--       keep.order = FALSE, -->
-<!--       line.size = 1.2) -->
-
-<!-- geneAssign_df_wide_transcripts_depth %>%  -->
-<!--   dplyr::filter(regulation == "Downregulated") %>% -->
-<!--   unique() %>%  -->
-<!--   summary() -->
-
-<!-- #  -->
-<!-- # geneAssign_df_wide_transcripts_temp %>% dplyr::filter(regulation == "Upregulated") %>% -->
-<!-- #   upset(.,  -->
-<!-- #       sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4", -->
-<!-- #                                    "Strain 5"), mb.ratio = c(0.55, 0.45),  -->
-<!-- #       order.by = "freq", number.angles = 30, point.size = 3.5, -->
-<!-- #       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes", -->
-<!-- #       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75), -->
-<!-- #       show.numbers = FALSE, -->
-<!-- #       scale.intersections = "log2", -->
-<!-- #       keep.order = FALSE, -->
-<!-- #       line.size = 1.2, -->
-<!-- #       boxplot.summary = "log2FoldChange") -->
-
-
-<!-- # geneAssign_df_wide_transcripts_temp %>% dplyr::filter(regulation == "Downregulated") %>% -->
-<!-- #   upset(.,  -->
-<!-- #       sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4", -->
-<!-- #                                    "Strain 5"), mb.ratio = c(0.55, 0.45),  -->
-<!-- #       order.by = "freq", number.angles = 30, point.size = 3.5, -->
-<!-- #       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes", -->
-<!-- #       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75), -->
-<!-- #       show.numbers = FALSE, -->
-<!-- #       scale.intersections = "log2", -->
-<!-- #       keep.order = FALSE, -->
-<!-- #       line.size = 1.2, -->
-<!-- #       boxplot.summary = "log2FoldChange") -->
-
-<!-- ``` -->
-
-<!-- #### Assign functions -->
-<!-- ```{r MAG8-DESeq-plot-upset2, dpi = 500, warning = FALSE, fig.width = 8.5, fig.height = 5, dev = c("png","pdf")} -->
-<!-- # Assign interactins for each strain -->
-<!-- geneAssign_df_wide_transcripts_depth$Strain_interaction <- -->
-<!--   interaction(geneAssign_df_wide_transcripts_depth$`Strain 1`, -->
-<!--               geneAssign_df_wide_transcripts_depth$`Strain 2`, -->
-<!--               geneAssign_df_wide_transcripts_depth$`Strain 3`, -->
-<!--               geneAssign_df_wide_transcripts_depth$`Strain 4`, -->
-<!--               geneAssign_df_wide_transcripts_depth$`Strain 5`, -->
-<!--               sep = "-") -->
-
-<!-- # Assign functions -->
-<!-- geneAssign_df_wide_transcripts_depth <- left_join(geneAssign_df_wide_transcripts_depth, -->
-<!--                                                   merged_file_annot, -->
-<!--                                                   by = c("sseqid" = "gene_oid")) -->
-
-<!-- # Check for gene enrichment in interactions of strain 1 - 4 / strain 2 - 5 / strain 3 -->
-<!-- # these interactions correspond to interaction term 1-0-0-1-0 / 0-1-0-0-1 / 0-0-1-0-0 -->
-
-<!-- # geneAssign_df_wide_transcripts_depth %>%  -->
-<!-- #   dplyr::filter(grepl("1-.-.-1-.", Strain_interaction)) -->
-
-<!-- geneAssign_df_wide_transcripts_depth %>%  -->
-<!--   # dplyr::filter(!grepl("0-0-0-0-0", Strain_interaction)) %>%  -->
-<!--   # dplyr::filter(grepl("1-0-1-0-0", Strain_interaction)) %>%  -->
-<!--   dplyr::select(sseqid:ko_name) %>%  -->
-<!--   # dplyr::filter(!is.na(ko_name)) %>% -->
-<!--   unique() %>%  -->
-<!--   ggplot(., aes(x = Strain_interaction, y = log2FoldChange, fill = regulation))+ -->
-<!--   # geom_point(shape = 21, size = 4)+ -->
-<!--   geom_boxplot(alpha = 0.4, outlier.shape = NA)+ -->
-<!--   # geom_bar(stat = "count")+ -->
-<!--   scale_fill_brewer("", palette = "Set1")+ -->
-<!--   theme_bw()+ -->
-<!--   theme(axis.text.x=element_text(size=12, angle = 30, hjust = 1), -->
-<!--         axis.text.y = element_text(size = 12), -->
-<!--         axis.title=element_text(size=16), -->
-<!--         title=element_text(size=16), legend.text=element_text(size=16), -->
-<!--         strip.text = element_text(size = 16))+ -->
-<!--   guides(fill = FALSE) -->
-<!--   # ylim(0,40) -->
-
-<!-- ``` -->
-
-
-<!-- ### Gene enrichment -->
-
-<!-- ```{r MAG8-strains-gsea, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 4, dev = c("png","pdf")} -->
-<!-- # Test for enrichment of functional categories in strains with small inferred genomes -->
-<!-- ## Test for enrichment of KO level C terms  -->
-<!-- bg_gsea <- geneAssign_df_annot_func %>%  -->
-<!--   dplyr::select(ko_level_C, sseqid) %>%  -->
-<!--   distinct() -->
-<!-- bg_gsea[is.na(bg_gsea)] <- "Unknown" -->
-
-<!-- s1g <- geneAssign_df_annot_func %>%  -->
-<!--   dplyr::filter(`Strain 5` == 1) %>%  -->
-<!--   dplyr::select(sseqid) %>%  -->
-<!--   unique()  -->
-
-<!-- strain1_gsea <- enricher(gene = s1g$sseqid, -->
-<!--          universe = bg_gsea$sseqid,  -->
-<!--          TERM2GENE = bg_gsea, -->
-<!--          pvalueCutoff = 0.05, -->
-<!--          qvalueCutoff = 0.2) -->
-
-<!-- ``` -->
-
-
-<!-- ### Strain DOM usage -->
-
-<!-- ```{r MAG8-strains-DOM, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 4, dev = c("png","pdf")} -->
-<!-- # Import DOM usage table -->
-<!-- DOM_usage_df <- read.csv("./IMG_annotation/DOM_usage.csv", stringsAsFactors = FALSE, -->
-<!--                          check.names =FALSE) -->
-<!-- DOM_usage_df$DOM_type <- gsub("\\n","\n", DOM_usage_df$DOM_type, fixed = TRUE) -->
-
-<!-- # Retain COG_ids that are found in DOM_usage_df list -->
-<!-- COG_profiles_sub <- geneAssign_df_annot_func %>% -->
-<!--   dplyr::filter(cog_id %in% DOM_usage_df$COG_ID) -->
-
-<!-- COG_profiles_sub <- dplyr::left_join(COG_profiles_sub, DOM_usage_df,  -->
-<!--                                      by = c("cog_id" = "COG_ID")) %>%  -->
-<!--   dplyr::select(sseqid, Strain_interaction, cog_id, DOM_type) %>%  -->
-<!--   unique() -->
-
-<!-- # Add COG counts -->
-<!-- COG_profiles_sub_cnt <- COG_profiles_sub %>%  -->
-<!--   group_by(Strain_interaction, DOM_type) %>%  -->
-<!--   mutate(sum_counts = n()) -->
-
-<!-- # Order COG ids according to classification -->
-<!-- COG_order <- DOM_usage_df %>%  -->
-<!--   dplyr::filter(COG_ID %in% unique(COG_profiles_sub_cnt$cog_id)) -->
-<!-- COG_profiles_sub_cnt$cog_id <- factor(COG_profiles_sub_cnt$cog_id, -->
-<!--                                         levels = COG_order$COG_ID) -->
-
-<!-- # # make heatmap -->
-<!-- # hm_DOC1 <- complete(COG_profiles_sub_cnt, cog_id, -->
-<!-- #          fill = list(sum_counts = 0)) %>% -->
-<!-- #   # dplyr::filter(Genome %in% selected_genomes) %>% -->
-<!-- #   ggplot(aes(y = Strain_interaction, x= cog_id)) + # x and y axes => Var1 and Var2 -->
-<!-- #   geom_tile(aes(fill = sum_counts), col = "lightgrey") + # background colours are mapped according to the value column -->
-<!-- #   geom_text(aes(label = round(sum_counts, 0)), size = 3) + # write the values -->
-<!-- #   # scale_fill_gradientn(colours = terrain.colors(10), trans = "log1p")+ -->
-<!-- #   # scale_fill_gradient(low = "lightblue", high = "darkslategray", na.value="white", -->
-<!-- #                       # trans = "log1p", limits=c(1, 40)) + -->
-<!-- #   scale_fill_distiller(palette="YlOrRd", na.value="lightgrey", trans = "sqrt", -->
-<!-- #                        direction = 1) + -->
-<!-- #   theme(panel.grid.major.x=element_blank(), #no gridlines -->
-<!-- #         panel.grid.minor.x=element_blank(), -->
-<!-- #         panel.grid.major.y=element_blank(), -->
-<!-- #         panel.grid.minor.y=element_blank(), -->
-<!-- #         panel.background=element_rect(fill="white"), # background=white -->
-<!-- #         axis.text.x = element_text(angle=45, hjust = 1, vjust=1, size = 12,face = "bold"), -->
-<!-- #         plot.title = element_text(size=20,face="bold"), -->
-<!-- #         axis.text.y = element_text(size = 12,face = "bold"))+ -->
-<!-- #   theme(legend.title=element_text(face="bold", size=14)) + -->
-<!-- #   scale_x_discrete(name="") + -->
-<!-- #   scale_y_discrete(name="") + -->
-<!-- #   labs(fill="Gene\ncount") -->
-
-<!-- # print(hm_DOC1) -->
-
-<!-- # Barplot -->
-<!-- p_DOM_dist <- COG_profiles_sub_cnt %>%  -->
-<!--   dplyr::filter(Strain_interaction != "0-0-0-0-0") %>%  -->
-<!--   dplyr::select(Strain_interaction, DOM_type, sum_counts) %>%  -->
-<!--   unique() %>%  -->
-<!--   ggplot2::ggplot(aes(x = Strain_interaction, y = sum_counts, fill = DOM_type))+ -->
-<!--   geom_bar(alpha = 0.8, stat = "identity", color = "black", width = 0.5)+ -->
-<!--   scale_fill_brewer("", palette = "Paired")+ -->
-<!--   theme_bw()+ -->
-<!--   theme(axis.text=element_text(size=14), axis.title=element_text(size=20), -->
-<!--         title=element_text(size=20), legend.text=element_text(size=10), -->
-<!--         legend.background = element_rect(fill="transparent"), -->
-<!--         # axis.text.x = element_text(angle = 65, hjust = 1), -->
-<!--         strip.text.x=element_text(size = 18), -->
-<!--         legend.position="right", -->
-<!--         axis.text.x=element_text(size = 14, angle =45, hjust= 1), -->
-<!--         plot.title = element_text(hjust = 0, size=18))+ -->
-<!--   guides(fill=guide_legend(ncol=1))+ -->
-<!--   ylab("Number of genes")+ -->
-<!--   xlab('Intersection') -->
-
-<!-- print(p_DOM_dist) -->
-<!-- ``` -->
+### Gene assignment
+
+Some highly speculative additional analysis over here.
+
+```{r desman-4, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")}
+# Import etaS.csv which contains gene assignment
+geneAssign_df <- read.csv("./DESMAN/MAG8_scg_10_9/MAG8.SU-M110-DCMDetaS_df.csv",
+                         header = TRUE)
+colnames(geneAssign_df) <- gsub("X", "Variant", colnames(geneAssign_df))
+geneAssign_df <- geneAssign_df[, c(1,6,8,9,10,11)]
+colnames(geneAssign_df) <- c("Gene", "Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                            "Strain 5")
+
+# Check for presence of core gene presence in strains
+core_cogs_lim <- unique(read.csv("./DESMAN/MAG8_scg_10_9/Filtered_Tau_star.csv")[,1])
+
+# Check predicted presence of core genes
+geneAssign_df %>% dplyr::filter(Gene %in% core_cogs_lim)
+
+# Wide to long format
+geneAssign_df <- tidyr::gather(geneAssign_df, Variant, Presence,
+                             `Strain 1`:`Strain 5`, factor_key=TRUE)
+
+# Import blast results
+blast_desman <- read.delim("./DESMAN/MAG8_scg_10_9/desman2img_genes.blast",
+                         header = FALSE)
+colnames(blast_desman) <- c("qseqid", "sseqid", "pident", "length", "mismatch",
+                          "gapopen", "qstart", "qend", "sstart", "send",
+                          "evalue", "bitscore")
+blast_desman_sb <- blast_desman %>% dplyr::select("qseqid", "sseqid") %>%  distinct()
+
+# Merge IMG gene IDs with
+geneAssign_df <- left_join(geneAssign_df, blast_desman_sb, by = c("Gene" = "qseqid"))
+geneAssign_df$sseqid <- as.character(geneAssign_df$sseqid)
+
+# Merge with functional annotation (KO & COG)
+geneAssign_df_annot <- left_join(geneAssign_df, merged_file_annot,
+                           by = c("sseqid" = "gene_oid"))
+
+# Merge with metaT data
+geneAssign_df_annot <- left_join(geneAssign_df, expr_cov_long,
+                           by = c("sseqid" = "gene_oid"))
+
+```
+
+#### **upset diagram**
+
+```{r desman-5, dpi = 500, warning = FALSE, fig.width = 7.5, fig.height = 5, dev = c("png","pdf")}
+# Long to wide
+geneAssign_df_wide <- tidyr::spread(geneAssign_df, Variant, Presence)
+
+# Plot
+upset(geneAssign_df_wide, sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                                   "Strain 5"), mb.ratio = c(0.6, 0.45),
+      order.by = "freq", point.size = 3.5,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 1.5),
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      line.size = 1.5)
+
+upset(geneAssign_df_wide, sets = c("Strain 1", "Strain 4"), mb.ratio = c(0.6, 0.45),
+      order.by = "freq", point.size = 3.5,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 2),
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      line.size = 1.5)
+
+upset(geneAssign_df_wide, sets = c("Strain 2", "Strain 5"), mb.ratio = c(0.6, 0.45),
+      order.by = "freq", point.size = 3.5,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 2),
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      line.size = 1.5)
+
+
+# Indicate site and season-specific differential abundant genes
+geneAssign_df_wide <- left_join(geneAssign_df_wide, res_deseq,
+                                by = c("sseqid" = "gene_oid"))
+```
+
+##### **Site downregulation**
+
+```{r desman-site-downreg, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 6, dev = c("png","pdf")}
+# Make upset plot for site-specific downregulation controlled for seasons
+geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
+                                     Design == "~ Season + Site") %>%
+  upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                                   "Strain 5"), mb.ratio = c(0.55, 0.45),
+      order.by = "freq", number.angles = 30, point.size = 3.5,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+      show.numbers = FALSE,
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      boxplot.summary = "log2FoldChange",
+      line.size = NA)
+
+```
+
+##### **Site upregulation**
+
+```{r desman-site-upreg, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 6, dev = c("png","pdf")}
+# Make upset plot for site-specific upregulation controlled for seasons
+geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation",
+                                     Design == "~ Season + Site") %>%
+  upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                                   "Strain 5"), mb.ratio = c(0.55, 0.45),
+      order.by = "freq", number.angles = 30, point.size = 3.5,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+      show.numbers = FALSE,
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      boxplot.summary = "log2FoldChange",
+      line.size = NA)
+
+
+```
+
+##### **Seasonal downregulation**
+
+```{r desman-season-downreg, dpi = 500, warning = FALSE, fig.width = 5, fig.height = 6, dev = c("png","pdf")}
+# Make upset plot for seasonal downregulation controlled for site
+geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
+                                     Design == "~ Site + Season") %>%
+  upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                                   "Strain 5"), mb.ratio = c(0.55, 0.45),
+      order.by = "freq", number.angles = 30, point.size = 3.5,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+      show.numbers = FALSE,
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      boxplot.summary = "log2FoldChange",
+      line.size = NA)
+
+
+```
+
+##### **Depth downregulation**
+
+```{r desman-depth-downreg, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 6, dev = c("png","pdf")}
+# Make upset plot for depth-specific downregulation controlled for seasons
+geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
+                                     Design == "~ Site + Depth") %>%
+  upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                                   "Strain 5"), mb.ratio = c(0.55, 0.45),
+      order.by = "freq", number.angles = 30, point.size = 3.5,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+      show.numbers = FALSE,
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      boxplot.summary = "log2FoldChange",
+      line.size = NA)
+
+```
+
+##### **Depth upregulation**
+
+```{r desman-depth-upreg, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 6, dev = c("png","pdf")}
+# Make upset plot for depth-specific upregulation controlled for sites
+geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation",
+                                     Design == "~ Site + Depth") %>%
+  upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+                                   "Strain 5"), mb.ratio = c(0.55, 0.45),
+      order.by = "freq", number.angles = 30, point.size = 3.5,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+      show.numbers = FALSE,
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      boxplot.summary = "log2FoldChange",
+      line.size = NA)
+
+```
+
+#### Transcript assignment
+
+```{r MAG8-DESeq-plot-upset1, dpi = 500, warning = FALSE, fig.width = 7.5, fig.height = 5, dev = c("png","pdf")}
+# Extract upregulated genes of depth comparison
+geneAssign_df_wide_transcripts_depth <- geneAssign_df_wide %>%
+  dplyr::filter(sseqid %in% unique(MAG8_deseq_results_depth_fin$gene_oid)) %>%
+  dplyr::select(sseqid:`Strain 5`)
+
+geneAssign_df_wide_transcripts_depth <- MAG8_deseq_results_depth_fin %>%
+  dplyr::select(log2FoldChange, gene_oid, regulation) %>%
+  left_join(geneAssign_df_wide_transcripts_depth, ., by = c("sseqid" = "gene_oid"))
+
+# Extract upregulated genes of surface comparison
+geneAssign_df_wide_transcripts_temp <- geneAssign_df_wide %>%
+  dplyr::filter(sseqid %in% unique(MAG8_deseq_results_temp_fin$gene_oid)) %>%
+  dplyr::select(sseqid:`Strain 5`)
+
+geneAssign_df_wide_transcripts_temp <- MAG8_deseq_results_temp_fin %>%
+  dplyr::select(log2FoldChange, gene_oid, regulation) %>%
+  left_join(geneAssign_df_wide_transcripts_temp, ., by = c("sseqid" = "gene_oid"))
+
+# Evaluate distribution of transcripts expression over strains
+# Plot upregulated genes
+geneAssign_df_wide_transcripts_depth %>%
+  unique() %>%
+  upset(.,
+      sets = c("Strain 1", "Strain 2","Strain 3", "Strain 4", "Strain 5"),
+      mb.ratio = c(0.55, 0.45),
+      order.by = "freq", point.size = 3.5,
+      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 3),
+      scale.intersections = "log2",
+      keep.order = FALSE,
+      line.size = 1.2)
+
+geneAssign_df_wide_transcripts_depth %>%
+  dplyr::filter(regulation == "Downregulated") %>%
+  unique() %>%
+  summary()
+
+#
+# geneAssign_df_wide_transcripts_temp %>% dplyr::filter(regulation == "Upregulated") %>%
+#   upset(.,
+#       sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+#                                    "Strain 5"), mb.ratio = c(0.55, 0.45),
+#       order.by = "freq", number.angles = 30, point.size = 3.5,
+#       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+#       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+#       show.numbers = FALSE,
+#       scale.intersections = "log2",
+#       keep.order = FALSE,
+#       line.size = 1.2,
+#       boxplot.summary = "log2FoldChange")
+
+
+# geneAssign_df_wide_transcripts_temp %>% dplyr::filter(regulation == "Downregulated") %>%
+#   upset(.,
+#       sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
+#                                    "Strain 5"), mb.ratio = c(0.55, 0.45),
+#       order.by = "freq", number.angles = 30, point.size = 3.5,
+#       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
+#       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
+#       show.numbers = FALSE,
+#       scale.intersections = "log2",
+#       keep.order = FALSE,
+#       line.size = 1.2,
+#       boxplot.summary = "log2FoldChange")
+
+```
+
+#### Assign functions
+```{r MAG8-DESeq-plot-upset2, dpi = 500, warning = FALSE, fig.width = 8.5, fig.height = 5, dev = c("png","pdf")}
+# Assign interactins for each strain
+geneAssign_df_wide_transcripts_depth$Strain_interaction <-
+  interaction(geneAssign_df_wide_transcripts_depth$`Strain 1`,
+              geneAssign_df_wide_transcripts_depth$`Strain 2`,
+              geneAssign_df_wide_transcripts_depth$`Strain 3`,
+              geneAssign_df_wide_transcripts_depth$`Strain 4`,
+              geneAssign_df_wide_transcripts_depth$`Strain 5`,
+              sep = "-")
+
+# Assign functions
+geneAssign_df_wide_transcripts_depth <- left_join(geneAssign_df_wide_transcripts_depth,
+                                                  merged_file_annot,
+                                                  by = c("sseqid" = "gene_oid"))
+
+# Check for gene enrichment in interactions of strain 1 - 4 / strain 2 - 5 / strain 3
+# these interactions correspond to interaction term 1-0-0-1-0 / 0-1-0-0-1 / 0-0-1-0-0
+
+# geneAssign_df_wide_transcripts_depth %>%
+#   dplyr::filter(grepl("1-.-.-1-.", Strain_interaction))
+
+geneAssign_df_wide_transcripts_depth %>%
+  # dplyr::filter(!grepl("0-0-0-0-0", Strain_interaction)) %>%
+  # dplyr::filter(grepl("1-0-1-0-0", Strain_interaction)) %>%
+  dplyr::select(sseqid:ko_name) %>%
+  # dplyr::filter(!is.na(ko_name)) %>%
+  unique() %>%
+  ggplot(., aes(x = Strain_interaction, y = log2FoldChange, fill = regulation))+
+  # geom_point(shape = 21, size = 4)+
+  geom_boxplot(alpha = 0.4, outlier.shape = NA)+
+  # geom_bar(stat = "count")+
+  scale_fill_brewer("", palette = "Set1")+
+  theme_bw()+
+  theme(axis.text.x=element_text(size=12, angle = 30, hjust = 1),
+        axis.text.y = element_text(size = 12),
+        axis.title=element_text(size=16),
+        title=element_text(size=16), legend.text=element_text(size=16),
+        strip.text = element_text(size = 16))+
+  guides(fill = FALSE)
+  # ylim(0,40)
+
+```
+
+
+### Gene enrichment
+
+```{r MAG8-strains-gsea, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 4, dev = c("png","pdf")}
+# Test for enrichment of functional categories in strains with small inferred genomes
+## Test for enrichment of KO level C terms
+bg_gsea <- geneAssign_df_annot_func %>%
+  dplyr::select(ko_level_C, sseqid) %>%
+  distinct()
+bg_gsea[is.na(bg_gsea)] <- "Unknown"
+
+s1g <- geneAssign_df_annot_func %>%
+  dplyr::filter(`Strain 5` == 1) %>%
+  dplyr::select(sseqid) %>%
+  unique()
+
+strain1_gsea <- enricher(gene = s1g$sseqid,
+         universe = bg_gsea$sseqid,
+         TERM2GENE = bg_gsea,
+         pvalueCutoff = 0.05,
+         qvalueCutoff = 0.2)
+
+```
+
+
+### Strain DOM usage
+
+```{r MAG8-strains-DOM, dpi = 500, warning = FALSE, fig.width = 10, fig.height = 4, dev = c("png","pdf")}
+# Import DOM usage table
+DOM_usage_df <- read.csv("./IMG_annotation/DOM_usage.csv", stringsAsFactors = FALSE,
+                         check.names =FALSE)
+DOM_usage_df$DOM_type <- gsub("\\n","\n", DOM_usage_df$DOM_type, fixed = TRUE)
+
+# Retain COG_ids that are found in DOM_usage_df list
+COG_profiles_sub <- geneAssign_df_annot_func %>%
+  dplyr::filter(cog_id %in% DOM_usage_df$COG_ID)
+
+COG_profiles_sub <- dplyr::left_join(COG_profiles_sub, DOM_usage_df,
+                                     by = c("cog_id" = "COG_ID")) %>%
+  dplyr::select(sseqid, Strain_interaction, cog_id, DOM_type) %>%
+  unique()
+
+# Add COG counts
+COG_profiles_sub_cnt <- COG_profiles_sub %>%
+  group_by(Strain_interaction, DOM_type) %>%
+  mutate(sum_counts = n())
+
+# Order COG ids according to classification
+COG_order <- DOM_usage_df %>%
+  dplyr::filter(COG_ID %in% unique(COG_profiles_sub_cnt$cog_id))
+COG_profiles_sub_cnt$cog_id <- factor(COG_profiles_sub_cnt$cog_id,
+                                        levels = COG_order$COG_ID)
+
+# # make heatmap
+# hm_DOC1 <- complete(COG_profiles_sub_cnt, cog_id,
+#          fill = list(sum_counts = 0)) %>%
+#   # dplyr::filter(Genome %in% selected_genomes) %>%
+#   ggplot(aes(y = Strain_interaction, x= cog_id)) + # x and y axes => Var1 and Var2
+#   geom_tile(aes(fill = sum_counts), col = "lightgrey") + # background colours are mapped according to the value column
+#   geom_text(aes(label = round(sum_counts, 0)), size = 3) + # write the values
+#   # scale_fill_gradientn(colours = terrain.colors(10), trans = "log1p")+
+#   # scale_fill_gradient(low = "lightblue", high = "darkslategray", na.value="white",
+#                       # trans = "log1p", limits=c(1, 40)) +
+#   scale_fill_distiller(palette="YlOrRd", na.value="lightgrey", trans = "sqrt",
+#                        direction = 1) +
+#   theme(panel.grid.major.x=element_blank(), #no gridlines
+#         panel.grid.minor.x=element_blank(),
+#         panel.grid.major.y=element_blank(),
+#         panel.grid.minor.y=element_blank(),
+#         panel.background=element_rect(fill="white"), # background=white
+#         axis.text.x = element_text(angle=45, hjust = 1, vjust=1, size = 12,face = "bold"),
+#         plot.title = element_text(size=20,face="bold"),
+#         axis.text.y = element_text(size = 12,face = "bold"))+
+#   theme(legend.title=element_text(face="bold", size=14)) +
+#   scale_x_discrete(name="") +
+#   scale_y_discrete(name="") +
+#   labs(fill="Gene\ncount")
+
+# print(hm_DOC1)
+
+# Barplot
+p_DOM_dist <- COG_profiles_sub_cnt %>%
+  dplyr::filter(Strain_interaction != "0-0-0-0-0") %>%
+  dplyr::select(Strain_interaction, DOM_type, sum_counts) %>%
+  unique() %>%
+  ggplot2::ggplot(aes(x = Strain_interaction, y = sum_counts, fill = DOM_type))+
+  geom_bar(alpha = 0.8, stat = "identity", color = "black", width = 0.5)+
+  scale_fill_brewer("", palette = "Paired")+
+  theme_bw()+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=20),
+        title=element_text(size=20), legend.text=element_text(size=10),
+        legend.background = element_rect(fill="transparent"),
+        # axis.text.x = element_text(angle = 65, hjust = 1),
+        strip.text.x=element_text(size = 18),
+        legend.position="right",
+        axis.text.x=element_text(size = 14, angle =45, hjust= 1),
+        plot.title = element_text(hjust = 0, size=18))+
+  guides(fill=guide_legend(ncol=1))+
+  ylab("Number of genes")+
+  xlab('Intersection')
+
+print(p_DOM_dist)
+```
 
 # 9. iRep analysis
 ```{r irep-1, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10}
@@ -3580,18 +3636,6 @@ print(irep_p5)
 
 ```
 
-## Abundances  
-
-```{r irep-6, dpi = 500, warning = FALSE, fig.width = 6, fig.height = 4}
-# Merge irep results with abundance estimates
-
-# Correlate abundances with iRep estimates
-
-# Plot
-
-```
-
-
 # Pangenome analysis  
 
 
@@ -3601,14 +3645,13 @@ print(irep_p5)
 panG <- data.table::fread("./panG/SUMMARY_Final_bins_wMIXED/panG-LIM-ALL_protein_clusters_summary.txt")
 
 # Remove COG annotation
-panG <- panG[, -c("V1","V2","V6", "V7")]
-
-# Add column names
-colnames(panG) <- c("bin_name", "genome_name",  "gene_callers_id",
-     "COG_FUNCTION_ACC", "COG_FUNCTION", "aa_sequence")
+panG <- panG %>%
+  dplyr::select(c("bin_name", "genome_name",  "gene_callers_id",
+     "COG_FUNCTION_ACC", "COG_FUNCTION", "aa_sequence"))
 
 panG_MAG <- panG
 panG_MAG$gene_callers_id <- as.character(panG_MAG$gene_callers_id)
+
 # Add unique gene identifier 
 panG_MAG$unique_gene_callers_id <- interaction(panG_MAG$genome_name, 
                                                panG_MAG$gene_callers_id,
@@ -3635,7 +3678,7 @@ ko_files <- list.files(".", pattern = "KO_annot",
                        recursive = TRUE)
 panG_ko <- data.frame()
 for(ko_file in ko_files){
-  tmp <- data.table::fread(ko_file, fill = TRUE, sep = "\t", header = FALSE)
+  tmp <- data.table::fread(file = ko_file, sep = '\t', fill = TRUE, header = TRUE)
   tmp <- data.frame(tmp, Genome = do.call(rbind, strsplit(ko_file, "-"))[,2])
   if(ko_file == ko_files[1]) panG_ko <- tmp else{
     panG_ko <- rbind(panG_ko, tmp)
@@ -3673,14 +3716,15 @@ panG_ko_cog$bin_core <- plyr::revalue(panG_ko_cog$bin_core, replace = c("TRUE" =
 ```{r panG-2, dpi = 500, warning = FALSE, fig.width = 13, fig.height = 8, dev=c("png","pdf")}
 # Perform hypergeometric test to see if there is functional enrichment in the pangenome
 for(i_genome in 1:length(unique(panG_ko$Genome))){
-  bg_gsea <- panG_ko %>% dplyr::filter(Genome == unique(panG_ko$Genome)[i_genome]) %>% 
+  # Extract background gene annotations
+  bg_gsea <- panG_ko %>% dplyr::filter(Genome %in% unique(panG_ko$Genome)[i_genome]) %>% 
   dplyr::select(ko_level_C,unique_gene_callers_id) %>% 
   distinct()
   
   panG_gseq <- panG_ko_cog %>% 
     dplyr::filter(Genome == unique(panG_ko$Genome)[i_genome] & 
                     bin_core == "Accessory") %>%
-    dplyr::select(ko_level_C,unique_gene_callers_id) %>% 
+    dplyr::select(ko_level_C, unique_gene_callers_id) %>% 
     distinct()
   
   panG_gsea <- enricher(gene = panG_gseq$unique_gene_callers_id,
@@ -3689,20 +3733,27 @@ for(i_genome in 1:length(unique(panG_ko$Genome))){
          pvalueCutoff = 0.05,
          qvalueCutoff = 0.2)
 
-  tmp_gseq <- data.frame(panG_gsea@result, Genome = unique(panG_ko$Genome)[i_genome])
+  # Important to filter here
+  tmp_gseq <- data.frame(panG_gsea@result, Genome = unique(panG_ko$Genome)[i_genome]) %>% 
+    dplyr::filter(pvalue <= 0.05)
+  
   if(i_genome == 1) results_gseq <- tmp_gseq else {
     results_gseq <- rbind(results_gseq, tmp_gseq)
   }
+  
   genes_per_gseq <- panG_gseq %>% 
      dplyr::filter(ko_level_C %in% panG_gsea@result$Description) %>%
      group_by(ko_level_C) %>% 
      summarize(Counts = n())
+  
   genes_per_gseq <- data.frame(genes_per_gseq, 
                                Genome = unique(panG_ko$Genome)[i_genome])
+  
   if(i_genome == 1) results_pergene <- genes_per_gseq else {
     results_pergene <- rbind(results_pergene, genes_per_gseq)
   }
 }
+
 # Calculate fraction of enriched genes vs. annotated panG genes
 results_pergene_sum <- results_pergene %>% 
   group_by(Genome) %>% 
@@ -3723,9 +3774,7 @@ results_pergene_sum <- left_join(results_pergene_sum, annotated_fraction_panG,
 # Merge actual unique gene counts per gsea category with the accessory genome sizes
 results_pergene_sum <- results_pergene_sum %>% 
   mutate(frac_enrich = enrich_counts/panG_counts)
-
 print(results_pergene_sum)
-
 
 # Make plot
 results_gseq$Genome <- gsub("_","-",results_gseq$Genome)
@@ -3739,29 +3788,11 @@ results_gseq$Genome <- factor(results_gseq$Genome, levels =
                                         "MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
                                         "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"))
 
-p_panG5 <- results_gseq %>% 
-  ggplot(aes(x = Description, fill = Genome, y = Count))+
-  geom_bar(color = "black", stat = "identity")+
-  theme_bw()+
-  scale_fill_brewer(palette="Paired")+
-  ylab("Number of genes") + xlab("")+
-  facet_grid(.~Genome, scales = "free")+
-  theme(axis.text.y=element_text(size=12.5), axis.title.y =element_text(size = 18),
-        legend.background = element_rect(fill="transparent"),
-        axis.text.x = element_text(size=12.5, angle = 45, hjust = 1),
-        plot.margin = unit(c(1.1,1.1,1.1,1.1), "cm"),
-        strip.text = element_text(size = 12))+
-  guides(fill = FALSE)
-
-# print(p_panG5)
-
-# Make heatmap instread
-
+# Make heatmap instead
 results_gseq_wide <- complete(results_gseq, Genome, Description,
          fill = list(Count = 0)) %>% 
   dplyr::select(Description, Genome, Count) %>% 
   spread(., Description, Count)
-
 
 dat <- results_gseq_wide[,2:ncol(results_gseq_wide)]  # numerical columns
 rownames(dat) <- results_gseq_wide$Genome
@@ -3773,16 +3804,11 @@ rownames(dat_new) <- results_gseq_wide$Genome
 df_molten_dat <- melt(as.matrix(dat_new)) # reshape into dataframe
 names(df_molten_dat)[c(1:2)] <- c("Genome", "Description")
 
-
 p_panG6 <- complete(df_molten_dat, Genome, Description,
          fill = list(value = 0)) %>%
-  # dplyr::filter(Genome %in% selected_genomes) %>%
   ggplot(aes(x = Genome, y = Description)) + # x and y axes => Var1 and Var2
   geom_tile(aes(fill = value), col = "lightgrey") + # background colours are mapped according to the value column
   geom_text(aes(label = round(value, 0)), size = 4) + # write the values
-  # scale_fill_gradientn(colours = terrain.colors(10), trans = "log1p")+
-  # scale_fill_gradient(low = "lightblue", high = "darkslategray", na.value="white",
-                      # trans = "log1p", limits=c(1, 40)) +
   scale_fill_distiller(palette="YlOrRd", na.value="lightgrey", trans = "sqrt",
                        direction = 1) +
   theme(panel.grid.major.x=element_blank(), #no gridlines
@@ -3800,7 +3826,6 @@ p_panG6 <- complete(df_molten_dat, Genome, Description,
   labs(fill="Gene\ncount")
 
 print(p_panG6)
-# for figure
 ```
 
 # DOC transporters
@@ -3888,8 +3913,6 @@ hm_DOC2_full <- DOC_panG_cnt_full %>%
   labs(fill="Gene\ncount")
 
 print(hm_DOC2_full)
-
-
 ```
 
 

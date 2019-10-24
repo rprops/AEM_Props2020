@@ -1,3 +1,4 @@
+unique_gene_callers_id	ko_id
 MAG3_FA_MLB_SN.2237	K20276
 MAG3_FA_MLB_SN.2519	K20276
 MAG3_FA_MLB_SN.2398

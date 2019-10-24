@@ -1,0 +1,9 @@
+measurement_type,Lake,median,sd
+Chl (ug/L),Michigan,1.166,1.61210027421301
+Chl (ug/L),Muskegon,2.465,3.00009656707325
+SpCond (µS/cm),Michigan,302.652,12.7543759889172
+SpCond (µS/cm),Muskegon,373.5,41.8645680438463
+Temperature (°C),Michigan,9.128,7.08136989504688
+Temperature (°C),Muskegon,18.9167,4.42983772928012
+TP ug/L,Michigan,5.0755,7.79261299940244
+TP ug/L,Muskegon,19.75,4.05553361978131

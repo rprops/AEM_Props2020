@@ -1,3 +1,4 @@
+unique_gene_callers_id	ko_id
 MAG5_SP_M110_DD.1162
 MAG5_SP_M110_DD.253	K00108
 MAG5_SP_M110_DD.472

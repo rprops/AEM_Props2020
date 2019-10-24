@@ -1,3 +1,4 @@
+unique_gene_callers_id	ko_id
 MAG1_FA_MLB_DN.843
 MAG1_FA_MLB_DN.1006
 MAG1_FA_MLB_DN.1650

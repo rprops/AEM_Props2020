@@ -1,3 +1,4 @@
+unique_gene_callers_id	ko_id
 MAG4_FA_M110_DN.403
 MAG4_FA_M110_DN.1071	K00108
 MAG4_FA_M110_DN.112	K01996

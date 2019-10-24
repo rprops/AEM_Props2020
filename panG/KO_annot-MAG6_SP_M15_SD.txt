@@ -1,3 +1,4 @@
+unique_gene_callers_id	ko_id
 MAG6_SP_M15_SD.985
 MAG6_SP_M15_SD.219
 MAG6_SP_M15_SD.984

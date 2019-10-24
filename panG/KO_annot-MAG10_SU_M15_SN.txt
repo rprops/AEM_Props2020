@@ -1,3 +1,4 @@
+unique_gene_callers_id	ko_id
 MAG10_SU_M15_SN.245
 MAG10_SU_M15_SN.1578
 MAG10_SU_M15_SN.2923

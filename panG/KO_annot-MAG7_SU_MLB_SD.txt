@@ -1,3 +1,4 @@
+unique_gene_callers_id	ko_id
 MAG7_SU_MLB_SD.1284
 MAG7_SU_MLB_SD.338	K01897
 MAG7_SU_MLB_SD.1160	K00108
