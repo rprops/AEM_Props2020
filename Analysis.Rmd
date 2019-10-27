@@ -3088,7 +3088,6 @@ strain_pref <- readxl::read_excel("./DESMAN/desman_strain_preference.xlsx") %>%
   mutate(MAG_strain = paste0(MAG,"-",Strain)) %>% 
   dplyr::select(MAG_strain, Preference)
 
-# Plot results
 p_genome_size_strains <- results_desm_ga_all[[1]] %>% 
   dplyr::filter(!MAG %in% c("MAG5", "MAG2")) %>% 
   mutate(MAG = factor(MAG, levels = c(paste0("MAG",c(3,4,1,10,6,8,7,9))))) %>% 
@@ -3123,6 +3122,117 @@ png("./Figures/DESMAN/gene_assignments1.png", width =9, height = 6, res = 500, u
 print(p_genome_size_strains)
 dev.off()
 
+# Plot results 2
+p_genome_size_strains2 <- results_desm_ga_all[[1]] %>% 
+  dplyr::filter(!MAG %in% c("MAG5", "MAG2")) %>% 
+  mutate(MAG = factor(MAG, levels = c(paste0("MAG",c(3,4,1,10,6,8,7,9))))) %>% 
+  mutate(MAG_strain = paste0(MAG,"-",Strain)) %>% 
+  left_join(., strain_pref, by = "MAG_strain") %>% 
+  ggplot(., aes(y = genome_size, x = Preference)) +
+  geom_jitter(size = 4, shape= 21, aes(fill = MAG),  width = 0.1)+
+  # geom_violin(alpha = 0)+
+  geom_boxplot(outlier.shape = NA, alpha = 0, width = 0.3)+
+  scale_fill_brewer("", palette = "Set1")+
+  theme_bw()+
+  ylab("Genome size (number of genes)")+
+  xlab("")+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12),
+      strip.text=element_text(size=12), legend.position = "top",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylim(0, 3000)
+
+print(p_genome_size_strains2)
+
+png("./Figures/DESMAN/gene_assignments2.png", width =6, height = 5, res = 500, units = "in")
+print(p_genome_size_strains2)
+dev.off()
+
+# Compare completeness with strain genome sizes
+p_genome_size_strains3 <- results_desm_ga_all[[1]] %>% 
+  dplyr::filter(!MAG %in% c("MAG5", "MAG2")) %>%
+  left_join(., MGT_df, by = c("MAG" = "MAG_id")) %>% 
+  mutate(MAG = factor(MAG, levels = c(paste0("MAG",c(3,4,1,10,6,8,7,9))))) %>% 
+  mutate(MAG_strain = paste0(MAG,"-",Strain)) %>% 
+  left_join(., strain_pref, by = "MAG_strain") %>% 
+  ggplot(., aes(y = genome_size, x = Completeness)) +
+  geom_point(size = 4, shape= 21, aes(fill = MAG))+
+  # geom_violin(alpha = 0)+
+  # geom_boxplot(outlier.shape = NA, alpha = 0, width = 0.3)+
+  scale_fill_brewer("", palette = "Set1")+
+  theme_bw()+
+  ylab("Genome size (number of genes)")+
+  xlab("% completeness")+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12),
+      strip.text=element_text(size=12), legend.position = "top",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylim(0, 3000)+
+  xlim(50,100)+
+  geom_smooth(method = "lm", col = "black")
+
+print(p_genome_size_strains3)
+
+png("./Figures/DESMAN/gene_assignments3.png", width =6, height = 5, res = 500, units = "in")
+print(p_genome_size_strains3)
+dev.off()
+
+#
+p_genome_size_strains4a <- results_desm_ga_all[[1]] %>% 
+  dplyr::filter(!MAG %in% c("MAG5", "MAG2")) %>%
+  left_join(., MGT_df, by = c("MAG" = "MAG_id")) %>% 
+  mutate(MAG = factor(MAG, levels = c(paste0("MAG",c(3,4,1,10,6,8,7,9))))) %>% 
+  mutate(MAG_strain = paste0(MAG,"-",Strain)) %>% 
+  left_join(., strain_pref, by = "MAG_strain") %>% 
+  ggplot(., aes(y = genome_size, x = Topt)) +
+  geom_point(size = 4, shape= 21, aes(fill = MAG))+
+  # geom_violin(alpha = 0)+
+  # geom_boxplot(outlier.shape = NA, alpha = 0, width = 0.3)+
+  scale_fill_brewer("", palette = "Set1")+
+  theme_bw()+
+  ylab("Genome size (number of genes)")+
+  xlab("OGT - °C")+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12),
+      strip.text=element_text(size=12), legend.position = "top",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylim(0, 3250)+
+  # xlim(50,100)+
+  geom_smooth(method = "lm", col = "black")
+
+p_genome_size_strains4b <- results_desm_ga_all[[1]] %>% 
+  dplyr::filter(!MAG %in% c("MAG5", "MAG2")) %>%
+  left_join(., MGT_df, by = c("MAG" = "MAG_id")) %>% 
+  mutate(MAG = factor(MAG, levels = c(paste0("MAG",c(3,4,1,10,6,8,7,9))))) %>% 
+  mutate(MAG_strain = paste0(MAG,"-",Strain)) %>% 
+  left_join(., strain_pref, by = "MAG_strain") %>% 
+  ggplot(., aes(y = genome_size, x = log(2)/MGT)) +
+  geom_point(size = 4, shape= 21, aes(fill = MAG))+
+  # geom_violin(alpha = 0)+
+  # geom_boxplot(outlier.shape = NA, alpha = 0, width = 0.3)+
+  scale_fill_brewer("", palette = "Set1")+
+  theme_bw()+
+  ylab("Genome size (number of genes)")+
+  xlab(expression("Growth rate - "~"h"^-1))+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12),
+      strip.text=element_text(size=12), legend.position = "top",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylim(0, 3250)+
+  # xlim(50,100)+
+  geom_smooth(method = "lm", col = "black")
+
+png("./Figures/DESMAN/gene_assignments4.png", width = 10, height = 5, res = 500, units = "in")
+cowplot::plot_grid(p_genome_size_strains4a, p_genome_size_strains4b, ncol = 2, align ="hv")
+dev.off()
 ```
 
 #### **upset diagram**
