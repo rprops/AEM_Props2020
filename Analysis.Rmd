@@ -2568,13 +2568,23 @@ dev.off()
 ```{r desman-2, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")}
 # import desman haplotype frequency data
 for(i in 1:10){
-  tmp_desm <- read.csv(paste0("./DESMAN/DESMAN_other_MAGs/", metadata_desman$MAG_id[i], "/",
+  tmp_desm <- read.csv(paste0("./DESMAN/", metadata_desman$MAG_id[i], "/",
     metadata_desman$best_desman_run[i],"/Gamma_starR.csv"))
   # wide to long
+  strain_ids <- data.frame(desman_id = as.numeric(gsub("X","",colnames(tmp_desm)[-1])), 
+  my_id = paste0("Strain ", 1:(ncol(tmp_desm)-1)),
+  MAG = metadata_desman$MAG_id[i])
   colnames(tmp_desm) <- c("Samples", paste0("Strain ", 1:(ncol(tmp_desm)-1)))
   temp_desm <- gather(tmp_desm, Strain, Frequency, 2:ncol(tmp_desm), factor_key = TRUE)
   temp_desm$MAG <- metadata_desman$MAG_id[i]
-  if(i == 1) results_desm_all <- temp_desm else results_desm_all <- rbind(results_desm_all, temp_desm)
+
+  if(i == 1) {
+    results_desm_all <- temp_desm
+    strain_ids_desman <- strain_ids
+    } else {
+    results_desm_all <- rbind(results_desm_all, temp_desm)
+    strain_ids_desman <- rbind(strain_ids_desman, strain_ids)}
+   
 }
 results_desm_all$Samples <- gsub(".MAG*..","", results_desm_all$Samples)
 results_desm_all$Samples <- gsub(".A", "", results_desm_all$Samples, fixed = TRUE)
@@ -3022,48 +3032,96 @@ print(pcoa.ord)
 dev.off()
 ```
 
-### Gene assignment
-
-Some highly speculative additional analysis over here.
+### Gene assignment based on DESMAN inference
 
 ```{r desman-4, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")}
 # Import etaS.csv which contains gene assignment
-geneAssign_df <- read.csv("./DESMAN/MAG8_scg_10_9/MAG8.SU-M110-DCMDetaS_df.csv",
-                         header = TRUE)
-colnames(geneAssign_df) <- gsub("X", "Variant", colnames(geneAssign_df))
-geneAssign_df <- geneAssign_df[, c(1,6,8,9,10,11)]
-colnames(geneAssign_df) <- c("Gene", "Strain 1", "Strain 2", "Strain 3", "Strain 4",
-                            "Strain 5")
+for(i in 1:10){
+    # Select only robust number of strains
+  strain_id <- strain_ids_desman %>% 
+    dplyr::filter(MAG == paste0("MAG",i))
+  
+  tmp_desm <- read.csv(paste0("./DESMAN/Gene_assignments/MAG",
+    i,"_etaS_df.csv")) %>% 
+    select(c(1,strain_id$desman_id+2))
+  
+  # wide to long
+  colnames(tmp_desm) <- c("Samples", paste0("Strain ", 1:(ncol(tmp_desm)-1)))
+  temp_desm <- gather(tmp_desm, Strain, Presence, 2:ncol(tmp_desm), factor_key = TRUE)
+  
+  # Total genome size of strains
+  temp_desm_tg <- temp_desm %>% 
+  group_by(Strain) %>% 
+  summarize(genome_size = sum(Presence))
+  
+  # Core genome size across strains
+  core_genome_size = sum(apply(tmp_desm[,-1], 1, function(x) sum(x) == length(x)))
+  
+  # Store in data frame
+  temp_desm_tg$core_genome_size <- core_genome_size
+  temp_desm_tg$MAG <- metadata_desman$MAG_id[i]
+  temp_desm$MAG <- metadata_desman$MAG_id[i]
+  
+  # Return list with both the summary statistics and the detailed contig_assignments
+  if(i == 1) {
+    results_desm_ga_all <- list()
+    results_desm_ga_all[[1]] <- temp_desm_tg
+    results_desm_ga_all[[2]] <- temp_desm
+  } else {
+    results_desm_ga_all[[1]] <- rbind(results_desm_ga_all[[1]], temp_desm_tg)
+    results_desm_ga_all[[2]] <- rbind(results_desm_ga_all[[2]], temp_desm)
+  }
+}
 
-# Check for presence of core gene presence in strains
-core_cogs_lim <- unique(read.csv("./DESMAN/MAG8_scg_10_9/Filtered_Tau_star.csv")[,1])
+# # Check for presence of core gene presence in strains
+# core_cogs_lim <- unique(read.csv("./DESMAN/MAG8_scg_10_9/Filtered_Tau_star.csv")[,1])
+# 
+# # Check predicted presence of core genes
+# geneAssign_df %>% dplyr::filter(Gene %in% core_cogs_lim)
+# 
+# # Wide to long format
+# geneAssign_df <- tidyr::gather(geneAssign_df, Variant, Presence,
+#                              `Strain 1`:`Strain 5`, factor_key=TRUE)
 
-# Check predicted presence of core genes
-geneAssign_df %>% dplyr::filter(Gene %in% core_cogs_lim)
+# Strain list based on network analysis that is either in lake MI/muskegon lake
+strain_pref <- readxl::read_excel("./DESMAN/desman_strain_preference.xlsx") %>% 
+  mutate(MAG_strain = paste0(MAG,"-",Strain)) %>% 
+  dplyr::select(MAG_strain, Preference)
 
-# Wide to long format
-geneAssign_df <- tidyr::gather(geneAssign_df, Variant, Presence,
-                             `Strain 1`:`Strain 5`, factor_key=TRUE)
+# Plot results
+p_genome_size_strains <- results_desm_ga_all[[1]] %>% 
+  dplyr::filter(!MAG %in% c("MAG5", "MAG2")) %>% 
+  mutate(MAG = factor(MAG, levels = c(paste0("MAG",c(3,4,1,10,6,8,7,9))))) %>% 
+  mutate(MAG_strain = paste0(MAG,"-",Strain)) %>% 
+  left_join(., strain_pref, by = "MAG_strain") %>% 
+  ggplot(., aes(y = MAG, x = Strain, fill = Preference, size = abs(genome_size))) +
+  ggplot2::geom_count(color = "black", shape = 21, stat = "identity")+
+  scale_radius("Genome size", range = c(3.5,8.5), breaks = seq(500,2500,by=500)) +
+  # ggplot2::scale_fill_distiller("Genome size",palette="RdBu", na.value="white", 
+    # limits = c(1000,3000), trans = 'sqrt') + 
+    scale_fill_manual("Preference", values = brewer.pal(n = 3, "Accent")[1:2])+
+  theme_bw()+
+  ylab("")+
+  xlab("")+
+  theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "top",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+    guides(fill  = guide_legend(title = "Preference", override.aes = list(size = 5),
+                         nrow = 2),
+    size = guide_legend(title = "Genome Size", nrow = 4, override.aes = list(fill = "grey", col = "black")))
 
-# Import blast results
-blast_desman <- read.delim("./DESMAN/MAG8_scg_10_9/desman2img_genes.blast",
-                         header = FALSE)
-colnames(blast_desman) <- c("qseqid", "sseqid", "pident", "length", "mismatch",
-                          "gapopen", "qstart", "qend", "sstart", "send",
-                          "evalue", "bitscore")
-blast_desman_sb <- blast_desman %>% dplyr::select("qseqid", "sseqid") %>%  distinct()
+print(p_genome_size_strains)
 
-# Merge IMG gene IDs with
-geneAssign_df <- left_join(geneAssign_df, blast_desman_sb, by = c("Gene" = "qseqid"))
-geneAssign_df$sseqid <- as.character(geneAssign_df$sseqid)
+svg("./Figures/DESMAN/gene_assignments1.svg", width =9, height = 6)
+print(p_genome_size_strains)
+dev.off()
 
-# Merge with functional annotation (KO & COG)
-geneAssign_df_annot <- left_join(geneAssign_df, merged_file_annot,
-                           by = c("sseqid" = "gene_oid"))
-
-# Merge with metaT data
-geneAssign_df_annot <- left_join(geneAssign_df, expr_cov_long,
-                           by = c("sseqid" = "gene_oid"))
+png("./Figures/DESMAN/gene_assignments1.png", width =9, height = 6, res = 500, units = "in")
+print(p_genome_size_strains)
+dev.off()
 
 ```
 
@@ -3071,136 +3129,24 @@ geneAssign_df_annot <- left_join(geneAssign_df, expr_cov_long,
 
 ```{r desman-5, dpi = 500, warning = FALSE, fig.width = 7.5, fig.height = 5, dev = c("png","pdf")}
 # Long to wide
-geneAssign_df_wide <- tidyr::spread(geneAssign_df, Variant, Presence)
+geneAssign_df_wide <- tidyr::spread(results_desm_ga_all[[2]], Strain, Presence) %>% 
+  dplyr::filter(MAG == "MAG8")
 
 # Plot
 upset(geneAssign_df_wide, sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
-                                   "Strain 5"), mb.ratio = c(0.6, 0.45),
+                                   "Strain 5", "Strain 6"), mb.ratio = c(0.6, 0.45),
       order.by = "freq", point.size = 3.5,
       mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
       text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 1.5),
-      scale.intersections = "log2",
+      # scale.intersections = "log2",
       keep.order = FALSE,
       line.size = 1.5)
-
-upset(geneAssign_df_wide, sets = c("Strain 1", "Strain 4"), mb.ratio = c(0.6, 0.45),
-      order.by = "freq", point.size = 3.5,
-      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
-      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 2),
-      scale.intersections = "log2",
-      keep.order = FALSE,
-      line.size = 1.5)
-
-upset(geneAssign_df_wide, sets = c("Strain 2", "Strain 5"), mb.ratio = c(0.6, 0.45),
-      order.by = "freq", point.size = 3.5,
-      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
-      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 2),
-      scale.intersections = "log2",
-      keep.order = FALSE,
-      line.size = 1.5)
-
 
 # Indicate site and season-specific differential abundant genes
 geneAssign_df_wide <- left_join(geneAssign_df_wide, res_deseq,
                                 by = c("sseqid" = "gene_oid"))
 ```
 
-##### **Site downregulation**
-
-```{r desman-site-downreg, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 6, dev = c("png","pdf")}
-# Make upset plot for site-specific downregulation controlled for seasons
-geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
-                                     Design == "~ Season + Site") %>%
-  upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
-                                   "Strain 5"), mb.ratio = c(0.55, 0.45),
-      order.by = "freq", number.angles = 30, point.size = 3.5,
-      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
-      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
-      show.numbers = FALSE,
-      scale.intersections = "log2",
-      keep.order = FALSE,
-      boxplot.summary = "log2FoldChange",
-      line.size = NA)
-
-```
-
-##### **Site upregulation**
-
-```{r desman-site-upreg, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 6, dev = c("png","pdf")}
-# Make upset plot for site-specific upregulation controlled for seasons
-geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation",
-                                     Design == "~ Season + Site") %>%
-  upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
-                                   "Strain 5"), mb.ratio = c(0.55, 0.45),
-      order.by = "freq", number.angles = 30, point.size = 3.5,
-      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
-      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
-      show.numbers = FALSE,
-      scale.intersections = "log2",
-      keep.order = FALSE,
-      boxplot.summary = "log2FoldChange",
-      line.size = NA)
-
-
-```
-
-##### **Seasonal downregulation**
-
-```{r desman-season-downreg, dpi = 500, warning = FALSE, fig.width = 5, fig.height = 6, dev = c("png","pdf")}
-# Make upset plot for seasonal downregulation controlled for site
-geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
-                                     Design == "~ Site + Season") %>%
-  upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
-                                   "Strain 5"), mb.ratio = c(0.55, 0.45),
-      order.by = "freq", number.angles = 30, point.size = 3.5,
-      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
-      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
-      show.numbers = FALSE,
-      scale.intersections = "log2",
-      keep.order = FALSE,
-      boxplot.summary = "log2FoldChange",
-      line.size = NA)
-
-
-```
-
-##### **Depth downregulation**
-
-```{r desman-depth-downreg, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 6, dev = c("png","pdf")}
-# Make upset plot for depth-specific downregulation controlled for seasons
-geneAssign_df_wide %>% dplyr::filter(regulation == "downregulation",
-                                     Design == "~ Site + Depth") %>%
-  upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
-                                   "Strain 5"), mb.ratio = c(0.55, 0.45),
-      order.by = "freq", number.angles = 30, point.size = 3.5,
-      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
-      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
-      show.numbers = FALSE,
-      scale.intersections = "log2",
-      keep.order = FALSE,
-      boxplot.summary = "log2FoldChange",
-      line.size = NA)
-
-```
-
-##### **Depth upregulation**
-
-```{r desman-depth-upreg, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 6, dev = c("png","pdf")}
-# Make upset plot for depth-specific upregulation controlled for sites
-geneAssign_df_wide %>% dplyr::filter(regulation == "upregulation",
-                                     Design == "~ Site + Depth") %>%
-  upset(., sets = c("Strain 1", "Strain 2", "Strain 3", "Strain 4",
-                                   "Strain 5"), mb.ratio = c(0.55, 0.45),
-      order.by = "freq", number.angles = 30, point.size = 3.5,
-      mainbar.y.label = "Gene intersections", sets.x.label = "Number of genes",
-      text.scale = c(1.5, 1.5, 1.5, 1.4, 2, 0.75),
-      show.numbers = FALSE,
-      scale.intersections = "log2",
-      keep.order = FALSE,
-      boxplot.summary = "log2FoldChange",
-      line.size = NA)
-
-```
 
 #### Transcript assignment
 
@@ -3735,7 +3681,7 @@ for(i_genome in 1:length(unique(panG_ko$Genome))){
 
   # Important to filter here
   tmp_gseq <- data.frame(panG_gsea@result, Genome = unique(panG_ko$Genome)[i_genome]) %>% 
-    dplyr::filter(pvalue <= 0.05)
+    dplyr::filter(p.adjust < 0.05)
   
   if(i_genome == 1) results_gseq <- tmp_gseq else {
     results_gseq <- rbind(results_gseq, tmp_gseq)
@@ -3826,6 +3772,51 @@ p_panG6 <- complete(df_molten_dat, Genome, Description,
   labs(fill="Gene\ncount")
 
 print(p_panG6)
+
+p_panG7 <- 
+  df_molten_dat %>% 
+  left_join(., MGT_df, by = c("Genome" = "Genome_ID")) %>% 
+  mutate(Genome = factor(Genome, levels = c(
+                                          "MAG5.SP-M110-DD",
+                                          "MAG2.FA-MLB-SN",
+                                          "MAG3.FA-MLB-SN",
+                                          "MAG4.FA-M110-DN",
+                                          "MAG1.FA-MLB-DN",
+                                          "MAG10.SU-M15-SN",
+                                          "MAG6.SP-M15-SD",
+                                          "MAG8.SU-M110-DCMD",
+                                          "MAG7.SU-MLB-SD", 
+                                          "MAG9.SU-M15-SN"
+                                          ))) %>% 
+  filter(value > 0) %>% 
+  ggplot(aes(x = Genome, y = Description, size = value, fill = Lineage)) + # x and y axes => Var1 and Var2
+ ggplot2::geom_count(color = "black", shape = 21, alpha = 1)+
+      scale_fill_manual(expression("Growth rate - "~"h"^-1),
+                    values = c(rgb(red=t(col2rgb("#deebf7ff")), maxColorValue  = 255), 
+                               rgb(red=t(col2rgb("#c6dbefff")), maxColorValue  = 255),
+                               rgb(red=t(col2rgb("#9ecae1ff")), maxColorValue  = 255),
+                               rgb(red=t(col2rgb("#6baed6ff")), maxColorValue  = 255)
+                              ))+
+  scale_size("Gene\ncount", range = c(3,14), breaks=seq(0,50,by=10)) +
+  ggplot2::theme_bw()+
+    theme(axis.text.y=element_text(size=14), axis.title=element_text(size=20),
+        axis.text.x=element_text(size=14, angle = -315, hjust = 0),
+        title=element_text(size=16), legend.text=element_text(size=14),
+        legend.background = element_rect(fill="transparent"),
+        strip.text=element_text(size=18),
+        legend.position = "right")+
+  theme(legend.title=element_text(face="bold", size=14)) +
+  scale_x_discrete(name="", position = "top") +
+  scale_y_discrete(name="") +
+  guides(fill=FALSE)
+
+svg("./Figures/panG.svg", width =13, height = 7)
+print(p_panG7)
+dev.off()
+
+png("./Figures/panG.png", width =13, height = 7, res = 500, units = "in")
+print(p_panG7)
+dev.off()
 ```
 
 # DOC transporters

@@ -1,0 +1,33 @@
+2019-07-24 10:12:53,533:INFO:root:Results created at /scratch/vdenef_fluxm/rprops/DESMAN/DESMAN_other_MAGs/Variants/MAG8/MAG8_scg.freqlog.txt
+2019-07-24 10:12:54,699:INFO:root:Begun filtering variants with parameters: optimise probability = True, lr threshold = 25.0, min. coverage = 1.0, q-value threshold = 0.001, min. variant frequency = 0.01
+2019-07-24 10:13:00,646:INFO:root:Variant filter iter: 0 1212 [[  9.98363061e-01   4.73111319e-04   8.35683566e-04   3.28143718e-04]
+ [  5.57534646e-04   9.97820323e-01   3.63625986e-04   1.25851634e-03]
+ [  1.16779163e-03   4.05189699e-04   9.97961740e-01   4.65279056e-04]
+ [  4.62105052e-04   1.04372565e-03   5.39176836e-04   9.97954992e-01]]
+2019-07-24 10:13:07,509:INFO:root:Variant filter iter: 1 1916 [[  9.99117484e-01   2.97160342e-04   4.11376161e-04   1.73979910e-04]
+ [  2.72594460e-04   9.99006424e-01   2.32940501e-04   4.88040567e-04]
+ [  5.14027406e-04   2.40682411e-04   9.98987766e-01   2.57524056e-04]
+ [  2.05761342e-04   4.84503846e-04   3.13735115e-04   9.98996000e-01]]
+2019-07-24 10:13:13,950:INFO:root:Variant filter iter: 2 2032 [[  9.99162569e-01   2.88664977e-04   3.80630031e-04   1.68135867e-04]
+ [  2.59434666e-04   9.99093384e-01   2.23870497e-04   4.23310897e-04]
+ [  4.37065945e-04   2.34485045e-04   9.99080097e-01   2.48351880e-04]
+ [  1.98033380e-04   4.30899199e-04   3.06184451e-04   9.99064883e-01]]
+2019-07-24 10:13:20,416:INFO:root:Variant filter iter: 3 2041 [[  9.99162569e-01   2.88664977e-04   3.80630031e-04   1.68135867e-04]
+ [  2.59383369e-04   9.99099577e-01   2.24185209e-04   4.16854526e-04]
+ [  4.26366942e-04   2.34465215e-04   9.99092049e-01   2.47119226e-04]
+ [  1.98177692e-04   4.28409954e-04   3.06407575e-04   9.99067005e-01]]
+2019-07-24 10:13:26,837:INFO:root:Variant filter iter: 4 2042 [[  9.99162569e-01   2.88664977e-04   3.80630031e-04   1.68135867e-04]
+ [  2.59383369e-04   9.99099577e-01   2.24185209e-04   4.16854526e-04]
+ [  4.24140623e-04   2.34517428e-04   9.99094267e-01   2.47075256e-04]
+ [  1.98177692e-04   4.28409954e-04   3.06407575e-04   9.99067005e-01]]
+2019-07-24 10:13:33,203:INFO:root:Variant filter iter: 5 2042 [[  9.99162569e-01   2.88664977e-04   3.80630031e-04   1.68135867e-04]
+ [  2.59383369e-04   9.99099577e-01   2.24185209e-04   4.16854526e-04]
+ [  4.24140623e-04   2.34517428e-04   9.99094267e-01   2.47075256e-04]
+ [  1.98177692e-04   4.28409954e-04   3.06407575e-04   9.99067005e-01]]
+2019-07-24 10:13:33,235:INFO:root:Completed variant filtering
+2019-07-24 10:13:33,262:INFO:root:Output selected variants to ./Variants/MAG8/MAG8_scg.freqsel_var.csv
+2019-07-24 10:13:33,322:INFO:root:Output minor variant frequencies to ./Variants/MAG8/MAG8_scg.freqv_df.csv
+2019-07-24 10:13:33,345:INFO:root:Output p-values to ./Variants/MAG8/MAG8_scg.freqp_df.csv
+2019-07-24 10:13:33,364:INFO:root:Output q-values to ./Variants/MAG8/MAG8_scg.freqq_df.csv
+2019-07-24 10:13:33,383:INFO:root:Output log ratios to ./Variants/MAG8/MAG8_scg.freqr_df.csv
+2019-07-24 10:13:33,415:INFO:root:Output estimated error matrix to ./Variants/MAG8/MAG8_scg.freqtran_df.csv
