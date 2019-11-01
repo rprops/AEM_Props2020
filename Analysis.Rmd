@@ -1,5 +1,5 @@
 ---
-title: "Metagenomic analysis of Limnohabitans population in Lake Michigan"
+title: "Metagenomic analysis of Limnohabitans populations in Lake Michigan"
 author: "Ruben Props"
 date: "Today"
 output:
@@ -46,7 +46,6 @@ library("scales")
 library("grid")
 library("scales")
 library("gridExtra")
-# library("easyGgplot2")
 library("mclust")
 library("reshape2")
 library("Phenoflow")
@@ -58,7 +57,6 @@ library("igraph")
 library("stringr")
 library("UpSetR")
 library("corrplot")
-# library("pegas")
 library("DESeq2")
 library("SpiecEasi")
 library("clusterProfiler")
@@ -2685,6 +2683,8 @@ ig.sparcc <- adj2igraph(sparcc.graph, rmEmptyNodes = TRUE, vertex.attr = list(na
 MAG_ids <- data.frame(MAG = factor(do.call(rbind, strsplit(V(ig.sparcc)$name, split = "-"))[, 2]))
 V(ig.sparcc)$color <- brewer.pal(n = 9, "Set1")[MAG_ids$MAG]
 
+igraph::degree(ig.sparcc)
+
 # Visualize
 am.coord <- layout.fruchterman.reingold(ig.sparcc)
 
@@ -3043,7 +3043,7 @@ for(i in 1:10){
   
   tmp_desm <- read.csv(paste0("./DESMAN/Gene_assignments/MAG",
     i,"_etaS_df.csv")) %>% 
-    select(c(1,strain_id$desman_id+2))
+    dplyr::select(c(1,strain_id$desman_id+2))
   
   # wide to long
   colnames(tmp_desm) <- c("Samples", paste0("Strain ", 1:(ncol(tmp_desm)-1)))
@@ -3898,7 +3898,7 @@ p_panG7 <-
                                           "MAG7.SU-MLB-SD", 
                                           "MAG9.SU-M15-SN"
                                           ))) %>% 
-  filter(value > 0) %>% 
+  dplyr::filter(value > 0) %>% 
   ggplot(aes(x = Genome, y = Description, size = value, fill = Lineage)) + # x and y axes => Var1 and Var2
  ggplot2::geom_count(color = "black", shape = 21, alpha = 1)+
       scale_fill_manual(expression("Growth rate - "~"h"^-1),
