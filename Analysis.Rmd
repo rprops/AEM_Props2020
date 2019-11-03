@@ -2896,57 +2896,6 @@ print(p_alpha_desman)
 dev.off()
 ```
 
-<!-- Same analysis but now for all strains -->
-
-<!-- ```{r desman-alpha-div-all, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 4, dev = c("png","pdf")} -->
-<!-- df_div_desman_all <- results_desm_all %>%  -->
-<!--   dplyr::select(Samples:MAG) %>%  -->
-<!--   mutate(Strain_MAG = interaction(Strain, MAG)) %>%  -->
-<!--   dplyr::select(-Strain, - MAG) %>%  -->
-<!--   spread(., Strain_MAG, Frequency) -->
-
-<!-- alpha_div_desman_all <- data.frame(Sample = df_div_desman_all[,1],  -->
-<!--       D2 = vegan::diversity(df_div_desman_all[,2:ncol(df_div_desman_all)], index = "invsimpson") -->
-<!-- ) -->
-
-<!-- alpha_div_desman_all <- left_join(alpha_div_desman_all, meta_em, -->
-<!--                               by = c("Sample" = "Sample_ID")) -->
-<!-- alpha_div_desman_all$Site <- as.character(alpha_div_desman_all$Site) -->
-<!-- alpha_div_desman_all$Site <- gsub("110", "Lake Michigan - M110", alpha_div_desman_all$Site) -->
-<!-- alpha_div_desman_all$Site <- gsub("15", "Lake Michigan - M15", alpha_div_desman_all$Site) -->
-<!-- alpha_div_desman_all$Site <- gsub("Buoy", "Muskegon Lake", alpha_div_desman_all$Site) -->
-<!-- alpha_div_desman_all$Site <- factor(alpha_div_desman_all$Site, levels = c("Muskegon Lake", -->
-<!--                                                             "Lake Michigan - M15", -->
-<!--                                                             "Lake Michigan - M110")) -->
-<!-- alpha_div_desman_all$Season <- as.character(alpha_div_desman_all$Season) -->
-<!-- alpha_div_desman_all$Season <- factor(alpha_div_desman_all$Season, levels = c("Spring", "Summer","Fall")) -->
-
-<!-- p_alpha_desman_all <- alpha_div_desman_all %>%  -->
-<!--   ggplot(., aes(x = Season, y = D2, fill = Season, shape = Depth))+ -->
-<!--   geom_point(size = 4) + -->
-<!--   scale_shape_manual("", values = c(21,22,24))+ -->
-<!--   facet_grid(.~Site)+ -->
-<!--   theme_bw()+ -->
-<!--   scale_fill_brewer(palette = "Accent")+ -->
-<!--   labs(y = expression("Limnohabitans strain diversity (D"[2]*")"), x = "")+ -->
-<!--   theme(axis.text=element_text(size=12), axis.title=element_text(size=16), -->
-<!--         title=element_text(size=16), legend.text=element_text(size=16), -->
-<!--         strip.text = element_text(size = 16))+ -->
-<!--   ylim(0,20)+ -->
-<!--   guides(fill  = guide_legend(title = "", override.aes = list(size = 4, shape = 21), -->
-<!--                          nrow = 4) -->
-<!--    ) -->
-
-<!-- png(paste0("./Figures/DESMAN/desman-alpha-div-allMAGs.png"), height = 4, -->
-<!--   width = 10, res = 500, units = "in") -->
-<!-- print(p_alpha_desman_all) -->
-<!-- dev.off() -->
-
-<!-- png(paste0("./Figures/DESMAN/desman-alpha-div-allMAGs-combined.png"), height = 8, -->
-<!--   width = 10, res = 500, units = "in") -->
-<!-- cowplot::plot_grid(p_alpha_desman_all, p_alpha_desman, align = "hv", ncol = 1, labels = "AUTO") -->
-<!-- dev.off() -->
-<!-- ``` -->
 
 
 ```{r desman-3, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 5, dev = c("png","pdf")}
@@ -3030,6 +2979,99 @@ png(paste0("./Figures/DESMAN/desman-beta-div-MAG8.png"), height = 6,
   width = 10, res = 500, units = "in")
 print(pcoa.ord)
 dev.off()
+```
+
+Same analysis but now for all strains
+
+```{r desman-alpha-div-all, dpi = 500, warning = FALSE, fig.width = 8, fig.height = 4, dev = c("png","pdf")}
+df_div_desman_all <- results_desm_all %>% 
+  dplyr::filter(!MAG %in% c("MAG2", "MAG5")) %>% 
+  left_join(., data_total_abund_sparcc, by = c("Genome_ID" = "new_bin_name", "Samples" = "Sample_ID")) %>% 
+  mutate(Strain_MAG = paste0(Strain,"-", MAG)) %>% 
+  dplyr::select(Samples, Strain_MAG, norm_mean_rel_abundance, Frequency) %>% 
+  mutate(norm_strain_abundance = norm_mean_rel_abundance*Frequency) %>% 
+  distinct() %>% 
+  dplyr::select(Samples, Strain_MAG, norm_strain_abundance) %>% 
+  spread(., key = Strain_MAG, value = norm_strain_abundance) %>% 
+  dplyr::filter(!Samples %in% c("Su13.BD.MM110.DN", "Sp13.BD.MM15.DD"))
+df_div_desman_all[is.na(df_div_desman_all)] <- 0
+  
+# Make PCoA
+variants <- df_div_desman_all[,2:ncol(df_div_desman_all)]
+rownames(variants) <- df_div_desman_all[, 1]
+taxa <- as.matrix(data.frame(variant_name = colnames(df_div_desman_all)[2:ncol(df_div_desman_all)]))
+rownames(taxa) <- colnames(df_div_desman_all)[2:ncol(df_div_desman_all)]
+
+# Store as phyloseq object
+physeq_desm <- phyloseq(otu_table(variants, taxa_are_rows = FALSE),
+         tax_table(taxa)
+)
+
+# Run beta diversity analysis on 16s data
+pcoa <- ordinate(
+  physeq = physeq_desm, 
+  method = "PCoA", 
+  distance = "bray",
+  correction = "lingoes",
+  k=2
+)
+pcoa.df <- data.frame(Samples = sample_names(physeq_desm), pcoa$vectors)
+var <- round(pcoa$values$Eigenvalues/sum(pcoa$values$Eigenvalues)*100,1)
+
+# Add metadata
+pcoa.df$Samples <- gsub(".A", "", pcoa.df$Samples, fixed = TRUE)
+pcoa.df$Samples <- gsub(".C", "", pcoa.df$Samples, fixed = TRUE)
+pcoa.df <- dplyr::left_join(pcoa.df, meta_em, by = c("Samples" = "Sample_ID"))
+
+pcoa.df$Site <- as.character(pcoa.df$Site)
+pcoa.df$Site <- gsub("110", "Lake Michigan - M110", pcoa.df$Site)
+pcoa.df$Site <- gsub("15", "Lake Michigan - M15", pcoa.df$Site)
+pcoa.df$Site <- gsub("Buoy", "Muskegon Lake", pcoa.df$Site)
+pcoa.df$Site <- factor(pcoa.df$Site, levels = c("Muskegon Lake",
+                                                            "Lake Michigan - M15",
+                                                            "Lake Michigan - M110"))
+pcoa.df$Season <- as.character(pcoa.df$Season)
+pcoa.df$Season <- factor(pcoa.df$Season, levels = c("Spring", "Summer","Fall"))
+
+# Run permanova
+x <- df_div_desman[,2:ncol(df_div_desman)]
+rownames(x) <- df_div_desman[, 1]
+dist_desm <- vegan::vegdist(x)
+perm <- permute::how(nperm = 999)
+permanova_desm <- vegan::adonis(dist_desm ~ Season * Site, 
+                        data = meta_em, 
+                        permutations = perm)
+
+# Plot PCoA
+my_grob = grobTree(textGrob(bquote(paste(r[Season]^2 == 
+    .(round(100 * permanova_desm$aov.tab[1, 5], 1)), 
+    "%")), x = 0.7, y = 0.95, hjust = 0, gp = gpar(col = "black", 
+    fontsize = 14, fontface = "italic")))
+my_grob2 = grobTree(textGrob(bquote(paste(r[Site]^2 == 
+    .(format(round(100 * permanova_desm$aov.tab[2, 5], 
+        1), nsmall = 1)), "%")), x = 0.7, y = 0.87, 
+    hjust = 0, gp = gpar(col = "black", fontsize = 14, 
+        fontface = "italic")))
+my_grob3 = grobTree(textGrob(bquote(paste(r[Season:Site]^2 == 
+    .(round(100 * permanova_desm$aov.tab[3, 5], 1)), 
+    "%")), x = 0.7, y = 0.79, hjust = 0, gp = gpar(col = "black", 
+    fontsize = 14, fontface = "italic")))
+
+pcoa.ord <- ggplot(data=pcoa.df, aes(x=Axis.1, y=Axis.2, shape = Site))+
+  scale_shape_manual(values=c(21,23, 24))+
+  geom_point(size=7, alpha=0.7, aes(fill = Season))+
+  theme_bw()+
+  scale_fill_brewer(palette = "Accent")+
+  labs(x = paste0("PCoA axis 1 (",var[1], "%)"),
+       y = paste0("PCoA axis 2 (",var[2], "%)"), fill="", shape = "", colour="")+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=16),
+        title=element_text(size=16), legend.text=element_text(size=16))+ 
+  guides(fill = guide_legend(override.aes = list(shape = 22)))+
+  annotation_custom(my_grob)+
+  annotation_custom(my_grob2)+
+  annotation_custom(my_grob3)+
+  ggtitle("PCoA of resolved MAG variant compositions")
+
 ```
 
 ### Gene assignment based on DESMAN inference
