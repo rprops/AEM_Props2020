@@ -4340,3 +4340,26 @@ p_blast_all_dens2 <- df_BlastExt_sum %>%
 
 p_blast_all_dens2
 ```
+
+# Posigene
+
+```{r posi-1, warning = FALSE, fig.width = 10, fig.height = 7, dpi = 500, dev = c("png", "pdf")}
+# Read results
+posi_MAG8 <- data.table::fread("./posigene/Limnohabitans_sp_Rim11_results_short.tsv") %>% 
+  dplyr::select(1:6)
+colnames(posi_MAG8) <- c(colnames(posi_MAG8)[2:6], "Number of Sites under positive Selection")
+posi_MAG8 <- posi_MAG8 %>% 
+    dplyr::filter(FDR < 0.05 & `P-Value` < 0.05)
+
+# merge with annotation 
+merged_file_MAG8 <- merged_file %>% 
+  dplyr::filter(Genome_id %in% 2757320398) 
+posi_MAG8 <- posi_MAG8 %>% 
+  mutate(Gene = as.character(Gene)) %>% 
+  dplyr::left_join(., merged_file_MAG8, by = c("Gene" = "gene_oid"))
+
+# check genes under positive selection in MAG8
+
+
+```
+
