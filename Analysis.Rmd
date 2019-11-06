@@ -3972,6 +3972,7 @@ dev.off()
 ```
 
 # DOC transporters
+
 ```{r DOC-1, dpi = 500, warning = FALSE, fig.width = 13, fig.height = 8, include = FALSE, dev = c("png","pdf")}
 # Annotate the core and acessory genomes with DOC transporter labels
 matches <- unique(grep(paste(DOM_usage_df$COG_ID,collapse = "|"), 
@@ -4029,33 +4030,55 @@ print(hm_DOC1_acc)
 # Get COG counts in full genome
 DOC_panG_cnt_full <- DOC_panG %>% 
   group_by(genome_name, COG_ID) %>% 
-  summarise(Counts = n())
+  summarise(Counts = n()) %>% 
+  dplyr::filter(!genome_name %in% c("MAG2_FA_MLB_SN", "MAG5_SP_M110_DD"))
+
+# Cluster genomes according to DOC profiles
+DOC_panG_cnt_full_wide <- spread(DOC_panG_cnt_full, COG_ID, Counts)
+dat <- DOC_panG_cnt_full_wide[,2:ncol(DOC_panG_cnt_full_wide)]  # numerical columns
+rownames(dat) <- DOC_panG_cnt_full_wide$genome_name
+row.order <- hclust(dist(dat))$order # clustering
+# col.order <- hclust(dist(t(dat)))$order
+dat_new <- dat[row.order, ] # re-order matrix accoring to clustering
+rownames(dat_new) <- DOC_panG_cnt_full_wide$genome_name[row.order]
+df_molten_dat <- melt(as.matrix(dat_new)) # reshape into dataframe
+names(df_molten_dat) <- c("genome_name", "COG_ID", "Counts")
 
 # make heatmap of full genome DOC transporters
-hm_DOC2_full <- DOC_panG_cnt_full %>% 
+hm_DOC2_full <- df_molten_dat %>% 
   complete(., genome_name, COG_ID,
          fill = list(Counts = 0)) %>% 
+  left_join(., DOM_usage_df, by = "COG_ID") %>% 
   ungroup() %>% 
-  ggplot(aes(y= genome_name, x= COG_ID)) + 
-  geom_tile(aes(fill = Counts), col = "lightgrey") + # according to the value column
-  geom_text(aes(label = round(Counts, 0)), size = 3) + # write the values
-  scale_fill_distiller(palette="YlOrRd", na.value="lightgrey", trans = "sqrt",
-                       direction = 1) +
-  theme(panel.grid.major.x=element_blank(), #no gridlines
-        panel.grid.minor.x=element_blank(), 
-        panel.grid.major.y=element_blank(), 
-        panel.grid.minor.y=element_blank(),
-        panel.background=element_rect(fill="white"), # background=white
-        axis.text.x = element_text(angle=45, hjust = 1, vjust=1, 
-                                   size = 12,face = "bold"),
-        plot.title = element_text(size=20,face="bold"),
-        axis.text.y = element_text(size = 12,face = "bold"))+
-  theme(legend.title=element_text(face="bold", size=14)) + 
+  dplyr::filter(!is.na(Counts)) %>%
+  dplyr::filter(Counts != 0 & !genome_name %in% c("MAG2_FA_MLB_SN", "MAG5_SP_M110_DD")) %>%
+  distinct() %>% 
+  mutate(COG_ID = factor(COG_ID, levels = COG_order$COG_ID)) %>% 
+  mutate(DOM_type = factor(DOM_type, levels = levels(factor(COG_order$DOM_type))[c(3,1,2,10,8,9,4,5,6,7)])) %>% 
+  ggplot(aes(y= genome_name, x= factor(COG_ID), fill = DOM_type, size = Counts)) + 
+  geom_count(stat = "identity", shape = 21, alpha = 1)+
+  scale_size("Number of Genes", range = c(3,8), breaks=seq(0,30,by=5)) +
+  # geom_tile(aes(fill = Counts), col = "lightgrey") + # according to the value column
+  # geom_text(aes(label = round(Counts, 0)), size = 3) + # write the values
+  scale_fill_brewer(palette="Set3", na.value="lightgrey") +
+  theme_bw()+
+ theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=12),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "top",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
   scale_x_discrete(name="") +
   scale_y_discrete(name="") +
-  labs(fill="Gene\ncount")
+  labs(fill="DOC transporter\ncategory")+
+  guides(fill  = guide_legend(override.aes = list(size = 5),
+                         nrow = 3),
+    color = FALSE)
 
+# png("./Figures/heatmap_DOC.png", height =paper 8, width = 14, units = "in", res = 500)
+svg("./Figures/heatmap_DOC.svg", height = 8, width = 14)
 print(hm_DOC2_full)
+dev.off()
 ```
 
 
