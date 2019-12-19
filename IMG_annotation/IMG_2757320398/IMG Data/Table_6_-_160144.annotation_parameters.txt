@@ -1,4 +1,0 @@
-Annotation System: IMG (MGAP v4.15.2)
-Gene calling program: Prodigal V2.6.3; CRT Command Line Interface, Version 1.8.2; INFERNAL 1.1.2; blastn (blastall 2.2.21)
-Annotation algorithm: HMMER 3.1b2; lastal 842
-Database(s) used: Rfam 12.0; in-house curated set of rRNA HMMs; COG 2003; Pfam v30; IMG-NR 20170906
