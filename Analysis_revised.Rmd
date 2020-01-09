@@ -811,197 +811,115 @@ expr_cov_long <- expr_cov_long %>% distinct()
 colnames(expr_cov_long)[colnames(expr_cov_long) == "Plus_reads"] <- "mapped_reads"
 ```
 
-## PCoA analysis
+## PCA analysis
 
 ```{r metaT-disper, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 5, dev=c("png","pdf")}
-# Perform PCoA on gene-length normalize data (RPK scaling)
-pcoa_exp_table <- expr_cov_long %>% 
-  dplyr::mutate(unique_id = interaction(Genome_ID, Sample, sep = "-")) %>% 
-  dplyr::filter(!is.na(ko_id)) %>% 
-  ungroup() %>% 
-  dplyr::select(unique_id, ko_id, TPM) %>% 
+# For each MAG calculate the PCA in expression profiles across samples
+for(i in 1:nlevels(expr_cov_long$Genome_ID)){
+# Perform PCA on gene-length normalize data (TPM scaling)
+pca_exp_table <- expr_cov_long %>% 
+  dplyr::filter(Genome_ID == levels(expr_cov_long$Genome_ID)[i]) %>% 
+  dplyr::select(Sample, gene_oid, mapped_reads) %>% 
   distinct() %>% 
-  tidyr::spread(ko_id, TPM)
-rownames(pcoa_exp_table) <- pcoa_exp_table$unique_id
+  tidyr::spread(gene_oid, mapped_reads)
+tmp_row <- pca_exp_table$Sample
+pca_exp_table <- as.matrix(pca_exp_table[, -1])
+rownames(pca_exp_table) <- tmp_row
+pca_exp_table <- pca_exp_table[, colSums(pca_exp_table) != 0]
 
-# scale input data
-pcoa_exp_res <- cmdscale(dist(scale(pcoa_exp_table[-1])), k =2, eig = TRUE)
-var_exp <- round(pcoa_exp_res$eig/sum(pcoa_exp_res$eig)*100,1)
-pcoa_exp_res <- data.frame(unique_id = rownames(pcoa_exp_table), pcoa_exp_res$points)
-pcoa_exp_res <- pcoa_exp_res %>% 
-  separate(unique_id, sep = "-", into = c("Genome_ID", "Sample_ID")) %>% 
-  left_join(., meta_metaT, by = "Sample_ID")
+# Perform TMMwsp transformation
+# tmp_gene_length <- expr_cov %>% 
+#   dplyr::filter(Genome_ID == levels(expr_cov_long$Genome_ID)[i] & gene_oid %in% colnames(pca_exp_table)) %>% 
+#   dplyr::select(gene_oid, Length) %>% 
+#   distinct()
+pca_dgelist <- DGEList(counts = pca_exp_table)
+pca_norm <- edgeR::calcNormFactors(pca_dgelist, method = "TMMwsp")
+pca_norm <- cpm(pca_norm, log = TRUE)
 
-# Run permanova
-# x <- df_div_desman[,2:ncol(df_div_desman)]
-# rownames(x) <- df_div_desman[, 1]
-# dist_desm <- vegan::vegdist(x)
-# perm <- permute::how(nperm = 999)
-# permanova_desm <- vegan::adonis(dist_desm ~ Season * Site, 
-#                         data = meta_em, 
-#                         permutations = perm)
+# Perform PCA
+pca_exp_res <- prcomp(t(pca_exp_table), center = TRUE)
 
-# Plot PCoA
-# my_grob = grobTree(textGrob(bquote(paste(r[Season]^2 == 
-#     .(round(100 * permanova_desm$aov.tab[1, 5], 1)), 
-#     "%")), x = 0.7, y = 0.95, hjust = 0, gp = gpar(col = "black", 
-#     fontsize = 14, fontface = "italic")))
-# my_grob2 = grobTree(textGrob(bquote(paste(r[Site]^2 == 
-#     .(format(round(100 * permanova_desm$aov.tab[2, 5], 
-#         1), nsmall = 1)), "%")), x = 0.7, y = 0.87, 
-#     hjust = 0, gp = gpar(col = "black", fontsize = 14, 
-#         fontface = "italic")))
-# my_grob3 = grobTree(textGrob(bquote(paste(r[Season:Site]^2 == 
-#     .(round(100 * permanova_desm$aov.tab[3, 5], 1)), 
-#     "%")), x = 0.7, y = 0.79, hjust = 0, gp = gpar(col = "black", 
-#     fontsize = 14, fontface = "italic")))
+# Store results
+if (i == 1)
+  results_PCA <- data.frame(
+  Sample = rownames(pca_exp_res$rotation),
+  pca_exp_res$rotation,
+  Genome = levels(expr_cov_long$Genome_ID)[i]
+  )
+  else {
+  results_PCA <- rbind(
+  results_PCA,
+  data.frame(
+  Sample = rownames(pca_exp_res$rotation),
+  pca_exp_res$rotation,
+  Genome = levels(expr_cov_long$Genome_ID)[i]
+  )
+  )
+  }
 
-pcoa_exp_ord <- ggplot(data=pcoa_exp_res, aes(x=X1, y=X2, shape = Site))+
-  scale_shape_manual(values=c(21,23, 24))+
-  geom_point(size=7, alpha=0.7, aes(fill = Genome_ID))+
+  remove(pca_exp_table)
+}
+
+# Merge with correct sample names
+new_bin_names2 <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(3,8:10)]; 
+new_bin_names2$IMG_taxID <- as.character(new_bin_names2$IMG_taxID)
+results_PCA <- left_join(results_PCA, new_bin_names2, 
+                          by = c("Genome" = "IMG_taxID"))
+results_PCA$new_bin_name <- as.character(results_PCA$new_bin_name)
+results_PCA$new_bin_name <- factor(results_PCA$new_bin_name, levels =
+                                      c("MAG5.SP-M110-DD","MAG2.FA-MLB-SN",
+                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+                                        "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
+                                        "MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
+                                        "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"))
+
+# Add metadata
+results_PCA <- left_join(results_PCA, meta_metaT, by = c("Sample" = "Sample_ID"))
+results_PCA$Season <- factor(results_PCA$Season, levels = c("Spring", "Summer", "Fall"))
+results_PCA$Site <- gsub("Buoy","Muskegon Lake", results_PCA$Site)
+results_PCA$Site <- gsub("110","Lake Michigan\nsite M110", results_PCA$Site)
+results_PCA$Site <- gsub("15","Lake Michigan\nsite M15", results_PCA$Site)
+
+# Plot
+p_exp_PCA <- results_PCA %>%   
+  dplyr::filter(Depth != "Mid") %>%
+  ggplot(aes(x = PC1, y = PC2, fill = Season, shape = Site))+
+  scale_shape_manual("", values = c(21, 22, 25))+
+  geom_point(size = 3.5, alpha = 0.7)+
+  facet_wrap(.~new_bin_name, ncol = 5)+
+  scale_fill_brewer("", palette = "Accent")+
   theme_bw()+
-  scale_fill_brewer(palette = "Paired")+
-  labs(x = paste0("PCoA axis 1 (",var_exp[1], "%)"),
-       y = paste0("PCoA axis 2 (",var_exp[2], "%)"), fill="", shape = "", colour="")+
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=16),
-        title=element_text(size=16), legend.text=element_text(size=16))+ 
-  guides(fill = guide_legend(override.aes = list(shape = 22)))+
-  # annotation_custom(my_grob)+
-  # annotation_custom(my_grob2)+
-  # annotation_custom(my_grob3)+
-  ggtitle("PCoA of gene expression")
-
-png(paste0("./Figures/metaT_overview_PCOA.png"), height = 6,
-  width = 10, res = 500, units = "in")
-print(pcoa_exp_ord)
+  theme(axis.text.y=element_text(size=12), axis.title=element_text(size=13),
+        axis.text.x=element_text(size=12),
+        title=element_text(size=12), legend.text=element_text(size=12),
+        legend.background = element_rect(fill="transparent"),
+        strip.text.x=element_text(size=14))+
+  labs(x="PC1", y = "PC2")+
+  guides(fill = guide_legend(override.aes = list(shape = 22)))
+ 
+png("./Figures/PCA_expression.png", width = 14, height = 6, units = "in", res = 500)
+print(p_exp_PCA)
 dev.off()
 
-# For each MAG calculate the dissimilarities in expression profiles between samples
-for(i in 1:nlevels(expr_cov_long$Genome_ID)){
-  tmp_table <-  expr_cov_long %>% 
-  dplyr::filter(Genome_ID == levels(expr_cov_long$Genome_ID)[i]) %>% 
-  dplyr::select(gene_oid, Sample, mapped_reads) %>% 
-  tidyr::spread(Sample, mapped_reads)
-  r.geneoid <- tmp_table$gene_oid
-  min_sample_size <- min(colSums(tmp_table[,-1]))
-  tmp_table <- vegan::rrarefy(t(tmp_table[, -1]), min_sample_size)
-  tmp_table <- scale(tmp_table)
-  tmp_dist <- dist(tmp_table, method = "euclidean")
-  
-  if(i == 1) results_diss <- data.frame(dist_m = matrix(tmp_dist), 
-                           Genome = levels(expr_cov_long$Genome_ID)[i]) else {
-    results_diss <- rbind(results_diss, 
-                          data.frame(dist_m = matrix(tmp_dist),
-                                     Genome = levels(expr_cov_long$Genome_ID)[i]))
-                           }
-  remove(tmp_table)
-}
-
-# Merge with correct sample names
-new_bin_names2 <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(3,8:10)]; 
-new_bin_names2$IMG_taxID <- as.character(new_bin_names2$IMG_taxID)
-results_diss <- left_join(results_diss, new_bin_names2, 
-                          by = c("Genome" = "IMG_taxID"))
-results_diss$new_bin_name <- as.character(results_diss$new_bin_name)
-results_diss$new_bin_name <- factor(results_diss$new_bin_name, levels =
-                                      c("MAG5.SP-M110-DD","MAG2.FA-MLB-SN",
-                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
-                                        "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
-                                        "MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
-                                        "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"))
-
-# Plot
-results_diss %>% 
-  ggplot(aes(x = new_bin_name, y = dist_m, fill = new_bin_name))+
-  # geom_jitter(size = 2.5,
-             # color = "black", shape = 21, width = 0.1, alpha = 0.5)+
-  geom_violin(alpha = 0.4, adjust = 1, draw_quantiles = TRUE)+
-  stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1), 
-                 geom="pointrange", color="#333333", size = 1.05)+
-  # ylim(0,120)+
-  scale_fill_manual("",
-                    values = c(rep(rgb(red=t(col2rgb("#deebf7ff")), 
-                                       maxColorValue  = 255), 2), 
-                               rep(rgb(red=t(col2rgb("#c6dbefff")), 
-                                       maxColorValue  = 255),5),
-                               rgb(red=t(col2rgb("#9ecae1ff")), maxColorValue  = 255),
-                               rep(rgb(red=t(col2rgb("#6baed6ff")), 
-                                       maxColorValue  = 255),2)
-                              ))+
+p_exp_PCA2 <- results_PCA %>%   
+  dplyr::filter(Site == "Lake Michigan\nsite M110" & Depth != "Mid") %>%
+  ggplot(aes(x = PC1, y = PC2, fill = Season, shape = Depth))+
+  scale_shape_manual("", values = c(21, 22, 25))+
+  geom_point(size = 3.5, alpha = 0.7)+
+  facet_wrap(.~new_bin_name, ncol = 5)+
+  scale_fill_brewer("", palette = "Accent")+
   theme_bw()+
-  theme(axis.text.y=element_text(size=14), axis.title=element_text(size=20),
-        axis.text.x=element_text(size=14, angle = 45, hjust = 1),
-        title=element_text(size=16), legend.text=element_text(size=14),
+  theme(axis.text.y=element_text(size=12), axis.title=element_text(size=13),
+        axis.text.x=element_text(size=12),
+        title=element_text(size=12), legend.text=element_text(size=12),
         legend.background = element_rect(fill="transparent"),
-        strip.text.x=element_text(size=18))+
-  guides(fill = FALSE)+
-  labs(x="", y = "Euclidean distance")
-
-```
-
-```{r metaT-Zscore, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 5, dev=c("png","pdf")}
-# For each MAG calculate the Z-score of each gene in each sample
-for(i in 1:nlevels(expr_cov_long$Genome_ID)){
-  tmp_table <-  expr_cov_long %>% 
-  dplyr::filter(Genome_ID == levels(expr_cov_long$Genome_ID)[i]) %>% 
-  dplyr::select(gene_oid, Sample, mapped_reads) %>% 
-  tidyr::spread(Sample, mapped_reads)
-  r.geneoid <- tmp_table$gene_oid
-  min_sample_size <- min(colSums(tmp_table[,-1]))
-  tmp_table <- vegan::rrarefy(t(tmp_table[, -1]), min_sample_size)
-  # Remove genes with less than 100 counts over 24 samples
-  tmp_table <- tmp_table[, colSums(tmp_table)>100]
-  tmp_table <- base::scale(tmp_table)
-  tmp_zscore <- tidyr::gather(data.frame(tmp_table), gene, Zscore)
-  if(i == 1) results_Zscore <- data.frame(Zscore = tmp_zscore$Zscore, 
-                           Genome = levels(expr_cov_long$Genome_ID)[i]) else {
-    results_Zscore <- rbind(results_Zscore, 
-                          data.frame(Zscore = tmp_zscore$Zscore,
-                                     Genome = levels(expr_cov_long$Genome_ID)[i]))
-                           }
-  remove(tmp_table, tmp_zscore)
-}
-
-# Merge with correct sample names
-new_bin_names2 <- read.table("./anvio_output/rebin/general_bins_summary_selected_final.tsv", header = TRUE)[, c(3,8:10)]; 
-new_bin_names2$IMG_taxID <- as.character(new_bin_names2$IMG_taxID)
-results_Zscore <- left_join(results_Zscore, new_bin_names2, 
-                          by = c("Genome" = "IMG_taxID"))
-results_Zscore$new_bin_name <- as.character(results_Zscore$new_bin_name)
-results_Zscore$new_bin_name <- factor(results_Zscore$new_bin_name, levels =
-                                      c("MAG5.SP-M110-DD","MAG2.FA-MLB-SN",
-                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
-                                        "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
-                                        "MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
-                                        "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"))
-
-# Plot
-results_Zscore %>% 
-  ggplot(aes(x = new_bin_name, y = abs(Zscore), fill = new_bin_name))+
-  # geom_jitter(size = 2.5,
-             # color = "black", shape = 21, width = 0.1, alpha = 0.5)+
-  geom_violin(alpha = 0.4, adjust = 1, draw_quantiles = TRUE)+
-  stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1), 
-                 geom="pointrange", color="#333333", size = 1.05)+
-  # ylim(0,120)+
-  scale_fill_manual("",
-                    values = c(rep(rgb(red=t(col2rgb("#deebf7ff")), 
-                                       maxColorValue  = 255), 2), 
-                               rep(rgb(red=t(col2rgb("#c6dbefff")), 
-                                       maxColorValue  = 255),5),
-                               rgb(red=t(col2rgb("#9ecae1ff")), maxColorValue  = 255),
-                               rep(rgb(red=t(col2rgb("#6baed6ff")), 
-                                       maxColorValue  = 255),2)
-                              ))+
-  theme_bw()+
-  theme(axis.text.y=element_text(size=14), axis.title=element_text(size=20),
-        axis.text.x=element_text(size=14, angle = 45, hjust = 1),
-        title=element_text(size=16), legend.text=element_text(size=14),
-        legend.background = element_rect(fill="transparent"),
-        strip.text.x=element_text(size=18))+
-  guides(fill = FALSE)+
-  labs(x="", y = "Zscore")
-
+        strip.text.x=element_text(size=14))+
+  labs(x="PC1", y = "PC2")+
+  guides(fill = guide_legend(override.aes = list(shape = 22)))
+ 
+png("./Figures/PCA_expression2.png", width = 14, height = 6, units = "in", res = 500)
+print(p_exp_PCA2)
+dev.off()
 ```
 
 ## Run DESeq  
@@ -1237,6 +1155,7 @@ metaT_reads_mapped$new_bin_name <- factor(metaT_reads_mapped$new_bin_name,
 # print(p_deseq_reads)
 ```
 
+#DESeq2::rlog
 
 ```{r plot-deseq, dpi = 500, warning = FALSE, fig.width = 15, fig.height = 10}
 selected_ko <- c("Carbohydrate metabolism", "Energy metabolism",
