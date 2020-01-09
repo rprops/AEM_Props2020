@@ -107,7 +107,7 @@ merge_annotations <- function(paths_gen, genoid_seqid = FALSE){
   print(data.frame(Genomes = paste(paths_gen)))
   sum_tmp <- 0
   for(genomes in paths_gen){
-    paths_ann <- list.files(list.dirs(paste(genomes, "/IMG\ Data", sep = ""))[2],
+    paths_ann <- list.files(list.dirs(paste(genomes, "/IMG_Data", sep = ""))[2],
                             full.names = TRUE)
     
     # Only retain paths to functional annotation files
