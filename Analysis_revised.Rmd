@@ -834,29 +834,43 @@ pca_exp_table <- pca_exp_table[, colSums(pca_exp_table) != 0]
 #   dplyr::filter(Genome_ID == levels(expr_cov_long$Genome_ID)[i] & gene_oid %in% colnames(pca_exp_table)) %>% 
 #   dplyr::select(gene_oid, Length) %>% 
 #   distinct()
-pca_dgelist <- DGEList(counts = pca_exp_table)
+pca_dgelist <- edgeR::DGEList(counts = pca_exp_table)
 pca_norm <- edgeR::calcNormFactors(pca_dgelist, method = "TMMwsp")
-pca_norm <- cpm(pca_norm, log = TRUE)
+pca_norm <- edgeR::cpm(pca_norm, log = TRUE)
 
 # Perform PCA
 pca_exp_res <- prcomp(t(pca_exp_table), center = TRUE)
 
+# variance explained
+eigs <- pca_exp_res$sdev^2
+
 # Store results
-if (i == 1)
+if (i == 1) {
   results_PCA <- data.frame(
-  Sample = rownames(pca_exp_res$rotation),
-  pca_exp_res$rotation,
-  Genome = levels(expr_cov_long$Genome_ID)[i]
-  )
-  else {
-  results_PCA <- rbind(
-  results_PCA,
-  data.frame(
-  Sample = rownames(pca_exp_res$rotation),
-  pca_exp_res$rotation,
-  Genome = levels(expr_cov_long$Genome_ID)[i]
-  )
-  )
+    Sample = rownames(pca_exp_res$rotation),
+    pca_exp_res$rotation,
+    Genome = levels(expr_cov_long$Genome_ID)[i]
+    )
+  results_PCA_var <-
+    data.frame(
+    Genome = levels(expr_cov_long$Genome_ID)[i],
+    Var = eigs[1:2] / sum(eigs),
+    PC = colnames(pca_exp_res$rotation)[1:2]
+    )
+} else {
+  results_PCA <- rbind(results_PCA,
+    data.frame(
+    Sample = rownames(pca_exp_res$rotation),
+    pca_exp_res$rotation,
+    Genome = levels(expr_cov_long$Genome_ID)[i]
+    ))
+  
+  results_PCA_var <- rbind(results_PCA_var,
+    data.frame(
+    Genome = levels(expr_cov_long$Genome_ID)[i],
+    Var = eigs[1:2] / sum(eigs),
+    PC = colnames(pca_exp_res$rotation)[1:2]
+    )) 
   }
 
   remove(pca_exp_table)
@@ -874,7 +888,8 @@ results_PCA$new_bin_name <- factor(results_PCA$new_bin_name, levels =
                                         "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
                                         "MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
                                         "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"))
-
+results_PCA_var <- left_join(results_PCA_var, new_bin_names2, 
+                          by = c("Genome" = "IMG_taxID"))
 # Add metadata
 results_PCA <- left_join(results_PCA, meta_metaT, by = c("Sample" = "Sample_ID"))
 results_PCA$Season <- factor(results_PCA$Season, levels = c("Spring", "Summer", "Fall"))
@@ -901,6 +916,10 @@ p_exp_PCA <- results_PCA %>%
   guides(fill = guide_legend(override.aes = list(shape = 22)))
  
 png("./Figures/Revisions/PCA_expression1.png", width = 12, height = 6, units = "in", res = 500)
+print(p_exp_PCA)
+dev.off()
+ 
+svg("./Figures/Revisions/PCA_expression1.svg", width = 12, height = 6)
 print(p_exp_PCA)
 dev.off()
 
@@ -1043,6 +1062,12 @@ for(i in 1:nlevels(expr_cov_long_sb$Genome_ID)){
   expr_cov_bins[[i]] <- as.matrix(expr_cov_bins[[i]][, -1])
   rownames(expr_cov_bins[[i]]) <- r.bin
 }
+
+# Check order of colnames in count and rownames in metadata matrix 
+# and make sure these are in the same order!
+meta_metaT_subs <- as.matrix(meta_metaT_subs)
+meta_metaT_subs <- meta_metaT_subs[match(colnames(expr_cov_bins[[1]]), rownames(meta_metaT_subs)), ]
+all(rownames(meta_metaT_subs) %in% colnames(expr_cov_bins[[1]]))
 
 ## Depth effect
 General_deseq_results_depth <- list()
@@ -1213,6 +1238,14 @@ p_deseq_overview <- res_deseq_anott_changed %>%
   xlab("")+
   guides(fill = FALSE)+
   coord_flip()
+
+png("./Figures/Revisions/Figure3.png", width = 7, height = 5, units = "in", res = 500)
+print(p_deseq_overview)
+dev.off()
+
+svg("./Figures/Revisions/Figure3.svg", width = 7, height = 5)
+print(p_deseq_overview)
+dev.off()
 
 # mean and median absolute change in gene expression
 res_deseq_anott_changed %>% 
@@ -1514,7 +1547,7 @@ blast_df_sum$new_bin_name <- factor(blast_df_sum$new_bin_name, levels =
                                         "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
                                         "MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
                                         "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"))
-# Plot for most abundant bin (B63)
+# Plot for most abundant bin (MAG8)
 p_blast_all_violin <- blast_df_sum %>% 
   ggplot(aes(x = new_bin_name, y= Identity, fill = new_bin_name))+
   theme_bw()+
