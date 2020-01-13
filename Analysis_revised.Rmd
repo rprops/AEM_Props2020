@@ -839,7 +839,7 @@ pca_norm <- edgeR::calcNormFactors(pca_dgelist, method = "TMMwsp")
 pca_norm <- edgeR::cpm(pca_norm, log = TRUE)
 
 # Perform PCA
-pca_exp_res <- prcomp(t(pca_exp_table), center = TRUE)
+pca_exp_res <- prcomp(pca_exp_table, center = TRUE, scale = TRUE)
 
 # variance explained
 eigs <- pca_exp_res$sdev^2
@@ -847,21 +847,21 @@ eigs <- pca_exp_res$sdev^2
 # Store results
 if (i == 1) {
   results_PCA <- data.frame(
-    Sample = rownames(pca_exp_res$rotation),
-    pca_exp_res$rotation,
+    Sample = rownames(pca_exp_res$x),
+    pca_exp_res$x,
     Genome = levels(expr_cov_long$Genome_ID)[i]
     )
   results_PCA_var <-
     data.frame(
     Genome = levels(expr_cov_long$Genome_ID)[i],
     Var = eigs[1:2] / sum(eigs),
-    PC = colnames(pca_exp_res$rotation)[1:2]
+    PC = colnames(pca_exp_res$x)[1:2]
     )
 } else {
   results_PCA <- rbind(results_PCA,
     data.frame(
-    Sample = rownames(pca_exp_res$rotation),
-    pca_exp_res$rotation,
+    Sample = rownames(pca_exp_res$x),
+    pca_exp_res$x,
     Genome = levels(expr_cov_long$Genome_ID)[i]
     ))
   
@@ -869,11 +869,11 @@ if (i == 1) {
     data.frame(
     Genome = levels(expr_cov_long$Genome_ID)[i],
     Var = eigs[1:2] / sum(eigs),
-    PC = colnames(pca_exp_res$rotation)[1:2]
+    PC = colnames(pca_exp_res$x)[1:2]
     )) 
   }
 
-  remove(pca_exp_table)
+  # remove(pca_exp_table)
 }
 
 # Merge with correct sample names
@@ -943,6 +943,56 @@ p_exp_PCA2 <- results_PCA %>%
 png("./Figures/Revisions/PCA_expression2.png", width = 12, height = 6, units = "in", res = 500)
 print(p_exp_PCA2)
 dev.off()
+
+p_exp_PCA3 <- results_PCA %>%   
+  dplyr::filter(Depth == "Surface" & 
+      !new_bin_name %in% c("MAG5.SP-M110-DD", "MAG2.FA-MLB-SN")) %>%
+  ggplot(aes(x = Site, y = PC1))+
+  geom_point(size = 3.5, alpha = 0.8, aes(shape = Site, fill = Season))+
+    scale_shape_manual("", values = c(21, 22, 25))+
+  geom_boxplot(outlier.shape = NA, alpha = 0.5, width = 0.3)+
+  facet_wrap(.~new_bin_name, ncol = 4)+
+  scale_fill_brewer("", palette = "Set2")+
+  theme_bw()+
+  theme(axis.text.y=element_text(size=12), axis.title=element_text(size=13),
+        axis.text.x=element_text(size=10, angle = 45, hjust = 1),
+        title=element_text(size=12), legend.text=element_text(size=12),
+        legend.background = element_rect(fill="transparent"),
+        strip.text.x=element_text(size=14))+
+  labs(x="", y = "PC1 loading")+
+  guides(fill = guide_legend(override.aes = list(shape = 22)))
+ 
+png("./Figures/Revisions/PCA_expression3.png", width = 12, height = 6, units = "in", res = 500)
+print(p_exp_PCA3)
+dev.off()
+
+
+p_exp_PCA4 <- results_PCA %>%   
+  dplyr::filter(Depth == "Surface" & 
+      !new_bin_name %in% c("MAG5.SP-M110-DD", "MAG2.FA-MLB-SN")) %>%
+  ggplot(aes(x = Site, y = PC2))+
+  geom_point(size = 3.5, alpha = 0.8, aes(shape = Site, fill = Season))+
+    scale_shape_manual("", values = c(21, 22, 25))+
+  geom_boxplot(outlier.shape = NA, alpha = 0.5, width = 0.3)+
+  facet_wrap(.~new_bin_name, ncol = 4)+
+  scale_fill_brewer("", palette = "Set2")+
+  theme_bw()+
+  theme(axis.text.y=element_text(size=12), axis.title=element_text(size=13),
+        axis.text.x=element_text(size=10, angle = 45, hjust = 1),
+        title=element_text(size=12), legend.text=element_text(size=12),
+        legend.background = element_rect(fill="transparent"),
+        strip.text.x=element_text(size=14))+
+  labs(x="", y = "PC2 loading")+
+  guides(fill = guide_legend(override.aes = list(shape = 22)))
+ 
+png("./Figures/Revisions/PCA_expression4.png", width = 12, height = 6, units = "in", res = 500)
+print(p_exp_PCA4)
+dev.off()
+
+png("./Figures/Revisions/PCA_expression34.png", width = 12, height = 12, units = "in", res = 500)
+cowplot::plot_grid(p_exp_PCA3, p_exp_PCA4, ncol = 1, align = "hv" )
+dev.off()
+
 ```
 
 ## Run DESeq  
@@ -1197,6 +1247,43 @@ p_deseq_1 <- res_deseq_anott %>%
   coord_flip()
 
 print(p_deseq_1)
+
+p_deseq_2 <- res_deseq_anott %>% 
+  dplyr::filter(!is.na(ko_id) & ko_level_B %in% selected_ko & Design == "~ Site + Season") %>% 
+  dplyr::mutate(new_bin_name = factor(new_bin_name, levels =
+                                      c("MAG5.SP-M110-DD","MAG2.FA-MLB-SN",
+                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+                                        "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
+                                        "MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
+                                        "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"))) %>% 
+  dplyr::filter(!new_bin_name %in% c("MAG2.FA-MLB-SN", "MAG5.SP-M110-DD")) %>%
+  dplyr::filter(Comparison == "Spring-Summer") %>% 
+  dplyr::filter(log2FoldChange > 2) %>% 
+  ggplot2::ggplot(aes(x = new_bin_name, y = ko_level_C, fill = ko_level_B))+
+  # geom_point(size = 4, shape = 21)+
+  ggplot2::geom_count(color = "black", shape = 21)+
+  scale_fill_brewer(palette = "Set2")+
+  scale_size("Number of genes", range = c(3.5,8), breaks=seq(1,12,by=3)) +
+  # ggplot2::scale_fill_distiller("log2FoldChange",palette="RdBu", na.value="white",
+  # limits = c(-10,10)) +
+  theme_bw()+
+  ylab("")+
+  xlab("")+
+    theme_bw()+
+  theme(axis.text.y=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "top",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab("")+
+  xlab("")+ 
+  guides(fill = FALSE)
+
+png("./Figures/Revisions/Figure4.png", width = 9, height = 8, units = "in", res = 500)
+print(p_deseq_2)
+dev.off()
+
 ```
 
 ### Overview figure
@@ -1224,6 +1311,7 @@ p_deseq_overview <- res_deseq_anott_changed %>%
   dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
   dplyr::filter(Design == "~ Season + Site" 
                 & Comparison == "Muskegon Lake\nVs\nM110") %>% 
+  distinct()+
   ggplot2::ggplot(aes(x = new_bin_name, y= abs(log2FoldChange)))+
   geom_boxplot(fill = "#333333", alpha = 0.5, outlier.shape = NA, size = 1.25)+
   theme_bw()+
@@ -1238,14 +1326,6 @@ p_deseq_overview <- res_deseq_anott_changed %>%
   xlab("")+
   guides(fill = FALSE)+
   coord_flip()
-
-png("./Figures/Revisions/Figure3.png", width = 7, height = 5, units = "in", res = 500)
-print(p_deseq_overview)
-dev.off()
-
-svg("./Figures/Revisions/Figure3.svg", width = 7, height = 5)
-print(p_deseq_overview)
-dev.off()
 
 # mean and median absolute change in gene expression
 res_deseq_anott_changed %>% 
@@ -1273,10 +1353,19 @@ res_deseq_anott_changed$regulation <- res_deseq_anott_changed$log2FoldChange > 0
 res_deseq_anott_changed$regulation[res_deseq_anott_changed$regulation == TRUE] <- "Upregulated"
 res_deseq_anott_changed$regulation[res_deseq_anott_changed$regulation == FALSE] <- "Downregulated"
 
+res_deseq_anott_changed %>% 
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
+  dplyr::filter(Design == "~ Site + Season" 
+                & Comparison == "Fall-Spring") %>% 
+  distinct() %>% 
+    group_by(new_bin_name) %>% 
+  summarise(nrow = length(log2FoldChange))
+
 p_deseq_overview2 <- res_deseq_anott_changed %>% 
   dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
   dplyr::filter(Design == "~ Site + Season" 
                 & Comparison == "Fall-Spring") %>% 
+  distinct() %>% 
   ggplot2::ggplot(aes(x = new_bin_name, y= log2FoldChange, fill = regulation))+
   geom_boxplot(fill = "#333333", alpha = 0.5, outlier.shape = NA, size = 1.25)+
   # geom_violin(fill = "#333333", alpha = 0.5, scale = "count")+
@@ -1294,6 +1383,14 @@ p_deseq_overview2 <- res_deseq_anott_changed %>%
   coord_flip()
   # stat_summary(fun.data=mean_sdl, fun.args = list(mult = 1),
   #                geom="pointrange", color="#333333", size = 1.5)
+
+png("./Figures/Revisions/Figure3b.png", width = 7, height = 5, units = "in", res = 500)
+print(p_deseq_overview2)
+dev.off()
+
+svg("./Figures/Revisions/Figure3b.svg", width = 7, height = 5)
+print(p_deseq_overview2)
+dev.off()
 
 # mean and median absolute change in gene expression
 res_deseq_anott_changed %>% 
@@ -1369,6 +1466,12 @@ test <- res_deseq_anott_changed %>%
                 & Comparison == "Muskegon Lake\nVs\nM110" &
                   new_bin_name == "MAG8.SU-M110-DCMD") %>% 
   distinct()
+```
+
+### MAG8 specific
+
+```{r , dpi = 500, warning = FALSE,fig.width = 7, fig.height = 5, dev=c("png","pdf")}
+
 ```
 
 # 7. Sequence discrete populations
