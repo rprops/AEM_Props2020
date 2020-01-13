@@ -1218,6 +1218,7 @@ metaT_reads_mapped$new_bin_name <- factor(metaT_reads_mapped$new_bin_name,
                                         "MAG9.SU-M15-SN", "MAG10.SU-M15-SN"))
 ```
 
+### Results 
 
 ```{r plot-deseq, dpi = 500, warning = FALSE, fig.width = 15, fig.height = 10}
 selected_ko <- c("Carbohydrate metabolism", "Energy metabolism",
@@ -1284,6 +1285,103 @@ png("./Figures/Revisions/Figure4.png", width = 9, height = 8, units = "in", res 
 print(p_deseq_2)
 dev.off()
 
+# Import DOM usage table
+DOM_usage_df <- read.csv("./IMG_annotation/DOM_usage.csv", stringsAsFactors = FALSE,
+                         check.names =FALSE)
+DOM_usage_df$DOM_type <- gsub("\\n","\n", DOM_usage_df$DOM_type, fixed = TRUE)
+
+res_deseq_anott_dom1 <- res_deseq_anott %>% 
+  dplyr::filter(!is.na(ko_id) & ko_level_B %in% selected_ko & Design == "~ Site + Season") %>% 
+  dplyr::mutate(new_bin_name = factor(new_bin_name, levels =
+                                      c("MAG5.SP-M110-DD","MAG2.FA-MLB-SN",
+                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+                                        "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
+                                        "MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
+                                        "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"))) %>% 
+  dplyr::filter(!new_bin_name %in% c("MAG2.FA-MLB-SN", "MAG5.SP-M110-DD")) %>%
+  dplyr::filter(Comparison == "Fall-Spring") %>% 
+  # dplyr::filter(log2FoldChange > 1) %>%
+  dplyr::filter(cog_id %in% DOM_usage_df$COG_ID) %>% 
+  left_join(., DOM_usage_df, by = c("cog_id" = "COG_ID"))
+
+# Order DOC categories
+COG_order1 <- DOM_usage_df %>% 
+  dplyr::filter(COG_ID %in% unique(res_deseq_anott_dom1$cog_id))
+res_deseq_anott_dom1$cog_id <- factor(res_deseq_anott_dom1$cog_id,
+                                        levels = COG_order1$COG_ID)
+p_deseq_dom_1 <-  res_deseq_anott_dom1 %>% 
+  ggplot2::ggplot(aes(x = new_bin_name, y = cog_id, fill = DOM_type))+
+  # geom_point(size = 4, shape = 21)+
+  ggplot2::geom_count(color = "black", shape = 21)+
+  scale_fill_brewer("", palette = "Set3")+
+  scale_size("Number of genes", range = c(3.5,8), breaks=seq(1, 7,by=2)) +
+  # ggplot2::scale_fill_distiller("log2FoldChange",palette="RdBu", na.value="white",
+  # limits = c(-10,10)) +
+  theme_bw()+
+  ylab("")+
+  xlab("")+
+    theme_bw()+
+  theme(axis.text.y=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "right",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab("")+
+  xlab("")+
+  guides(fill = guide_legend(override.aes = list(size = 4, shape = 22)))
+
+png("./Figures/Revisions/Figure_deseq_dom_1.png", width = 7, height = 6, units = "in", res = 500)
+print(p_deseq_dom_1)
+dev.off()
+
+res_deseq_anott_dom2 <- res_deseq_anott %>% 
+  dplyr::filter(!is.na(ko_id) & ko_level_B %in% selected_ko & Design == "~ Season + Site") %>% 
+  dplyr::mutate(new_bin_name = factor(new_bin_name, levels =
+                                      c("MAG5.SP-M110-DD","MAG2.FA-MLB-SN",
+                                        "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+                                        "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
+                                        "MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
+                                        "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"))) %>% 
+  dplyr::filter(!new_bin_name %in% c("MAG2.FA-MLB-SN", "MAG5.SP-M110-DD")) %>%
+  dplyr::filter(Comparison == "Muskegon Lake\nVs\nM110") %>% 
+  # dplyr::filter(log2FoldChange > 1) %>%
+  dplyr::filter(cog_id %in% DOM_usage_df$COG_ID) %>% 
+  left_join(., DOM_usage_df, by = c("cog_id" = "COG_ID"))
+
+  # Order DOC categories
+COG_order2 <- DOM_usage_df %>% 
+  dplyr::filter(COG_ID %in% unique(res_deseq_anott_dom2$cog_id))
+res_deseq_anott_dom2$cog_id <- factor(res_deseq_anott_dom2$cog_id,
+                                        levels = COG_order2$COG_ID)
+
+p_deseq_dom_2 <- res_deseq_anott_dom2 %>% 
+  ggplot2::ggplot(aes(x = new_bin_name, y = cog_id, fill = DOM_type))+
+  # geom_point(size = 4, shape = 21)+
+  ggplot2::geom_count(color = "black", shape = 21)+
+  scale_fill_brewer("", palette = "Set3")+
+  scale_size("Number of genes", range = c(3.5,8), breaks=seq(1, 7,by=2)) +
+  # ggplot2::scale_fill_distiller("log2FoldChange",palette="RdBu", na.value="white",
+  # limits = c(-10,10)) +
+  theme_bw()+
+  ylab("")+
+  xlab("")+
+    theme_bw()+
+  theme(axis.text.y=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+      strip.text=element_text(size=12), legend.position = "right",
+      strip.background = element_rect(fill = adjustcolor("gray", 0.15)))+
+  ylab("")+
+  guides(fill = guide_legend(override.aes = list(size = 4, shape = 22)))+
+  ggtitle()
+
+png("./Figures/Revisions/Figure_deseq_dom_2.png", width = 7, height = 6, units = "in", res = 500)
+print(p_deseq_dom_2)
+dev.off()
+
+cowplot::plot_grid(p_deseq_dom_1, p_deseq_dom_2, align = "hv", ncol = 1)
 ```
 
 ### Overview figure
