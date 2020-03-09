@@ -96,7 +96,7 @@ coverage_data <- data.frame(mean_coverage_long,
                             std_coverage = std_coverage_long[,3])
 
 # Read and add metadata
-meta <- read.csv2("metadata.csv")
+meta <- read.csv2("./Metadata/metadata.csv")
 meta$Sample_ID <- gsub(meta$Sample_ID, pattern = ".", replacement = "_", fixed = TRUE)
 data_total <- left_join(coverage_data, total_reads, by = c("Sample_ID" = "sample"))
 data_total <- left_join(data_total, bin_size, by = "bins")
@@ -344,10 +344,10 @@ blast_emirge_annot %>% dplyr::filter(label_interaction %in% subset_seq_labels &
 
 ```{r ANI-analysis, warning = FALSE, fig.width = 9, fig.height = 9, dpi = 500}
 # read file
-data.ANI <- read.table("./ANI/ANIb_percentage_identity.tab")
+data.ANI <- read.table("./Dereplication/ANI/ANIb_percentage_identity.tab")
 
 # Replace genome names by better annotated names
-map_ani <- read.delim("./ANI/pyani_ref_names.tsv", stringsAsFactors = FALSE)
+map_ani <- read.delim("./Dereplication/ANI/pyani_ref_names.tsv", stringsAsFactors = FALSE)
 for(i in 1:nrow(map_ani)){
  colnames(data.ANI)[colnames(data.ANI) %in% map_ani$ani_file[i]] <- map_ani$ref_name[i]
  rownames(data.ANI)[rownames(data.ANI) %in% map_ani$ani_file[i]] <- map_ani$ref_name[i]
@@ -1203,6 +1203,14 @@ res_deseq$regulation[res_deseq$regulation == "FALSE"] <- "downregulation"
 # Add KO/COG/pfam/tigrfam gene annotations to DeSEQ2 results
 res_deseq_anott <- dplyr::left_join(res_deseq, merged_file_annot, by = c("gene_oid"))
 
+res_deseq_anott %>% 
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design, padj) %>% 
+  dplyr::filter(Design == "~ Site + Season" 
+                & Comparison == "Fall-Spring" & is.na(padj)) %>% 
+    distinct() %>% 
+    group_by(new_bin_name) %>% 
+  summarise(nrow = length(unique(gene_oid)))
+
 metaT_reads_mapped <- expr_cov_long %>% 
   group_by(Sample, Genome_ID) %>% 
   dplyr::summarise(sum_mapped_reads = sum(mapped_reads))
@@ -1459,8 +1467,16 @@ res_deseq_anott_changed %>%
     group_by(new_bin_name) %>% 
   summarise(nrow = length(log2FoldChange))
 
+# Export results
+res_deseq_anott_changed_toCSV <- res_deseq_anott_changed %>% 
+  # select(1:9, 12, 13,15) %>% 
+  distinct()  
+res_deseq_anott_changed_toCSV <- apply(res_deseq_anott_changed_toCSV, 2, gsub, patt="\n", replace=";")
+
+write.csv2(res_deseq_anott_changed_toCSV, file = "./Manuscript/SupplementaryData_DESeq_1.csv")
+
 p_deseq_overview2 <- res_deseq_anott_changed %>% 
-  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
+  # dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
   dplyr::filter(Design == "~ Site + Season" 
                 & Comparison == "Fall-Spring") %>% 
   distinct() %>% 
@@ -1566,11 +1582,6 @@ test <- res_deseq_anott_changed %>%
   distinct()
 ```
 
-### MAG8 specific
-
-```{r , dpi = 500, warning = FALSE,fig.width = 7, fig.height = 5, dev=c("png","pdf")}
-
-```
 
 # 7. Sequence discrete populations
 

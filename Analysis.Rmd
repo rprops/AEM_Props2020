@@ -393,7 +393,8 @@ p_ani <- ggplot(data = df_pyani,
   scale_x_discrete(position = "top") +
   theme(axis.title=element_text(size=14), strip.text.x=element_text(size=14),
         legend.title=element_text(size=14), legend.text=element_text(size=14),
-        axis.text.y = element_blank(),
+        # axis.text.y = element_blank(),
+        axis.text.y = element_text(size = 14),
         axis.text.x = element_text(size=14, angle = 55, hjust = 0),
         title=element_text(size=20),
         plot.margin = unit(c(1.1,1.1,1.1,1.1), "cm"),
@@ -403,9 +404,9 @@ p_ani <- ggplot(data = df_pyani,
         plot.background = element_rect(fill = "transparent",colour = NA)
   )
 
-# png("ANI_heatmap.png", height= 9, width = 9, res = 500, units = "in", bg = "transparent")
+png("ANI_heatmap.png", height= 9, width = 12, res = 300, units = "in", bg = "transparent")
 print(p_ani)
-# dev.off()
+dev.off()
 ```
 
 # 1b. Investigate predicted generation time (MGT)
@@ -781,7 +782,7 @@ genome_gene_map <- data.frame(apply(genome_gene_map, 2, as.character))
 expr_cov <- dplyr::left_join(expr_cov, genome_gene_map, by = "gene_oid")
 
 # Annotate this expression table with Kegg Orthology
-# expr_cov <- dplyr::left_join(expr_cov, merged_file[, c(1,9)], by = c("gene_oid"))
+expr_cov <- dplyr::left_join(expr_cov, merged_file[, c("gene_oid","ko_id")], by = c("gene_oid"))
 expr_cov$Plus_reads <- as.integer(expr_cov$Plus_reads)
 expr_cov$Length <- as.integer(expr_cov$Length)
 expr_cov <- expr_cov[!is.na(expr_cov$Plus_reads),]
@@ -807,13 +808,77 @@ expr_cov_long$Genome_ID <- as.factor(expr_cov_long$Genome_ID)
 
 # Remove duplicate rows
 expr_cov_long <- expr_cov_long %>% distinct()
+
+# rename column
+colnames(expr_cov_long)[colnames(expr_cov_long) == "Plus_reads"] <- "mapped_reads"
 ```
 
-## Calculate dissimarility between expression profiles
+## PCoA analysis
 
 ```{r metaT-disper, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 5, dev=c("png","pdf")}
-colnames(expr_cov_long)[colnames(expr_cov_long) == "Plus_reads"] <- "mapped_reads"
-# For each MAG calculate the dissimarilties in expression profiles between samples
+# Perform PCoA on gene-length normalize data (RPK scaling)
+pcoa_exp_table <- expr_cov_long %>% 
+  dplyr::mutate(unique_id = interaction(Genome_ID, Sample, sep = "-")) %>% 
+  dplyr::filter(!is.na(ko_id)) %>% 
+  ungroup() %>% 
+  dplyr::select(unique_id, ko_id, TPM) %>% 
+  distinct() %>% 
+  tidyr::spread(ko_id, TPM)
+rownames(pcoa_exp_table) <- pcoa_exp_table$unique_id
+
+# scale input data
+pcoa_exp_res <- cmdscale(dist(scale(pcoa_exp_table[-1])), k =2, eig = TRUE)
+var_exp <- round(pcoa_exp_res$eig/sum(pcoa_exp_res$eig)*100,1)
+pcoa_exp_res <- data.frame(unique_id = rownames(pcoa_exp_table), pcoa_exp_res$points)
+pcoa_exp_res <- pcoa_exp_res %>% 
+  separate(unique_id, sep = "-", into = c("Genome_ID", "Sample_ID")) %>% 
+  left_join(., meta_metaT, by = "Sample_ID")
+
+# Run permanova
+# x <- df_div_desman[,2:ncol(df_div_desman)]
+# rownames(x) <- df_div_desman[, 1]
+# dist_desm <- vegan::vegdist(x)
+# perm <- permute::how(nperm = 999)
+# permanova_desm <- vegan::adonis(dist_desm ~ Season * Site, 
+#                         data = meta_em, 
+#                         permutations = perm)
+
+# Plot PCoA
+# my_grob = grobTree(textGrob(bquote(paste(r[Season]^2 == 
+#     .(round(100 * permanova_desm$aov.tab[1, 5], 1)), 
+#     "%")), x = 0.7, y = 0.95, hjust = 0, gp = gpar(col = "black", 
+#     fontsize = 14, fontface = "italic")))
+# my_grob2 = grobTree(textGrob(bquote(paste(r[Site]^2 == 
+#     .(format(round(100 * permanova_desm$aov.tab[2, 5], 
+#         1), nsmall = 1)), "%")), x = 0.7, y = 0.87, 
+#     hjust = 0, gp = gpar(col = "black", fontsize = 14, 
+#         fontface = "italic")))
+# my_grob3 = grobTree(textGrob(bquote(paste(r[Season:Site]^2 == 
+#     .(round(100 * permanova_desm$aov.tab[3, 5], 1)), 
+#     "%")), x = 0.7, y = 0.79, hjust = 0, gp = gpar(col = "black", 
+#     fontsize = 14, fontface = "italic")))
+
+pcoa_exp_ord <- ggplot(data=pcoa_exp_res, aes(x=X1, y=X2, shape = Site))+
+  scale_shape_manual(values=c(21,23, 24))+
+  geom_point(size=7, alpha=0.7, aes(fill = Genome_ID))+
+  theme_bw()+
+  scale_fill_brewer(palette = "Paired")+
+  labs(x = paste0("PCoA axis 1 (",var_exp[1], "%)"),
+       y = paste0("PCoA axis 2 (",var_exp[2], "%)"), fill="", shape = "", colour="")+
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=16),
+        title=element_text(size=16), legend.text=element_text(size=16))+ 
+  guides(fill = guide_legend(override.aes = list(shape = 22)))+
+  # annotation_custom(my_grob)+
+  # annotation_custom(my_grob2)+
+  # annotation_custom(my_grob3)+
+  ggtitle("PCoA of gene expression")
+
+png(paste0("./Figures/metaT_overview_PCOA.png"), height = 6,
+  width = 10, res = 500, units = "in")
+print(pcoa_exp_ord)
+dev.off()
+
+# For each MAG calculate the dissimilarities in expression profiles between samples
 for(i in 1:nlevels(expr_cov_long$Genome_ID)){
   tmp_table <-  expr_cov_long %>% 
   dplyr::filter(Genome_ID == levels(expr_cov_long$Genome_ID)[i]) %>% 
@@ -959,6 +1024,7 @@ for(i in 1:nlevels(expr_cov_long$Genome_ID)){
   expr_cov_bins[[i]] <-  expr_cov_long %>% 
   dplyr::filter(Genome_ID == levels(expr_cov_long$Genome_ID)[i]) %>% 
   dplyr::select(gene_oid, Sample, mapped_reads) %>% 
+  distinct() %>% 
   tidyr::spread(Sample, mapped_reads)
   r.bin <- expr_cov_bins[[i]]$gene_oid
   expr_cov_bins[[i]] <- as.matrix(expr_cov_bins[[i]][, -1])
@@ -975,10 +1041,6 @@ all(rownames(meta_metaT) %in% colnames(expr_cov_bins[[1]]))
 sel_env <- meta_metaT[, "Site"] == "110" & meta_metaT[, "Depth"] != "Mid" & meta_metaT[, "Season"] != "Spring" & meta_metaT[, "Time"] == "Night"
 expr_cov_MAG8[[1]] <- expr_cov_MAG8[[1]][, sel_env]
 meta_metaT_subs <- meta_metaT[sel_env, ]
-for(i in 1:nlevels(expr_cov_long$Genome_ID)){
-}
-
-
 
 ## Season effect
 General_deseq_results_season <- list()
@@ -1232,6 +1294,14 @@ res_deseq_anott_changed$new_bin_name <- factor(res_deseq_anott_changed$new_bin_n
                                         "MAG6.SP-M15-SD", "MAG8.SU-M110-DCMD",
                                         "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"))
 
+  res_deseq_anott_changed %>% 
+  dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
+  dplyr::filter(Design == "~ Season + Site" 
+                & Comparison == "Muskegon Lake\nVs\nM110") %>% 
+  # dplyr::filter(new_bin_name == "MAG8.SU-M110-DCMD") %>% 
+    distinct() %>% 
+    group_by(new_bin_name) %>% 
+  summarise(nrow = length(log2FoldChange))
   
 p_deseq_overview <- res_deseq_anott_changed %>% 
   dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design) %>% 
@@ -1268,11 +1338,10 @@ tmp_nutrient <- res_deseq_anott_changed %>%
   
 kruskal.test(abs(log2FoldChange) ~ new_bin_name,
              data = tmp_nutrient)
+
 pairwise.wilcox.test(abs(tmp_nutrient$log2FoldChange),
                      tmp_nutrient$new_bin_name,
                      p.adjust.method="BH")
-
-
 
 # Add up and down regulation
 res_deseq_anott_changed$regulation <- res_deseq_anott_changed$log2FoldChange > 0
@@ -1321,12 +1390,7 @@ pairwise.wilcox.test(abs(tmp_season$log2FoldChange),
                      tmp_season$new_bin_name,
                      p.adjust.method="BH")
 
-
-
-
 print(p_deseq_overview2)
-
-
 
 p_deseq_overview3 <- res_deseq_anott_changed %>% 
   dplyr::select(gene_oid, log2FoldChange, new_bin_name, Comparison, Design,
@@ -1381,6 +1445,8 @@ test <- res_deseq_anott_changed %>%
                   new_bin_name == "MAG8.SU-M110-DCMD") %>% 
   distinct()
 
+res_deseq_anott_changed %>% 
+  dplyr::filter(Genome_ID == "2757320398")
 
 ```
 
@@ -2433,6 +2499,9 @@ print(p_scat_abund)
 # 8. DESMAN
 
 ## QC
+
+### PMD
+
 ```{r desman-qc, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")}
 # For adding manuscript MAG information etc
 MGT_df$Genome_ID <- as.character(MGT_df$Genome_ID)
@@ -2463,6 +2532,8 @@ ord_list_bin_ext <- c(
 
 p_desman_qc <- results_desm_qc %>% 
   mutate(Genome_ID = factor(Genome_ID, levels = ord_list_bin_ext)) %>% 
+  dplyr::filter(!Genome_ID %in% c("MAG5.SP-M110-DD", "MAG2.FA-MLB-SN")) %>% 
+  droplevels() %>% 
   ggplot(., aes(x = G, y = Dev, fill = Genome_ID))+
   geom_point(col = "black", alpha = 0.1, size = 4, shape = 21, fill = "black")+
   # scale_fill_brewer("", palette = "Paired")+
@@ -2470,7 +2541,7 @@ p_desman_qc <- results_desm_qc %>%
  # geom_boxplot(notch=FALSE, outlier.shape=NA, alpha=0.8)+
   geom_line()+
   theme_bw()+
-  facet_wrap(.~Genome_ID, ncol = 5)+
+  facet_wrap(.~Genome_ID, ncol = 4)+
   scale_x_continuous(limits = c(1,12), breaks = 1:12)+
     theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
       title=element_text(size=16), legend.text=element_text(size=10),
@@ -2481,9 +2552,74 @@ p_desman_qc <- results_desm_qc %>%
   labs(x = "Number of Strains", y = "Posterior Mean Deviance")+
   geom_smooth(col = "black")+
   guides(fill = FALSE)+
-  geom_vline(xintercept = 2, linetype = 2)+
-  geom_vline(xintercept = 3, linetype = 2)+
-  geom_vline(xintercept = 6, linetype = 2)
+  geom_vline(xintercept = 2, linetype = 2, col = "black")+
+  geom_vline(xintercept = 3, linetype = 2, col = "black")+
+  geom_vline(xintercept = 6, linetype = 2, col = "black")
+
+png("./Figures/DESMAN/DESMAN_QC.png", width = 12.5, height = 6, res = 300, units = "in")
+print(p_desman_qc)
+dev.off()
+
+svg("./Figures/DESMAN/DESMAN_QC.svg", width = 12.5, height = 6)
+print(p_desman_qc)
+dev.off()
+```
+
+### PMD
+
+```{r desman-qc-2, dpi = 500, warning = FALSE, fig.width = 7, fig.height = 10, dev = c("png","pdf")}
+# For adding manuscript MAG information etc
+MGT_df$Genome_ID <- as.character(MGT_df$Genome_ID)
+MGT_df$MAG_id <- do.call(rbind, strsplit(MGT_df$Genome_ID,".", fixed = TRUE))[, 1]
+
+# import metadata
+metadata_desman <- readxl::read_excel("./DESMAN/desman_results.xlsx", sheet = 1)
+metadata_desman <- left_join(metadata_desman, MGT_df, by = c("MAG_id"))
+  
+# import desman diagnostics
+for(i in 1:10){
+  tmp_desm <- read.csv(paste0("./DESMAN/", metadata_desman$MAG_id[i], "/",
+    metadata_desman$MAG_id[i], "_Dev.csv"))
+  # wide to long
+  tmp_desm$Genome_ID <- metadata_desman$Genome_ID[i]
+  if(i == 1) {
+    results_desm_qc <- tmp_desm
+    } else results_desm_qc <- rbind(results_desm_qc, tmp_desm)
+}
+
+ord_list_bin_ext <- c(
+  "MAG5.SP-M110-DD", "MAG2.FA-MLB-SN",
+  "MAG3.FA-MLB-SN", "MAG4.FA-M110-DN",
+  "MAG1.FA-MLB-DN", "MAG10.SU-M15-SN",
+  "MAG6.SP-M15-SD","MAG8.SU-M110-DCMD",
+  "MAG7.SU-MLB-SD","MAG9.SU-M15-SN"
+)
+
+p_desman_qc <- results_desm_qc %>% 
+  mutate(Genome_ID = factor(Genome_ID, levels = ord_list_bin_ext)) %>% 
+  dplyr::filter(!Genome_ID %in% c("MAG5.SP-M110-DD", "MAG2.FA-MLB-SN")) %>% 
+  droplevels() %>% 
+  ggplot(., aes(x = G, y = Dev, fill = Genome_ID))+
+  geom_point(col = "black", alpha = 0.1, size = 4, shape = 21, fill = "black")+
+  # scale_fill_brewer("", palette = "Paired")+
+  # geom_boxplot()+
+ # geom_boxplot(notch=FALSE, outlier.shape=NA, alpha=0.8)+
+  geom_line()+
+  theme_bw()+
+  facet_wrap(.~Genome_ID, ncol = 4)+
+  scale_x_continuous(limits = c(1,12), breaks = 1:12)+
+    theme(axis.text=element_text(size=12), axis.title=element_text(size=16),
+      title=element_text(size=16), legend.text=element_text(size=10),
+      legend.background = element_rect(fill="transparent"),
+      axis.text.x = element_text(size = 12),
+      strip.text=element_text(size=12), legend.position = "bottom")+
+  scale_y_log10()+
+  labs(x = "Number of Strains", y = "Posterior Mean Deviance")+
+  geom_smooth(col = "black")+
+  guides(fill = FALSE)+
+  geom_vline(xintercept = 2, linetype = 2, col = "black")+
+  geom_vline(xintercept = 3, linetype = 2, col = "black")+
+  geom_vline(xintercept = 6, linetype = 2, col = "black")
 
 png("./Figures/DESMAN/DESMAN_QC.png", width = 12.5, height = 6, res = 300, units = "in")
 print(p_desman_qc)
@@ -3906,6 +4042,10 @@ for(i_genome in 1:length(unique(panG_ko$Genome))){
     results_pergene <- rbind(results_pergene, genes_per_gseq)
   }
 }
+
+# Export enricher results
+write.table(results_gseq, file = "./PanG/results_enrichment.csv", row.names = FALSE,
+  col.names = TRUE, sep = ",")
 
 # Calculate fraction of enriched genes vs. annotated panG genes
 results_pergene_sum <- results_pergene %>% 
